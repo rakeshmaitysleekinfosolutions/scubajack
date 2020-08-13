@@ -5,7 +5,9 @@
 	"homepage": "https://github.com/alzen8work/ci_hmvc",
 	"license": "MIT",
 	"require": {
-		"php": ">=5.2.4"
+		"php": ">=5.2.4",
+		"yidas/codeigniter-model": "^2.19",
+		"nesbot/carbon": "^2.16"
 	},
 	"suggest": {
 		"paragonie/random_compat": "Provides better randomness in PHP 5.x"

@@ -121,6 +121,8 @@ class MX_Router extends CI_Router
 			$segments = $routes;
 		}
 
+		
+
 		/* get the segments array elements */
 		list($module, $directory, $controller) = array_pad($segments, 3, NULL);
 		
@@ -168,8 +170,9 @@ class MX_Router extends CI_Router
 			
 				if(is_file($source.ucfirst($module).$ext))
 				{
-						
+				
 					$this->located = 1;
+					
 					return $segments;
 				}
 			}

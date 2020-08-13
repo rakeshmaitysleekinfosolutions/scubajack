@@ -88,4 +88,26 @@ if(!defined('BASEPATH')) EXIT("No direct script access allowed");
         }
     }
 
+  
+    if ( ! function_exists('dd')) {
+        function dd($attr) {
+            echo "<pre>";
+            print_r($attr);
+            die();
+        }
+    }
+    if ( ! function_exists('__token')) {
+        function __token() {
+           $CI = get_instance();
+           $CI->load->library('security');
+           return $CI->security->get_csrf_token_name();
+        }
+    }
+    if ( ! function_exists('csrf_token')) {
+        function csrf_token() {
+           $CI = get_instance();
+           $CI->load->library('security');
+           return $CI->security->get_csrf_hash();
+        }
+    }
 ?>
