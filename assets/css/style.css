@@ -4,6 +4,20 @@ body{
     margin: 0;
     padding: 0;
 }
+header.menu-area {
+    width: 100%;
+    position: relative;
+    background: #fff;
+}
+header.sticky {
+    position: fixed;
+    width: 100%;
+    transition: all ease-in 0.8s;
+    box-shadow: 1px 3px 2px rgb(0 0 0 / 22%);
+    background: #fff;
+    z-index: 99;
+    top: 0;
+}
 header.sticky {
     position: fixed;
     width: 100%;
@@ -518,75 +532,97 @@ font-family: 'Poppins', sans-serif;
     font-weight: 400;
     font-family: 'Poppins', sans-serif;
 }
-/****************************************************************/
+/*************************************************14.08.20/login page***************/
 .loginpage {
     margin-top: 94px;
-    padding: 28px 20px;
-}
-
-form.signin-form:before {
-    content: "";
-    position: absolute;
-    background: url(../images/s6.png);
-    background-repeat: no-repeat;
-    width: 200px;
-    height: 200px;
-    bottom: -44%;
-    left: -50%;
-}
-.forms input::placeholder {
-    color: #fff;
-}
-
-.forms {
-  position: relative;
-  z-index: 1;
-  background:#02396f;
-  max-width: 360px;
-  margin: 0 auto 100px;
-  padding: 45px;
-  text-align: center;
-  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
-}
-.forms input {
-    font-family: "Roboto", sans-serif;
-    outline: 0;
-    background: transparent;
-    width: 100%;
-    border: 0;
-    margin: 0 0 15px 0;
-    padding: 15px;
-    box-sizing: border-box;
-    font-size: 14px;
-    border-bottom: 2px solid #fff;
+    padding: 40px 100px;
     
 }
-.forms button {
-  font-family: "Roboto", sans-serif;
-  text-transform: uppercase;
-  outline: 0;
-  background: #ff2907;
-  width: 100%;
-  border: 0;
-  padding: 15px;
-  color: #FFFFFF;
-  font-size: 14px;
-  -webkit-transition: all 0.3 ease;
-  transition: all 0.3 ease;
-  cursor: pointer;
+.formbox {
+    background: #f0f8ff12;
+    box-shadow: 1px 2px 5px 2px #0000004a;
+    /* border: 1px solid #137fea; */
+    padding: 12px 0px;
 }
-.forms button:hover, .forms button:active, .forms button:focus {
-    background: #ff2907bf;
-}
-.forms .message {
-  margin: 15px 0 0;
-  color: #fff;
-  font-size: 12px;
-}
-.forms .message a {
-  color: #fff;
-  text-decoration: none;
+.left {
+    background: url(../images/form-bg.png);
+    background-size: cover;
+        height: 500px;
+    /*border:1px solid #000;*/
+    padding: 20px 25px;
 }
 
+.left h3 {
+    font-size: 30px;
+    line-height: 39px;
+    color: #f8f9fa;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    text-transform: capitalize;
+    
+}
+.left p{
+    font-size: 20px;
+    color: #f8f9fa;
+    font-weight: 400;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    text-transform: capitalize;
+}
+.right-side {
+     background: #02396f;
+   /* background: rgb(73 132 224 / 18%);*/
+    /*border: 1px solid #000;*/
+    height: 500px;
+    padding: 20px 25px;
+}
+.right-sides{
+      background: #02396f;
+       height: 550px;
+    padding: 20px 25px;
+}
+.right-sides h3 {
+    font-size: 30px;
+    line-height: 40px;
+   color: #f8f9fa;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    text-transform: capitalize;
+}
 
-/*****************************************************/
+.right-side h3 {
+    font-size: 30px;
+    line-height: 40px;
+   color: #f8f9fa;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    text-transform: capitalize;
+}
+.right-side p {
+    font-size: 14px;
+    line-height: 20px;
+    color: #f8f9fa;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    
+}
+button.btn.submit {
+    background: #137fea;
+    color: #fff;
+    padding: 10px 36px;
+    border-radius: 0;
+    font-size: 15px;
+    margin-top: 20px;
+     font-family: 'Poppins', sans-serif;
+   
+}
+.form-group label {
+   font-size: 14px;
+   color: #f8f9fa;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+}
+.form-check-label {
+    margin-bottom: 0;
+    color: #f8f9fa;
+}

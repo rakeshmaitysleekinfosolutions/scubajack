@@ -178,15 +178,15 @@ $(function () {
 		});
 	}
 });
-
-// $(document).ready(function() {
-// 	if($('.datatable').length > 0 ){
-// 		$('.datatable').DataTable({
-// 			"bFilter": false,
-// 		});
-// 	}
-// });
-
+/*
+$(document).ready(function() {
+	if($('.datatable').length > 0 ){
+		$('.datatable').DataTable({
+			"bFilter": false,
+		});
+	}
+});
+*/
 $(document).ready(function() {
 	if($('[data-toggle="tooltip"]').length > 0 ){
 		$('[data-toggle="tooltip"]').tooltip();

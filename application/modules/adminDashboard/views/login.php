@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="assets/img/basic/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="<?php echo base_url();?>assets/theme/light/login/img/basic/favicon.ico" type="image/x-icon">
     <title>Paper</title>
     <!-- CSS -->
-    <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="stylesheet" href="<?php echo base_url();?>assets/css/app.css">
     <style>
         .loader {
             position: fixed;
@@ -82,7 +82,7 @@
             <div class="row">
 
                 <div class="col-lg-6">
-                    <img src="assets/img/icon/daveyboy12 b.png" alt="" style="margin-top: 150px; margin-left: -26px;">
+                    <img src="<?php echo base_url();?>assets/images/daveyboy12 b.png" alt="" style="margin-top: 150px; margin-left: -26px;">
                 </div>
                 <div class="col-lg-6 p-t-100">
                     <div class="text-white">
@@ -288,6 +288,6 @@
 <div class="control-sidebar-bg shadow white fixed"></div>
 </div>
 <!--/#app -->
-<script src="assets/js/app.js"></script>
+<script src="<?php echo base_url();?>assets/js/app.js"></script>
 </body>
 </html>

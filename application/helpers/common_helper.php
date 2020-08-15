@@ -110,4 +110,15 @@ if(!defined('BASEPATH')) EXIT("No direct script access allowed");
            return $CI->security->get_csrf_hash();
         }
     }
+    if ( ! function_exists('admin_url')) {
+        function admin_url($uri = '', $protocol = NULL) {
+            return get_instance()->config->base_url('admin/'.$uri, $protocol);
+        }
+    }
+    if(!function_exists('isLogged')) {
+        function isLogged() {
+            $ci = get_instance();
+            return ($ci->session->userdata('user_id')) && (int) $ci->session->userdata('user_id') > 0 ? (int) $ci->session->userdata('user_id') : false;
+        }
+    }
 ?>

@@ -7,7 +7,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
         <?php echo $this->template->meta; ?>
         <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
-        <title>Dashboard - HRMS admin template</title>
+        <title>Dashboard - SCUBA JACK Admin</title>
        
 		<!--[if lt IE 9]>
 			<script src="assets/js/html5shiv.min.js"></script>
@@ -19,8 +19,8 @@
 		<link rel="stylesheet" href="<?php echo base_url();?>assets/theme/light/css/font-awesome.min.css">
 		<link rel="stylesheet" href="<?php echo base_url();?>assets/theme/light/plugins/morris/morris.css">
 		
-		<!-- <link rel="stylesheet" href="<?php echo base_url();?>assets/js/sweetalert/sweetalert.css">
-		<link rel="stylesheet" href="<?php echo base_url();?>assets/js/summernote/summernote.css"> -->
+		<link rel="stylesheet" href="<?php echo base_url();?>assets/theme/light/js/sweetalert/sweetalert.css">
+		<link rel="stylesheet" href="<?php echo base_url();?>assets/theme/light/js/summernote/summernote.css">
 
 		<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/theme/light/css/dataTables.bootstrap.min.css"> -->
 		<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/theme/light/css/select2.min.css">
@@ -31,7 +31,7 @@
         <div class="main-wrapper">
             <div class="header">
                 <div class="header-left">
-                    <a href="index.html" class="logo">
+                    <a href="<?php echo base_url();?>" class="logo">
 						<img src="<?php echo base_url();?>assets/theme/light/img/scuba-logo.png" width="64" height="44" alt="">
 					</a>
                 </div>
@@ -145,25 +145,32 @@
 					<div id="sidebar-menu" class="sidebar-menu">
 						<ul>
 							<li class="active"> 
-								<a href="index.html">Dashboard</a>
+								<a href="<?php echo admin_url('dashboard');?>">Dashboard</a>
 							</li>
-							<!-- <li class="submenu">
-								<a href="#" class="noti-dot"><span> Employees</span> <span class="menu-arrow"></span></a>
+							<li class="submenu">
+								<a href="#" class="noti-dot"><span> Manage Users</span> <span class="menu-arrow"></span></a>
 								<ul class="list-unstyled" style="display: none;">
-									<li><a href="employees.html">All Employees</a></li>
-									<li><a href="holidays.html">Holidays</a></li>
-									<li><a href="leaves.html"><span>Leave Requests</span> <span class="badge bg-primary pull-right">1</span></a></li>
+									<li><a href="<?php echo admin_url('users');?>">Users</a></li>
+									<li><a href="<?php echo admin_url('users/create');?>">Add User</a></li>
+									<!-- <li><a href="leaves.html"><span>Leave Requests</span> <span class="badge bg-primary pull-right">1</span></a></li>
 									<li><a href="attendance.html">Attendance</a></li>
 									<li><a href="departments.html">Departments</a></li>
-									<li><a href="designations.html">Designations</a></li>
+									<li><a href="designations.html">Designations</a></li> -->
 								</ul>
-							</li> -->
-							<li> 
+							</li>
+							<li class="submenu">
+								<a href="#" class="noti-dot"><span> Manage Product</span> <span class="menu-arrow"></span></a>
+								<ul class="list-unstyled" style="display: none;">
+									<li><a href="javascript:void(0);">Products</a></li>
+									<li><a href="javascript:void(0);">Category</a></li>
+								</ul>
+							</li>
+							<!-- <li> 
 								<a href="<?php echo base_url('user');?>">Users</a>
-							</li>
-							<li> 
+							</li> -->
+							<!-- <li> 
 								<a href="<?php echo base_url('user');?>">Category</a>
-							</li>
+							</li> -->
 							
 							
 						</ul>
@@ -189,10 +196,10 @@
 		<script type="text/javascript" src="<?php echo base_url();?>assets/theme/light/js/dataTables.bootstrap.min.js"></script>
 	 -->
 		<script type="text/javascript" src="<?php echo base_url();?>assets/theme/light//js/select2.min.js"></script>
-<!-- 
-		<script type="text/javascript" src="<?php echo base_url();?>assets/js/sweetalert/sweetalert.js" ></script>
-		<script type="text/javascript" src="<?php echo base_url();?>assets/js/summernote/summernote.js" ></script>
-		<script type="text/javascript" src="<?php echo base_url();?>assets/js/App.js" ></script> -->
+
+		<script type="text/javascript" src="<?php echo base_url();?>assets/theme/light/js/sweetalert/sweetalert.js" ></script>
+		<script type="text/javascript" src="<?php echo base_url();?>assets/theme/light/js/summernote/summernote.js" ></script>
+		<!-- <script type="text/javascript" src="<?php echo base_url();?>assets/js/App.js" ></script> -->
 
 		<?php echo $this->template->javascript; ?>
 		<script>

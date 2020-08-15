@@ -42,7 +42,7 @@ class AdminDashboard extends MY_Controller {
 
 				if($result){
 					$this->session->set_flashdata('succ','<strong>Welcome</strong>. You have successfully logged in.');
-					redirect('admin-dashboard');
+					redirect(admin_url('dashboard'));
 				}else{
 					$this->session->set_flashdata('err','Failed to Login.');
 					redirect('admin');

@@ -88,6 +88,7 @@ if ( ! function_exists('base_url'))
 	}
 }
 
+
 // ------------------------------------------------------------------------
 
 if ( ! function_exists('current_url'))

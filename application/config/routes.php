@@ -50,9 +50,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 |		my-controller/my-method	-> my_controller/my_method
 */
 // $route['default_controller'] = 'welcome';
-$route['default_controller'] 	= 'app/AppController';
-$route['register'] 				= 'app/RegisterController';
-$route['login'] 				= 'app/LoginController';
+$route['default_controller'] 	= 'app';
+$route['register'] 				= 'register';
+$route['login'] 				= 'login';
 
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
@@ -255,5 +255,9 @@ $route['delete-business-user/(:any)'] = 'business/delete_business_user/$1';
 
 
 
+
+
+//$route['admin/users'] = 'users';
+//$route['admin/users/onLoadDatatableEventHandler'] = 'users/onLoadDatatableEventHandler';
 
 

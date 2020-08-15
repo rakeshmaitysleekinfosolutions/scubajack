@@ -7,6 +7,7 @@
   <!-- Bootstrap CSS -->
   <!-- font-awesome Css -->
   <link rel="stylesheet" href="<?php echo base_url();?>assets/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.1/css/all.min.css" rel="stylesheet" />
   <link href="<?php echo base_url();?>assets/css/all.min.css" rel="stylesheet" />
   <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/css/bootstrap.css">
   <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/css/style.css">
@@ -17,10 +18,10 @@
 </head>
 
 <body>
-  <header class="sticky">
+  <header class="menu-area sticky">
     <div class="container">
       <nav class="navbar navbar-expand-lg ">
-        <a class="navbar-brand" href="index.html"> <img src="<?php echo base_url();?>assets/images/scuba-logo.png"> </a>
+        <a class="navbar-brand" href="<?php echo base_url();?>"> <img src="<?php echo base_url();?>assets/images/scuba-logo.png"> </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto">
@@ -32,9 +33,15 @@
             <li class="nav-item"> <a class="nav-link " href="#">Contact us</a> </li>
           </ul>
           <form class="form-inline searchs "> <i class="fas fa-search"></i> </form>
-          <a href="log-in.html">
-            <button class="btn my-account" type="submit"><i class="fas fa-user"></i>My account</button>
-          </a>
+          <?php if(isLogged()) {?> 
+            <a href="<?php echo base_url('myaccount');?>">
+              <button class="btn my-account" type="submit"><i class="fas fa-user"></i>My Account</button>
+            </a>
+          <?php } else { ?>
+            <a href="<?php echo base_url('login');?>">
+              <button class="btn my-account" type="submit"><i class="fas fa-user"></i>My Account</button>
+            </a>
+          <?php } ?>
         </div>
       </nav>
     </div>
