@@ -22,7 +22,7 @@ header.sticky {
     position: fixed;
     width: 100%;
     transition: all ease-in 0.8s;
-    box-shadow: 1px 3px 20px rgb(0 0 0 / 47%);
+    box-shadow: 1px 3px 10px rgb(0 0 0 / 22%);
     background: #fff;
     z-index: 99;
     top: 0;

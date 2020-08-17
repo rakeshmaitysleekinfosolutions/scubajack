@@ -121,4 +121,20 @@ if(!defined('BASEPATH')) EXIT("No direct script access allowed");
             return ($ci->session->userdata('user_id')) && (int) $ci->session->userdata('user_id') > 0 ? (int) $ci->session->userdata('user_id') : false;
         }
     }
+    if ( ! function_exists('url')) {
+	/**
+	 * Site URL
+	 *
+	 * Create a local URL based on your basepath. Segments can be passed via the
+	 * first parameter either as a string or an array.
+	 *
+	 * @param	string	$uri
+	 * @param	string	$protocol
+	 * @return	string
+	 */
+	function url($uri = '', $protocol = NULL) {
+		//getLocale(getLocaleId()).'/'.
+		return get_instance()->config->site_url($uri, $protocol);
+	}
+}
 ?>

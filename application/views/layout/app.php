@@ -34,7 +34,7 @@
           </ul>
           <form class="form-inline searchs "> <i class="fas fa-search"></i> </form>
           <?php if(isLogged()) {?> 
-            <a href="<?php echo base_url('myaccount');?>">
+            <a href="<?php echo base_url('account');?>">
               <button class="btn my-account" type="submit"><i class="fas fa-user"></i>My Account</button>
             </a>
           <?php } else { ?>

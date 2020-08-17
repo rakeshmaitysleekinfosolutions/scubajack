@@ -9,34 +9,37 @@
                   <div class="logo"> <img src="<?php echo base_url('assets/images/scuba-logo.png');?>"> </div>
                </div>
             </div>
-            <div class="col-md-4 pl-0">
-               <div class="right-sides">
+            <div class="col-md-4 pl-0" id="my-container">
+               <div class="right-sides signup-form">
                   <h3>Register with us</h3>
-                  <!-- <p>New to Scubajack? Sign Up</p> -->
-                  <form>
+                  <p>Already have a SCUBA JACK Account? <a href="<?php echo base_url('login');?>">Sign In</a></p>
+                  <form id="frmSignUp" action="<?php echo base_url('register');?>" method="post">
+                     <input type="hidden" name="<?php echo __token();?>" value="<?php echo csrf_token();?>">
                      <div class="row">
                         <div class="col form-group">
                            <label for="exampleInputEmail1">First Name</label>
-                           <input type="text" class="form-control" placeholder="First name">
+                           <input name="firstname" id="input-payment-firstname" type="text" class="form-control"  autocomplete="off" required>
                         </div>
                         <div class="col form-group">
                            <label for="exampleInputEmail1">Last Name</label>
-                           <input type="text" class="form-control" placeholder="Last name">
+                           <input name="lastname" id="input-payment-lastname" type="text" class="form-control" autocomplete="off" required>
                         </div>
                      </div>
-                     <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-                        <!--  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> --></div>
-                     <div class="form-group">
-                        <label for="exampleInputPassword1">Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"> </div>
+                        <div class="form-group">
+                           <label for="exampleInputEmail1">Email address</label>
+                           <input name="email" id="input-payment-email" type="text" class="form-control" autocomplete="off" required>
+                           <!--  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> --></div>
+                        <div class="form-group">
+                           <label for="exampleInputPassword1">Password</label>
+                           <input name="password" id="input-payment-password" type="password" class="form-control" placeholder="*******" autocomplete="off" required>
+                        </div> 
+                     
                         <div class="form-group">
                         <label for="exampleInputPassword1">Confirm Password</label>
-                        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"> </div>
+                        <input name="confirm" id="input-payment-confirm" type="password" class="form-control" placeholder="*******" autocomplete="off" required>
                      <div class="form-check pt-4">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">Remember me</label>
+                        <input type="checkbox" class="form-check-input" id="exampleCheck1" name="agree" value="1" required>
+                        <label class="form-check-label" for="exampleCheck1">I Agree</label>
                      </div>
                      
                      <button type="submit" class="btn submit">Sign Up</button>
@@ -47,3 +50,7 @@
       </div>
    </div>
 </section>
+<script>
+   var myLabel = myLabel || {};
+	myLabel.baseUrl = '<?php echo base_url();?>';
+</script>

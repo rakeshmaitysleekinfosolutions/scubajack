@@ -7,7 +7,7 @@ class User {
 	private $id_customer_group;
 	private $email;
 	private $telephone;
-	private $id_address;
+	private $address_id;
 	private	$createdAt;
 	private $ci;
 
@@ -22,10 +22,8 @@ class User {
 				$this->id                   = $customer_query->row_array()['id'];
 				$this->firstname            = $customer_query->row_array()['firstname'];
 				$this->lastname             = $customer_query->row_array()['lastname'];
-				$this->id_customer_group    = $customer_query->row_array()['id_customer_group'];
 				$this->email                = $customer_query->row_array()['email'];
-				$this->telephone            = $customer_query->row_array()['telephone'];
-				$this->id_address           = $customer_query->row_array()['id_address'];
+				$this->address_id           = $customer_query->row_array()['address_id'];
 				$this->createdAt            = $customer_query->row_array()['created_at'];
 				
 				$this->ci->db->query("UPDATE users SET ip = '" . $this->ci->db->escape_str($this->ci->input->server('REMOTE_ADDR')) . "' WHERE id = '" . (int)$this->id . "'");
@@ -45,7 +43,7 @@ class User {
 		if ($override) {
 			$customer_query = $this->ci->db->query("SELECT * FROM users WHERE LOWER(email) = '" . $this->ci->db->escape_str(strtolower($email)) . "' AND status = '1'");
 		} else {
-			$customer_query = $this->ci->db->query("SELECT * FROM users WHERE LOWER(email) = '" . $this->ci->db->escape_str(strtolower($email)) . "' AND (password = SHA1(CONCAT(salt, SHA1(CONCAT(salt, SHA1('" . $this->ci->db->escape_str($password) . "'))))) OR password = '" . $this->ci->db->escape_str(md5($password)) . "') AND status = '1' AND approved = '1'");
+			$customer_query = $this->ci->db->query("SELECT * FROM users WHERE LOWER(email) = '" . $this->ci->db->escape_str(strtolower($email)) . "' AND (password = SHA1(CONCAT(salt, SHA1(CONCAT(salt, SHA1('" . $this->ci->db->escape_str($password) . "'))))) OR password = '" . $this->ci->db->escape_str(md5($password)) . "') AND status = '1'");
 		}
 
 		if ($customer_query->num_rows()) {
@@ -58,11 +56,9 @@ class User {
 			$this->lastname             = $customer_query->row_array()['lastname'];
 			
 			$this->email                = $customer_query->row_array()['email'];
-			$this->telephone            = $customer_query->row_array()['telephone'];
-			$this->newsletter           = $customer_query->row_array()['newsletter'];
-			$this->id_address           = $customer_query->row_array()['id_address'];
+			$this->address_id           = $customer_query->row_array()['address_id'];
 
-			$this->ci->db->query("UPDATE users SET ip = '" . $this->ci->db->escape_str($this->request->server['REMOTE_ADDR']) . "' WHERE id = '" . (int)$this->id . "'");
+			$this->ci->db->query("UPDATE users SET ip = '" . $this->ci->db->escape_str($this->ci->input->server('REMOTE_ADDR')) . "' WHERE id = '" . (int)$this->id . "'");
 			return true;
 		} else {
 			return false;
@@ -73,12 +69,8 @@ class User {
 		$this->id                   = '';
 		$this->firstname            = '';
 		$this->lastname             = '';
-		$this->id_customer_group    = '';
 		$this->email                = '';
-		$this->telephone            = '';
-		$this->fax                  = '';
-		$this->newsletter           = '';
-		$this->id_address           = '';
+		$this->address_id           = '';
 		$this->ci->session->unset_userdata('user');
 		$this->ci->session->unset_userdata('is_logged');
 		$this->ci->session->unset_userdata('user_id');
@@ -106,7 +98,7 @@ class User {
 		return $this->createdAt;
 	}
 	public function getAddressId() {
-		return $this->id_address;
+		return $this->address_id;
 	}
 
 	
