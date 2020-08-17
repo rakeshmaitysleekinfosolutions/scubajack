@@ -44,7 +44,7 @@ form.form-inline.search i {
 button.btn.my-account {
     background: #137fea;
     color: #fff;
-    width: 125px;
+   
     height: 36px;
 }
 
@@ -54,7 +54,7 @@ form.form-inline.searchs i {
     font-size: 16px;
 }
 button.btn.my-account i {
-    padding: 4px;
+    padding: 5px;
     font-size: 12px;
 }
 
@@ -540,13 +540,13 @@ font-family: 'Poppins', sans-serif;
 }
 .formbox {
     background: #f0f8ff12;
-    box-shadow: 1px 2px 5px 2px #0000004a;
+    /* box-shadow: 1px 2px 5px 2px #0000004a; */
     /* border: 1px solid #137fea; */
     padding: 12px 0px;
 }
 .left {
     background: url(../images/form-bg.png);
-    background-size: cover;
+    /* background-size: cover; */
         height: 500px;
     /*border:1px solid #000;*/
     padding: 20px 25px;
@@ -613,8 +613,20 @@ button.btn.submit {
     border-radius: 0;
     font-size: 15px;
     margin-top: 20px;
-     font-family: 'Poppins', sans-serif;
+    float:right;
+    font-family: 'Poppins', sans-serif;
    
+}
+a.btn.submit {
+    color: #fff;
+    font-size: 14px;
+    float: left;
+    background: #137fea;
+    color: #fff;
+    padding: 10px 36px;
+    border-radius: 0;
+    font-size: 15px;
+    margin-top: 20px;
 }
 .form-group label {
    font-size: 14px;
