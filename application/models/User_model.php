@@ -176,7 +176,7 @@ class User_model extends BaseModel {
 	}
 
 	public function getUserByCode($code) {
-		$query = $this->db->query("SELECT user_id, firstname, lastname, email FROM `users` WHERE code = '" . $this->db->escape_str($code) . "' AND code != ''");
+		$query = $this->db->query("SELECT id, firstname, lastname, email FROM `users` WHERE code = '" . $this->db->escape_str($code) . "' AND code != ''");
 
 		return $query->row_array();
 	}

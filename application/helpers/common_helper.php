@@ -110,6 +110,19 @@ if(!defined('BASEPATH')) EXIT("No direct script access allowed");
            return $CI->security->get_csrf_hash();
         }
     }
+    if ( ! function_exists('token')) { 
+        function token($length = 32) {
+            // Create random token
+            $string = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            $max = strlen($string) - 1;
+            $token = '';
+            for ($i = 0; $i < $length; $i++) {
+                $token .= $string[mt_rand(0, $max)];
+            }	
+            return $token;
+        }
+    }
+    
     if ( ! function_exists('admin_url')) {
         function admin_url($uri = '', $protocol = NULL) {
             return get_instance()->config->base_url('admin/'.$uri, $protocol);
