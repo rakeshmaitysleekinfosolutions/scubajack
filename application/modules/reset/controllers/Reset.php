@@ -6,8 +6,9 @@ class Reset extends AppController {
 	{
         parent::__construct();
         $this->load->model('User_model', 'model_user');
-		$this->load->model('UserActivity_model', 'model_user_activity');
-		$this->lang->load('app/forgotten_lang');
+        $this->load->model('UserActivity_model', 'model_user_activity');
+        $this->lang->load('app/emails/reset_lang');
+		$this->lang->load('app/reset_lang');
     }
     public function index() {
         if ($this->user->isLogged()) {
@@ -45,6 +46,28 @@ class Reset extends AppController {
                         // );
                         // $this->customer_account_activity->addActivity('reset_password', $activity_data);
                         
+                        $subject 						= sprintf($this->lang->line('text_subject'), $userInfo['firstname']);
+
+                        $this->data['text_welcome'] 	= sprintf($this->lang->line('text_subject'), $userInfo['firstname']);
+                        $this->data['text_message']     = sprintf($this->lang->line('text_message'), $this->request['password']);
+                        $this->data['text_service'] 	= $this->lang->line('text_service');
+                        $this->data['text_thanks'] 		= $this->lang->line('text_thanks');
+
+                        $mail 							= new Mail($this->config->item('config_mail_engine'));
+                        $mail->parameter 				= $this->config->item('config_mail_parameter');
+                        $mail->smtp_hostname 			= $this->config->item('config_mail_smtp_hostname');
+                        $mail->smtp_username 			= $this->config->item('config_mail_smtp_username');
+                        $mail->smtp_password 			= html_entity_decode($this->config->item('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
+                        $mail->smtp_port 				= $this->config->item('config_mail_smtp_port');
+                        $mail->smtp_timeout 			= $this->config->item('config_mail_smtp_timeout');
+                
+                        $mail->setTo($userInfo['email']);
+                        $mail->setFrom($this->config->item('config_email'));
+                        $mail->setSender($this->config->item('config_sender_name'));
+                        $mail->setSubject($subject);
+                        $mail->setText($this->template->content->view('emails/reset', $this->data));
+                        $mail->send(); 
+                
                         $this->session->userdata('success',$this->lang->line('text_success'));
                         $this->json['success']      = $this->lang->line('text_success');
                         $this->json['redirect']     = url('login');

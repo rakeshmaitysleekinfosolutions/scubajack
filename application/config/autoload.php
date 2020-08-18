@@ -104,7 +104,7 @@ $autoload['helper'] = array('url','common');
 | config files.  Otherwise, leave it blank.
 |
 */
-$autoload['config'] = array();
+$autoload['config'] = array('mail');
 
 /*
 | -------------------------------------------------------------------

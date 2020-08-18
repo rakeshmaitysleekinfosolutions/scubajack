@@ -31,7 +31,7 @@
                         <a href="<?php echo url('forgotten');?>" class="forgoat-password-link">Forgot Password?</a>
                      </div>
                      
-                     <button type="submit" class="btn submit">Log In</button>
+                     <button type="submit" class="btn submits" id="logInButton" data-loading-text="Loading...">Log In</button>
                   </form>
                </div>
             </div>
@@ -39,3 +39,4 @@
       </div>
    </div>
 </section>
+

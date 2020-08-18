@@ -74,11 +74,23 @@ class TraitAutoloader {
         return FALSE;
     }
 }
+// class MailAutoloader {
+//     static public function loader($className) {
+//         $filename = APPPATH . "mail/" . str_replace("\\", '/', $className) . ".php";
+//         if (file_exists($filename)) {
+//             include($filename);
+//             if (class_exists($className)) {
+//                 return TRUE;
+//             }
+//         }
+//         return FALSE;
+//     }
+// }
 spl_autoload_register('ControllerAutoloader::loader');
 spl_autoload_register('LibraryAutoloader::loader');
 spl_autoload_register('ModelAutoloader::loader');
 spl_autoload_register('ConfigAutoloader::loader');
 spl_autoload_register('HelperAutoloader::loader');
 spl_autoload_register('TraitAutoloader::loader');
-
+//spl_autoload_register('MailAutoloader::loader');
 require_once FCPATH.'/vendor/autoload.php';

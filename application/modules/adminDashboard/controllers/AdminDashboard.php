@@ -14,7 +14,7 @@ class AdminDashboard extends MY_Controller {
 			$this->load->view('adminDashboard/login');
 
 		}else{
-			redirect('admin-dashboard');
+			redirect(admin_url('dashboard'));
 		}
 	}
 

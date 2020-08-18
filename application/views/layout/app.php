@@ -82,7 +82,7 @@
   <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquiry.js"></script>
   <script type="text/javascript" src="<?php echo base_url();?>assets/js/popper.min.js"></script>
   <script src="<?php echo base_url();?>assets/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-  <script type="text/javascript" src="js/bootstrap.js"></script>
+  <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.js"></script>
   <?php echo $this->template->javascript; ?>
 </body>
 

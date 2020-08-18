@@ -2,7 +2,8 @@
     "use strict";
     var $frmSignUp = $("#frmSignUp"),
         validate = ($.fn.validate !== undefined);
-
+        var $btn = $("#registerButton");
+       
 		if ($frmSignUp.length > 0 && validate) {
             $frmSignUp.validate({
                 rules:{
@@ -44,6 +45,9 @@
                         url: $(form).attr('action'),
                         dataType: "json",
                         data: $(form).serialize(),
+                        beforeSend: function(){
+                            $btn.button('loading');
+                        },
                         success: function (json) {
                            
                             if (json['error']) {
@@ -69,7 +73,7 @@
                             }
                             if (json['success']) {
                                 $('#my-container > .signup-form').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i>  ' + json['success'] + '</div>');
-                                //document.getElementById("frmSignUp").reset();
+                                $btn.button('reset');
                                 setTimeout(function() {
                                     location.href = json['redirect'];
                                 },1000);

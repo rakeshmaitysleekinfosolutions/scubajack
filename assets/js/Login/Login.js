@@ -1,6 +1,8 @@
 !function ($) {
     "use strict";
     var $frmSignIn = $("#frmSignIn"),validate = ($.fn.validate !== undefined);
+    var $btn = $("#logInButton");
+    console.log($btn);
 		if ($frmSignIn.length > 0 && validate) {
             $frmSignIn.validate({
                 rules:{
@@ -19,6 +21,9 @@
                         url: $(form).attr('action'),
                         dataType: "json",
                         data: $(form).serialize(),
+                        beforeSend: function(){
+                            $btn.button('loading');
+                        },
                         success: function (json) {
                                 
                                 if (json['error']) {
@@ -28,7 +33,7 @@
                                 }
                                 if (json['success']) {
                                     $('#my-container > .signin-form').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i>  ' + json['success'] + '</div>');
-                                    //document.getElementById("frmSignIn").reset();
+                                    $btn.button('reset');
                                     setTimeout(function() {
                                         location.href = json['redirect'];
                                     },1000);

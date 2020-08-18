@@ -2,6 +2,7 @@
     "use strict";
     var $frmReset = $("#frmReset"),
         validate = ($.fn.validate !== undefined);
+        var $btn = $("#resetButton");
 		if ($frmReset.length > 0 && validate) {
             $frmReset.validate({
                 rules:{
@@ -23,6 +24,9 @@
                         url: $(form).attr('action'),
                         dataType: "json",
                         data: $(form).serialize(),
+                        beforeSend: function(){
+                            $btn.button('loading');
+                        },
                         success: function (json) {
                                 $('.alert, .text-danger').remove();
                                 if (json['error']) {
@@ -33,7 +37,7 @@
                                 }
                                 if (json['success']) {
                                     $('#my-container > .reset-form').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i>  ' + json['success'] + '</div>');
-                                    //document.getElementById("frmReset").reset();
+                                    $btn.button('reset');
                                     setTimeout(function() {
                                         location.href = json['redirect'];
                                     },1000);

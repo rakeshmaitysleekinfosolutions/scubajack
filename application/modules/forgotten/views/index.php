@@ -20,7 +20,7 @@
                         <input name="email" id="email" type="email" class="form-control" required>
                         <!--  <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small> --></div>
                      <a class="btn submit" href="<?php echo url('login');?>">Back to Sign In</a>
-                     <button type="submit" class="btn submit">Next</button>
+                     <button type="submit" class="btn submit" id="forgottenButton" data-loading-text="Loading...">Next</button>
                   </form>
                </div>
             </div>

@@ -7,7 +7,9 @@ class Register extends AppController {
         parent::__construct();
         $this->load->model('User_model', 'model_user');
 		$this->load->model('UserActivity_model', 'model_user_activity');
+		$this->lang->load('app/emails/register_lang');
 		$this->lang->load('app/register_lang');
+		//$this->load->config('mail');
     }
     public function index() {
 
@@ -51,7 +53,7 @@ class Register extends AppController {
 			
             if (!$this->json) {
 				// Add new user
-				$useId = $this->model_user->addUser($this->input->post());
+				$useId = $this->model_user->addUser($this->request);
 				
 				if($useId) {
 					// Get User
@@ -67,9 +69,37 @@ class Register extends AppController {
 				// 			'name'        => $this->request['firstname'] . ' ' . $this->request['lastname']
 				// 		);
 				// $this->model_user_activity->addActivity('register', $activity_data);
-				
-				$this->json['success']            = $this->lang->line('text_success');
-				$this->json['redirect'] = url('');
+
+
+				// Sent mail to user
+				$subject 						= sprintf($this->lang->line('text_subject'), "SCUBA JACK");
+
+				$this->data['text_welcome'] 	= sprintf($this->lang->line('text_welcome'), "SCUBA JACK");
+
+				$this->data['text_email'] 		= sprintf($this->lang->line('text_email'), $this->request['email']);
+				$this->data['text_password'] 	= sprintf($this->lang->line('text_password'), $this->request['password']);
+
+				$this->data['text_app_name'] 	= "SCUBA JACK";
+				$this->data['text_service'] 	= $this->lang->line('text_service');
+				$this->data['text_thanks'] 		= $this->lang->line('text_thanks');
+
+				$mail 							= new Mail($this->config->item('config_mail_engine'));
+				$mail->parameter 				= $this->config->item('config_mail_parameter');
+				$mail->smtp_hostname 			= $this->config->item('config_mail_smtp_hostname');
+				$mail->smtp_username 			= $this->config->item('config_mail_smtp_username');
+				$mail->smtp_password 			= html_entity_decode($this->config->item('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
+				$mail->smtp_port 				= $this->config->item('config_mail_smtp_port');
+				$mail->smtp_timeout 			= $this->config->item('config_mail_smtp_timeout');
+		
+				$mail->setTo($userInfo['email']);
+				$mail->setFrom($this->config->item('config_email'));
+				$mail->setSender($this->config->item('config_sender_name'));
+				$mail->setSubject($subject);
+				$mail->setText($this->template->content->view('emails/registration', $this->data));
+				$mail->send(); 
+
+				$this->json['success']          = $this->lang->line('text_success');
+				$this->json['redirect'] 		= url('/');
             } 
             return $this->output
                         ->set_content_type('application/json')
@@ -80,7 +110,7 @@ class Register extends AppController {
 
 		$this->template->javascript->add('assets/js/jquery.validate.js'); 
         $this->template->javascript->add('assets/js/additional-methods.js');
-        $this->template->javascript->add('assets/js/register/register.js');
+        $this->template->javascript->add('assets/js/register/Register.js');
 		$this->template->set_template('layout/app');
         $this->template->content->view('register/index', $this->data);
         $this->template->publish();

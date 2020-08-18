@@ -9,7 +9,7 @@ class Dashboard extends AdminController {
 
     public function index() {
         $this->template->set_template('layout/admin');
-		$this->template->content->view('dashboard/index');
-		$this->template->publish();
+        $this->template->content->view('dashboard/index');
+        $this->template->publish();
     }
 }

@@ -2,6 +2,7 @@
     "use strict";
     var $frmForgotten = $("#frmForgotten"),
         validate = ($.fn.validate !== undefined);
+        var $btn = $("#forgottenButton");
 		if ($frmForgotten.length > 0 && validate) {
             $frmForgotten.validate({
                 rules:{
@@ -25,6 +26,9 @@
                         url: myLabel.forgotten,
                         dataType: "json",
                         data: $(form).serialize(),
+                        beforeSend: function(){
+                            $btn.button('loading');
+                        },
                         success: function (json) {
                                
                                 if (json['error']) {
@@ -35,7 +39,7 @@
                                 }
                                 if (json['success']) {
                                     $('#my-container > .fogotten-form').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i>  ' + json['success'] + '</div>');
-                                    //document.getElementById("frmForgotten").reset();
+                                    $btn.button('reset');
                                     setTimeout(function() {
                                         location.href = json['redirect'];
                                     },1000);

@@ -35,6 +35,10 @@ class ComposerStaticInit6d412981c3d126d27b00e82b7caba88f
         array (
             'Prophecy\\' => 9,
         ),
+        'M' => 
+        array (
+            'Mail\\' => 5,
+        ),
         'D' => 
         array (
             'Doctrine\\Instantiator\\' => 22,
@@ -84,6 +88,10 @@ class ComposerStaticInit6d412981c3d126d27b00e82b7caba88f
         'Prophecy\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpspec/prophecy/src/Prophecy',
+        ),
+        'Mail\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/application/mail',
         ),
         'Doctrine\\Instantiator\\' => 
         array (

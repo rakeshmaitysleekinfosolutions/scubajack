@@ -49,10 +49,10 @@ class Login extends AppController {
                         ->set_status_header(200)
                         ->set_output(json_encode($this->json));
 		}
-		
+		//$this->template->stylesheet->add('assets/css/preloader.css');
 		$this->template->javascript->add('assets/js/jquery.validate.js'); 
         $this->template->javascript->add('assets/js/additional-methods.js');
-		$this->template->javascript->add('assets/js/login/login.js');
+		$this->template->javascript->add('assets/js/login/Login.js');
 		
 		$this->template->set_template('layout/app');
 		$this->template->content->view('login/index');

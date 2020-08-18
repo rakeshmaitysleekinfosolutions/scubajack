@@ -23,7 +23,7 @@
                         <label for="exampleInputPassword1">Confirm Password</label>
                         <input name="confirm" id="confirm" type="password" class="form-control" autocomplete="off" required>
                      </div>
-                     <button type="submit" class="btn submit">Reset Password</button>
+                     <button type="submit" class="btn submit" id="resetButton" data-loading-text="Loading...">Reset Password</button>
                   </form>
                </div>
             </div>
