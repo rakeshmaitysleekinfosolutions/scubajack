@@ -60,12 +60,14 @@ class Reset extends AppController {
                         $mail->smtp_password 			= html_entity_decode($this->config->item('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
                         $mail->smtp_port 				= $this->config->item('config_mail_smtp_port');
                         $mail->smtp_timeout 			= $this->config->item('config_mail_smtp_timeout');
-                
+                        //$mail->SMTPSecure               = "tls"; 
                         $mail->setTo($userInfo['email']);
                         $mail->setFrom($this->config->item('config_email'));
                         $mail->setSender($this->config->item('config_sender_name'));
                         $mail->setSubject($subject);
                         $mail->setText($this->template->content->view('emails/reset', $this->data));
+                        //$mail->setHtml(true);
+                        
                         $mail->send(); 
                 
                         $this->session->userdata('success',$this->lang->line('text_success'));

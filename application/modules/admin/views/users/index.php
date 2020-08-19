@@ -71,5 +71,6 @@
     var myLabel = myLabel || {};
     myLabel.baseUrl = '<?php echo base_url();?>';
     myLabel.users   = '<?php echo admin_url('users/onLoadDatatableEventHandler');?>';
+    myLabel.states  = '<?php echo admin_url('users/states');?>';
     myLabel.edit    = '<?php echo admin_url('users/edit/');?>';
 </script>

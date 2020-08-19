@@ -60,8 +60,8 @@ class User_model extends BaseModel {
 	 * @param $data Array()
 	 */
     public function addUser($data) {
-		
-		$salt = csrf_token();
+
+		$salt = token(9);
 		$this->db->query("INSERT INTO users SET firstname = '" . $this->db->escape_str($data['firstname']) . "', lastname = '" . $this->db->escape_str($data['lastname']) . "', email = '" . $this->db->escape_str($data['email']) . "', salt = '" . $this->db->escape_str($salt) . "', password = '" . $this->db->escape_str(sha1($salt . sha1($salt . sha1($data['password'])))) . "', ip = '" . $this->db->escape_str($this->input->server('REMOTE_ADDR')) . "', status = 1");
 
 		$user_id = $this->db->insert_id();
@@ -145,14 +145,25 @@ class User_model extends BaseModel {
 		return $user_id;
 	}
 
-	public function editUser($data) {
-		$user_id = $this->User->getId();
-
-		$this->db->query("UPDATE users SET firstname = '" . $this->db->escape_str($data['firstname']) . "', lastname = '" . $this->db->escape_str($data['lastname']) . "', email = '" . $this->db->escape_str($data['email']) . "', telephone = '" . $this->db->escape_str($data['telephone']) . "' WHERE id = '" . (int)$user_id . "'");
+	public function editUser($id, $data) {
+		$this->db->query("UPDATE users SET firstname = '" . $this->db->escape_str($data['firstname']) . "', lastname = '" . $this->db->escape_str($data['lastname']) . "', email = '" . $this->db->escape_str($data['email']) . "', phone = '" . $this->db->escape_str($data['phone']) . "' , status = '" . $this->db->escape_str($data['status']) . "' WHERE id = '" . (int)$id . "'");
+        if ($data['password']) {
+            $salt = token(9);
+            $this->db->query("UPDATE `users` SET salt = '" . $this->db->escape_str($salt) . "', password = '" . $this->db->escape_str(sha1($salt . sha1($salt . sha1($data['password'])))) . "' WHERE id = '" . (int)$id . "'");
+        }
+        $this->db->query("DELETE FROM users_address WHERE user_id = '" . (int)$id . "'");
+        if (isset($data['address'])) {
+            foreach ($data['address'] as $address) {
+                //dd($address);
+                $this->db->query("INSERT INTO users_address SET user_id = '" . (int)$id . "', firstname = '" . $this->db->escape_str($data['firstname']) . "', lastname = '" . $this->db->escape_str($data['lastname']) . "', address_1 = '" . $this->db->escape_str($address['address_1']) . "', address_2 = '" . $this->db->escape_str($address['address_2']) . "', city = '" . $this->db->escape_str($address['city']) . "', postcode = '" . $this->db->escape_str($address['postcode']) . "', country_id = '" . (int)$address['country_id'] . "', state_id = '" . (int)$address['state_id'] . "'");
+               // $address_id = $this->db->insert_id();
+               // $this->db->query("UPDATE users SET address_id = '" . (int)$address_id . "' WHERE id = '" . (int)$id . "'");
+            }
+        }
 	}
 
 	public function editPassword($email, $password) {
-		$this->db->query("UPDATE users SET salt = '" . $this->db->escape_str($salt = csrf_token()) . "', password = '" . $this->db->escape_str(sha1($salt . sha1($salt . sha1($password)))) . "', code = '' WHERE LOWER(email) = '" . $this->db->escape_str(strtolower($email)) . "'");
+		$this->db->query("UPDATE users SET salt = '" . $this->db->escape_str($salt = token(9)) . "', password = '" . $this->db->escape_str(sha1($salt . sha1($salt . sha1($password)))) . "', code = '' WHERE LOWER(email) = '" . $this->db->escape_str(strtolower($email)) . "'");
 	}
 
 	public function editCode($email, $code) {
@@ -168,6 +179,9 @@ class User_model extends BaseModel {
 
 		return $query->row_array();
 	}
+	public function getUserById($id) {
+
+    }
 
 	public function getUserByEmail($email) {
 		$query = $this->db->query("SELECT * FROM users WHERE LOWER(email) = '" . $this->db->escape_str(strtolower($email)) . "'");
@@ -227,6 +241,27 @@ class User_model extends BaseModel {
 		$this->db->query("DELETE FROM `users_login` WHERE email = '" . $this->db->escape_str(strtolower($email)) . "'");
 	}
 
+	public function user($id) {
+        return User_model::factory()->findOne($id);
+    }
+
+	public function address() {
+        return $this->hasMany('UserAddress_model', 'user_id', 'id')->get()->row_object();
+    }
+
+//    public function getAddress() {
+//        return $this->address()->result_array();
+//    }
+//    public function toArray($relationNames =[]){
+//        $data = parent::toArray();
+//        foreach ($relationNames as $relationName){
+//            try{
+//                $data[$relationName] =  $this->$relationName;
+//            }catch(\Exception $e){}
+//        }
+//        dd($data);
+//        return $data;
+//    }
 	
 
 	

@@ -3,14 +3,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Users extends AdminController {
 
-	public function __constructor() {
+    private $address;
+    private $user;
+    private $userId;
+    private $country;
+
+    public function __constructor() {
 		parent::__construct();
-		
-		
+        //$this->load->model('User_model');
 	}	
+
+	public function setUser($user) {
+		$this->user = $user;
+		return $this;
+	}
+
+	public function setUserId($userId) {
+		$this->userId = $userId;
+		return $this;
+	}
+
+    public function setAddress($address) {
+        $this->address = $address;
+        return $this;
+    }
+
 	public function onLoadDatatableEventHandler() {
-		$this->load->model('User_model', 'model_user');
-		$this->results = $this->model_user->findAll();
+		$this->load->model('User_model', 'User_model');
+		$this->results = $this->User_model->findAll();
 		if($this->results) {
 			foreach($this->results as $result) {
 				$this->rows[] = array(
@@ -69,14 +89,15 @@ class Users extends AdminController {
                     ->set_output(json_encode(array('data' => [])));
 		}
 	}
+
 	public function onChangeStatusEventHandler() {
 		if($this->isAjaxRequest()) {
 			$this->setRequest($this->input->post());
 			
 		}
 	}
-	public function index()
-	{
+
+	public function index() {
 	
 		//$this->beforeRender();
 
@@ -84,8 +105,8 @@ class Users extends AdminController {
 		$this->template->stylesheet->add('assets/theme/light/js/datatables/dataTables.bootstrap4.css');
         $this->template->javascript->add('assets/theme/light/js/datatables/jquery.dataTables.min.js');
 		$this->template->javascript->add('assets/theme/light/js/datatables/dataTables.bootstrap4.min.js');
-		
-		$this->template->javascript->add('assets/js/Users.js');
+
+        $this->template->javascript->add('assets/js/admin/users/Users.js');
 		$this->template->content->view('users/index');
 		$this->template->publish();
 	}
@@ -94,7 +115,187 @@ class Users extends AdminController {
 		$this->template->set_template('layout/admin');
 		$this->template->content->view('users/create');
 		$this->template->publish();
+		
 	}
+
+    public function form() {
+
+        // Any kind of Warning
+        if (isset($this->error['warning'])) {
+            $this->data['error_warning'] = $this->error['warning'];
+        } else {
+            $this->data['error_warning'] = '';
+        }
+        /**
+         * @desc Errors
+         */
+        if (isset($this->error['email'])) {
+            $this->data['error_email'] = $this->error['email'];
+        } else {
+            $this->data['error_email'] = '';
+        }
+
+        if (isset($this->error['password'])) {
+            $this->data['error_password'] = $this->error['password'];
+        } else {
+            $this->data['error_password'] = '';
+        }
+
+        if (isset($this->error['confirm'])) {
+            $this->data['error_confirm'] = $this->error['confirm'];
+        } else {
+            $this->data['error_confirm'] = '';
+        }
+
+        if (isset($this->error['firstname'])) {
+            $this->data['error_firstname'] = $this->error['firstname'];
+        } else {
+            $this->data['error_firstname'] = '';
+        }
+
+        if (isset($this->error['lastname'])) {
+            $this->data['error_lastname'] = $this->error['lastname'];
+        } else {
+            $this->data['error_lastname'] = '';
+        }
+
+        if (isset($this->error['email'])) {
+            $this->data['error_email'] = $this->error['email'];
+        } else {
+            $this->data['error_email'] = '';
+        }
+
+        if (isset($this->error['status'])) {
+            $this->data['error_status'] = $this->error['status'];
+        } else {
+            $this->data['error_status'] = '';
+        }
+
+        /**
+         * Get Data
+         */
+        // User ID
+        if (!empty($this->input->post('id'))) {
+            $this->data['id'] = $this->input->post('id');
+        } elseif (!empty($this->user)) {
+            $this->data['id'] = $this->user->id;
+        } else {
+            $this->data['id'] = '';
+        }
+        // First Name
+        if (!empty($this->input->post('firstname'))) {
+            $this->data['firstname'] = $this->input->post('firstname');
+        } elseif (!empty($this->user)) {
+            $this->data['firstname'] = $this->user->firstname;
+        } else {
+            $this->data['firstname'] = '';
+        }
+
+        // Last Name
+        if (!empty($this->input->post('lastname'))) {
+            $this->data['lastname'] = $this->input->post('lastname');
+        } elseif (!empty($this->user)) {
+            $this->data['lastname'] = $this->user->lastname;
+        } else {
+            $this->data['lastname'] = '';
+        }
+        // Email
+        if (!empty($this->input->post('email'))) {
+            $this->data['email'] = $this->input->post('email');
+        } elseif (!empty($this->user)) {
+            $this->data['email'] = $this->user->email;
+        } else {
+            $this->data['email'] = '';
+        }
+        // Password
+        if (!empty($this->input->post('password'))) {
+            $this->data['password'] = $this->input->post('password');
+        } else {
+            $this->data['password'] = '';
+        }
+        // Confirm Password
+        if (!empty($this->input->post('confirm'))) {
+            $this->data['confirm'] = $this->input->post('confirm');
+        } else {
+            $this->data['confirm'] = '';
+        }
+        // Status
+        if (!empty($this->input->post('status'))) {
+            $this->data['status'] = $this->input->post('status');
+        } elseif (!empty($this->user)) {
+            $this->data['status'] = $this->user->status;
+        } else {
+            $this->data['status'] = 0;
+        }
+        // Address ID
+        if (!empty($this->input->post('address_id'))) {
+            $this->data['address_id'] = $this->input->post('address_id');
+        } elseif (!empty($this->address)) {
+            $this->data['address_id'] = $this->address->id;
+        } else {
+            $this->data['address_id'] = '';
+        }
+        // Address 1
+        if (!empty($this->input->post('address_1'))) {
+            $this->data['address_1'] = $this->input->post('address_1');
+        } elseif (!empty($this->address)) {
+            $this->data['address_1'] = $this->address->address_1;
+        } else {
+            $this->data['address_1'] = '';
+        }
+        // Address 2 Optional
+        if (!empty($this->input->post('address_2'))) {
+            $this->data['address_2'] = $this->input->post('address_2');
+        } elseif (!empty($this->address)) {
+            $this->data['address_2'] = $this->address->address_2;
+        } else {
+            $this->data['address_2'] = '';
+        }
+        // Phone Optional
+        if (!empty($this->input->post('phone'))) {
+            $this->data['phone'] = $this->input->post('phone');
+        } elseif (!empty($this->user)) {
+            $this->data['phone'] = $this->user->phone;
+        } else {
+            $this->data['phone'] = '';
+        }
+        // PostCode
+        if (!empty($this->input->post('postcode'))) {
+            $this->data['postcode'] = $this->input->post('postcode');
+        } elseif (!empty($this->address)) {
+            $this->data['postcode'] = $this->address->postcode;
+        } else {
+            $this->data['postcode'] = '';
+        }
+        // City
+        if (!empty($this->input->post('city'))) {
+            $this->data['city'] = $this->input->post('city');
+        } elseif (!empty($this->address)) {
+            $this->data['city'] = $this->address->city;
+        } else {
+            $this->data['city'] = '';
+        }
+        // City
+        if(!empty($this->address)) {
+            $this->data['country_id'] = $this->address->country_id;
+        } else {
+            $this->data['country_id'] = '';
+        }
+        // City
+        if(!empty($this->address)) {
+            $this->data['state_id'] = $this->address->state_id;
+        } else {
+            $this->data['state_id'] = '';
+        }
+        $this->data['countries'] = $this->countries();
+
+        $this->template->javascript->add('assets/js/jquery.validate.js');
+        $this->template->javascript->add('assets/js/additional-methods.js');
+        $this->template->javascript->add('assets/js/admin/users/Users.js');
+        $this->template->set_template('layout/admin');
+        $this->template->content->view('users/edit', $this->data);
+        $this->template->publish();
+    }
 	public function store() {
 		if($this->isAjaxRequest() && $this->isPost()) {
 
@@ -112,7 +313,7 @@ class Users extends AdminController {
 				$this->json['error']['email'] = $this->lang->line('error_email');
 			}
 			
-			if ($this->model_user->getTotalUsersByEmail($this->request['email'])) {
+			if ($this->User_model->getTotalUsersByEmail($this->request['email'])) {
 				$this->json['error']['warning'] = $this->lang->line('error_exists');
 			}
 			
@@ -127,10 +328,10 @@ class Users extends AdminController {
 			
             if (!$this->json) {
 				// Add new user
-				$useId = $this->model_user->addUser($this->request);
+				$useId = $this->User_model->addUser($this->request);
 				if($useId) {
 					// Get User
-					$userInfo = $this->model_user->getUser($useId);
+					$userInfo = $this->User_model->getUser($useId);
 				}
 				$this->json['success']          = $this->lang->line('text_success');
 				$this->json['redirect'] 		= url('/');
@@ -141,134 +342,152 @@ class Users extends AdminController {
                         ->set_output(json_encode($this->json));
         }
 	}
+
 	public function edit($id) {
-		
+        $this->load->model('User_model');
+        $this->lang->load('admin/users_lang');
 
-		$this->template->set_template('layout/admin');
-		$this->template->content->view('users/edit', $this->data);
-		$this->template->publish();
+        if(!$this->isPost()) {
+            $this->setUser(User_model::factory()->user($id));
+        }
+        if($this->user) {
+            $this->setUserId($this->user->id);
+            $this->setAddress($this->user->address());
+        }
+		if(!$this->userId) {
+			$this->redirect($this->url(admin_url('users')));
+		}
+
+		//$this->dd($this->user->id);
+        $userInfo = User_model::factory()->getUserByEmail($this->input->post('email'));
+
+        if (!empty($id)) {
+            if ($userInfo) {
+                $this->error['warning'] = $this->lang->line('error_exists');
+            }
+        } else {
+            if ($userInfo && ($id != $userInfo['id'])) {
+                $this->error['warning'] = $this->lang->line('error_exists');
+            }
+        }
+        if ($this->input->post('password') || (!isset($id))) {
+            if ((strlen(html_entity_decode($this->input->post('password'), ENT_QUOTES, 'UTF-8')) < 4) || (strlen(html_entity_decode($this->input->post['password'], ENT_QUOTES, 'UTF-8')) > 40)) {
+                $this->error['password'] = $this->lang->line('error_password');
+            }
+            if ($this->input->post('password') != $this->input->post('confirm')) {
+                $this->error['confirm'] = $this->lang->line('error_confirm');
+            }
+        }
+        $this->form();
 	}
-	public function update() {
-		if (isset($this->error['warning'])) {
-			$this->data['error_warning'] = $this->error['warning'];
-		} else {
-			$this->data['error_warning'] = '';
-		}
 
-		if (isset($this->error['firstname'])) {
-			$this->data['error_firstname'] = $this->error['firstname'];
-		} else {
-			$this->data['error_firstname'] = '';
-		}
-		
+	public function update() {
+        $this->lang->load('admin/users_lang');
 		if ($this->isPost() && $this->validateForm()) {
-			$this->request = $this->xss_clean($this->input->post());
-			$this->model_user->editUser($this->request['user_id'], $this->request);
-			//$this->session->data['success'] = $this->lang->line('text_success');
+
+            $this->load->model('User_model');
+//dd($this->input->post());
+            User_model::factory()->editUser($this->input->post('id'), $this->input->post());
+
+            $this->setMessage('message', $this->lang->line('text_success'));
+
+            $this->redirect(admin_url('users/edit/'.$this->input->post('id')));
+
 		}
+		//$this->dd($this->error);
+        $this->form();
+
 	}
 	public function show() {
 		//$this->template->admin('show');
 	}
 	public function delete() {}
 	protected function validateForm() {
-		
 
-		if ((utf8_strlen($this->request->post['firstname']) < 1) || (utf8_strlen(trim($this->request->post['firstname'])) > 32)) {
-			$this->error['firstname'] = $this->language->get('error_firstname');
+		if ((strlen($this->input->post('firstname')) < 1) || (strlen(trim($this->input->post('firstname'))) > 32)) {
+			$this->error['firstname'] = $this->lang->line('error_firstname');
 		}
 
-		if ((utf8_strlen($this->request->post['lastname']) < 1) || (utf8_strlen(trim($this->request->post['lastname'])) > 32)) {
-			$this->error['lastname'] = $this->language->get('error_lastname');
+		if ((strlen($this->input->post('lastname')) < 1) || (strlen(trim($this->input->post('lastname'))) > 32)) {
+			$this->error['lastname'] = $this->lang->line('error_lastname');
 		}
 
-		if ((utf8_strlen($this->request->post['email']) > 96) || !filter_var($this->request->post['email'], FILTER_VALIDATE_EMAIL)) {
-			$this->error['email'] = $this->language->get('error_email');
+		if ((strlen($this->input->post('email')) > 96) || !filter_var($this->input->post('email'), FILTER_VALIDATE_EMAIL)) {
+			$this->error['email'] = $this->lang->line('error_email');
 		}
+		/*
+		if ((strlen($this->input->post('telephone') < 3) || (strlen($this->input->post('telephone'))) > 32)) {
+            $this->error['telephone'] = $this->lang->line('error_telephone');
+        }
+		*/
+        if ($this->input->post('status') == '') {
+            $this->error['status'] = $this->lang->line('error_status');
+        }
 
-		$customer_info = $this->model_user->getCustomerByEmail($this->request->post['email']);
+        /*
+		if (!empty($this->input->post('address'))) {
+            foreach ($this->input->post('address') as $key => $value) {
 
-		if (!isset($this->request->get['customer_id'])) {
-			if ($customer_info) {
-				$this->error['warning'] = $this->language->get('error_exists');
-			}
-		} else {
-			if ($customer_info && ($this->request->get['customer_id'] != $customer_info['customer_id'])) {
-				$this->error['warning'] = $this->language->get('error_exists');
-			}
-		}
+                if ((strlen($value['firstname']) < 1) || (strlen($value['firstname']) > 32)) {
+                    $this->error['address'][$key]['firstname'] = $this->lang->line('error_firstname');
+                }
 
-		if ((utf8_strlen($this->request->post['telephone']) < 3) || (utf8_strlen($this->request->post['telephone']) > 32)) {
-			$this->error['telephone'] = $this->language->get('error_telephone');
-		}
+                if ((strlen($value['lastname']) < 1) || (strlen($value['lastname']) > 32)) {
+                    $this->error['address'][$key]['lastname'] = $this->lang->line('error_lastname');
+                }
 
-		// Custom field validation
-		$this->load->model('customer/custom_field');
+                if ((strlen($value['address_1']) < 3) || (strlen($value['address_1']) > 128)) {
+                    $this->error['address'][$key]['address_1'] = $this->lang->line('error_address_1');
+                }
 
-		$custom_fields = $this->model_customer_custom_field->getCustomFields(array('filter_customer_group_id' => $this->request->post['customer_group_id']));
+                if ((strlen($value['city']) < 2) || (strlen($value['city']) > 128)) {
+                    $this->error['address'][$key]['city'] = $this->lang->line('error_city');
+                }
 
-		foreach ($custom_fields as $custom_field) {
-			if (($custom_field['location'] == 'account') && $custom_field['required'] && empty($this->request->post['custom_field'][$custom_field['custom_field_id']])) {
-				$this->error['custom_field'][$custom_field['custom_field_id']] = sprintf($this->language->get('error_custom_field'), $custom_field['name']);
-			} elseif (($custom_field['location'] == 'account') && ($custom_field['type'] == 'text') && !empty($custom_field['validation']) && !filter_var($this->request->post['custom_field'][$custom_field['custom_field_id']], FILTER_VALIDATE_REGEXP, array('options' => array('regexp' => $custom_field['validation'])))) {
-				$this->error['custom_field'][$custom_field['custom_field_id']] = sprintf($this->language->get('error_custom_field'), $custom_field['name']);
-			}			
-		}
+                $this->load->model('Country_model');
 
-		if ($this->request->post['password'] || (!isset($this->request->get['customer_id']))) {
-			if ((utf8_strlen(html_entity_decode($this->request->post['password'], ENT_QUOTES, 'UTF-8')) < 4) || (utf8_strlen(html_entity_decode($this->request->post['password'], ENT_QUOTES, 'UTF-8')) > 40)) {
-				$this->error['password'] = $this->language->get('error_password');
-			}
+                $country = $this->Country_model->getCountry($value['country_id']);
 
-			if ($this->request->post['password'] != $this->request->post['confirm']) {
-				$this->error['confirm'] = $this->language->get('error_confirm');
-			}
-		}
+                if ($country && $country['postcode_required'] && (strlen($value['postcode']) < 2 || strlen($value['postcode']) > 10)) {
+                    $this->error['address'][$key]['postcode'] = $this->lang->line('error_postcode');
+                }
 
-		if (isset($this->request->post['address'])) {
-			foreach ($this->request->post['address'] as $key => $value) {
-				if ((utf8_strlen($value['firstname']) < 1) || (utf8_strlen($value['firstname']) > 32)) {
-					$this->error['address'][$key]['firstname'] = $this->language->get('error_firstname');
-				}
+                if ($value['country_id'] == '') {
+                    $this->error['address'][$key]['country'] = $this->lang->line('error_country');
+                }
 
-				if ((utf8_strlen($value['lastname']) < 1) || (utf8_strlen($value['lastname']) > 32)) {
-					$this->error['address'][$key]['lastname'] = $this->language->get('error_lastname');
-				}
-
-				if ((utf8_strlen($value['address_1']) < 3) || (utf8_strlen($value['address_1']) > 128)) {
-					$this->error['address'][$key]['address_1'] = $this->language->get('error_address_1');
-				}
-
-				if ((utf8_strlen($value['city']) < 2) || (utf8_strlen($value['city']) > 128)) {
-					$this->error['address'][$key]['city'] = $this->language->get('error_city');
-				}
-
-				$this->load->model('localisation/country');
-
-				$country_info = $this->model_localisation_country->getCountry($value['country_id']);
-
-				if ($country_info && $country_info['postcode_required'] && (utf8_strlen($value['postcode']) < 2 || utf8_strlen($value['postcode']) > 10)) {
-					$this->error['address'][$key]['postcode'] = $this->language->get('error_postcode');
-				}
-
-				if ($value['country_id'] == '') {
-					$this->error['address'][$key]['country'] = $this->language->get('error_country');
-				}
-
-				if (!isset($value['zone_id']) || $value['zone_id'] == '') {
-					$this->error['address'][$key]['zone'] = $this->language->get('error_zone');
-				}
-
-				
-			}
-		}
-
-	
-		
+                if (!isset($value['state_id']) || $value['state_id'] == '') {
+                    $this->error['address'][$key]['state'] = $this->lang->line('error_state');
+                }
+            }
+        }
+        */
 		if ($this->error && !isset($this->error['warning'])) {
-			$this->error['warning'] = $this->language->get('error_warning');
+			$this->error['warning'] = $this->lang->line('error_warning');
 		}
-
+       // $this->dd($this->error);
 		return !$this->error;
 	}
+    public function countries() {
+        $this->load->model('Country_model');
+        return $this->Country_model->findAll();
+    }
+	public function states() {
+        if($this->isAjaxRequest()) {
+            $json = array();
+            $this->load->model('Country_model');
+            $this->country =  $this->Country_model->findOne($this->input->post('country_id'));
+
+            if ($this->country) {
+                $json = array(
+                    'country_id'        => $this->country->id,
+                    'states'            => $this->country->states(),
+                );
+            }
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode($json));
+        }
+    }
 }

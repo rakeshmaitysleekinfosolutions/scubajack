@@ -88,7 +88,7 @@
         });
         
         function loadDataTable(data = null) {
-         var dataTable = $('.datatable').DataTable( {
+            var dataTable = $('.datatable').DataTable( {
                 "processing": true,
                 "searching" : true,
                 "paging": true,
@@ -114,6 +114,55 @@
                 "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ]
          });
         }
+    $('select[name="address[0][country_id]"]').on('change', function() {
+        var country_id = $('select[name="address[0][country_id]"]').find(":selected").val();
+        $.ajax({
+            url: myLabel.states,
+            dataType: 'json',
+            method: 'POST',
+            data: {
+                country_id: country_id
+            },
+            beforeSend: function() {
+                $('select[name="address[0][country_id]"]').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
+            },
+            complete: function() {
+                $('.fa-spin').remove();
+            },
+            success: function(json) {
+                console.log(json);
+                // if (json['postcode_required'] == '1') {
+                //     $('input[name=\'postcode\']').parent().parent().addClass('required');
+                // } else {
+                //     $('input[name=\'postcode\']').parent().parent().removeClass('required');
+                // }
+                var html = '';
+                html = '<option value="">select option</option>';
+
+                if (json['states'] && json['states'] != '') {
+                    for (var i = 0; i < json['states'].length; i++) {
+                        html += '<option value="' + json['states'][i]['id'] + '"';
+                        //console.log(json['states'][i]['id']);
+                        if (json['states'][i]['id'] == myLabel.state_id) {
+
+                            html += ' selected="selected"';
+                        }
+
+                        html += '>' + json['states'][i]['name'] + '</option>';
+                    }
+                } else {
+                    html += '<option value="0" selected="selected">Empty</option>';
+                }
+
+                $('select[name="address[0][state_id]"]').html(html);
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            }
+        });
+    });
+
+    $('select[name="address[0][country_id]"]').trigger('change');
    
 }(window.jQuery);
 

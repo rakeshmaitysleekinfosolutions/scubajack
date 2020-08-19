@@ -149,5 +149,47 @@ if(!defined('BASEPATH')) EXIT("No direct script access allowed");
 		//getLocale(getLocaleId()).'/'.
 		return get_instance()->config->site_url($uri, $protocol);
 	}
+    if(!function_exists('hasSession')) {
+        function hasSession($key) {
+            $ci = get_instance();
+            return ($ci->session->has_userdata($key)) ? true : false;
+        }
+    }
+    if(!function_exists('getSession')) {
+        function getSession($key) {
+            $ci = get_instance();
+            return ($ci->session->userdata($key) && !empty($ci->session->userdata($key))) ? $ci->session->userdata($key) : '';
+        }
+    }
+    if(!function_exists('setSession')) {
+        function setSession($key, $value) {
+            $ci = get_instance();
+            $ci->session->set_userdata($key, $value);
+        }
+    }
+    if(!function_exists('unsetSession')) {
+        function unsetSession($key) {
+            $ci = get_instance();
+            $ci->session->unset_userdata($key);
+        }
+    }
+    if(!function_exists('setMessage')) {
+        function setMessage($key, $value) {
+            $ci = get_instance();
+            $ci->session->set_flashdata($key, $value);
+        }
+    }
+    if(!function_exists('getMessage')) {
+        function getMessage($key) {
+            $ci = get_instance();
+            return ($ci->session->flashdata($key) && !empty($ci->session->flashdata($key))) ? $ci->session->flashdata($key) : '';
+        }
+    }
+    if(!function_exists('hasMessage')) {
+        function hasMessage($key) {
+            $ci = get_instance();
+            return ($ci->session->flashdata($key)) ? true : false;
+        }
+    }
 }
 ?>

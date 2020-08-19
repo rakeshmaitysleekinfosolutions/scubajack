@@ -54,6 +54,36 @@ class BaseController extends MX_Controller {
     {
         return (!empty($key) && $key !== NULL);
     }
+    protected function getSession($key)
+    {
+        return ($this->session->userdata($key)) ? $this->session->userdata($key) : '';
+    }
+    protected function hasSession($key)
+    {
+        if($this->getSession($key)) {
+            return true;
+        }
+        return false;
+    }
+    protected function setSession($key, $value)
+    {
+        $this->session->set_userdata($key, $value);
+        return $this;
+    }
+    protected function setMessage($key, $value)
+    {
+        $this->session->set_flashdata($key, $value);
+        return $this;
+    }
+    protected function getMessage($key)
+    {
+        return ($this->session->flashdata($key)) ? $this->session->flashdata($key) : '';
+    }
+    protected function unsetSession($key) {
+        if($this->hasSession($key)) {
+            $this->session->unset_userdata($key);
+        }
+    }
     public function redirect($uri = '', $method = 'auto', $code = NULL)
 	{
 		if ( ! preg_match('#^(\w+:)?//#i', $uri))
@@ -106,5 +136,8 @@ class BaseController extends MX_Controller {
         //getLocale(getLocaleId()).'/'.
         return get_instance()->config->site_url($uri, $protocol);
     }
+
+
+
     
 }

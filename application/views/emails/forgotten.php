@@ -1,9 +1,7 @@
-<?php echo  $text_greeting; ?>
+You told us you forgot password .If your really did,Click here to choose a new one.
 
-<?php echo  $text_change; ?>
 
-<a href="<?php echo  $reset; ?>">Reset</a>
+<?php echo  $reset; ?>
 
-<?php echo  $text_ip; ?>
 
-<?php echo  $ip; ?>
+If you did not mean to reset your password,then you can just ignore this email,your password will not change.
