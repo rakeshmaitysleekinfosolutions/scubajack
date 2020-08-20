@@ -1,12 +1,18 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-
+use Carbon\Carbon;
 class Users extends AdminController {
 
     private $address;
     private $user;
     private $userId;
     private $country;
+    private $status;
+    /**
+     * @var mixed
+     */
+
+    private $selected;
 
     public function __constructor() {
 		parent::__construct();
@@ -38,14 +44,17 @@ class Users extends AdminController {
 					'firstname'		=> $result->firstname,
 					'lastname' 		=> $result->lastname,
 					'email' 		=> $result->email,
-					'status' 		=> ($result->status && $result->status == 1) ? array('text' => 'Ative', 'icon' => 'fa fa-dot-circle-o text-success') : array('text' => 'Inactive', 'icon' => 'fa fa-dot-circle-o text-danger'),
+                    'status' 		=> ($result->status && $result->status == 1) ? array('value' => 1, 'text' => 'Ative', 'icon' => 'fa fa-dot-circle-o text-success') : array('value' => 0, 'text' => 'Inactive', 'icon' => 'fa fa-dot-circle-o text-danger'),
+                    'created_at'    => Carbon::createFromTimeStamp(strtotime($result->created_at))->diffForHumans(),
+                   // 'updated_at'    => Carbon::createFromTimeStamp(strtotime($result->updated_at))->diffForHumans()
 				);
 			}
 			$i = 0;
 			foreach($this->rows as $row) {
+			        $checked = ($row['status']['value']) ? 'checked' : '';
 					$this->data[$i][] = '<td class="text-center">
 											<label class="css-control css-control-primary css-checkbox">
-												<input data-id="'.$row['id'].'" type="checkbox" class="css-control-input" id="row_'.$row['id'].'" name="row_'.$row['id'].'">
+												<input data-id="'.$row['id'].'" type="checkbox" class="css-control-input selectCheckbox" id="row_'.$row['id'].'" name="row_'.$row['id'].'">
 												<span class="css-control-indicator"></span>
 											</label>
 										</td>';
@@ -53,14 +62,12 @@ class Users extends AdminController {
 					$this->data[$i][] = '<td>'.$row['lastname'].'</td>';
 					$this->data[$i][] = '<td>'.$row['email'].'</td>';
 					$this->data[$i][] = '<td>
-											<div class="dropdown action-label">
-												<a class="btn btn-white btn-sm rounded dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="'.$row['status']['icon'].'"></i> '.$row['status']['text'].' <i class="caret"></i></a>
-												<ul class="dropdown-menu">
-													<li><a href="#"><i class="fa fa-dot-circle-o text-success"></i> Active</a></li>
-													<li><a href="#"><i class="fa fa-dot-circle-o text-danger"></i> Inactive</a></li>
-												</ul>
-											</div>
-										</td>';
+											<div class="material-switch pull-right">
+											<input data-id="'.$row['id'].'" class="checkboxStatus" id="chat_module" type="checkbox" value="'.$row['status']['value'].'" '.$checked.'/>
+											<label for="chat_module" class="label-success"></label>
+										</div>
+                                        </td>';
+                    $this->data[$i][] = '<td>'.$row['created_at'].'</td>';
 					$this->data[$i][] = '<td class="text-right">
 	                            <div class="dropdown">
 	                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
@@ -70,7 +77,9 @@ class Users extends AdminController {
 	                                </ul>
 	                            </div>
 	                        </td>
-	                    ';
+                        ';
+                    
+                  //  $this->data[$i][] = '<td>'.$row['updated_at'].'</td>';
 	                    $i++;
 				}
 
@@ -92,8 +101,16 @@ class Users extends AdminController {
 
 	public function onChangeStatusEventHandler() {
 		if($this->isAjaxRequest()) {
-			$this->setRequest($this->input->post());
-			
+			$this->request = $this->input->post();
+			if(isset($this->request['status']) && isset($this->request['id'])) {
+                $this->load->model('User_model');
+                $this->User_model->updateStatus($this->input->post());
+                $this->json['status'] = 'Status has been successfully updated';
+                return $this->output
+                    ->set_content_type('application/json')
+                    ->set_status_header(200)
+                    ->set_output(json_encode($this->json));
+            }
 		}
 	}
 
@@ -401,7 +418,6 @@ class Users extends AdminController {
 	public function show() {
 		//$this->template->admin('show');
 	}
-	public function delete() {}
 	protected function validateForm() {
 
 		if ((strlen($this->input->post('firstname')) < 1) || (strlen(trim($this->input->post('firstname'))) > 32)) {
@@ -489,5 +505,32 @@ class Users extends AdminController {
                 ->set_status_header(200)
                 ->set_output(json_encode($json));
         }
+    }
+    public function delete() {
+        if($this->isAjaxRequest()) {
+            $this->request = $this->input->post();
+
+            if(!empty($this->request['selected']) && isset($this->request['selected'])) {
+                if(array_key_exists('selected', $this->request) && is_array($this->request['selected'])) {
+                    $this->selected = $this->request['selected'];
+                }
+            }
+            if($this->selected) {
+                $this->load->model('User_model');
+                foreach ($this->selected as $userId) {
+                    $this->User_model->deleteUsers($userId);
+                }
+                return $this->output
+                    ->set_content_type('application/json')
+                    ->set_status_header(200)
+                    ->set_output(json_encode(array('data' => $this->onLoadDatatableEventHandler(), 'status' => true,'message' => 'Record has been successfully deleted')));
+            }
+                return $this->output
+                    ->set_content_type('application/json')
+                    ->set_status_header(200)
+                    ->set_output(json_encode(array('data' => $this->onLoadDatatableEventHandler(), 'status' => false, 'message' => 'Sorry! we could not delete this record')));
+
+        }
+
     }
 }

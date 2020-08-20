@@ -161,7 +161,9 @@ class User_model extends BaseModel {
             }
         }
 	}
-
+    public function updateStatus($data) {
+        $this->db->query("UPDATE users SET status = '" . $this->db->escape_str($data['status']) . "' WHERE id = '" . (int)$data['id'] . "'");
+    }
 	public function editPassword($email, $password) {
 		$this->db->query("UPDATE users SET salt = '" . $this->db->escape_str($salt = token(9)) . "', password = '" . $this->db->escape_str(sha1($salt . sha1($salt . sha1($password)))) . "', code = '' WHERE LOWER(email) = '" . $this->db->escape_str(strtolower($email)) . "'");
 	}
@@ -262,8 +264,20 @@ class User_model extends BaseModel {
 //        dd($data);
 //        return $data;
 //    }
-	
 
-	
-	
+
+
+    public function deleteUsers($user_id, $forceDelete = false) {
+        if($forceDelete) {
+            $this->db->query("DELETE FROM users WHERE id = '" . (int)$user_id . "'");
+            //$this->db->query("DELETE FROM " . DB_PREFIX . "customer_activity WHERE customer_id = '" . (int)$customer_id . "'");
+            //$this->db->query("DELETE FROM " . DB_PREFIX . "customer_transaction WHERE customer_id = '" . (int)$customer_id . "'");
+            $this->db->query("DELETE FROM users_ip WHERE user_id = '" . (int)$user_id . "'");
+            $this->db->query("DELETE FROM users_address WHERE user_id = '" . (int)$user_id . "'");
+        }
+
+        $this->db->query("UPDATE users SET is_deleted = 1 WHERE id = '" . (int)$user_id . "'");
+        $this->db->query("UPDATE users_ip SET is_deleted = 1 WHERE user_id = '" . (int)$user_id . "'");
+        $this->db->query("UPDATE users_address SET is_deleted = 1 WHERE user_id = '" . (int)$user_id . "'");
+    }
 }

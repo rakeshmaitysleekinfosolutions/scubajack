@@ -20,7 +20,7 @@
 		<link rel="stylesheet" href="<?php echo base_url();?>assets/theme/light/plugins/morris/morris.css">
 		
 		<link rel="stylesheet" href="<?php echo base_url();?>assets/theme/light/js/sweetalert/sweetalert.css">
-		<link rel="stylesheet" href="<?php echo base_url();?>assets/theme/light/js/summernote/summernote.css">
+		<!-- <link rel="stylesheet" href="<?php echo base_url();?>assets/theme/light/js/summernote/summernote.css"> -->
 
 		<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/theme/light/css/dataTables.bootstrap.min.css"> -->
 		<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/theme/light/css/select2.min.css">
@@ -151,7 +151,7 @@
 								<a href="#" class="noti-dot"><span> Manage Users</span> <span class="menu-arrow"></span></a>
 								<ul class="list-unstyled" style="display: none;">
 									<li><a href="<?php echo admin_url('users');?>">Users</a></li>
-									<li><a href="<?php echo admin_url('users/create');?>">Add User</a></li>
+<!--									<li><a href="--><?php //echo admin_url('users/create');?><!--">Add User</a></li>-->
 									<!-- <li><a href="leaves.html"><span>Leave Requests</span> <span class="badge bg-primary pull-right">1</span></a></li>
 									<li><a href="attendance.html">Attendance</a></li>
 									<li><a href="departments.html">Departments</a></li>
@@ -159,10 +159,10 @@
 								</ul>
 							</li>
 							<li class="submenu">
-								<a href="#" class="noti-dot"><span> Manage Product</span> <span class="menu-arrow"></span></a>
+								<a href="#" ><span> Manage Product</span><span class="menu-arrow"></span></a>
 								<ul class="list-unstyled" style="display: none;">
 									<li><a href="javascript:void(0);">Products</a></li>
-									<li><a href="javascript:void(0);">Category</a></li>
+									<li><a href="<?php echo admin_url('category');?>">Category</a></li>
 								</ul>
 							</li>
 							<!-- <li> 
@@ -198,7 +198,7 @@
 		<script type="text/javascript" src="<?php echo base_url();?>assets/theme/light//js/select2.min.js"></script>
 
 		<script type="text/javascript" src="<?php echo base_url();?>assets/theme/light/js/sweetalert/sweetalert.js" ></script>
-		<script type="text/javascript" src="<?php echo base_url();?>assets/theme/light/js/summernote/summernote.js" ></script>
+		<!-- <script type="text/javascript" src="<?php echo base_url();?>assets/theme/light/js/summernote/summernote.js" ></script> -->
 		<!-- <script type="text/javascript" src="<?php echo base_url();?>assets/js/App.js" ></script> -->
 
 		<?php echo $this->template->javascript; ?>

@@ -304,7 +304,8 @@ switch (ENVIRONMENT)
 	}
 
 	define('VIEWPATH', $view_folder.DIRECTORY_SEPARATOR);
-
+	define('DIR_IMAGE', str_replace('\\', '/', realpath(dirname(__FILE__) . '/')) . '/image/');
+	//define('HTTP_CATALOG', 'http://localhost/workspace/opencart/upload/');
 /*
  * --------------------------------------------------------------------
  * LOAD THE BOOTSTRAP FILE

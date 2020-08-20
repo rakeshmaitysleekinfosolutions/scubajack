@@ -11,7 +11,7 @@
                 "paging": true,
                 "order" : [],
                 "ajax": {
-                    "url": myLabel.users,
+                    "url": myLabel.category,
                     "type": 'POST',
                     "dataSrc": "data"
                 },
@@ -43,7 +43,7 @@
                     status = 1;
                 }
 
-                console.log(status);
+                
                 $.ajax({
                     type: "POST",
                     url: myLabel.updateStatus,
@@ -112,82 +112,81 @@
             $(".alert").slideUp(500);
         });
         
-        function loadDataTable(data = null) {
-            var dataTable = $('.datatable').DataTable( {
-                "processing": true,
-                "searching" : true,
-                "paging": true,
-                "order" : [],
-                "ajax": {
-                    url: myLabel.users,
-                    type : 'get',
-                    data: {}
-                },
-                "oLanguage": {
-                    "sEmptyTable": "Empty Table"
-                },
-                dom: 'lBfrtip',
-                buttons: [
-                'excel', 'csv', 'pdf'
-                ],
-                "columnDefs": [ {
-                    "targets": 0,
-                    "orderable": false
-                },{
-                    visible: false
-                } ],
-                "lengthMenu": [ [10, 25, 50, -1], [10, 25, 50, "All"] ]
-         });
-        }
-    $('select[name="address[0][country_id]"]').on('change', function() {
-        var country_id = $('select[name="address[0][country_id]"]').find(":selected").val();
-        $.ajax({
-            url: myLabel.states,
-            dataType: 'json',
-            method: 'POST',
-            data: {
-                country_id: country_id
-            },
-            beforeSend: function() {
-                $('select[name="address[0][country_id]"]').after(' <i class="fa fa-circle-o-notch fa-spin"></i>');
-            },
-            complete: function() {
-                $('.fa-spin').remove();
-            },
-            success: function(json) {
-                console.log(json);
-                // if (json['postcode_required'] == '1') {
-                //     $('input[name=\'postcode\']').parent().parent().addClass('required');
-                // } else {
-                //     $('input[name=\'postcode\']').parent().parent().removeClass('required');
-                // }
-                var html = '';
-                html = '<option value="">select option</option>';
-
-                if (json['states'] && json['states'] != '') {
-                    for (var i = 0; i < json['states'].length; i++) {
-                        html += '<option value="' + json['states'][i]['id'] + '"';
-                        //console.log(json['states'][i]['id']);
-                        if (json['states'][i]['id'] == myLabel.state_id) {
-
-                            html += ' selected="selected"';
-                        }
-
-                        html += '>' + json['states'][i]['name'] + '</option>';
-                    }
-                } else {
-                    html += '<option value="0" selected="selected">Empty</option>';
-                }
-
-                $('select[name="address[0][state_id]"]').html(html);
-            },
-            error: function(xhr, ajaxOptions, thrownError) {
-                //alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-            }
+       
+        $(document).ready(function(){
+            $('.summernote').summernote({
+                height: 200,                 // set editor height
+                minHeight: null,             // set minimum height of editor
+                maxHeight: null,             // set maximum height of editor
+                focus: false                 // set focus to editable area after initializing summernote
+            });
         });
-    });
+        // Image Manager
+        $(document).on('click', 'a[data-toggle=\'image\']', function(e) {
+            var $element = $(this);
+            var $popover = $element.data('bs.popover'); // element has bs popover?
 
-    $('select[name="address[0][country_id]"]').trigger('change');
+            e.preventDefault();
+
+            // destroy all image popovers
+            $('a[data-toggle="image"]').popover('destroy');
+
+            // remove flickering (do not re-add popover when clicking for removal)
+            if ($popover) {
+                return;
+            }
+
+            $element.popover({
+                html: true,
+                placement: 'right',
+                trigger: 'manual',
+                content: function() {
+                    return '<button type="button" id="button-image" class="btn btn-primary"><i class="fa fa-pencil"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>';
+                }
+            });
+
+            $element.popover('show');
+
+            $('#button-image').on('click', function() {
+                var $button = $(this);
+                var $icon   = $button.find('> i');
+
+                $('#modal-image').remove();
+
+                $.ajax({
+                    url: myLabel.filemanager + '?target=' + $element.parent().find('input').attr('id') + '&thumb=' + $element.attr('id'),
+                    dataType: 'html',
+                    beforeSend: function() {
+                        $button.prop('disabled', true);
+                        if ($icon.length) {
+                            $icon.attr('class', 'fa fa-circle-o-notch fa-spin');
+                        }
+                    },
+                    complete: function() {
+                        $button.prop('disabled', false);
+
+                        if ($icon.length) {
+                            $icon.attr('class', 'fa fa-pencil');
+                        }
+                    },
+                    success: function(html) {
+                        $('body').append('<div id="modal-image" class="modal">' + html + '</div>');
+
+                        $('#modal-image').modal('show');
+                    }
+                });
+
+                $element.popover('destroy');
+            });
+
+            $('#button-clear').on('click', function() {
+                $element.find('img').attr('src', $element.find('img').attr('data-placeholder'));
+
+                $element.parent().find('input').val('');
+
+                $element.popover('destroy');
+            });
+        });
 
 
 }(window.jQuery);
