@@ -14,7 +14,7 @@
     </div>
     <div class="tagline">
       <div class="darkbluebg">
-        <h4>where the world and reading colide</h4>
+        <h4>where the world and reading collide</h4>
         <p>Each booklet come with activities,video's and quizzes.</p>
       </div>
       <div class="yellowbg"> </div>
@@ -46,7 +46,7 @@
             <p>Preschool <span>learning</span></p>
           </div>
           <div class="col-md-6"> <img src="<?php echo base_url();?>assets/images/p2.jpg">
-            <p>Preschool <span>learning</span></p>
+            <p>Elimentary <span>learning</span></p>
           </div>
         </div>
       </div>
@@ -55,8 +55,8 @@
   <!------------preschool part end--------->
   <section class="sub">
     <div class="subscription">
-      <p>Start your subscription today and get access to</p>
-      <p>our Virtual Field Trips, books, video’s, activities and FUN!</p>
+      <p>Start your subscription today and get access to<br/>
+      <span>your Virtual Field Trips, books, video’s, activities and FUN!</span></p>
       <button type="button" class="btn start-sub">Start Subscription</button>
     </div>
     <div class="sub-banner"> </div>
