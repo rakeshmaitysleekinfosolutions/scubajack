@@ -107,7 +107,7 @@ class Filemanager extends AdminController {
 		if ($this->input->get('directory')) {
 			$this->data['directory'] = urlencode($this->input->get('directory'));
 		} else {
-			$this->data['directory'] = 'test';
+			$this->data['directory'] = '';
 		}
 
 		if ($this->input->get('filter_name')) {
@@ -210,9 +210,9 @@ class Filemanager extends AdminController {
 		}
 
 		// Check its a directory
-		if (!is_dir($directory) || substr(str_replace('\\', '/', realpath($directory)), 0, strlen(DIR_IMAGE . 'catalog')) != str_replace('\\', '/', DIR_IMAGE . 'catalog')) {
-			$this->json['error'] = $this->lang->line('error_directory');
-		}
+//		if (!is_dir($directory) || substr(str_replace('\\', '/', realpath($directory)), 0, strlen(DIR_IMAGE . 'catalog')) != str_replace('\\', '/', DIR_IMAGE . 'catalog')) {
+//			$this->json['error'] = $this->lang->line('error_directory');
+//		}
 
 		if (!$this->json) {
 			// Check if multiple files are uploaded or just one

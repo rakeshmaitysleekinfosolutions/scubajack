@@ -128,6 +128,7 @@
 							<!-- <li><a href="profile.html">My Profile</a></li>
 							<li><a href="edit-profile.html">Edit Profile</a></li>
 							<li><a href="settings.html">Settings</a></li> -->
+                            <li><a href="<?php echo admin_url('resetpassword'); ?>">Reset Password</a></li>
 							<li><a href="<?php echo base_url('admin-logout'); ?>">Logout</a></li>
 						</ul>
 					</li>
