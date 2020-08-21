@@ -247,6 +247,12 @@ table.dataTable {margin-bottom: 15px !important;margin-top: 15px !important;}
 .sidebar-menu ul {font-size: 14px;list-style-type: none;margin: 0;padding: 0;}
 .sidebar-menu li a {color: #333;display: block;font-size: 13px;height: auto;line-height: 40px;min-height: 40px;padding: 0 20px;/*white-space: nowrap;*/}
 .sidebar-menu li a:hover {color:#ff9b44;}
+.submenu li i {
+    padding: 2px 4px;
+}
+li.categoryplus i {
+    padding: 2px 4px;
+}
 .sidebar-menu li a > .badge {margin-top: 10px;}
 .sidebar-menu li.active a {color: #333;background-color: rgba(0, 0, 0, 0.2);}
 .menu-title {color: #ff9b44;font-size: 16px;line-height: 40px;min-height: 40px;padding: 0 20px;}
@@ -1351,4 +1357,9 @@ table.table-inbox tbody tr.checked {background-color: #ffffcc;}
 }
 @media only screen and (min-width: 310px) and (max-width: 359px) {
 	.account-box {width:300px;margin-bottom: 20px;}
+}
+/*****************21.08.2020**************************/
+.panel-heading.bg-orange {
+    background:#ff9b44;
+    color: #fff;
 }
