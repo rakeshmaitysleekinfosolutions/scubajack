@@ -58,7 +58,7 @@
                         <th>Email</th>
                         <th>Status</th>
                         <th>Created At</th>
-                        <!-- <th>Updated At</th> -->
+                         <th>Updated At</th>
                         <th class="text-right">Action</th>
                     </tr>
                 </thead>

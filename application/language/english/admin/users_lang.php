@@ -3,7 +3,7 @@
 $lang['heading_title']         = 'Users';
 
 // Text
-$lang['text_success']          = 'Success: You have modified users!';
+$lang['text_success']          = 'Success: You have modified user!';
 
 
 

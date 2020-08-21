@@ -161,8 +161,10 @@ class User_model extends BaseModel {
             }
         }
 	}
-    public function updateStatus($data) {
-        $this->db->query("UPDATE users SET status = '" . $this->db->escape_str($data['status']) . "' WHERE id = '" . (int)$data['id'] . "'");
+    public function updateStatus($userId, $status) {
+//        echo $userId. $status;
+//        exit;
+        $this->db->query("UPDATE users SET status = '" . $this->db->escape_str($status) . "' WHERE id = '" . (int)$userId . "'");
     }
 	public function editPassword($email, $password) {
 		$this->db->query("UPDATE users SET salt = '" . $this->db->escape_str($salt = token(9)) . "', password = '" . $this->db->escape_str(sha1($salt . sha1($salt . sha1($password)))) . "', code = '' WHERE LOWER(email) = '" . $this->db->escape_str(strtolower($email)) . "'");

@@ -1,9 +1,9 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
-class Country_model extends BaseModel {
+class CategoryDescription_model extends BaseModel {
     
-    protected $table = "country";
+    protected $table = "category_description";
 
     protected $primaryKey = 'id';
 
@@ -26,18 +26,10 @@ class Country_model extends BaseModel {
 
     protected $recordDeletedTrueValue = '0';
 
-    
     public static function factory($attr = array()) {
-        return new Country_model($attr);
-    }
-
-    public function states() {
-        return $this->hasMany('State_model', 'country_id', 'id')->get()->result_object();
+        return new CategoryDescription_model($attr);
     }
 
 
 
-    
-   
-    
 }

@@ -1,5 +1,17 @@
 
 <div class="content container-fluid">
+    <div class="row">
+        <div class="col-sm-4 col-xs-3">
+            <h4 class="page-title"></h4>
+        </div>
+        <div class="col-sm-8 col-xs-9 text-right m-b-20">
+            <a href="<?php echo $back;?>" class="btn btn-primary rounded pull-right"><i class="fa fa-back"></i> Back</a>
+            <!-- <div class="view-icons">
+                <a href="clients.html" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>
+                <a href="clients-list.html" class="list-view btn btn-link active"><i class="fa fa-bars"></i></a>
+            </div> -->
+        </div>
+    </div>
     <form id="frmSignUp" action="<?php echo admin_url('users/update');?>" method="post">
         <input type="hidden" name="id" value="<?php echo $id;?>">
         <div class="row">
@@ -136,7 +148,7 @@
                     <div class="row">
                             <div class="col-sm-12 m-t-20">
                                 <button type="submit" name="submit" class="btn btn-primary">Save &amp; update</button>
-                                <a href="javascript:history.go(-1)" class="btn btn-primary">Cancel</a>
+                                <a href="<?php echo $back;?>" class="btn btn-primary">Cancel</a>
                             </div>
                         </div>
 

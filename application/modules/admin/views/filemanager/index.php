@@ -21,14 +21,14 @@
       </div>
       <hr />
      
-      <?php foreach($images as $image) { ?>
+
       <div class="row">
-        <?php foreach($image as $img) { ?>
+        <?php foreach($images as $img) { ?>
         <div class="col-sm-3 col-xs-6 text-center">
          
           <?php if($img['type'] == 'directory') { ?>
             <div class="text-center"><a href="<?php echo $img['href'];?>" class="directory" style="vertical-align: middle;"><i class="fa fa-folder fa-5x"></i></a></div>
-            <label><input type="checkbox" name="path[]" value="<?php echo $img['path'];?>"/><?php echo $img['name'];?></label>
+            <label><input type="checkbox" name="path[]" value="<?php echo $img['path'];?>"/>&nbsp;<?php echo $img['name'];?></label>
           <?php } ?>
           
           <?php if($img['type'] == 'image') { ?>
@@ -39,7 +39,7 @@
         <?php } ?>
       </div>
       <br />
-      <?php } ?>
+
     </div>
     <!-- <div class="modal-footer"><?php echo $pagination;?></div> -->
   </div>
@@ -143,18 +143,19 @@ $('#button-upload').on('click', function() {
 					$('#button-upload').prop('disabled', false);
 				},
 				success: function(json) {
+
 					if (json['error']) {
-						alert(json['error']);
+                        swal(json['error']);
 					}
 
 					if (json['success']) {
-						alert(json['success']);
+                        swal(json['success']);
 
 						$('#button-refresh').trigger('click');
 					}
 				},
 				error: function(xhr, ajaxOptions, thrownError) {
-					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+					//alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
 				}
 			});
 		}
@@ -165,11 +166,11 @@ $('#button-folder').popover({
 	html: true,
 	placement: 'bottom',
 	trigger: 'click',
-	title: '<?php echo $entry_folder;?>',
+	title: 'Folder Name',
 	content: function() {
 		html  = '<div class="input-group">';
-		html += '  <input type="text" name="folder" value="" placeholder="<?php echo $entry_folder;?>" class="form-control">';
-		html += '  <span class="input-group-btn"><button type="button" title=<?php echo $button_folder;?>" id="button-create" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></span>';
+		html += '  <input type="text" name="folder" value="" placeholder="Folder Name" class="form-control">';
+		html += '  <span class="input-group-btn"><button type="button" title="Folder" id="button-create" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></span>';
 		html += '</div>';
 
 		return html;
@@ -190,15 +191,15 @@ $('#button-folder').on('shown.bs.popover', function() {
 				$('#button-create').prop('disabled', false);
 			},
 			success: function(json) {
-				if (json['error']) {
-					alert(json['error']);
-				}
+                if (json['error']) {
+                    swal(json['error']);
+                }
 
-				if (json['success']) {
-					alert(json['success']);
+                if (json['success']) {
+                    swal(json['success']);
 
-					$('#button-refresh').trigger('click');
-				}
+                    $('#button-refresh').trigger('click');
+                }
 			},
 			error: function(xhr, ajaxOptions, thrownError) {
 				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
@@ -208,34 +209,45 @@ $('#button-folder').on('shown.bs.popover', function() {
 });
 
 $('#modal-image #button-delete').on('click', function(e) {
-	if (confirm('<?php echo $text_confirm;?>')) {
-		$.ajax({
-			url: myLabel.filemanagerDelete,
-			type: 'post',
-			dataType: 'json',
-			data: $('input[name^=\'path\']:checked'),
-			beforeSend: function() {
-				$('#button-delete').prop('disabled', true);
-			},
-			complete: function() {
-				$('#button-delete').prop('disabled', false);
-			},
-			success: function(json) {
-				if (json['error']) {
-					alert(json['error']);
-				}
+    swal({
+        title: "Confirm Delete",
+        text: "Are you want to delete this record?(Yes/No)",
+        type: "info",
+        showCancelButton: true,
+        closeOnConfirm: false,
+        showLoaderOnConfirm: true
+    }, function () {
 
-				if (json['success']) {
-					alert(json['success']);
+        setTimeout(function () {
+            $.ajax({
+                url: myLabel.filemanagerDelete,
+                type: 'post',
+                dataType: 'json',
+                data: $('input[name^=\'path\']:checked'),
+                beforeSend: function() {
+                    $('#button-delete').prop('disabled', true);
+                },
+                complete: function() {
+                    $('#button-delete').prop('disabled', false);
+                },
+                success: function(json) {
+                    if (json['error']) {
+                        swal(json['error']);
+                    }
 
-					$('#button-refresh').trigger('click');
-				}
-			},
-			error: function(xhr, ajaxOptions, thrownError) {
-				alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-			}
-		});
-	}
+                    if (json['success']) {
+                        swal(json['success']);
+
+                        $('#button-refresh').trigger('click');
+                    }
+                },
+                error: function(xhr, ajaxOptions, thrownError) {
+                    alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+                }
+            });
+        }, 2000);
+
+    });
 });
 </script>
 

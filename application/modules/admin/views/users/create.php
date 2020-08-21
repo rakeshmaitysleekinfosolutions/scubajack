@@ -1,7 +1,7 @@
 <div class="content container-fluid">
 <div class="row">
     <div class="col-sm-4 col-xs-3">
-        <h4 class="page-title">Users</h4>
+        <h4 class="page-title"></h4>
     </div>
     <div class="col-sm-8 col-xs-9 text-right m-b-20">
         <a href="javascript:history.go(-1)" class="btn btn-primary rounded pull-right"><i class="fa fa-back"></i> Back</a>

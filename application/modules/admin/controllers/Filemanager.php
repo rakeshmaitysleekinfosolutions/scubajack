@@ -1,6 +1,15 @@
 <?php
-class FileManager extends AdminController {
-	public function index() {
+class Filemanager extends AdminController {
+    /**
+     * @var string
+     */
+    private $folder;
+    /**
+     * @var string
+     */
+    private $filename;
+
+    public function index() {
 		$this->lang->load('admin/filemanager');
 
 		// Find which protocol to use to pass the full image link back
@@ -32,7 +41,7 @@ class FileManager extends AdminController {
 		$directories = array();
 		$files = array();
 
-		$data['images'] = array();
+		$this->data['images'] = array();
 
 		//$this->load->model('tool/image');
 
@@ -75,15 +84,15 @@ class FileManager extends AdminController {
 					$url .= '&thumb=' . $this->input->get('thumb');
 				}
 
-				$data['images'][] = array(
+				$this->data['images'][] = array(
 					'thumb' => '',
 					'name'  => implode(' ', $name),
 					'type'  => 'directory',
 					'path'  => substr($image, strlen(DIR_IMAGE)),
-					'href'  => $this->url('filemanager?directory=' . urlencode(substr($image, strlen(DIR_IMAGE . 'catalog/'))) . $url, true)
+					'href'  => admin_url('filemanager?directory=' . urlencode(substr($image, strlen(DIR_IMAGE . 'catalog/'))) . $url)
 				);
 			} elseif (is_file($image)) {
-				$data['images'][] = array(
+				$this->data['images'][] = array(
 					'thumb' => $this->resize(substr($image, strlen(DIR_IMAGE)), 100, 100),
 					'name'  => implode(' ', $name),
 					'type'  => 'image',
@@ -96,29 +105,29 @@ class FileManager extends AdminController {
 	
 
 		if ($this->input->get('directory')) {
-			$data['directory'] = urlencode($this->input->get('directory'));
+			$this->data['directory'] = urlencode($this->input->get('directory'));
 		} else {
-			$data['directory'] = '';
+			$this->data['directory'] = 'test';
 		}
 
 		if ($this->input->get('filter_name')) {
-			$data['filter_name'] = $this->input->get('filter_name');
+			$this->data['filter_name'] = $this->input->get('filter_name');
 		} else {
-			$data['filter_name'] = '';
+			$this->data['filter_name'] = '';
 		}
 
 		// Return the target ID for the file manager to set the value
 		if ($this->input->get('target')) {
-			$data['target'] = $this->input->get('target');
+			$this->data['target'] = $this->input->get('target');
 		} else {
-			$data['target'] = '';
+			$this->data['target'] = '';
 		}
 
 		// Return the thumbnail for the file manager to show a thumbnail
 		if ($this->input->get('thumb')) {
-			$data['thumb'] = $this->input->get('thumb');
+			$this->data['thumb'] = $this->input->get('thumb');
 		} else {
-			$data['thumb'] = '';
+			$this->data['thumb'] = '';
 		}
 
 		// Parent
@@ -140,7 +149,7 @@ class FileManager extends AdminController {
 			$url .= '&thumb=' . $this->input->get('thumb');
 		}
 
-		$data['parent'] = admin_url('filemanager?'.$url);
+		$this->data['parent'] = admin_url('filemanager?'.$url);
 
 		// Refresh
 		$url = '';
@@ -157,7 +166,7 @@ class FileManager extends AdminController {
 			$url .= '&thumb=' . $this->input->get('thumb');
 		}
 
-		$data['refresh'] = admin_url('filemanager?' . $url);
+		$this->data['refresh'] = admin_url('filemanager?' . $url);
 
 		$url = '';
 
@@ -176,24 +185,22 @@ class FileManager extends AdminController {
 		if (isset($this->input->get['thumb'])) {
 			$url .= '&thumb=' . $this->input->get('thumb');
 		}
-
+        
 		// $pagination = new Pagination();
 		// $pagination->total = $image_total;
 		// $pagination->page = $page;
 		// $pagination->limit = 16;
 		// $pagination->url = $this->url->link('common/filemanager', 'user_token=' . $this->session->data['user_token'] . $url . '&page={page}', true);
 
-		// $data['pagination'] = $pagination->render();
-
-		$this->setOutput($this->load->view('filemanager/index', $data));
+		// $this->data['pagination'] = $pagination->render();
+        //dd($this->data);
+		$this->setOutput($this->load->view('filemanager/index', $this->data));
 	}
 
 	public function upload() {
-		$this->lang->load('filemanager');
+		$this->lang->load('admin/filemanager');
 
-		$json = array();
-
-	
+		$this->json = array();
 
 		// Make sure we have the correct directory
 		if ($this->input->get('directory')) {
@@ -204,33 +211,37 @@ class FileManager extends AdminController {
 
 		// Check its a directory
 		if (!is_dir($directory) || substr(str_replace('\\', '/', realpath($directory)), 0, strlen(DIR_IMAGE . 'catalog')) != str_replace('\\', '/', DIR_IMAGE . 'catalog')) {
-			$json['error'] = $this->lang->line('error_directory');
+			$this->json['error'] = $this->lang->line('error_directory');
 		}
 
-		if (!$json) {
+		if (!$this->json) {
 			// Check if multiple files are uploaded or just one
 			$files = array();
 
-			if (!empty($this->input->post('file')['name']) && is_array($this->input->post('file')['name'])) {
-				foreach (array_keys($this->input->post('file')['name']) as $key) {
+			if (!empty($_FILES['file']['name']) && is_array($_FILES['file']['name'])) {
+
+				foreach (array_keys($_FILES['file']['name']) as $key) {
+
 					$files[] = array(
-						'name'     => $this->input->post('file')['name'][$key],
-						'type'     => $this->input->post('file')['type'][$key],
-						'tmp_name' => $this->input->post('file')['tmp_name'][$key],
-						'error'    => $this->input->post('file')['error'][$key],
-						'size'     => $this->input->post('file')['size'][$key]
+						'name'     => $_FILES['file']['name'][$key],
+						'type'     => $_FILES['file']['type'][$key],
+						'tmp_name' => $_FILES['file']['tmp_name'][$key],
+						'error'    => $_FILES['file']['error'][$key],
+						'size'     => $_FILES['file']['size'][$key]
 					);
 				}
-			}
+			} else {
+                dd($_FILES['file']);
+            }
 
 			foreach ($files as $file) {
 				if (is_file($file['tmp_name'])) {
 					// Sanitize the filename
-					$filename = basename(html_entity_decode($file['name'], ENT_QUOTES, 'UTF-8'));
+					$this->filename = basename(html_entity_decode($file['name'], ENT_QUOTES, 'UTF-8'));
 
 					// Validate the filename length
-					if ((strlen($filename) < 3) || (strlen($filename) > 255)) {
-						$json['error'] = $this->lang->line('error_filename');
+					if ((strlen($this->filename) < 3) || (strlen($this->filename) > 255)) {
+						$this->json['error'] = $this->lang->line('error_filename');
 					}
 
 					// Allowed file extension types
@@ -241,8 +252,8 @@ class FileManager extends AdminController {
 						'png'
 					);
 
-					if (!in_array(utf8_strtolower(substr(strrchr($filename, '.'), 1)), $allowed)) {
-						$json['error'] = $this->lang->line('error_filetype');
+					if (!in_array(strtolower(substr(strrchr($this->filename, '.'), 1)), $allowed)) {
+						$this->json['error'] = $this->lang->line('error_filetype');
 					}
 
 					// Allowed file mime types
@@ -255,40 +266,39 @@ class FileManager extends AdminController {
 					);
 
 					if (!in_array($file['type'], $allowed)) {
-						$json['error'] = $this->lang->line('error_filetype');
+						$this->json['error'] = $this->lang->line('error_filetype');
 					}
 
 					// Return any upload error
 					if ($file['error'] != UPLOAD_ERR_OK) {
-						$json['error'] = $this->lang->line('error_upload_' . $file['error']);
+						$this->json['error'] = $this->lang->line('error_upload_' . $file['error']);
 					}
 				} else {
-					$json['error'] = $this->lang->line('error_upload');
+					$this->json['error'] = $this->lang->line('error_upload');
 				}
 
-				if (!$json) {
-					move_uploaded_file($file['tmp_name'], $directory . '/' . $filename);
+				if (!$this->json) {
+					move_uploaded_file($file['tmp_name'], $directory . '/' . $this->filename);
 				}
 			}
 		}
 
-		if (!$json) {
-			$json['success'] = $this->lang->line('text_uploaded');
+		if (!$this->json) {
+			$this->json['success'] = $this->lang->line('text_uploaded');
 		}
 
-		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(json_encode($json));
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode($this->json));
 	}
 
 	public function folder() {
-		$this->load->lang('common/filemanager');
+		$this->lang->load('admin/filemanager');
 
-		$json = array();
+		$this->json = array();
 
-		// Check user has permission
-		if (!$this->user->hasPermission('modify', 'common/filemanager')) {
-			$json['error'] = $this->lang->line('error_permission');
-		}
+
 
 		// Make sure we have the correct directory
 		if (isset($this->input->get['directory'])) {
@@ -299,49 +309,49 @@ class FileManager extends AdminController {
 
 		// Check its a directory
 		if (!is_dir($directory) || substr(str_replace('\\', '/', realpath($directory)), 0, strlen(DIR_IMAGE . 'catalog')) != str_replace('\\', '/', DIR_IMAGE . 'catalog')) {
-			$json['error'] = $this->lang->line('error_directory');
+			$this->json['error'] = $this->lang->line('error_directory');
 		}
 
-		if ($this->input->server['input_METHOD'] == 'POST') {
+		if ($this->isPost()) {
 			// Sanitize the folder name
-			$folder = basename(html_entity_decode($this->input->post['folder'], ENT_QUOTES, 'UTF-8'));
+			$this->folder = basename(html_entity_decode($this->input->post('folder'), ENT_QUOTES, 'UTF-8'));
 
 			// Validate the filename length
-			if ((strlen($folder) < 3) || (strlen($folder) > 128)) {
-				$json['error'] = $this->lang->line('error_folder');
+			if ((strlen($this->folder) < 3) || (strlen($this->folder) > 128)) {
+				$this->json['error'] = $this->lang->line('error_folder');
 			}
 
 			// Check if directory already exists or not
-			if (is_dir($directory . '/' . $folder)) {
-				$json['error'] = $this->lang->line('error_exists');
+			if (is_dir($directory . '/' . $this->folder)) {
+				$this->json['error'] = $this->lang->line('error_exists');
 			}
 		}
 
-		if (!isset($json['error'])) {
-			mkdir($directory . '/' . $folder, 0777);
-			chmod($directory . '/' . $folder, 0777);
+		if (!isset($this->json['error'])) {
+			mkdir($directory . '/' . $this->folder, 0777);
+			chmod($directory . '/' . $this->folder, 0777);
 
-			@touch($directory . '/' . $folder . '/' . 'index.html');
+			@touch($directory . '/' . $this->folder . '/' . 'index.html');
 
-			$json['success'] = $this->lang->line('text_directory');
+			$this->json['success'] = $this->lang->line('text_directory');
 		}
-
-		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(json_encode($json));
+        //dd($this->json);
+//		$this->addHeader('Content-Type: application/json');
+//		$this->setOutput(json_encode($this->json));
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode($this->json));
 	}
 
 	public function delete() {
-		$this->load->lang('filemanager');
+		$this->lang->load('admin/filemanager');
 
-		$json = array();
+		$this->json = array();
 
-		// Check user has permission
-		if (!$this->user->hasPermission('modify', 'common/filemanager')) {
-			$json['error'] = $this->lang->line('error_permission');
-		}
 
-		if (isset($this->input->post['path'])) {
-			$paths = $this->input->post['path'];
+		if (!empty($this->input->post('path'))) {
+			$paths = $this->input->post('path');
 		} else {
 			$paths = array();
 		}
@@ -349,14 +359,16 @@ class FileManager extends AdminController {
 		// Loop through each path to run validations
 		foreach ($paths as $path) {
 			// Check path exsists
+            //echo substr(str_replace('\\', '/', realpath(DIR_IMAGE . $path)), 0, strlen(DIR_IMAGE . 'catalog'));
+            //exit;
 			if ($path == DIR_IMAGE . 'catalog' || substr(str_replace('\\', '/', realpath(DIR_IMAGE . $path)), 0, strlen(DIR_IMAGE . 'catalog')) != str_replace('\\', '/', DIR_IMAGE . 'catalog')) {
-				$json['error'] = $this->lang->line('error_delete');
+				$this->json['error'] = $this->lang->line('error_delete');
 
 				break;
 			}
 		}
-
-		if (!$json) {
+        //dd($this->json);
+		if (!$this->json) {
 			// Loop through each path
 			foreach ($paths as $path) {
 				$path = rtrim(DIR_IMAGE . $path, '/');
@@ -403,10 +415,12 @@ class FileManager extends AdminController {
 				}
 			}
 
-			$json['success'] = $this->lang->line('text_delete');
+			$this->json['success'] = $this->lang->line('text_delete');
 		}
 
-		$this->response->addHeader('Content-Type: application/json');
-		$this->response->setOutput(json_encode($json));
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode($this->json));
 	}
 }

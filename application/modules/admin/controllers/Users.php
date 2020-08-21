@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 use Carbon\Carbon;
-class Users extends AdminController {
+class Users extends AdminController implements \Application\Contracts\UserContract {
 
     private $address;
     private $user;
@@ -44,14 +44,14 @@ class Users extends AdminController {
 					'firstname'		=> $result->firstname,
 					'lastname' 		=> $result->lastname,
 					'email' 		=> $result->email,
-                    'status' 		=> ($result->status && $result->status == 1) ? array('value' => 1, 'text' => 'Ative', 'icon' => 'fa fa-dot-circle-o text-success') : array('value' => 0, 'text' => 'Inactive', 'icon' => 'fa fa-dot-circle-o text-danger'),
+                    'status' 		=> ($result->status && $result->status == 1) ? 1 : 0,
                     'created_at'    => Carbon::createFromTimeStamp(strtotime($result->created_at))->diffForHumans(),
-                   // 'updated_at'    => Carbon::createFromTimeStamp(strtotime($result->updated_at))->diffForHumans()
+                    'updated_at'    => ($result->updated_at) ? Carbon::createFromTimeStamp(strtotime($result->updated_at))->diffForHumans() : ''
 				);
 			}
 			$i = 0;
 			foreach($this->rows as $row) {
-			        $checked = ($row['status']['value']) ? 'checked' : '';
+                    $selected = ($row['status']) ? 'selected' : '';
 					$this->data[$i][] = '<td class="text-center">
 											<label class="css-control css-control-primary css-checkbox">
 												<input data-id="'.$row['id'].'" type="checkbox" class="css-control-input selectCheckbox" id="row_'.$row['id'].'" name="row_'.$row['id'].'">
@@ -61,13 +61,20 @@ class Users extends AdminController {
 					$this->data[$i][] = '<td>'.$row['firstname'].'</td>';
 					$this->data[$i][] = '<td>'.$row['lastname'].'</td>';
 					$this->data[$i][] = '<td>'.$row['email'].'</td>';
-					$this->data[$i][] = '<td>
-											<div class="material-switch pull-right">
-											<input data-id="'.$row['id'].'" class="checkboxStatus" id="chat_module" type="checkbox" value="'.$row['status']['value'].'" '.$checked.'/>
-											<label for="chat_module" class="label-success"></label>
-										</div>
+//					$this->data[$i][] = '<td>
+//											<div class="material-switch pull-right">
+//											<input data-id="'.$row['id'].'" class="checkboxStatus" id="chat_module" type="checkbox" value="'.$row['status']['value'].'" '.$checked.'/>
+//											<label for="chat_module" class="label-success"></label>
+//										</div>
+//                                        </td>';
+                $this->data[$i][] = '<td>
+                                            <select data-id="'.$row['id'].'" name="status" class="select floating checkboxStatus" id="input-payment-status" >
+                                                <option value="0" '.$selected.'>Inactive</option>
+                                                <option value="1" '.$selected.'>Active</option>
+                                            </select>
                                         </td>';
                     $this->data[$i][] = '<td>'.$row['created_at'].'</td>';
+                $this->data[$i][] = '<td>'.$row['updated_at'].'</td>';
 					$this->data[$i][] = '<td class="text-right">
 	                            <div class="dropdown">
 	                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
@@ -103,8 +110,13 @@ class Users extends AdminController {
 		if($this->isAjaxRequest()) {
 			$this->request = $this->input->post();
 			if(isset($this->request['status']) && isset($this->request['id'])) {
+
+                $this->userId   = (isset($this->request['id'])) ? $this->request['id'] : '';
+                $this->status       = (isset($this->request['status'])) ? $this->request['status'] : '';
+
                 $this->load->model('User_model');
-                $this->User_model->updateStatus($this->input->post());
+                $this->User_model->updateStatus($this->userId, $this->status);
+
                 $this->json['status'] = 'Status has been successfully updated';
                 return $this->output
                     ->set_content_type('application/json')
@@ -305,6 +317,7 @@ class Users extends AdminController {
             $this->data['state_id'] = '';
         }
         $this->data['countries'] = $this->countries();
+        $this->data['back'] = admin_url('category');
 
         $this->template->javascript->add('assets/js/jquery.validate.js');
         $this->template->javascript->add('assets/js/additional-methods.js');
@@ -372,7 +385,7 @@ class Users extends AdminController {
             $this->setAddress($this->user->address());
         }
 		if(!$this->userId) {
-			$this->redirect($this->url(admin_url('users')));
+			$this->redirect(admin_url('users'));
 		}
 
 		//$this->dd($this->user->id);
@@ -415,10 +428,10 @@ class Users extends AdminController {
         $this->form();
 
 	}
-	public function show() {
+	public function show($id) {
 		//$this->template->admin('show');
 	}
-	protected function validateForm() {
+    public function validateForm() {
 
 		if ((strlen($this->input->post('firstname')) < 1) || (strlen(trim($this->input->post('firstname'))) > 32)) {
 			$this->error['firstname'] = $this->lang->line('error_firstname');

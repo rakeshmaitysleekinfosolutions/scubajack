@@ -5,6 +5,7 @@
       <sourceFolder url="file://$MODULE_DIR$/application/mail" isTestSource="false" packagePrefix="Mail\" />
       <sourceFolder url="file://$MODULE_DIR$/spec" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/application/contracts" isTestSource="false" packagePrefix="Application\Contracts\" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/composer" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/doctrine/instantiator" />
       <excludeFolder url="file://$MODULE_DIR$/vendor/mikey179/vfsstream" />

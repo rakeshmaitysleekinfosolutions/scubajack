@@ -18,7 +18,8 @@
 	},
 	"autoload": {
         "psr-4": {
-            "Mail\\": "application/mail/"
+            "Mail\\": "application/mail/",
+			"Application\\Contracts\\": "application/contracts/"
         }
     }
 }

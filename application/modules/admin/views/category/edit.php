@@ -12,7 +12,7 @@
             </div> -->
         </div>
     </div>
-    <form id="frmSignUp" action="<?php echo admin_url('category/store');?>" method="post">
+    <form id="frmSignUp" action="<?php echo admin_url('category/update');?>" method="post">
         <input type="hidden" name="categoryId" value="<?php echo $categoryId;?>">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">

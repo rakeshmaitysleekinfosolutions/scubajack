@@ -32,16 +32,12 @@
             }).on('click', '.edit', function (e) {
                 var id = $(this).data('id');
                 window.location.href = myLabel.edit + id;
-            }).on('click', '.checkboxStatus', function (e) {
+            }).on('change', '.checkboxStatus', function (e) {
 
                 var id      = $(this).attr('data-id');
                 var status  = $(this).val();
 
-                if(status == 1) {
-                    status = 0;
-                } else {
-                    status = 1;
-                }
+
 
                 
                 $.ajax({

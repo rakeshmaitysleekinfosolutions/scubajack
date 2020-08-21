@@ -29,5 +29,35 @@ class Category_model extends BaseModel {
     public static function factory($attr = array()) {
         return new Category_model($attr);
     }
+    public function addCategory($data = array()) {
+        $this->db->query("INSERT INTO category SET name = '" . $this->db->escape_str($data['name']) . "', slug = '" . $this->db->escape_str($data['slug']) . "', status = '" . $this->db->escape_str($data['status'])."'");
+        $categoryId = $this->db->insert_id();
+        $this->db->query("INSERT INTO category_description SET category_id = '" . (int)$categoryId . "', image = '" . $this->db->escape_str($data['image']) . "', description = '" . $this->db->escape_str($data['description']) . "', meta_title = '" . $this->db->escape_str($data['meta_title']) . "', meta_keyword = '" . $this->db->escape_str($data['meta_keyword']) . "', meta_description = '" . $this->db->escape_str($data['meta_description']) . "'");
+    }
+    public function categoryDescription() {
+        return $this->hasMany('CategoryDescription_model', 'category_id', 'id')->get()->row_object();
+    }
+    public function getCategoryBySlug($slug) {
+        $query = $this->db->query("SELECT * FROM category WHERE slug = '" . $this->db->escape_str(strtolower($slug)) . "'");
+        return $query->row_array();
+    }
+
+    public function editCategory($categoryId, $data) {
+        //dd($data);
+        $this->db->query("UPDATE category SET name = '" . $this->db->escape_str($data['name']) . "', slug = '" . $this->db->escape_str($data['slug']) . "', status = '" . $this->db->escape_str($data['status'])."' WHERE id = '" . (int)$categoryId . "'");
+        $this->db->query("DELETE FROM category_description WHERE category_id = '" . (int)$categoryId . "'");
+        $this->db->query("INSERT INTO category_description SET category_id = '" . (int)$categoryId . "', image = '" . $this->db->escape_str($data['image']) . "', description = '" . $this->db->escape_str($data['description']) . "', meta_title = '" . $this->db->escape_str($data['meta_title']) . "', meta_keyword = '" . $this->db->escape_str($data['meta_keyword']) . "', meta_description = '" . $this->db->escape_str($data['meta_description']) . "'");
+    }
+    public function deleteCategory($categoryId, $forceDelete = false) {
+        if($forceDelete) {
+            $this->db->query("DELETE FROM category WHERE id = '" . (int)$categoryId . "'");
+            $this->db->query("DELETE FROM category_description WHERE category_id = '" . (int)$categoryId . "'");
+        }
+        $this->db->query("UPDATE category SET is_deleted = 1 WHERE id = '" . (int)$categoryId . "'");
+        $this->db->query("UPDATE category_description SET is_deleted = 1 WHERE category_id = '" . (int)$categoryId . "'");
+    }
+    public function updateStatus($categoryId, $status) {
+        $this->db->query("UPDATE category SET status = '" . $this->db->escape_str($status) . "' WHERE id = '" . (int)$categoryId . "'");
+    }
 
 }

@@ -1,7 +1,23 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 use Carbon\Carbon;
-class Category extends AdminController {
+use Application\Contracts\CategoryContract;
+
+class Category extends AdminController implements CategoryContract {
+
+    /**
+     * @var object
+     */
+    private $category;
+    private $categoryDescription;
+    /**
+     * @var string
+     */
+    private $categoryId;
+    /**
+     * @var mixed|string
+     */
+    private $status;
 
     public function onLoadDatatableEventHandler() {
 		$this->load->model('Category_model');
@@ -19,7 +35,7 @@ class Category extends AdminController {
 			}
 			$i = 0;
 			foreach($this->rows as $row) {
-			        $checked = ($row['status']) ? 'checked' : '';
+                    $selected = ($row['status'] == 1) ? 'selected' : '';
 					$this->data[$i][] = '<td class="text-center">
 											<label class="css-control css-control-primary css-checkbox">
 												<input data-id="'.$row['id'].'" type="checkbox" class="css-control-input selectCheckbox" id="row_'.$row['id'].'" name="row_'.$row['id'].'">
@@ -28,11 +44,17 @@ class Category extends AdminController {
 										</td>';
 					$this->data[$i][] = '<td>'.$row['name'].'</td>';
 					$this->data[$i][] = '<td>'.$row['slug'].'</td>';
-					$this->data[$i][] = '<td>
-											<div class="material-switch pull-right">
-											<input data-id="'.$row['id'].'" class="checkboxStatus" id="chat_module" type="checkbox" value="'.$row['status'].'" '.$checked.'/>
-											<label for="chat_module" class="label-success"></label>
-										</div>
+//					$this->data[$i][] = '<td>
+//											<div class="material-switch pull-right">
+//											<input data-id="'.$row['id'].'" class="checkboxStatus" name="switch_checkbox" id="chat_module" type="checkbox" value="'.$row['status'].'" '.$checked.'/>
+//											<label for="chat_module" class="label-success"></label>
+//										</div>
+//                                        </td>';
+                    $this->data[$i][] = '<td>
+                                            <select data-id="'.$row['id'].'" name="status" class="select floating checkboxStatus" id="input-payment-status" >
+                                                <option value="0" '.$selected.'>Inactive</option>
+                                                <option value="1" '.$selected.'>Active</option>
+                                            </select>
                                         </td>';
                     $this->data[$i][] = '<td>'.$row['created_at'].'</td>';
                     $this->data[$i][] = '<td>'.$row['updated_at'].'</td>';
@@ -64,6 +86,23 @@ class Category extends AdminController {
                     ->set_output(json_encode(array('data' => [])));
 		}
 	}
+    public function onClickStatusEventHandler() {
+        if($this->isAjaxRequest()) {
+            $this->request = $this->input->post();
+            $this->categoryId   = (isset($this->request['id'])) ? $this->request['id'] : '';
+            $this->status       = (isset($this->request['status'])) ? $this->request['status'] : '';
+
+            $this->load->model('Category_model');
+            $this->Category_model->updateStatus($this->categoryId, $this->status);
+            $this->json['status'] = 'Status has been successfully updated';
+
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode($this->json));
+
+        }
+    }
     public function index() {
         $this->template->set_template('layout/admin');
        
@@ -95,16 +134,25 @@ class Category extends AdminController {
         } else {
             $this->data['error_slug'] = '';
         }
-
+        //dd($this->data);
         if (isset($this->error['status'])) {
             $this->data['error_status'] = $this->error['status'];
         } else {
             $this->data['error_status'] = '';
         }
-
+        if (isset($this->error['image'])) {
+            $this->data['error_image'] = $this->error['image'];
+        } else {
+            $this->data['error_image'] = '';
+        }
+        if (isset($this->error['meta_title'])) {
+            $this->data['error_meta_title'] = $this->error['meta_title'];
+        } else {
+            $this->data['error_meta_title'] = '';
+        }
         // Data
 
-        // User ID
+        // Category ID
         if (!empty($this->input->post('categoryId'))) {
             $this->data['categoryId'] = $this->input->post('categoryId');
         } elseif (!empty($this->category)) {
@@ -123,11 +171,11 @@ class Category extends AdminController {
 
         // Slug
         if (!empty($this->input->post('slug'))) {
-            $this->data['slug'] = $this->input->post('slug');
+            $this->data['slug'] = url_title($this->input->post('slug'),'dash', true);
         } elseif (!empty($this->category)) {
             $this->data['slug'] = $this->category->slug;
         } else {
-            $this->data['slug'] = '';
+            $this->data['slug'] = url_title($this->input->post('name'),'dash', true);
         }
         // Description
         if (!empty($this->input->post('description'))) {
@@ -161,7 +209,7 @@ class Category extends AdminController {
         } else {
             $this->data['meta_keyword'] = '';
         }
-       
+        //dd($this->data);
         // Status
         if (!empty($this->input->post('status'))) {
             $this->data['status'] = $this->input->post('status');
@@ -190,24 +238,39 @@ class Category extends AdminController {
 		}
 
 		$this->data['placeholder'] = $this->resize('no_image.png', 100, 100);
+		$this->data['back'] = admin_url('category');
+		//$this->dd($this->data);
     }
-    protected function validateForm() {
-
+    public function validateForm() {
+        $this->lang->load('admin/category');
 		if ((strlen($this->input->post('name')) < 1) || (strlen(trim($this->input->post('name'))) > 32)) {
 			$this->error['name'] = $this->lang->line('error_name');
 		}
 
 		if ((strlen($this->input->post('slug')) < 1) || (strlen(trim($this->input->post('slug'))) > 32)) {
-			$this->error['slug'] = $this->lang->line('error_lastname');
+			$this->error['slug'] = $this->lang->line('error_slug');
 		}
-		
+		//dd($this->input->post('status'));
         if ($this->input->post('status') == '') {
             $this->error['status'] = $this->lang->line('error_status');
         }
-        
+        if ((strlen($this->input->post('meta_title')) < 1) || (strlen(trim($this->input->post('meta_title'))) > 32)) {
+            $this->error['meta_title'] = $this->lang->line('error_meta_title');
+        }
+        if ((strlen($this->input->post('image')) < 1)) {
+            $this->error['image'] = $this->lang->line('error_image');
+        }
+        $this->load->model('Category_model');
+        //$categoryInfo = Category_model::factory()->getCategoryBySlug($this->input->post('slug'));
+        //dd($categoryInfo);
+//        if ($categoryInfo) {
+//            $this->error['warning'] = $this->lang->line('error_exists_slug');
+//        }
+
 		if ($this->error && !isset($this->error['warning'])) {
 			$this->error['warning'] = $this->lang->line('error_warning');
 		}
+		//dd($this->error);
       
 		return !$this->error;
     }
@@ -216,12 +279,94 @@ class Category extends AdminController {
         $this->template->javascript->add('assets/js/additional-methods.js');
         $this->template->javascript->add('assets/js/admin/category/Category.js');
 
-        $this->template->stylesheet->add('assets/theme/light/plugins/summernote/dist/summernote.css');
-        $this->template->javascript->add('assets/theme/light/plugins/summernote/dist/summernote.min.js');
+
 
         $this->template->set_template('layout/admin');
         $this->getData();
+        //dd($this->data);
         $this->template->content->view('category/create', $this->data);
         $this->template->publish();
+    }
+    public function store() {
+        if ($this->isPost() && $this->validateForm()) {
+
+            $this->load->model('Category_model');
+
+            $this->getData();
+            $this->Category_model->addCategory($this->data);
+            $this->setMessage('message', $this->lang->line('text_success'));
+        }
+        $this->create();
+    }
+    public function edit($categoryId) {
+        if(!$this->isPost()) {
+            $this->load->model('Category_model');
+            $this->category = Category_model::factory()->findOne($categoryId);
+        }
+        if($this->category) {
+            $this->categoryDescription = $this->category->categoryDescription();
+        }
+        if(!$this->category) {
+            $this->redirect(admin_url('category'));
+        }
+        $this->getData();
+        //$this->dd($this->data);
+        $this->template->javascript->add('assets/js/jquery.validate.js');
+        $this->template->javascript->add('assets/js/additional-methods.js');
+        $this->template->javascript->add('assets/js/admin/category/Category.js');
+
+        $this->template->set_template('layout/admin');
+        $this->template->content->view('category/edit', $this->data);
+        $this->template->publish();
+    }
+    public function update() {
+        try {
+            $this->lang->load('admin/category');
+            if ($this->isPost() && $this->validateForm()) {
+                $this->load->model('Category_model');
+                $this->categoryId = ($this->input->post('categoryId')) ? $this->input->post('categoryId') : '';
+
+                $this->getData();
+                $this->Category_model->editCategory($this->categoryId, $this->data);
+                $this->setMessage('message', $this->lang->line('text_success'));
+                //$this->redirect(admin_url('category'));
+                $this->redirect(admin_url('category/edit/'.$this->categoryId));
+            }
+            $this->getData();
+        } catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
+
+    }
+    public function delete() {
+        if($this->isAjaxRequest()) {
+            $this->request = $this->input->post();
+
+            if(!empty($this->request['selected']) && isset($this->request['selected'])) {
+                if(array_key_exists('selected', $this->request) && is_array($this->request['selected'])) {
+                    $this->selected = $this->request['selected'];
+                }
+            }
+            if($this->selected) {
+                $this->load->model('Category_model');
+                foreach ($this->selected as $categoryId) {
+                    $this->Category_model->deleteCategory($categoryId);
+                }
+                return $this->output
+                    ->set_content_type('application/json')
+                    ->set_status_header(200)
+                    ->set_output(json_encode(array('data' => $this->onLoadDatatableEventHandler(), 'status' => true,'message' => 'Record has been successfully deleted')));
+            }
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode(array('data' => $this->onLoadDatatableEventHandler(), 'status' => false, 'message' => 'Sorry! we could not delete this record')));
+
+        }
+
+    }
+    public function show($id)
+    {
+        // TODO: Implement show() method.
     }
 }

@@ -20,11 +20,13 @@
 		<link rel="stylesheet" href="<?php echo base_url();?>assets/theme/light/plugins/morris/morris.css">
 		
 		<link rel="stylesheet" href="<?php echo base_url();?>assets/theme/light/js/sweetalert/sweetalert.css">
-		<!-- <link rel="stylesheet" href="<?php echo base_url();?>assets/theme/light/js/summernote/summernote.css"> -->
+		 <link rel="stylesheet" href="<?php echo base_url();?>assets/theme/light/js/summernote/summernote.css">
 
 		<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/theme/light/css/dataTables.bootstrap.min.css"> -->
 		<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/theme/light/css/select2.min.css">
 		<link rel="stylesheet" href="<?php echo base_url();?>assets/theme/light/css/style.css">
+
+
 		<?php echo $this->template->stylesheet; ?>
 	</head>
     <body>
@@ -145,12 +147,12 @@
 					<div id="sidebar-menu" class="sidebar-menu">
 						<ul>
 							<li class="active"> 
-								<a href="<?php echo admin_url('dashboard');?>">Dashboard</a>
+								<a href="<?php echo admin_url('dashboard');?>"><i class="fa fa-dashboard fw"></i> Dashboard</a>
 							</li>
 							<li class="submenu">
-								<a href="#" class="noti-dot"><span> Manage Users</span> <span class="menu-arrow"></span></a>
+								<a href="#" class="noti-dot"><i class="fa fa-user fw"></i><span> Users</span> <span class="menu-arrow"></span></a>
 								<ul class="list-unstyled" style="display: none;">
-									<li><a href="<?php echo admin_url('users');?>">Users</a></li>
+									<li><a href="<?php echo admin_url('users');?>"><i class="fa fa-double-angle-right"></i>Users</a></li>
 <!--									<li><a href="--><?php //echo admin_url('users/create');?><!--">Add User</a></li>-->
 									<!-- <li><a href="leaves.html"><span>Leave Requests</span> <span class="badge bg-primary pull-right">1</span></a></li>
 									<li><a href="attendance.html">Attendance</a></li>
@@ -159,15 +161,15 @@
 								</ul>
 							</li>
 							<li class="submenu">
-								<a href="#" ><span> Manage Product</span><span class="menu-arrow"></span></a>
+								<a href="#" ><i class="fa fa-tags fw"></i><span> Catalog</span><span class="menu-arrow"></span></a>
 								<ul class="list-unstyled" style="display: none;">
 									<li><a href="javascript:void(0);">Products</a></li>
-									<li><a href="<?php echo admin_url('category');?>">Category</a></li>
+									<li><a href="<?php echo admin_url('category');?>">Categories</a></li>
 								</ul>
 							</li>
-							<!-- <li> 
-								<a href="<?php echo base_url('user');?>">Users</a>
-							</li> -->
+							<li>
+								<a href="javascript:void(0);"><i class="fa fa-cog fw"></i> Settings</a>
+							</li>
 							<!-- <li> 
 								<a href="<?php echo base_url('user');?>">Category</a>
 							</li> -->
@@ -198,8 +200,10 @@
 		<script type="text/javascript" src="<?php echo base_url();?>assets/theme/light//js/select2.min.js"></script>
 
 		<script type="text/javascript" src="<?php echo base_url();?>assets/theme/light/js/sweetalert/sweetalert.js" ></script>
-		<!-- <script type="text/javascript" src="<?php echo base_url();?>assets/theme/light/js/summernote/summernote.js" ></script> -->
+		 <script type="text/javascript" src="<?php echo base_url();?>assets/theme/light/js/summernote/summernote.js" ></script>
 		<!-- <script type="text/javascript" src="<?php echo base_url();?>assets/js/App.js" ></script> -->
+
+
 
 		<?php echo $this->template->javascript; ?>
 		<script>
