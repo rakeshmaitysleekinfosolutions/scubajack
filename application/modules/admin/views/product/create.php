@@ -1,5 +1,5 @@
 <div class="content container-fluid">
-    <form id="frmSignUp" action="<?php echo admin_url('category/update');?>" method="post">
+    <form id="frmSignUp" action="<?php echo admin_url('category/store');?>" method="post">
         <input type="hidden" name="categoryId" value="<?php echo $categoryId;?>">
         <div class="row">
             <?php if($error_warning) { ?>
@@ -15,7 +15,7 @@
         </div>
         <div class="row">
             <div class="col-sm-8">
-                <h4 class="page-title">Add Category</h4>
+                <h4 class="page-title">Add Product</h4>
             </div>
 
             <div class="col-sm-4 text-right m-b-30">
@@ -24,7 +24,7 @@
             </div>
         </div>
         <div class="card-box">
-            <h3 class="card-title">Category Details</h3>
+            <h3 class="card-title">Product Details</h3>
             <div class="row">
                 <div class="col-md-12">
                     <div class="profile-view">
@@ -42,19 +42,27 @@
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
+                                        <label class="control-label">Category <span class="text-danger">*</span></label>
+                                        <select name="status" class="select floating" id="input-payment-status" multiple>
+<!--                                            <option value="" selected>Select option</option>-->
+                                            <?php if(!empty($categories)) {
+                                                foreach ($categories as $category) {?>
+                                                    <option value="<?php echo $category->id;?>" <?php echo ($categoryId == $category->id) ? 'selected' : '';?>><?php echo $category->name;?></option>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </select>
+                                        <?php if($error_status) { ?>
+                                            <div class="text-danger"><?php echo $error_status;?></div>
+                                        <?php } ?>
+                                    </div>
+                                    <div class="form-group">
                                         <label class="control-label">Name <span class="text-danger">*</span></label>
                                         <input value="<?php echo $name;?>" class="form-control" type="text" name="name" id="input-payment-firstname" autocomplete="off" >
                                         <?php if($error_name) { ?>
                                             <div class="text-danger"><?php  echo $error_name;?></div>
                                         <?php } ?>
                                     </div>
-                                    <div class="form-group">
-                                        <label class="control-label">Slug <span class="text-danger"></span></label>
-                                        <input value="<?php echo $slug;?>" class="form-control" type="text" name="slug" id="input-payment-lastname" autocomplete="off" >
-                                        <?php if($error_slug) { ?>
-                                            <div class="text-danger"><?php  echo $error_slug;?></div>
-                                        <?php } ?>
-                                    </div>
+
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
@@ -68,6 +76,13 @@
                                             <div class="text-danger"><?php echo $error_status;?></div>
                                         <?php } ?>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="control-label">Slug <span class="text-danger"></span></label>
+                                        <input value="<?php echo $slug;?>" class="form-control" type="text" name="slug" id="input-payment-lastname" autocomplete="off" >
+                                        <?php if($error_slug) { ?>
+                                            <div class="text-danger"><?php  echo $error_slug;?></div>
+                                        <?php } ?>
+                                    </div>
 
                                 </div>
                             </div>
@@ -77,7 +92,22 @@
             </div>
         </div>
         <div class="row">
+
             <div class="col-md-3">
+                <div class="card-box m-b-0">
+                    <h3 class="card-title">Video Upload</h3>
+                    <div class="skills">
+                        <div class="form-group">
+                            <label class="control-label">Meta Title <span class="text-danger">*</span></label>
+                            <input value="<?php echo $meta_title;?>" name="meta_title" type="text" class="form-control" placeholder="Enter your message here">
+                            <?php if($error_meta_title) { ?>
+                                <div class="text-danger"><?php echo $error_meta_title;?></div>
+                            <?php } ?>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="clearfix">...</div>
                 <div class="card-box m-b-0">
                     <h3 class="card-title">Meta Data</h3>
                     <div class="skills">

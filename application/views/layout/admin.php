@@ -164,7 +164,7 @@
 							<li class="submenu">
 								<a href="#" ><i class="fa fa-tags fw"></i><span> Catalog</span><span class="menu-arrow"></span></a>
 								<ul class="list-unstyled" style="display: none;">
-									<li><a href="javascript:void(0);">Products</a></li>
+									<li><a href="<?php echo admin_url('product');?>">Products</a></li>
 									<li class="categoryplus"><a href="<?php echo admin_url('category');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Categories</span></a></li>
 								</ul>
 							</li>

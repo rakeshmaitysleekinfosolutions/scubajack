@@ -1,7 +1,7 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
-class Category_model extends BaseModel {
+class Product_model extends BaseModel {
     
     protected $table = "category";
 
@@ -27,7 +27,7 @@ class Category_model extends BaseModel {
     protected $recordDeletedTrueValue = '0';
 
     public static function factory($attr = array()) {
-        return new Category_model($attr);
+        return new Product_model($attr);
     }
     public function addCategory($data = array()) {
         $this->db->query("INSERT INTO category SET name = '" . $this->db->escape_str($data['name']) . "', slug = '" . $this->db->escape_str($data['slug']) . "', status = '" . $this->db->escape_str($data['status'])."'");
@@ -59,7 +59,5 @@ class Category_model extends BaseModel {
     public function updateStatus($categoryId, $status) {
         $this->db->query("UPDATE category SET status = '" . $this->db->escape_str($status) . "' WHERE id = '" . (int)$categoryId . "'");
     }
-
-
 
 }

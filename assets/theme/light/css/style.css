@@ -1363,3 +1363,9 @@ table.table-inbox tbody tr.checked {background-color: #ffffcc;}
     background:#ff9b44;
     color: #fff;
 }
+
+div#modal-image {
+	left: 140px;
+	top: 172px;
+	position: fixed;
+}
