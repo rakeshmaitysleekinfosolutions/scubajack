@@ -103,11 +103,20 @@
                             <?php if($error_meta_title) { ?>
                                 <div class="text-danger"><?php echo $error_meta_title;?></div>
                             <?php } ?>
+                                     <div class="profile-img-two">
+                                <!--                            <a href="#"><img class="avatar" src="assets/img/user.jpg" alt=""></a>-->
+                                <a href="" id="thumb-image" data-toggle="image" class="img-thumbnail"><img src="<?php echo $thumb;?>" alt="" title="" data-placeholder="<?php echo $placeholder;?>"/></a>
+                                <input type="hidden" name="image" value="<?php echo $image;?>" id="input-image"/>
+                                <?php if($error_image) { ?>
+                                    <div class="text-danger"><?php  echo $error_image;?></div>
+                                <?php } ?>
+                            </div>
                         </div>
+
 
                     </div>
                 </div>
-                <div class="clearfix">...</div>
+                <div class="clearfix">..</div>
                 <div class="card-box m-b-0">
                     <h3 class="card-title">Meta Data</h3>
                     <div class="skills">
