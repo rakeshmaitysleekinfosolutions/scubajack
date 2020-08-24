@@ -94,43 +94,7 @@
         <div class="row">
 
             <div class="col-md-3">
-                <div class="card-box m-b-0">
-                    <h3 class="card-title">Video Upload</h3>
-                    <div class="skills">
-                        <div class="form-group">
-                            <label class="control-label">Meta Title <span class="text-danger">*</span></label>
-                            <input value="<?php echo $meta_title;?>" name="meta_title" type="text" class="form-control" placeholder="Enter your message here">
-                            <?php if($error_meta_title) { ?>
-                                <div class="text-danger"><?php echo $error_meta_title;?></div>
-                            <?php } ?>
-                                     <div class="profile-img-two">
-                                <!--                            <a href="#"><img class="avatar" src="assets/img/user.jpg" alt=""></a>-->
-                               
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-                   <div class="card-box pdf">
-                    <h3 class="card-title">PDF Upload</h3>
-                    <div class="skills">
-                        <div class="form-group">
-                          
-                                     <div class="profile-img-two">
-                                <!--                            <a href="#"><img class="avatar" src="assets/img/user.jpg" alt=""></a>-->
-                                <a href="" id="thumb-image" data-toggle="image" class="img-thumbnail"><img src="<?php echo $thumb;?>" alt="" title="" data-placeholder="<?php echo $placeholder;?>"/></a>
-                                <input type="hidden" name="image" value="<?php echo $image;?>" id="input-image"/>
-                                <?php if($error_image) { ?>
-                                    <div class="text-danger"><?php  echo $error_image;?></div>
-                                <?php } ?>
-                            </div>
-                        </div>
-
-
-                    </div>
-                </div>
-                <div class="clearfix"></div>
+          
                 <div class="card-box m-b-0">
                     <h3 class="card-title">Meta Data</h3>
                     <div class="skills">
@@ -152,7 +116,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-9">
+            <div class="col-md-6">
                 <div class="card-box">
                     <h3 class="card-title">Category Description</h3>
                     <div class="experience-box">
@@ -164,6 +128,43 @@
                     </div>
                 </div>
 
+            </div>
+            <div class="col-md-3">
+                <div class="card-box m-b-0">
+                    <h3 class="card-title">Video Upload</h3>
+                    <div class="skills">
+                        <div class="form-group">
+                            <label class="control-label">Meta Title <span class="text-danger">*</span></label>
+                            <input value="" name="meta_title" type="text" class="form-control" placeholder="Enter your message here">
+                                                                 <div class="profile-img-two">
+                                <!--                            <a href="#"><img class="avatar" src="assets/img/user.jpg" alt=""></a>-->
+                               
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                
+                   <div class="card-box pdf">
+                    <h3 class="card-title">PDF Upload</h3>
+                    <div class="skills">
+                        <div class="form-group">
+                          
+                                     <div class="profile-img-two">
+                                <!--                            <a href="#"><img class="avatar" src="assets/img/user.jpg" alt=""></a>-->
+                                <a href="" id="thumb-image" data-toggle="image" class="img-thumbnail"><img src="<?php echo $thumb;?>" alt="" title="" data-placeholder="<?php echo $placeholder;?>"/></a>
+                                <input type="hidden" name="image" value="<?php echo $image;?>" id="input-image"/>
+                                <?php if($error_image) { ?>
+                                    <div class="text-danger"><?php  echo $error_image;?></div>
+                                <?php } ?>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="clearfix"></div>
             </div>
         </div>
     </form>
