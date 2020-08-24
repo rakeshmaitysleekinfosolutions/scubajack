@@ -191,5 +191,19 @@ if(!defined('BASEPATH')) EXIT("No direct script access allowed");
             return ($ci->session->flashdata($key)) ? true : false;
         }
     }
+    if(!function_exists('pdfThumbnail')) {
+        function pdfThumbnail($source, $target) {
+            $ci = get_instance();
+            $target = dirname($source).DIRECTORY_SEPARATOR.$target;
+            $im     = new Imagick($source."[0]"); // 0-first page, 1-second page
+            $im->setImageColorspace(255); // prevent image colors from inverting
+            $im->setimageformat("jpeg");
+            $im->thumbnailimage(160, 120); // width and height
+            $im->writeimage($target);
+            $im->clear();
+            $im->destroy();
+        }
+    }
+
 }
 ?>

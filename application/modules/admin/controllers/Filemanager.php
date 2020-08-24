@@ -262,7 +262,8 @@ class Filemanager extends AdminController {
 						'image/pjpeg',
 						'image/png',
 						'image/x-png',
-						'image/gif'
+						'image/gif',
+                        'application/pdf'
 					);
 
 					if (!in_array($file['type'], $allowed)) {

@@ -44,7 +44,7 @@
                                     <div class="form-group">
                                         <label class="control-label">Category <span class="text-danger">*</span></label>
                                         <select name="status" class="select floating" id="input-payment-status" multiple>
-<!--                                            <option value="" selected>Select option</option>-->
+
                                             <?php if(!empty($categories)) {
                                                 foreach ($categories as $category) {?>
                                                     <option value="<?php echo $category->id;?>" <?php echo ($categoryId == $category->id) ? 'selected' : '';?>><?php echo $category->name;?></option>
@@ -99,15 +99,17 @@
                     <div class="skills">
                         <div class="form-group">
                             <label class="control-label">Meta Title <span class="text-danger">*</span></label>
-                            <input value="<?php echo $meta_title;?>" name="meta_title" type="text" class="form-control" placeholder="Enter your message here">
+                            <input id="videoInputBox" name="meta_title" type="text" class="form-control" placeholder="Enter your message here">
                             <?php if($error_meta_title) { ?>
                                 <div class="text-danger"><?php echo $error_meta_title;?></div>
                             <?php } ?>
+                            <iframe width="420" height="315" src="" frameborder="0" allowfullscreen></iframe>
                         </div>
 
                     </div>
                 </div>
-                <div class="clearfix">...</div>
+                <div class="clearfix"></div>
+                <div class="clearfix"></div>
                 <div class="card-box m-b-0">
                     <h3 class="card-title">Meta Data</h3>
                     <div class="skills">
