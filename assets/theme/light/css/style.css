@@ -1381,3 +1381,6 @@ div#modal-image {
 button#button-image {
     margin-bottom: 10px;
 }
+.card-box.pdf {
+    margin-top: 20px;
+}
