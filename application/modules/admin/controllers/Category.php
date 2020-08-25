@@ -140,11 +140,13 @@ class Category extends AdminController implements CategoryContract {
         } else {
             $this->data['error_status'] = '';
         }
+        /*
         if (isset($this->error['image'])) {
             $this->data['error_image'] = $this->error['image'];
         } else {
             $this->data['error_image'] = '';
         }
+        */
         if (isset($this->error['meta_title'])) {
             $this->data['error_meta_title'] = $this->error['meta_title'];
         } else {
@@ -219,6 +221,7 @@ class Category extends AdminController implements CategoryContract {
             $this->data['status'] = 0;
         }
         // Image
+        /*
 		if (!empty($this->input->post('image'))) {
 			$this->data['image'] = $this->input->post('image');
 		} elseif (!empty($this->categoryDescription)) {
@@ -226,8 +229,6 @@ class Category extends AdminController implements CategoryContract {
 		} else {
 			$this->data['image'] = '';
 		}
-
-		
 
 		if (!empty($this->input->post('image')) && is_file(DIR_IMAGE . $this->input->post('image'))) {
 			$this->data['thumb'] = $this->resize($this->input->post('image'), 100, 100);
@@ -238,34 +239,32 @@ class Category extends AdminController implements CategoryContract {
 		}
 
 		$this->data['placeholder'] = $this->resize('no_image.png', 100, 100);
+        */
 		$this->data['back'] = admin_url('category');
 		//$this->dd($this->data);
     }
     public function validateForm() {
         $this->lang->load('admin/category');
-		if ((strlen($this->input->post('name')) < 1) || (strlen(trim($this->input->post('name'))) > 32)) {
+		if ((strlen($this->input->post('name')) < 1) || (strlen(trim($this->input->post('name'))) > 255)) {
 			$this->error['name'] = $this->lang->line('error_name');
 		}
 
-		if ((strlen($this->input->post('slug')) < 1) || (strlen(trim($this->input->post('slug'))) > 32)) {
-			$this->error['slug'] = $this->lang->line('error_slug');
-		}
+//		if ((strlen($this->input->post('slug')) < 1) || (strlen(trim($this->input->post('slug'))) > 255)) {
+//			$this->error['slug'] = $this->lang->line('error_slug');
+//		}
 		//dd($this->input->post('status'));
         if ($this->input->post('status') == '') {
             $this->error['status'] = $this->lang->line('error_status');
         }
-        if ((strlen($this->input->post('meta_title')) < 1) || (strlen(trim($this->input->post('meta_title'))) > 32)) {
+        if ((strlen($this->input->post('meta_title')) < 1) || (strlen(trim($this->input->post('meta_title'))) > 255)) {
             $this->error['meta_title'] = $this->lang->line('error_meta_title');
         }
+        /*
         if ((strlen($this->input->post('image')) < 1)) {
             $this->error['image'] = $this->lang->line('error_image');
         }
+        */
         $this->load->model('Category_model');
-        //$categoryInfo = Category_model::factory()->getCategoryBySlug($this->input->post('slug'));
-        //dd($categoryInfo);
-//        if ($categoryInfo) {
-//            $this->error['warning'] = $this->lang->line('error_exists_slug');
-//        }
 
 		if ($this->error && !isset($this->error['warning'])) {
 			$this->error['warning'] = $this->lang->line('error_warning');
@@ -289,12 +288,11 @@ class Category extends AdminController implements CategoryContract {
     }
     public function store() {
         if ($this->isPost() && $this->validateForm()) {
-
             $this->load->model('Category_model');
-
             $this->getData();
-            $this->Category_model->addCategory($this->data);
+            $this->categoryId = Category_model::factory()->addCategory($this->data);
             $this->setMessage('message', $this->lang->line('text_success'));
+            $this->redirect(admin_url('category/edit/'.$this->categoryId));
         }
         $this->create();
     }

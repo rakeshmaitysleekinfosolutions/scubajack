@@ -204,6 +204,9 @@ class Filemanager extends AdminController {
 		if ($this->input->get('thumb')) {
 			$url .= '&thumb=' . $this->input->get('thumb');
 		}
+        if ($this->input->get('type')) {
+            $url .= '&type=' . $this->input->get('type');
+        }
 
 		$this->data['refresh'] = admin_url('filemanager?' . $url);
 
@@ -247,7 +250,11 @@ class Filemanager extends AdminController {
 		} else {
 			$directory = DIR_IMAGE . 'catalog';
 		}
-
+        if ($this->input->get('type')) {
+            $this->data['type'] = $this->input->get('type');
+        } else {
+            $this->data['type'] = '';
+        }
 		// Check its a directory
 //		if (!is_dir($directory) || substr(str_replace('\\', '/', realpath($directory)), 0, strlen(DIR_IMAGE . 'catalog')) != str_replace('\\', '/', DIR_IMAGE . 'catalog')) {
 //			$this->json['error'] = $this->lang->line('error_directory');

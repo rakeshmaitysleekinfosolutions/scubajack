@@ -15,6 +15,10 @@
                     "type": 'POST',
                     "dataSrc": "data"
                 },
+                'language': {
+                    'loadingRecords': '&nbsp;',
+                    'processing': '<div class="spinner"></div>'
+                },
                 "oLanguage": {
                     "sEmptyTable": "Empty Table"
                 },

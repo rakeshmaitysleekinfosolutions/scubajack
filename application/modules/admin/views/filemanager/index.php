@@ -61,6 +61,7 @@ $('a.thumbnail').on('click', function(e) {
         swal('Please select '+paramFileType+' only');
     } else {
         if(paramFileType == 'pdf') {
+
             <?php if($thumb) {?>
             $('#<?php echo $thumb;?>').find('img').attr('src', $(this).find('img').attr('src'));
             <?php } ?>

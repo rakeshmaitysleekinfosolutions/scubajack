@@ -18,14 +18,42 @@ class Product extends AdminController implements ProductContract {
      * @var mixed|string
      */
     private $status;
+    /**
+     * @var object
+     */
+    private $product;
+    private $categoryProducts;
+    private $productImages;
+    private $productToVideos;
+    private $productPdf;
+    private $productVideos;
+    private $productDescription;
+    /**
+     * @var string
+     */
+    private $productId;
+    /**
+     * @var mixed|string
+     */
+    private $id;
 
     public function onLoadDatatableEventHandler() {
-		$this->load->model('Category_model');
-		$this->results = $this->Category_model->findAll();
+        $this->load->model('Product_model');
+		$this->results = $this->Product_model->findAll();
 		if($this->results) {
 			foreach($this->results as $result) {
+
+			    $this->product = Product_model::factory()->findOne($result->id);
+			    $this->productImages = $this->product->productImages();
+               // dd($this->productImages->image);
+                if (is_file(DIR_IMAGE . $this->productImages->image)) {
+                    $image = $this->resize($this->productImages->image, 40, 40);
+                } else {
+                    $image = $this->resize('no_image.png', 40, 40);
+                }
 				$this->rows[] = array(
 					'id'			=> $result->id,
+                    'img'		    => $image,
 					'name'		    => $result->name,
 					'slug' 		    => $result->slug,
                     'status' 		=> ($result->status && $result->status == 1) ? 1 : 0,
@@ -42,6 +70,7 @@ class Product extends AdminController implements ProductContract {
 												<span class="css-control-indicator"></span>
 											</label>
 										</td>';
+                    $this->data[$i][] = '<td><img src="'.$row['img'].'"></td>';
 					$this->data[$i][] = '<td>'.$row['name'].'</td>';
 					$this->data[$i][] = '<td>'.$row['slug'].'</td>';
 //					$this->data[$i][] = '<td>
@@ -90,11 +119,11 @@ class Product extends AdminController implements ProductContract {
     public function onClickStatusEventHandler() {
         if($this->isAjaxRequest()) {
             $this->request = $this->input->post();
-            $this->categoryId   = (isset($this->request['id'])) ? $this->request['id'] : '';
-            $this->status       = (isset($this->request['status'])) ? $this->request['status'] : '';
+            $this->id       = (isset($this->request['id'])) ? $this->request['id'] : '';
+            $this->status   = (isset($this->request['status'])) ? $this->request['status'] : '';
 
-            $this->load->model('Category_model');
-            $this->Category_model->updateStatus($this->categoryId, $this->status);
+            $this->load->model('Product_model');
+            $this->Product_model->updateStatus($this->id, $this->status);
             $this->json['status'] = 'Status has been successfully updated';
 
             return $this->output
@@ -111,193 +140,209 @@ class Product extends AdminController implements ProductContract {
 		$this->template->stylesheet->add('assets/theme/light/js/datatables/dataTables.bootstrap4.css');
         $this->template->javascript->add('assets/theme/light/js/datatables/jquery.dataTables.min.js');
 		$this->template->javascript->add('assets/theme/light/js/datatables/dataTables.bootstrap4.min.js');
-        $this->template->javascript->add('assets/js/admin/category/Category.js');
+        $this->template->javascript->add('assets/js/admin/product/Product.js');
 
-		$this->template->content->view('category/index');
+		$this->template->content->view('product/index');
 		$this->template->publish();
     }
 
     public function getData() {
+        try {
 
-        // Errors
-        if (isset($this->error['warning'])) {
-            $this->data['error_warning'] = $this->error['warning'];
-        } else {
-            $this->data['error_warning'] = '';
-        }
-      
-        if (isset($this->error['name'])) {
-            $this->data['error_name'] = $this->error['name'];
-        } else {
-            $this->data['error_name'] = '';
-        }
+            if (isset($this->error['warning'])) {
+                $this->data['error_warning'] = $this->error['warning'];
+            } else {
+                $this->data['error_warning'] = '';
+            }
 
-        if (isset($this->error['slug'])) {
-            $this->data['error_slug'] = $this->error['slug'];
-        } else {
-            $this->data['error_slug'] = '';
-        }
-        //dd($this->data);
-        // Status
-        if (isset($this->error['status'])) {
-            $this->data['error_status'] = $this->error['status'];
-        } else {
-            $this->data['error_status'] = '';
-        }
-        // Category
-        if (isset($this->error['category'])) {
-            $this->data['error_category'] = $this->error['category'];
-        } else {
-            $this->data['error_category'] = '';
-        }
-        // Image
-        if (isset($this->error['image'])) {
-            $this->data['error_image'] = $this->error['image'];
-        } else {
-            $this->data['error_image'] = '';
-        }
-        // Meta data
-        if (isset($this->error['meta_title'])) {
-            $this->data['error_meta_title'] = $this->error['meta_title'];
-        } else {
-            $this->data['error_meta_title'] = '';
-        }
-        // Product ID
-        if (!empty($this->input->post('productId'))) {
-            $this->data['productId'] = $this->input->post('productId');
-        } elseif (!empty($this->category)) {
-            $this->data['productId'] = $this->category->id;
-        } else {
-            $this->data['productId'] = '';
-        }
-        // Category
-        if (!empty($this->input->post('category'))) {
-            $this->data['category'] = $this->input->post('category');
-        } elseif (!empty($this->category)) {
-            $this->data['category'] = $this->category->name;
-        } else {
-            $this->data['category'] = '';
-        }
+            if (isset($this->error['name'])) {
+                $this->data['error_name'] = $this->error['name'];
+            } else {
+                $this->data['error_name'] = '';
+            }
 
-        // Name
-        if (!empty($this->input->post('name'))) {
-            $this->data['name'] = $this->input->post('name');
-        } elseif (!empty($this->category)) {
-            $this->data['name'] = $this->category->name;
-        } else {
-            $this->data['name'] = '';
-        }
+            if (isset($this->error['slug'])) {
+                $this->data['error_slug'] = $this->error['slug'];
+            } else {
+                $this->data['error_slug'] = '';
+            }
+            //dd($this->data);
+            // Status
+            if (isset($this->error['status'])) {
+                $this->data['error_status'] = $this->error['status'];
+            } else {
+                $this->data['error_status'] = '';
+            }
+            // Category
+            if (isset($this->error['category'])) {
+                $this->data['error_category'] = $this->error['category'];
+            } else {
+                $this->data['error_category'] = '';
+            }
+            // Image
+            if (isset($this->error['image'])) {
+                $this->data['error_image'] = $this->error['image'];
+            } else {
+                $this->data['error_image'] = '';
+            }
+            // Meta data
+            if (isset($this->error['meta_title'])) {
+                $this->data['error_meta_title'] = $this->error['meta_title'];
+            } else {
+                $this->data['error_meta_title'] = '';
+            }
+            // Product ID
+            if (!empty($this->input->post('productId'))) {
+                $this->data['productId'] = $this->input->post('productId');
+            } elseif (!empty($this->product)) {
+                $this->data['productId'] = $this->product->id;
+            } else {
+                $this->data['productId'] = '';
+            }
+            // Category
+            if (!empty($this->input->post('category'))) {
+                $this->data['categoryProducts'] = $this->input->post('category');
+            } elseif (!empty($this->categoryProducts)) {
+                foreach($this->categoryProducts as $categoryProduct) {
+                    //dd($categoryProduct);
+                    $this->data['categoryProducts'][] = $categoryProduct->category_id;
+                }
+            } else {
+                $this->data['categoryProducts'] = '';
+            }
+            //dd($this->data['categoryProducts']);
 
 
-        // Slug
-        if (!empty($this->input->post('slug'))) {
-            $this->data['slug'] = url_title($this->input->post('slug'),'dash', true);
-        } elseif (!empty($this->category)) {
-            $this->data['slug'] = $this->category->slug;
-        } else {
-            $this->data['slug'] = url_title($this->input->post('name'),'dash', true);
-        }
-        // Description
-        if (!empty($this->input->post('description'))) {
-            $this->data['description'] = $this->input->post('description');
-        } elseif (!empty($this->categoryDescription)) {
-            $this->data['description'] = $this->categoryDescription->description;
-        } else {
-            $this->data['description'] = '';
-        }
-        // Meta Title
-        if (!empty($this->input->post('meta_title'))) {
-            $this->data['meta_title'] = $this->input->post('meta_title');
-        } elseif (!empty($this->categoryDescription)) {
-            $this->data['meta_title'] = $this->categoryDescription->meta_title;
-        } else {
-            $this->data['meta_title'] = '';
-        }
-        // Meta Description
-        if (!empty($this->input->post('meta_description'))) {
-            $this->data['meta_description'] = $this->input->post('meta_description');
-        } elseif (!empty($this->categoryDescription)) {
-            $this->data['meta_description'] = $this->categoryDescription->meta_description;
-        } else {
-            $this->data['meta_description'] = '';
-        }
-        // Meta keyword
-        if (!empty($this->input->post('meta_keyword'))) {
-            $this->data['meta_keyword'] = $this->input->post('meta_keyword');
-        } elseif (!empty($this->categoryDescription)) {
-            $this->data['meta_keyword'] = $this->categoryDescription->meta_keyword;
-        } else {
-            $this->data['meta_keyword'] = '';
-        }
-        //dd($this->data);
-        // Status
-        if (!empty($this->input->post('status'))) {
-            $this->data['status'] = $this->input->post('status');
-        } elseif (!empty($this->category)) {
-            $this->data['status'] = $this->category->status;
-        } else {
-            $this->data['status'] = 0;
-        }
-        // Image
-		if (!empty($this->input->post('image'))) {
-			$this->data['image'] = $this->input->post('image');
-		} elseif (!empty($this->categoryDescription)) {
-			$this->data['image'] = $this->categoryDescription->image;
-		} else {
-			$this->data['image'] = '';
-		}
+            // Name
+            if (!empty($this->input->post('name'))) {
+                $this->data['name'] = $this->input->post('name');
+            } elseif (!empty($this->product)) {
+                $this->data['name'] = $this->product->name;
+            } else {
+                $this->data['name'] = '';
+            }
+            // Slug
+            if (!empty($this->input->post('slug'))) {
+                $this->data['slug'] = url_title($this->input->post('slug'),'dash', true);
+            } elseif (!empty($this->product)) {
+                $this->data['slug'] = $this->product->slug;
+            } else {
+                $this->data['slug'] = url_title($this->input->post('name'),'dash', true);
+            }
+            // Description
+            if (!empty($this->input->post('description'))) {
+                $this->data['description'] = $this->input->post('description');
+            } elseif (!empty($this->productDescription)) {
+                $this->data['description'] = $this->productDescription->description;
+            } else {
+                $this->data['description'] = '';
+            }
+            // Meta Title
+            if (!empty($this->input->post('meta_title'))) {
+                $this->data['meta_title'] = $this->input->post('meta_title');
+            } elseif (!empty($this->productDescription)) {
+                $this->data['meta_title'] = $this->productDescription->meta_title;
+            } else {
+                $this->data['meta_title'] = '';
+            }
+            // Meta Description
+            if (!empty($this->input->post('meta_description'))) {
+                $this->data['meta_description'] = $this->input->post('meta_description');
+            } elseif (!empty($this->productDescription)) {
+                $this->data['meta_description'] = $this->productDescription->meta_description;
+            } else {
+                $this->data['meta_description'] = '';
+            }
+            // Meta keyword
+            if (!empty($this->input->post('meta_keyword'))) {
+                $this->data['meta_keyword'] = $this->input->post('meta_keyword');
+            } elseif (!empty($this->productDescription)) {
+                $this->data['meta_keyword'] = $this->productDescription->meta_keyword;
+            } else {
+                $this->data['meta_keyword'] = '';
+            }
+            //dd($this->data);
+            // Status
+            if (!empty($this->input->post('status'))) {
+                $this->data['status'] = $this->input->post('status');
+            } elseif (!empty($this->product)) {
+                $this->data['status'] = $this->product->status;
+            } else {
+                $this->data['status'] = 0;
+            }
+            // Image
+            if (!empty($this->input->post('image'))) {
+                $this->data['image'] = $this->input->post('image');
+            } elseif (!empty($this->productImages)) {
+                $this->data['image'] = $this->productImages->image;
+            } else {
+                $this->data['image'] = '';
+            }
 
-		if (!empty($this->input->post('image')) && is_file(DIR_IMAGE . $this->input->post('image'))) {
-			$this->data['thumb'] = $this->resize($this->input->post('image'), 100, 100);
-		} elseif (!empty($this->categoryDescription) && is_file(DIR_IMAGE . $this->categoryDescription->image)) {
-			$this->data['thumb'] = $this->resize($this->categoryDescription->image, 100, 100);
-		} else {
-			$this->data['thumb'] = $this->resize('no_image.png', 100, 100);
-		}
-        // Youtube URL
-        if (!empty($this->input->post('youtubeUrl'))) {
-            $this->data['youtubeUrl'] = $this->input->post('youtubeUrl');
-        } elseif (!empty($this->categoryDescription)) {
-            $this->data['youtubeUrl'] = $this->categoryDescription->image;
-        } else {
-            $this->data['youtubeUrl'] = '';
+            if (!empty($this->input->post('image')) && is_file(DIR_IMAGE . $this->input->post('image'))) {
+                $this->data['thumb'] = $this->resize($this->input->post('image'), 100, 100);
+            } elseif (!empty($this->productImages) && is_file(DIR_IMAGE . $this->productImages->image)) {
+                $this->data['thumb'] = $this->resize($this->productImages->image, 100, 100);
+            } else {
+                $this->data['thumb'] = $this->resize('no_image.png', 100, 100);
+            }
+            // Youtube URL
+            if (!empty($this->input->post('youtubeUrl'))) {
+                $this->data['youtubeUrl'] = $this->input->post('youtubeUrl');
+            } elseif (!empty($this->productVideos)) {
+                $this->data['youtubeUrl'] = $this->productVideos->url;
+            } else {
+                $this->data['youtubeUrl'] = '';
+            }
+            //dd($this->data[''])
+            // Youtube URL Thumb
+            if (!empty($this->input->post('youtubeThumb'))) {
+                $this->data['youtubeThumb'] = $this->input->post('youtubeThumb');
+            } elseif (!empty($this->productVideos)) {
+                $this->data['youtubeThumb'] = $this->productVideos->thumb;
+            } else {
+                $this->data['youtubeThumb'] = '';
+            }
+            // PDF
+            if (!empty($this->input->post('pdf'))) {
+                $this->data['pdf'] = $this->input->post('pdf');
+            } elseif (!empty($this->productPdf)) {
+                $name = str_split(basename($this->productPdf->pdf), 5);
+                $this->data['pdfText'] = implode('', $name);
+                $this->data['pdf'] = $this->productPdf->pdf;
+            } else {
+                $this->data['pdf'] = '';
+            }
+            if (!empty($this->input->post('pdf')) && is_file(DIR_IMAGE . $this->input->post('pdf'))) {
+                $this->data['pdf_thumb'] = $this->resize('pdf-placeholder.png', 100, 100);
+            } elseif (!empty($this->productPdf) && is_file(DIR_IMAGE . $this->productPdf->pdf)) {
+                $this->data['pdf_thumb'] = $this->resize('pdf-placeholder.png', 100, 100);
+            } else {
+                $this->data['pdf_thumb'] = $this->resize('pdf-placeholder.png', 100, 100);
+            }
+
+            $this->data['placeholder']  = $this->resize('no_image.png', 100, 100);
+            $this->data['back']         = admin_url('product');
+
+            $this->load->model('Category_model');
+            //$this->dd($this->data);
+            $this->data['categories'] = $this->Category_model->findAll();
+
+            $this->data['pdfPlaceHolder'] = $this->resize('pdf-placeholder.png', 100, 100);
+        } catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
-        // PDF
-        if (!empty($this->input->post('pdf'))) {
-            $this->data['pdf'] = $this->input->post('pdf');
-        } elseif (!empty($this->categoryDescription)) {
-            $this->data['pdf'] = $this->categoryDescription->image;
-        } else {
-            $this->data['pdf'] = '';
-        }
-        if (!empty($this->input->post('pdf')) && is_file(DIR_IMAGE . $this->input->post('pdf'))) {
-            $this->data['pdf_thumb'] = $this->resize($this->input->post('pdf'), 100, 100);
-        } elseif (!empty($this->categoryDescription) && is_file(DIR_IMAGE . $this->categoryDescription->image)) {
-            $this->data['pdf_thumb'] = $this->resize($this->categoryDescription->image, 100, 100);
-        } else {
-            $this->data['pdf_thumb'] = $this->resize('pdf-placeholder.png', 100, 100);
-        }
-
-		$this->data['placeholder']  = $this->resize('no_image.png', 100, 100);
-		$this->data['back']         = admin_url('product');
-
-		$this->load->model('Category_model');
-        //$this->dd($this->data);
-		$this->data['categories'] = $this->Category_model->findAll();
-
-        $this->data['pdfPlaceHolder'] = $this->resize('pdf-placeholder.png', 100, 100);
-
     }
 
     public function validateForm() {
         $this->lang->load('admin/product');
-		if ((strlen($this->input->post('name')) < 1) || (strlen(trim($this->input->post('name'))) > 32)) {
+		if ((strlen($this->input->post('name')) < 1) || (strlen(trim($this->input->post('name'))) > 255)) {
 			$this->error['name'] = $this->lang->line('error_name');
 		}
 
-		if ((strlen($this->input->post('slug')) < 1) || (strlen(trim($this->input->post('slug'))) > 32)) {
-			$this->error['slug'] = $this->lang->line('error_slug');
-		}
+//		if ((strlen($this->input->post('slug')) < 1) || (strlen(trim($this->input->post('slug'))) > 255)) {
+//			$this->error['slug'] = $this->lang->line('error_slug');
+//		}
 		// dd($this->input->post('status'));
         if ($this->input->post('status') == '') {
             $this->error['status'] = $this->lang->line('error_status');
@@ -306,7 +351,7 @@ class Product extends AdminController implements ProductContract {
         if ($this->input->post('category') == '') {
             $this->error['category'] = $this->lang->line('error_category');
         }
-        if ((strlen($this->input->post('meta_title')) < 1) || (strlen(trim($this->input->post('meta_title'))) > 32)) {
+        if ((strlen($this->input->post('meta_title')) < 1) || (strlen(trim($this->input->post('meta_title'))) > 255)) {
             $this->error['meta_title'] = $this->lang->line('error_meta_title');
         }
         if ((strlen($this->input->post('image')) < 1)) {
@@ -336,51 +381,66 @@ class Product extends AdminController implements ProductContract {
     }
 
     public function store() {
-        if ($this->isPost() && $this->validateForm()) {
+        try {
+            if ($this->isPost() && $this->validateForm()) {
 
-            $this->load->model('Product_model');
+                $this->load->model('Product_model');
 
-            $this->getData();
-            $this->Product_model->addProduct($this->data);
-            $this->setMessage('message', $this->lang->line('text_success'));
+                $this->getData();
+                $this->productId = $this->Product_model->addProduct($this->data);
+                $this->setMessage('message', $this->lang->line('text_success'));
+                $this->redirect(admin_url('product/edit/'.$this->productId));
+            }
+            $this->create();
+        } catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
-        $this->create();
+
     }
 
-    public function edit($categoryId) {
-        if(!$this->isPost()) {
-            $this->load->model('Category_model');
-            $this->category = Category_model::factory()->findOne($categoryId);
-        }
-        if($this->category) {
-            $this->categoryDescription = $this->category->categoryDescription();
-        }
-        if(!$this->category) {
-            $this->redirect(admin_url('category'));
-        }
-        $this->getData();
-        //$this->dd($this->data);
-        $this->template->javascript->add('assets/js/jquery.validate.js');
-        $this->template->javascript->add('assets/js/additional-methods.js');
-        $this->template->javascript->add('assets/js/admin/category/Category.js');
+    public function edit($productId) {
+        try {
+            if(!$this->isPost()) {
+                $this->load->model('Product_model');
+                $this->product = Product_model::factory()->findOne($productId);
+            }
+            if($this->product) {
+                $this->productDescription  = $this->product->productDescription();
+                $this->categoryProducts   = $this->product->categoryProducts();
+                $this->productImages      = $this->product->productImages();
+                $this->productVideos      = $this->product->productVideos();
+                $this->productPdf         = $this->product->productPdf();
+            }
+            if(!$this->product) {
+                $this->redirect(admin_url('product'));
+            }
+            $this->getData();
+            //$this->dd($this->data);
+            $this->template->javascript->add('assets/js/jquery.validate.js');
+            $this->template->javascript->add('assets/js/additional-methods.js');
+            $this->template->javascript->add('assets/js/admin/product/Product.js');
 
-        $this->template->set_template('layout/admin');
-        $this->template->content->view('category/edit', $this->data);
-        $this->template->publish();
+            $this->template->set_template('layout/admin');
+            $this->template->content->view('product/edit', $this->data);
+            $this->template->publish();
+        } catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        }
     }
 
     public function update() {
         try {
-            $this->lang->load('admin/category');
+            $this->lang->load('admin/product');
             if ($this->isPost() && $this->validateForm()) {
-                $this->load->model('Category_model');
-                $this->categoryId = ($this->input->post('categoryId')) ? $this->input->post('categoryId') : '';
+               // $this->load->model('Product_model');
+                $this->productId = ($this->input->post('productId')) ? $this->input->post('productId') : '';
 
                 $this->getData();
-                $this->Category_model->editCategory($this->categoryId, $this->data);
+
+                Product_model::factory()->editProduct($this->productId, $this->data);
                 $this->setMessage('message', $this->lang->line('text_success'));
-                //$this->redirect(admin_url('category'));
-                $this->redirect(admin_url('category/edit/'.$this->categoryId));
+
+                $this->redirect(admin_url('product/edit/'.$this->productId));
             }
             $this->getData();
         } catch (Exception $e) {
@@ -399,9 +459,9 @@ class Product extends AdminController implements ProductContract {
                 }
             }
             if($this->selected) {
-                $this->load->model('Category_model');
-                foreach ($this->selected as $categoryId) {
-                    $this->Category_model->deleteCategory($categoryId);
+                $this->load->model('Product_model');
+                foreach ($this->selected as $productId) {
+                    $this->Product_model->deleteProduct($productId);
                 }
                 return $this->output
                     ->set_content_type('application/json')

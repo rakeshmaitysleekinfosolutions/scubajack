@@ -1,6 +1,6 @@
 <div class="content container-fluid">
-    <form id="frmSignUp" action="<?php echo admin_url('category/update');?>" method="post">
-        <input type="hidden" name="categoryId" value="<?php echo $categoryId;?>">
+    <form id="frmSignUp" action="<?php echo admin_url('product/update');?>" method="post">
+        <input type="hidden" name="productId" value="<?php echo $productId;?>">
         <div class="row">
             <?php if($error_warning) { ?>
                 <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i><?php echo $error_warning;?>
@@ -15,7 +15,7 @@
         </div>
         <div class="row">
             <div class="col-sm-8">
-                <h4 class="page-title">Edit Category</h4>
+                <h4 class="page-title">Edit Product</h4>
             </div>
 
             <div class="col-sm-4 text-right m-b-30">
@@ -24,23 +24,38 @@
             </div>
         </div>
         <div class="card-box">
-            <h3 class="card-title">Category Details</h3>
+            <h3 class="card-title">Product Details</h3>
             <div class="row">
                 <div class="col-md-12">
                     <div class="profile-view">
-<!--                        <div class="profile-img-wrap">-->
-<!--                            <div class="profile-img">-->
-
-<!--                                <a href="" id="thumb-image" type="image" data-toggle="image" class="img-thumbnail"><img src="--><?php //echo $thumb;?><!--" alt="" title="" data-placeholder="--><?php //echo $placeholder;?><!--"/></a>-->
-<!--                                <input type="hidden" name="image" value="--><?php //echo $image;?><!--" id="input-image"/>-->
-<!--                                --><?php //if($error_image) { ?>
-<!--                                    <div class="text-danger">--><?php // echo $error_image;?><!--</div>-->
-<!--                                --><?php //} ?>
-<!--                            </div>-->
-<!--                        </div>-->
-                        <div class="">
+                        <div class="profile-img-wrap">
+                            <div class="profile-img">
+                                <!--                            <a href="#"><img class="avatar" src="assets/img/user.jpg" alt=""></a>-->
+                                <a href="javascript:void(0);" id="thumb-image" data-toggle="image" class="img-thumbnail" type="image"><img src="<?php echo $thumb;?>" alt="" title="" data-placeholder="<?php echo $placeholder;?>"/></a>
+                                <input type="hidden" name="image" value="<?php echo $image;?>" id="input-image"/>
+                                <?php if($error_image) { ?>
+                                    <div class="text-danger"><?php  echo $error_image;?></div>
+                                <?php } ?>
+                            </div>
+                        </div>
+                        <div class="profile-basic">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Category <span class="text-danger">*</span></label>
+                                        <select name="category[]" class="select floating" id="input-payment-status" multiple>
+
+                                            <?php if(!empty($categories)) {
+
+                                                foreach ($categories as $category) {?>
+                                                    <option value="<?php echo $category->id;?>" <?php echo  (in_array($category->id, $categoryProducts)) ? "selected" : ""?>><?php echo $category->name;?></option>
+                                                <?php } ?>
+                                            <?php } ?>
+                                        </select>
+                                        <?php if($error_category) { ?>
+                                            <div class="text-danger"><?php echo $error_category;?></div>
+                                        <?php } ?>
+                                    </div>
                                     <div class="form-group">
                                         <label class="control-label">Name <span class="text-danger">*</span></label>
                                         <input value="<?php echo $name;?>" class="form-control" type="text" name="name" id="input-payment-firstname" autocomplete="off" >
@@ -50,16 +65,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="form-group">
-                                        <label class="control-label">Slug <span class="text-danger"></span></label>
-                                        <input value="<?php echo $slug;?>" class="form-control" type="text" name="slug" id="input-payment-lastname" autocomplete="off" >
-                                        <?php if($error_slug) { ?>
-                                            <div class="text-danger"><?php  echo $error_slug;?></div>
-                                        <?php } ?>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Status <span class="text-danger">*</span></label>
                                         <select name="status" class="select floating" id="input-payment-status" >
@@ -71,6 +77,13 @@
                                             <div class="text-danger"><?php echo $error_status;?></div>
                                         <?php } ?>
                                     </div>
+                                    <div class="form-group">
+                                        <label class="control-label">Slug <span class="text-danger"></span></label>
+                                        <input value="<?php echo $slug;?>" class="form-control" type="text" name="slug" id="input-payment-lastname" autocomplete="off" >
+                                        <?php if($error_slug) { ?>
+                                            <div class="text-danger"><?php  echo $error_slug;?></div>
+                                        <?php } ?>
+                                    </div>
 
                                 </div>
                             </div>
@@ -80,7 +93,9 @@
             </div>
         </div>
         <div class="row">
+
             <div class="col-md-3">
+          
                 <div class="card-box m-b-0">
                     <h3 class="card-title">Meta Data</h3>
                     <div class="skills">
@@ -102,7 +117,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-9">
+            <div class="col-md-6">
                 <div class="card-box">
                     <h3 class="card-title">Category Description</h3>
                     <div class="experience-box">
@@ -114,6 +129,40 @@
                     </div>
                 </div>
 
+            </div>
+            <div class="col-md-3">
+                <div class="card-box m-b-0">
+                    <h3 class="card-title">Video Upload</h3>
+                    <div class="skills">
+                        <div class="form-group">
+                            <label class="control-label">Youtube URL <span class="text-danger"></span></label>
+                            <input value="<?php echo $youtubeUrl;?>" id="videoInputBox" name="youtubeUrl" type="text" class="form-control">
+                            <div id="iframe">
+                                <iframe src="<?php echo $youtubeThumb;?>">
+                                    <meta http-equiv="refresh" content="0;url=">
+                                </iframe>
+                                <input type="hidden" value="<?php echo $youtubeThumb;?>" id="youtubeThumb" name="youtubeThumb">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                   <div class="card-box pdf">
+                    <h3 class="card-title">PDF Upload</h3>
+                    <div class="skills">
+                        <div class="form-group">
+                        <div class="profile-img-two">
+                                <a href="avascript:void(0);" id="thumb-pdf" type="pdf" data-toggle="image" class="img-thumbnail"><img src="<?php echo $pdf_thumb;?>" alt="" title="" data-placeholder="<?php echo $pdfPlaceHolder;?>"/></a>
+                                <input type="hidden" name="pdf" value="<?php echo $pdf;?>" id="input-pdf"/>
+                            </div>
+
+                            <h3 class="card-title" id="pdf_text"><?php echo $pdfText;?></h3>
+                        </div>
+
+
+                    </div>
+                </div>
+                <div class="clearfix"></div>
             </div>
         </div>
     </form>

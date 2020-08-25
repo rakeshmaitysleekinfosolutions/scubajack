@@ -1,12 +1,45 @@
 !function ($) {
 		"use strict";
-    var $frmCreate = $("#frmCreate"),
+    var $frm = $("#frm"),
         $frmUpdate = $("#frmUpdate"),
+        validate = ($.fn.validate !== undefined);
         dataTable = ($.fn.dataTable !== undefined);
+        /*
+        if ($frm.length > 0 && validate) {
+            $frm.validate({
+                rules:{
+                    ignore: "input[type='text']:hidden",
+                    rules: {
+                        image: {
+                            required:true
+                        }
+                    },
+                    "input-category": {
+                        required: true,
+                    },
+                    "input-name": {
+                        required: true,
+                        email: true
+                    },
+                    "input-status": {
+                        required: true,
+                    },
+                    "input-metaTitle": {
+                        required: true,
+                    }
+                }
 
+
+            });
+        }
+        */
         if ($(".datatable").length > 0 && dataTable) {
             var dataTable = $('.datatable').DataTable( {
                 "processing": true,
+                'language': {
+                    'loadingRecords': '&nbsp;',
+                    'processing': '<div class="spinner"></div>'
+                },
                 "searching" : true,
                 "paging": true,
                 "order" : [],
@@ -213,8 +246,10 @@
        // alert(pastedData);
         var thumb = Youtube.thumb(url);
         var iframe           = $('iframe:first');
-        var youtubeUrl           = $('#youtubeUrl');
-        youtubeUrl.val(url);
+        var youtubeThumb           = $('#youtubeThumb');
+        console.log(youtubeThumb.val());
+        youtubeThumb.val(thumb);
+        console.log(youtubeThumb.val());
         iframe.attr('src', thumb);
     });
 
