@@ -11,13 +11,13 @@
           <button type="button" data-toggle="tooltip" title="Folder" id="button-folder" class="btn btn-default"><i class="fa fa-folder"></i></button>
           <button type="button" data-toggle="tooltip" title="Delete" id="button-delete" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>
         </div>
-        <div class="col-sm-7">
-          <div class="input-group">
-            <input type="text" name="search" value="<?php echo $filter_name;?>" placeholder="Search" class="form-control">
-            <span class="input-group-btn">
-            <button type="button" data-toggle="tooltip" title="Search" id="button-search" class="btn btn-primary"><i class="fa fa-search"></i></button>
-            </span></div>
-        </div>
+<!--        <div class="col-sm-7">-->
+<!--          <div class="input-group">-->
+<!--            <input type="text" name="search" value="--><?php //echo $filter_name;?><!--" placeholder="Search" class="form-control">-->
+<!--            <span class="input-group-btn">-->
+<!--            <button type="button" data-toggle="tooltip" title="Search" id="button-search" class="btn btn-primary"><i class="fa fa-search"></i></button>-->
+<!--            </span></div>-->
+<!--        </div>-->
       </div>
       <hr />
      
@@ -27,13 +27,17 @@
         <div class="col-sm-3 col-xs-6 text-center">
          
           <?php if($img['type'] == 'directory') { ?>
-            <div class="text-center"><a href="<?php echo $img['href'];?>" class="directory" style="vertical-align: middle;"><i class="fa fa-folder fa-5x"></i></a></div>
+            <div class="text-center"><a href="<?php echo $img['href'];?>" class="directory" style="vertical-align: middle;" type="<?php echo $img['type'];?>"><i class="fa fa-folder fa-5x"></i></a></div>
             <label><input type="checkbox" name="path[]" value="<?php echo $img['path'];?>"/>&nbsp;<?php echo $img['name'];?></label>
           <?php } ?>
           
           <?php if($img['type'] == 'image') { ?>
-            <a href="<?php echo $img['href'];?>" class="thumbnail"><img src="<?php echo $img['thumb'];?>" alt="<?php echo $img['name'];?>" title="<?php echo $img['name'];?>" /></a>
-            <label><input type="checkbox" name="path[]" value="<?php echo $img['path'];?>" /><?php echo $img['name'];?></label>
+            <a href="<?php echo $img['href'];?>" class="thumbnail" type="<?php echo $img['type'];?>"><img src="<?php echo $img['thumb'];?>" alt="<?php echo $img['name'];?>" title="<?php echo $img['name'];?>" /></a>
+            <label><input type="checkbox" name="path[]" fname="<?php echo $img['name'];?>" value="<?php echo $img['path'];?>" /><?php echo $img['name'];?></label>
+          <?php } ?>
+            <?php if($img['type'] == 'pdf') { ?>
+                <a href="<?php echo $img['href'];?>" class="thumbnail" type="<?php echo $img['type'];?>"><img src="<?php echo $img['thumb'];?>" alt="<?php echo $img['name'];?>" title="<?php echo $img['name'];?>" /></a>
+                <label><input type="checkbox" name="path[]" fname="<?php echo $img['name'];?>" value="<?php echo $img['path'];?>" /><?php echo $img['name'];?></label>
             <?php } ?>
         </div>
         <?php } ?>
@@ -47,15 +51,33 @@
 <script type="text/javascript">
 <?php if($target) { ?>
 $('a.thumbnail').on('click', function(e) {
+
 	e.preventDefault();
 
-	<?php if($thumb) {?>
-	    $('#<?php echo $thumb;?>').find('img').attr('src', $(this).find('img').attr('src'));
-    <?php } ?>
+    var fileType = $(this).attr('type');
+    ///alert('d');
+    var paramFileType = '<?php echo $type;?>';
+    if(paramFileType != fileType) {
+        swal('Please select '+paramFileType+' only');
+    } else {
+        if(paramFileType == 'pdf') {
+            <?php if($thumb) {?>
+            $('#<?php echo $thumb;?>').find('img').attr('src', $(this).find('img').attr('src'));
+            <?php } ?>
+            //$('#pdf_text').val($(this).parent().find('span').val());
+            $("#pdf_text").text($(this).parent().find('input').attr('fname'));
+        } else {
+            <?php if($thumb) {?>
+            $('#<?php echo $thumb;?>').find('img').attr('src', $(this).find('img').attr('src'));
+            <?php } ?>
+        }
 
-	$('#<?php echo $target;?>').val($(this).parent().find('input').val());
+        $('#<?php echo $target;?>').val($(this).parent().find('input').val());
 
-	$('#modal-image').modal('hide');
+        $('#modal-image').modal('hide');
+    }
+
+
 });
 <?php } ?>
 

@@ -150,7 +150,7 @@
                 $('#modal-image').remove();
 
                 $.ajax({
-                    url: myLabel.filemanager + '?target=' + $element.parent().find('input').attr('id') + '&thumb=' + $element.attr('id'),
+                    url: myLabel.filemanager + '?target=' + $element.parent().find('input').attr('id') + '&thumb=' + $element.attr('id') + '&type=' + $element.attr('type'),
                     dataType: 'html',
                     beforeSend: function() {
                         $button.prop('disabled', true);

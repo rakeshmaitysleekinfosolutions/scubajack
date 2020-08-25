@@ -138,31 +138,47 @@ class Product extends AdminController implements ProductContract {
             $this->data['error_slug'] = '';
         }
         //dd($this->data);
+        // Status
         if (isset($this->error['status'])) {
             $this->data['error_status'] = $this->error['status'];
         } else {
             $this->data['error_status'] = '';
         }
+        // Category
+        if (isset($this->error['category'])) {
+            $this->data['error_category'] = $this->error['category'];
+        } else {
+            $this->data['error_category'] = '';
+        }
+        // Image
         if (isset($this->error['image'])) {
             $this->data['error_image'] = $this->error['image'];
         } else {
             $this->data['error_image'] = '';
         }
+        // Meta data
         if (isset($this->error['meta_title'])) {
             $this->data['error_meta_title'] = $this->error['meta_title'];
         } else {
             $this->data['error_meta_title'] = '';
         }
-        // Data
-
-        // Category ID
-        if (!empty($this->input->post('categoryId'))) {
-            $this->data['categoryId'] = $this->input->post('categoryId');
+        // Product ID
+        if (!empty($this->input->post('productId'))) {
+            $this->data['productId'] = $this->input->post('productId');
         } elseif (!empty($this->category)) {
-            $this->data['categoryId'] = $this->category->id;
+            $this->data['productId'] = $this->category->id;
         } else {
-            $this->data['categoryId'] = '';
+            $this->data['productId'] = '';
         }
+        // Category
+        if (!empty($this->input->post('category'))) {
+            $this->data['category'] = $this->input->post('category');
+        } elseif (!empty($this->category)) {
+            $this->data['category'] = $this->category->name;
+        } else {
+            $this->data['category'] = '';
+        }
+
         // Name
         if (!empty($this->input->post('name'))) {
             $this->data['name'] = $this->input->post('name');
@@ -171,6 +187,7 @@ class Product extends AdminController implements ProductContract {
         } else {
             $this->data['name'] = '';
         }
+
 
         // Slug
         if (!empty($this->input->post('slug'))) {
@@ -230,8 +247,6 @@ class Product extends AdminController implements ProductContract {
 			$this->data['image'] = '';
 		}
 
-		
-
 		if (!empty($this->input->post('image')) && is_file(DIR_IMAGE . $this->input->post('image'))) {
 			$this->data['thumb'] = $this->resize($this->input->post('image'), 100, 100);
 		} elseif (!empty($this->categoryDescription) && is_file(DIR_IMAGE . $this->categoryDescription->image)) {
@@ -239,18 +254,43 @@ class Product extends AdminController implements ProductContract {
 		} else {
 			$this->data['thumb'] = $this->resize('no_image.png', 100, 100);
 		}
+        // Youtube URL
+        if (!empty($this->input->post('youtubeUrl'))) {
+            $this->data['youtubeUrl'] = $this->input->post('youtubeUrl');
+        } elseif (!empty($this->categoryDescription)) {
+            $this->data['youtubeUrl'] = $this->categoryDescription->image;
+        } else {
+            $this->data['youtubeUrl'] = '';
+        }
+        // PDF
+        if (!empty($this->input->post('pdf'))) {
+            $this->data['pdf'] = $this->input->post('pdf');
+        } elseif (!empty($this->categoryDescription)) {
+            $this->data['pdf'] = $this->categoryDescription->image;
+        } else {
+            $this->data['pdf'] = '';
+        }
+        if (!empty($this->input->post('pdf')) && is_file(DIR_IMAGE . $this->input->post('pdf'))) {
+            $this->data['pdf_thumb'] = $this->resize($this->input->post('pdf'), 100, 100);
+        } elseif (!empty($this->categoryDescription) && is_file(DIR_IMAGE . $this->categoryDescription->image)) {
+            $this->data['pdf_thumb'] = $this->resize($this->categoryDescription->image, 100, 100);
+        } else {
+            $this->data['pdf_thumb'] = $this->resize('pdf-placeholder.png', 100, 100);
+        }
 
-		$this->data['placeholder'] = $this->resize('no_image.png', 100, 100);
-		$this->data['back'] = admin_url('product');
+		$this->data['placeholder']  = $this->resize('no_image.png', 100, 100);
+		$this->data['back']         = admin_url('product');
 
 		$this->load->model('Category_model');
+        //$this->dd($this->data);
 		$this->data['categories'] = $this->Category_model->findAll();
 
-		//$this->dd($this->data);
+        $this->data['pdfPlaceHolder'] = $this->resize('pdf-placeholder.png', 100, 100);
+
     }
 
     public function validateForm() {
-        $this->lang->load('admin/category');
+        $this->lang->load('admin/product');
 		if ((strlen($this->input->post('name')) < 1) || (strlen(trim($this->input->post('name'))) > 32)) {
 			$this->error['name'] = $this->lang->line('error_name');
 		}
@@ -258,9 +298,13 @@ class Product extends AdminController implements ProductContract {
 		if ((strlen($this->input->post('slug')) < 1) || (strlen(trim($this->input->post('slug'))) > 32)) {
 			$this->error['slug'] = $this->lang->line('error_slug');
 		}
-		//dd($this->input->post('status'));
+		// dd($this->input->post('status'));
         if ($this->input->post('status') == '') {
             $this->error['status'] = $this->lang->line('error_status');
+        }
+        // Category
+        if ($this->input->post('category') == '') {
+            $this->error['category'] = $this->lang->line('error_category');
         }
         if ((strlen($this->input->post('meta_title')) < 1) || (strlen(trim($this->input->post('meta_title'))) > 32)) {
             $this->error['meta_title'] = $this->lang->line('error_meta_title');
@@ -268,12 +312,6 @@ class Product extends AdminController implements ProductContract {
         if ((strlen($this->input->post('image')) < 1)) {
             $this->error['image'] = $this->lang->line('error_image');
         }
-        $this->load->model('Category_model');
-        //$categoryInfo = Category_model::factory()->getCategoryBySlug($this->input->post('slug'));
-        //dd($categoryInfo);
-//        if ($categoryInfo) {
-//            $this->error['warning'] = $this->lang->line('error_exists_slug');
-//        }
 
 		if ($this->error && !isset($this->error['warning'])) {
 			$this->error['warning'] = $this->lang->line('error_warning');
@@ -300,10 +338,10 @@ class Product extends AdminController implements ProductContract {
     public function store() {
         if ($this->isPost() && $this->validateForm()) {
 
-            $this->load->model('Category_model');
+            $this->load->model('Product_model');
 
             $this->getData();
-            $this->Category_model->addCategory($this->data);
+            $this->Product_model->addProduct($this->data);
             $this->setMessage('message', $this->lang->line('text_success'));
         }
         $this->create();

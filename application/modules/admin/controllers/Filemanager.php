@@ -8,6 +8,14 @@ class Filemanager extends AdminController {
      * @var string
      */
     private $filename;
+    /**
+     * @var string[]
+     */
+    private $filesExt;
+    /**
+     * @var string
+     */
+    private $ext;
 
     public function index() {
 		$this->lang->load('admin/filemanager');
@@ -54,7 +62,7 @@ class Filemanager extends AdminController {
 			}
 
 			// Get files
-			$files = glob($directory . '/' . $filter_name . '*.{jpg,jpeg,png,gif,JPG,JPEG,PNG,GIF}', GLOB_BRACE);
+			$files = glob($directory . '/' . $filter_name . '*.{jpg,jpeg,png,gif,JPG,JPEG,PNG,GIF,pdf}', GLOB_BRACE);
 
 			if (!$files) {
 				$files = array();
@@ -71,8 +79,9 @@ class Filemanager extends AdminController {
 		$images = array_splice($images, ($page - 1) * 16, 16);
 
 		foreach ($images as $image) {
-			$name = str_split(basename($image), 14);
 
+			$name = str_split(basename($image), 14);
+            //dd($name);
 			if (is_dir($image)) {
 				$url = '';
 
@@ -92,18 +101,42 @@ class Filemanager extends AdminController {
 					'href'  => admin_url('filemanager?directory=' . urlencode(substr($image, strlen(DIR_IMAGE . 'catalog/'))) . $url)
 				);
 			} elseif (is_file($image)) {
-				$this->data['images'][] = array(
-					'thumb' => $this->resize(substr($image, strlen(DIR_IMAGE)), 100, 100),
-					'name'  => implode(' ', $name),
-					'type'  => 'image',
-					'path'  => substr($image, strlen(DIR_IMAGE)),
-					'href'  => $server . 'image/' . substr($image, strlen(DIR_IMAGE))
-				);
+			    $fileName = implode(' ', $name);
+                $this->filesExt = array(
+                    'pdf'
+                );
+                $this->ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+
+                if (in_array($this->ext, $this->filesExt)) {
+                    $this->data['images'][] = array(
+                        'thumb' => $this->resize('pdf-placeholder.png', 100, 100),
+                        'name'  => implode(' ', $name),
+                        'type'  => 'pdf',
+                        'path'  => substr($image, strlen(DIR_IMAGE)),
+                        'href'  => $server . 'image/' . substr($image, strlen(DIR_IMAGE))
+                    );
+
+
+                } else {
+                    $this->data['images'][] = array(
+                        'thumb' => $this->resize(substr($image, strlen(DIR_IMAGE)), 100, 100),
+                        'name'  => implode(' ', $name),
+                        'type'  => 'image',
+                        'path'  => substr($image, strlen(DIR_IMAGE)),
+                        'href'  => $server . 'image/' . substr($image, strlen(DIR_IMAGE))
+                    );
+                }
+
+
 			}
 		}
 
-	
 
+//        if (in_array($this->ext, $this->filesExt)) {
+//            $this->data['isImage'] = false;
+//        } else {
+//            $this->data['isImage'] = true;
+//        }
 		if ($this->input->get('directory')) {
 			$this->data['directory'] = urlencode($this->input->get('directory'));
 		} else {
@@ -122,6 +155,12 @@ class Filemanager extends AdminController {
 		} else {
 			$this->data['target'] = '';
 		}
+
+        if ($this->input->get('type')) {
+            $this->data['type'] = $this->input->get('type');
+        } else {
+            $this->data['type'] = '';
+        }
 
 		// Return the thumbnail for the file manager to show a thumbnail
 		if ($this->input->get('thumb')) {
@@ -249,7 +288,8 @@ class Filemanager extends AdminController {
 						'jpg',
 						'jpeg',
 						'gif',
-						'png'
+						'png',
+                        'pdf'
 					);
 
 					if (!in_array(strtolower(substr(strrchr($this->filename, '.'), 1)), $allowed)) {

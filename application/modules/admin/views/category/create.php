@@ -31,7 +31,7 @@
                         <div class="profile-img-wrap">
                             <div class="profile-img">
     <!--                            <a href="#"><img class="avatar" src="assets/img/user.jpg" alt=""></a>-->
-                                <a href="" id="thumb-image" data-toggle="image" class="img-thumbnail"><img src="<?php echo $thumb;?>" alt="" title="" data-placeholder="<?php echo $placeholder;?>"/></a>
+                                <a href="javascript:void(0);" type="image" href="" id="thumb-image" data-toggle="image" class="img-thumbnail"><img src="<?php echo $thumb;?>" alt="" title="" data-placeholder="<?php echo $placeholder;?>"/></a>
                                 <input type="hidden" name="image" value="<?php echo $image;?>" id="input-image"/>
                                 <?php if($error_image) { ?>
                                     <div class="text-danger"><?php  echo $error_image;?></div>

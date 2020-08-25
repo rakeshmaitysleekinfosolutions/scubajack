@@ -3,7 +3,7 @@
 
 class Product_model extends BaseModel {
     
-    protected $table = "category";
+    protected $table = "products";
 
     protected $primaryKey = 'id';
 
@@ -29,10 +29,20 @@ class Product_model extends BaseModel {
     public static function factory($attr = array()) {
         return new Product_model($attr);
     }
-    public function addCategory($data = array()) {
-        $this->db->query("INSERT INTO category SET name = '" . $this->db->escape_str($data['name']) . "', slug = '" . $this->db->escape_str($data['slug']) . "', status = '" . $this->db->escape_str($data['status'])."'");
-        $categoryId = $this->db->insert_id();
-        $this->db->query("INSERT INTO category_description SET category_id = '" . (int)$categoryId . "', image = '" . $this->db->escape_str($data['image']) . "', description = '" . $this->db->escape_str($data['description']) . "', meta_title = '" . $this->db->escape_str($data['meta_title']) . "', meta_keyword = '" . $this->db->escape_str($data['meta_keyword']) . "', meta_description = '" . $this->db->escape_str($data['meta_description']) . "'");
+    public function addProduct($data = array()) {
+        $this->db->query("INSERT INTO products SET name = '" . $this->db->escape_str($data['name']) . "', slug = '" . $this->db->escape_str($data['slug']) . "', status = '" . $this->db->escape_str($data['status'])."'");
+        $productId = $this->db->insert_id();
+        if(isset($productId)) {
+            if($data['categories']) {
+                foreach ($data['categories'] as $category) {
+                    $this->db->query("INSERT INTO category_to_products SET category_id = '" . (int)$category . "' product_id = '".$productId."'");
+                }
+            }
+            $this->db->query("INSERT INTO product_description SET product_id = '" . (int)$productId . "', description = '" . $this->db->escape_str($data['description']) . "', meta_title = '" . $this->db->escape_str($data['meta_title']) . "', meta_keyword = '" . $this->db->escape_str($data['meta_keyword']) . "', meta_description = '" . $this->db->escape_str($data['meta_description']) . "'");
+            $this->db->query("INSERT INTO product_images SET product_id = '" . (int)$productId . "', image = '" . $this->db->escape_str($data['image']) . "'");
+            $this->db->query("INSERT INTO product_videos SET product_id = '" . (int)$productId . "', url = '" . $this->db->escape_str($data['youtubeUrl']) . "'");
+        }
+
     }
     public function categoryDescription() {
         return $this->hasMany('CategoryDescription_model', 'category_id', 'id')->get()->row_object();
@@ -42,11 +52,12 @@ class Product_model extends BaseModel {
         return $query->row_array();
     }
 
-    public function editCategory($categoryId, $data) {
-        //dd($data);
-        $this->db->query("UPDATE category SET name = '" . $this->db->escape_str($data['name']) . "', slug = '" . $this->db->escape_str($data['slug']) . "', status = '" . $this->db->escape_str($data['status'])."' WHERE id = '" . (int)$categoryId . "'");
-        $this->db->query("DELETE FROM category_description WHERE category_id = '" . (int)$categoryId . "'");
-        $this->db->query("INSERT INTO category_description SET category_id = '" . (int)$categoryId . "', image = '" . $this->db->escape_str($data['image']) . "', description = '" . $this->db->escape_str($data['description']) . "', meta_title = '" . $this->db->escape_str($data['meta_title']) . "', meta_keyword = '" . $this->db->escape_str($data['meta_keyword']) . "', meta_description = '" . $this->db->escape_str($data['meta_description']) . "'");
+    public function editProduct($productId, $data) {
+        $this->db->query("UPDATE products SET name = '" . $this->db->escape_str($data['name']) . "', slug = '" . $this->db->escape_str($data['slug']) . "', status = '" . $this->db->escape_str($data['status'])."' WHERE id = '" . (int)$productId . "'");
+        $this->db->query("UPDATE category_to_products SET category_id = '".(int)$data['category_id']."' WHERE product_id = '" . (int)$productId . "'");
+        $this->db->query("UPDATE product_description SET product_id = '" . (int)$productId . "', image = '" . $this->db->escape_str($data['image']) . "', description = '" . $this->db->escape_str($data['description']) . "', meta_title = '" . $this->db->escape_str($data['meta_title']) . "', meta_keyword = '" . $this->db->escape_str($data['meta_keyword']) . "', meta_description = '" . $this->db->escape_str($data['meta_description']) . "'");
+        $this->db->query("UPDATE products_images SET image = '".(int)$data['image']."' WHERE product_id = '" . (int)$productId . "'");
+        $this->db->query("UPDATE products_videos SET url = '".(int)$data['youtube_url']."' WHERE product_id = '" . (int)$productId . "'");
     }
     public function deleteCategory($categoryId, $forceDelete = false) {
         if($forceDelete) {
