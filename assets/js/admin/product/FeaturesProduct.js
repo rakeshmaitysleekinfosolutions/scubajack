@@ -1,12 +1,45 @@
 !function ($) {
 		"use strict";
-    var $frmCreate = $("#frmCreate"),
+    var $frm = $("#frm"),
         $frmUpdate = $("#frmUpdate"),
+        validate = ($.fn.validate !== undefined);
         dataTable = ($.fn.dataTable !== undefined);
+        /*
+        if ($frm.length > 0 && validate) {
+            $frm.validate({
+                rules:{
+                    ignore: "input[type='text']:hidden",
+                    rules: {
+                        image: {
+                            required:true
+                        }
+                    },
+                    "input-category": {
+                        required: true,
+                    },
+                    "input-name": {
+                        required: true,
+                        email: true
+                    },
+                    "input-status": {
+                        required: true,
+                    },
+                    "input-metaTitle": {
+                        required: true,
+                    }
+                }
 
+
+            });
+        }
+        */
         if ($(".datatable").length > 0 && dataTable) {
             var dataTable = $('.datatable').DataTable( {
                 "processing": true,
+                'language': {
+                    'loadingRecords': '&nbsp;',
+                    'processing': '<div class="spinner"></div>'
+                },
                 "searching" : true,
                 "paging": true,
                 "order" : [],
@@ -14,10 +47,6 @@
                     "url": myLabel.category,
                     "type": 'POST',
                     "dataSrc": "data"
-                },
-                'language': {
-                    'loadingRecords': '&nbsp;',
-                    'processing': '<div class="spinner"></div>'
                 },
                 "oLanguage": {
                     "sEmptyTable": "Empty Table"
@@ -61,10 +90,7 @@
                 $('.datatable input[type=checkbox]').prop('checked', this.checked);
             });
         }
-        $(".alert").fadeTo(2000, 500).slideUp(500, function(){
-            $(".alert").slideUp(500);
-        });
-        //Delete
+        //Delete Records
         $(document).on('click', '#delete', function (e) {
             var selected = [];
             $('.datatable .selectCheckbox').each(function () {
@@ -110,82 +136,12 @@
                 swal("You must select one record");
             }
         });
-        // Summer note
-        $(document).ready(function(){
-            $('.summernote').summernote({
-                height: 200,                 // set editor height
-                minHeight: null,             // set minimum height of editor
-                maxHeight: null,             // set maximum height of editor
-                focus: false                 // set focus to editable area after initializing summernote
-            });
+        
+        $(".alert").fadeTo(2000, 500).slideUp(500, function(){
+            $(".alert").slideUp(500);
         });
-        // Image Manager
-        $(document).on('click', 'a[data-toggle=\'image\']', function(e) {
-            var $element = $(this);
-            var $popover = $element.data('bs.popover'); // element has bs popover?
-
-            e.preventDefault();
-
-            // destroy all image popovers
-            $('a[data-toggle="image"]').popover('destroy');
-
-            // remove flickering (do not re-add popover when clicking for removal)
-            if ($popover) {
-                return;
-            }
-
-            $element.popover({
-                html: true,
-                placement: 'right',
-                trigger: 'manual',
-                content: function() {
-                    return '<button type="button" id="button-image" class="btn btn-primary"><i class="fa fa-pencil"></i></button> <button type="button" id="button-clear" class="btn btn-danger"><i class="fa fa-trash-o"></i></button>';
-                }
-            });
-
-            $element.popover('show');
-
-            $('#button-image').on('click', function() {
-                var $button = $(this);
-                var $icon   = $button.find('> i');
-
-                $('#modal-image').remove();
-
-                $.ajax({
-                    url: myLabel.filemanager + '?target=' + $element.parent().find('input').attr('id') + '&thumb=' + $element.attr('id') + '&type=' + $element.attr('type'),
-                    dataType: 'html',
-                    beforeSend: function() {
-                        $button.prop('disabled', true);
-                        if ($icon.length) {
-                            $icon.attr('class', 'fa fa-circle-o-notch fa-spin');
-                        }
-                    },
-                    complete: function() {
-                        $button.prop('disabled', false);
-
-                        if ($icon.length) {
-                            $icon.attr('class', 'fa fa-pencil');
-                        }
-                    },
-                    success: function(html) {
-                        $('body').append('<div id="modal-image" class="modal">' + html + '</div>');
-
-                        $('#modal-image').modal('show');
-                    }
-                });
-
-                $element.popover('destroy');
-            });
-
-            $('#button-clear').on('click', function() {
-                $element.find('img').attr('src', $element.find('img').attr('data-placeholder'));
-
-                $element.parent().find('input').val('');
-
-                $element.popover('destroy');
-            });
-        });
-
+        
+       
 
 }(window.jQuery);
 

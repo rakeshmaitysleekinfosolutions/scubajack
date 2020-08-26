@@ -166,7 +166,7 @@
 								<ul class="list-unstyled" style="display: none;">
                                     <li class="categoryplus"><a href="<?php echo admin_url('category');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Categories</span></a></li>
 									<li><a href="<?php echo admin_url('product');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Products</span></a></li>
-
+                                    <li><a href="<?php echo admin_url('features_product');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Features Products</span></a></li>
 								</ul>
 							</li>
 							<li>
@@ -182,9 +182,7 @@
                 </div>
             </div>
             <div class="page-wrapper">
-                
 					 <?php echo $this->template->content; ?>
-				
 			</div>
         </div>
 		<div class="sidebar-overlay" data-reff="#sidebar"></div>

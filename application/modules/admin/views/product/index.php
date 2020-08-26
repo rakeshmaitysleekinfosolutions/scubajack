@@ -4,7 +4,9 @@
         <h4 class="page-title">Product List</h4>
     </div>
     <div class="col-sm-8 col-xs-9 text-right m-b-20">
-       <a href="<?php echo admin_url('product/create');?>" class="btn btn-primary rounded pull-right"><i class="fa fa-plus"></i> Add Product</a>
+        <button class="btn btn-primary rounded pull-right " id="delete"><i class="fa fa-remove"></i> Delete</button>
+        <a href="<?php echo admin_url('product/create');?>" class="btn btn-primary rounded pull-right"><i class="fa fa-plus"></i> Add Product</a>
+
         <!-- <div class="view-icons">
             <a href="clients.html" class="grid-view btn btn-link"><i class="fa fa-th"></i></a>
             <a href="clients-list.html" class="list-view btn btn-link active"><i class="fa fa-bars"></i></a>

@@ -290,9 +290,9 @@ class Category extends AdminController implements CategoryContract {
         if ($this->isPost() && $this->validateForm()) {
             $this->load->model('Category_model');
             $this->getData();
-            $this->categoryId = Category_model::factory()->addCategory($this->data);
+            Category_model::factory()->addCategory($this->data);
             $this->setMessage('message', $this->lang->line('text_success'));
-            $this->redirect(admin_url('category/edit/'.$this->categoryId));
+            $this->redirect(admin_url('category/create/'));
         }
         $this->create();
     }
@@ -336,6 +336,7 @@ class Category extends AdminController implements CategoryContract {
         }
 
     }
+
     public function delete() {
         if($this->isAjaxRequest()) {
             $this->request = $this->input->post();

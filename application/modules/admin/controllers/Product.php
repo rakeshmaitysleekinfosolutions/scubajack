@@ -5,6 +5,7 @@ use Application\Contracts\ProductContract;
 
 class Product extends AdminController implements ProductContract {
 
+
     /**
      * @var object
      */
@@ -92,7 +93,7 @@ class Product extends AdminController implements ProductContract {
 	                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
 	                                <ul class="dropdown-menu pull-right">
 	                                    <li><a class="edit" href="javascript:void(0);" data-id="'.$row['id'].'" data-toggle="modal" data-target="#edit_client"><i class="fa fa-pencil m-r-5"></i> Edit</a></li>
-	                                    <li><a class="delete" href="#" data-toggle="modal" data-target="#delete_client"><i class="fa fa-trash-o m-r-5"></i> Delete</a></li>
+	                                    
 	                                </ul>
 	                            </div>
 	                        </td>
@@ -100,7 +101,7 @@ class Product extends AdminController implements ProductContract {
 	                    $i++;
 				}
 
-
+//            <li><a class="delete" href="#" data-toggle="modal" data-target="#delete_client"><i class="fa fa-trash-o m-r-5"></i> Delete</a></li>
 		}
 
 		if($this->data) {
@@ -362,7 +363,7 @@ class Product extends AdminController implements ProductContract {
 			$this->error['warning'] = $this->lang->line('error_warning');
 		}
 		//dd($this->error);
-      
+
 		return !$this->error;
     }
 
@@ -387,9 +388,9 @@ class Product extends AdminController implements ProductContract {
                 $this->load->model('Product_model');
 
                 $this->getData();
-                $this->productId = $this->Product_model->addProduct($this->data);
+                $this->Product_model->addProduct($this->data);
                 $this->setMessage('message', $this->lang->line('text_success'));
-                $this->redirect(admin_url('product/edit/'.$this->productId));
+                $this->redirect(admin_url('product/create/'));
             }
             $this->create();
         } catch (Exception $e) {
@@ -480,5 +481,19 @@ class Product extends AdminController implements ProductContract {
     public function show($id)
     {
         // TODO: Implement show() method.
+    }
+    public function addFeaturesProduct() {
+
+    }
+    public function features() {
+        $this->template->set_template('layout/admin');
+
+        $this->template->stylesheet->add('assets/theme/light/js/datatables/dataTables.bootstrap4.css');
+        $this->template->javascript->add('assets/theme/light/js/datatables/jquery.dataTables.min.js');
+        $this->template->javascript->add('assets/theme/light/js/datatables/dataTables.bootstrap4.min.js');
+        $this->template->javascript->add('assets/js/admin/product/Product.js');
+
+        $this->template->content->view('product/features/index');
+        $this->template->publish();
     }
 }

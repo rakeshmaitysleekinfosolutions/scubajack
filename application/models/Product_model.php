@@ -2,7 +2,11 @@
 
 
 class Product_model extends BaseModel {
-    
+    public function __construct()
+    {
+        parent::__construct();
+    }
+
     protected $table = "products";
 
     protected $primaryKey = 'id';
@@ -29,13 +33,14 @@ class Product_model extends BaseModel {
     public static function factory($attr = array()) {
         return new Product_model($attr);
     }
+
     public function addProduct($data = array()) {
         $this->db->query("INSERT INTO products SET name = '" . $this->db->escape_str($data['name']) . "', slug = '" . $this->db->escape_str($data['slug']) . "', status = '" . $this->db->escape_str($data['status'])."'");
         $productId = $this->db->insert_id();
         if(isset($productId)) {
             $this->updateProductRelatedModels($productId, $data);
         }
-        return $productId;
+        //return $productId;
     }
 
     public function getProductBySlug($slug) {
@@ -105,5 +110,9 @@ class Product_model extends BaseModel {
     public function productPdf() {
         return $this->hasOne('ProductPdf_model', 'product_id', 'id')->get()->row_object();
     }
+    public function featuresProduct() {
+        return $this->hasMay('FeaturesProduct_model', 'product_id', 'id')->get()->result_object();
+    }
+
 
 }

@@ -36,7 +36,7 @@ class Category_model extends BaseModel {
             $this->db->query("INSERT INTO category_description SET category_id = '" . (int)$categoryId . "', description = '" . $this->db->escape_str($data['description']) . "', meta_title = '" . $this->db->escape_str($data['meta_title']) . "', meta_keyword = '" . $this->db->escape_str($data['meta_keyword']) . "', meta_description = '" . $this->db->escape_str($data['meta_description']) . "'");
         }
 
-        return $categoryId;
+        //return $categoryId;
     }
     public function categoryDescription() {
         return $this->hasMany('CategoryDescription_model', 'category_id', 'id')->get()->row_object();
