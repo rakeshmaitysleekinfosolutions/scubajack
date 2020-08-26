@@ -138,11 +138,15 @@
                             <label class="control-label">Youtube URL <span class="text-danger"></span></label>
                             <input value="<?php echo $youtubeUrl;?>" id="videoInputBox" name="youtubeUrl" type="text" class="form-control">
                             <div id="iframe">
-                                <iframe src="<?php echo $youtubeThumb;?>">
-                                    <meta http-equiv="refresh" content="0;url=">
+                            <img width="100%" height="100%" src="<?php echo $youtubeThumb;?>" frameborder="0" allowfullscreen/>
+                            <input type="hidden" value="<?php echo $youtubeThumb;?>" id="youtubeThumb" name="youtubeThumb">
+                        </div>
+                           <!--  <div id="">
+                                <iframe src="<?php echo $youtubeThumb;?> ">
+                                    <meta http-equiv="refresh" content="0;url=<?php echo $youtubeThumb;?>">
                                 </iframe>
-                                <input type="hidden" value="<?php echo $youtubeThumb;?>" id="youtubeThumb" name="youtubeThumb">
-                            </div>
+                                
+                            </div> -->
                         </div>
                     </div>
                 </div>
