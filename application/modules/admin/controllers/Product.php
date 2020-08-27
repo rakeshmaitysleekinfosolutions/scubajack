@@ -36,7 +36,7 @@ class Product extends AdminController implements ProductContract {
     /**
      * @var mixed|string
      */
-    private $id;
+
 
     public function onLoadDatatableEventHandler() {
         $this->load->model('Product_model');
@@ -155,7 +155,12 @@ class Product extends AdminController implements ProductContract {
             } else {
                 $this->data['error_warning'] = '';
             }
-
+            // Product Type
+            if (isset($this->error['type'])) {
+                $this->data['error_type'] = $this->error['type'];
+            } else {
+                $this->data['error_type'] = '';
+            }
             if (isset($this->error['name'])) {
                 $this->data['error_name'] = $this->error['name'];
             } else {
@@ -212,7 +217,14 @@ class Product extends AdminController implements ProductContract {
                 $this->data['categoryProducts'] = '';
             }
             //dd($this->data['categoryProducts']);
-
+            // Product type
+            if (!empty($this->input->post('type'))) {
+                $this->data['type'] = $this->input->post('type');
+            } elseif (!empty($this->product)) {
+                $this->data['type'] = $this->product->type;
+            } else {
+                $this->data['type'] = '';
+            }
 
             // Name
             if (!empty($this->input->post('name'))) {
@@ -348,9 +360,16 @@ class Product extends AdminController implements ProductContract {
         if ($this->input->post('status') == '') {
             $this->error['status'] = $this->lang->line('error_status');
         }
+
         // Category
-        if ($this->input->post('category') == '') {
-            $this->error['category'] = $this->lang->line('error_category');
+//        echo count($this->input->post('category'));
+//        exit;
+//        if (empty($this->input->post('category')) && is_array($this->input->post('category')) && count($this->input->post('category')) != 0) {
+//            $this->error['category'] = $this->lang->line('error_category');
+//        }
+        // product type
+        if ($this->input->post('type') == '') {
+            $this->error['type'] = $this->lang->line('error_type');
         }
         if ((strlen($this->input->post('meta_title')) < 1) || (strlen(trim($this->input->post('meta_title'))) > 255)) {
             $this->error['meta_title'] = $this->lang->line('error_meta_title');

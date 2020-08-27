@@ -39,10 +39,10 @@ class ConfigAutoloader {
 class ModelAutoloader {
     static public function loader($className) {
         $filename = APPPATH . "models/" . str_replace("\\", '/', $className) . ".php";
-
+        //echo $filename;
+        //exit;
         if (file_exists($filename)) {
             include($filename);
-
             if (class_exists($className)) {
                 return TRUE;
             }

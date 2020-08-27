@@ -1,12 +1,12 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
-class AdminDashboard extends MY_Controller {
+class AdminDashboard extends AdminController {
 
 	public function __construct()
 	{
 		parent::__construct();
-		$this->load->model('admin_model');
-		$this->load->model('MY_Model');
+		//$this->load->model('admin_model');
+		//$this->load->model('MY_Model');
 	}
 
 	public function index(){
@@ -24,7 +24,7 @@ class AdminDashboard extends MY_Controller {
 		
 		// $admin_password = $this->input->post('admin_password'); 
 		// $admin_password = md5(SECURITY_SALT.$this->security->xss_clean($this->input->post('admin_password')));
-		$res = $this->admin_model->check_login($admin_email,$admin_password);
+		$res = Admin_model::factory()->check_login($admin_email,$admin_password);
 		if ($res->num_rows() > 0) {
 			$usr_data = $res->row_array();
 			$sess_arr = array(
@@ -38,7 +38,7 @@ class AdminDashboard extends MY_Controller {
 			$this->session->set_userdata('logged_in', True);
 			$this->session->set_userdata('sess_data', $sess_arr);
 
-			$result = $this->admin_model->last_login($usr_data['admin_id']);
+			$result = Admin_model::factory()->last_login($usr_data['admin_id']);
 
 				if($result){
 					$this->session->set_flashdata('succ','<strong>Welcome</strong>. You have successfully logged in.');

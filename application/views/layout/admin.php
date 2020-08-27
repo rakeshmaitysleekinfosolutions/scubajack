@@ -169,6 +169,15 @@
                                     <li><a href="<?php echo admin_url('features_product');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Features Products</span></a></li>
 								</ul>
 							</li>
+                            <li class="submenu">
+                                <a href="#" ><i class="fa fa-tags fw"></i><span> Quzzies</span><span class="menu-arrow"></span></a>
+                                <ul class="list-unstyled" style="display: none;">
+                                    <li class="categoryplus"><a href="<?php echo admin_url('quiz');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Quzzies</span></a></li>
+                                    <li class="categoryplus"><a href="<?php echo admin_url('category');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Questions</span></a></li>
+                                    <li><a href="<?php echo admin_url('answers');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Answers</span></a></li>
+                                    <li><a href="<?php echo admin_url('useranswers');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>User Question & Answers</span></a></li>
+                                </ul>
+                            </li>
 							<li>
 								<a href="javascript:void(0);"><i class="fa fa-cog fw"></i> Settings</a>
 							</li>

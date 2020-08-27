@@ -1,54 +1,46 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 use Carbon\Carbon;
-use Application\Contracts\ProductContract;
+use Application\Contracts\QuestionContract;
 
-class Features_product extends AdminController implements ProductContract {
-
-    
-    private $featuresProductId;
-    private $featuresProduct;
-    private $productId;
-    private $product;
-
-
+class Question extends AdminController implements QuestionContract {
 
     public function onLoadDatatableEventHandler() {
         $this->load->model('FeaturesProduct_model');
         $this->load->model('Product_model');
 
-		$this->featuresProduct = $this->FeaturesProduct_model->findAll();
-		if($this->featuresProduct) {
-			foreach($this->featuresProduct as $featureProduct) {
+        $this->featuresProduct = $this->FeaturesProduct_model->findAll();
+        if($this->featuresProduct) {
+            foreach($this->featuresProduct as $featureProduct) {
                 $this->product = $this->Product_model->findOne($featureProduct->product_id);
-			    $this->productImages = $this->product->productImages();
+                $this->productImages = $this->product->productImages();
                 if (is_file(DIR_IMAGE . $this->productImages->image)) {
                     $image = $this->resize($this->productImages->image, 40, 40);
                 } else {
                     $image = $this->resize('no_image.png', 40, 40);
                 }
-				$this->rows[] = array(
-					'id'			=> $featureProduct->id,
+                $this->rows[] = array(
+                    'id'			=> $featureProduct->id,
                     'img'		    => $image,
-					'name'		    => $this->product->name,
+                    'name'		    => $this->product->name,
                     'created_at'    => Carbon::createFromTimeStamp(strtotime($this->product->created_at))->diffForHumans(),
                     'updated_at'    => ($this->product->updated_at) ? Carbon::createFromTimeStamp(strtotime($this->product->updated_at))->diffForHumans() : ''
-				);
-			}
-			$i = 0;
-			foreach($this->rows as $row) {
+                );
+            }
+            $i = 0;
+            foreach($this->rows as $row) {
 
-                    $this->data[$i][] = '<td class="text-center">
+                $this->data[$i][] = '<td class="text-center">
 											<label class="css-control css-control-primary css-checkbox">
 												<input data-id="'.$row['id'].'" type="checkbox" class="css-control-input selectCheckbox" id="row_'.$row['id'].'" name="row_'.$row['id'].'">
 												<span class="css-control-indicator"></span>
 											</label>
 										</td>';
-                    $this->data[$i][] = '<td><img src="'.$row['img'].'"></td>';
-					$this->data[$i][] = '<td>'.$row['name'].'</td>';
-                    $this->data[$i][] = '<td>'.$row['created_at'].'</td>';
-                    $this->data[$i][] = '<td>'.$row['updated_at'].'</td>';
-					$this->data[$i][] = '<td class="text-right">
+                $this->data[$i][] = '<td><img src="'.$row['img'].'"></td>';
+                $this->data[$i][] = '<td>'.$row['name'].'</td>';
+                $this->data[$i][] = '<td>'.$row['created_at'].'</td>';
+                $this->data[$i][] = '<td>'.$row['updated_at'].'</td>';
+                $this->data[$i][] = '<td class="text-right">
 	                            <div class="dropdown">
 	                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
 	                                <ul class="dropdown-menu pull-right">
@@ -58,24 +50,24 @@ class Features_product extends AdminController implements ProductContract {
 	                            </div>
 	                        </td>
                         ';
-	                    $i++;
-				}
+                $i++;
+            }
 
 
-		}
+        }
 //        <li><a class="delete" href="javascript:void(0);" data-id="'.$row['id'].'" data-toggle="modal" data-target="#delete_client"><i class="fa fa-trash-o m-r-5"></i> Delete</a></li>
-		if($this->data) {
-			return $this->output
-                    ->set_content_type('application/json')
-                    ->set_status_header(200)
-                    ->set_output(json_encode(array('data' => $this->data)));
-		} else {
-			return $this->output
-                    ->set_content_type('application/json')
-                    ->set_status_header(200)
-                    ->set_output(json_encode(array('data' => [])));
-		}
-	}
+        if($this->data) {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode(array('data' => $this->data)));
+        } else {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode(array('data' => [])));
+        }
+    }
 
     public function onClickStatusEventHandler(){}
 
@@ -165,7 +157,7 @@ class Features_product extends AdminController implements ProductContract {
                 $this->load->model('FeaturesProduct_model');
                 $this->featuresProduct = FeaturesProduct_model::factory()->findOne($featuresProductId);
             }
-            
+
             if(!$this->featuresProduct) {
                 $this->redirect(admin_url('features_product'));
             }
@@ -188,7 +180,7 @@ class Features_product extends AdminController implements ProductContract {
         try {
             $this->lang->load('admin/product');
             if ($this->isPost() && $this->validateForm()) {
-               // $this->load->model('Product_model');
+                // $this->load->model('Product_model');
                 $this->featuresProductId = ($this->input->post('featuresProductId')) ? $this->input->post('featuresProductId') : '';
 
                 $this->getData();
@@ -232,16 +224,4 @@ class Features_product extends AdminController implements ProductContract {
         }
 
     }
-
-    public function show($id)
-    {
-        // TODO: Implement show() method.
-    }
-    public function validateForm() {
-        if ($this->input->post('featuresProduct') == '') {
-            $this->error['featuresProduct'] = "required";
-        }
-        return !$this->error;
-    }
-
 }

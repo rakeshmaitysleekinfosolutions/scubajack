@@ -43,8 +43,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Category <span class="text-danger">*</span></label>
-                                        <select name="category[]" class="select floating" id="input-payment-status" multiple>
-
+                                        <select name="category[]" class="select floating" id="input-payment-status" >
+<!--                                            <option value="">select option</option>-->
                                             <?php if(!empty($categories)) {
 
                                                 foreach ($categories as $category) {?>
@@ -63,13 +63,24 @@
                                             <div class="text-danger"><?php  echo $error_name;?></div>
                                         <?php } ?>
                                     </div>
-
+                                    <?php
+                                    /*
+                                    <div class="form-group">
+                                        <label class="control-label">Product Type <span class="text-danger">*</span></label>
+                                        <select name="type" class="select floating" id="input-status" >
+                                            <option value="0" <?php echo ($type == 0) ? 'selected' : '';?>>Learn To READ</option>
+                                            <option value="1" <?php echo ($type == 1) ? 'selected' : '';?>>Quizzes & Videos</option>
+                                        </select>
+                                        <?php if($error_type) { ?>
+                                            <div class="text-danger"><?php echo $error_type;?></div>
+                                        <?php } ?>
+                                    </div>
+                                */?>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Status <span class="text-danger">*</span></label>
                                         <select name="status" class="select floating" id="input-payment-status" >
-                                            <option value="" selected>Select option</option>
                                             <option value="0" <?php echo ($status == 0) ? 'selected' : '';?>>Inactive</option>
                                             <option value="1" <?php echo ($status == 1) ? 'selected' : '';?>>Active</option>
                                         </select>
@@ -95,7 +106,7 @@
         <div class="row">
 
             <div class="col-md-3">
-          
+
                 <div class="card-box m-b-0">
                     <h3 class="card-title">Meta Data</h3>
                     <div class="skills">
@@ -137,20 +148,25 @@
                         <div class="form-group">
                             <label class="control-label">Youtube URL <span class="text-danger"></span></label>
                             <input value="<?php echo $youtubeUrl;?>" id="videoInputBox" name="youtubeUrl" type="text" class="form-control">
-                            <div id="iframe">
-                            <img width="100%" height="100%" src="<?php echo $youtubeThumb;?>" frameborder="0" allowfullscreen/>
-                            <input type="hidden" value="<?php echo $youtubeThumb;?>" id="youtubeThumb" name="youtubeThumb">
-                        </div>
+                            <?php if($youtubeUrl) {?>
+                                <div id="iframe">
+                                    <video controls controlsList="nofullscreen nodownload" src="<?php echo $youtubeUrl;?>" poster="<?php echo $youtubeThumb;?>"preload="none"> </video>
+                                </div>
+                            <?php } ?>
+
+<!--                                <img width="100%" height="100%" src="--><?php //echo $youtubeThumb;?><!--" frameborder="0" allowfullscreen/>-->
+                                <input type="hidden" value="<?php echo $youtubeThumb;?>" id="youtubeThumb" name="youtubeThumb">
+
                            <!--  <div id="">
                                 <iframe src="<?php echo $youtubeThumb;?> ">
                                     <meta http-equiv="refresh" content="0;url=<?php echo $youtubeThumb;?>">
                                 </iframe>
-                                
+
                             </div> -->
                         </div>
                     </div>
                 </div>
-                
+
                    <div class="card-box pdf">
                     <h3 class="card-title">PDF Upload</h3>
                     <div class="skills">

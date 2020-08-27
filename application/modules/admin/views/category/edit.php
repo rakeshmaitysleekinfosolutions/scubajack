@@ -63,7 +63,6 @@
                                     <div class="form-group">
                                         <label class="control-label">Status <span class="text-danger">*</span></label>
                                         <select name="status" class="select floating" id="input-payment-status" >
-                                            <option value="" selected>Select option</option>
                                             <option value="0" <?php echo ($status == 0) ? 'selected' : '';?>>Inactive</option>
                                             <option value="1" <?php echo ($status == 1) ? 'selected' : '';?>>Active</option>
                                         </select>

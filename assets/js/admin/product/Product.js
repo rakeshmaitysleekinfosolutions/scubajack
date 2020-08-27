@@ -237,12 +237,12 @@
         }
        // alert(pastedData);
         var thumb = Youtube.thumb(url);
-        var iframe           = $('iframe:first');
+        //var iframe           = $('iframe:first');
         var youtubeThumb           = $('#youtubeThumb');
-        console.log(youtubeThumb.val());
+        //console.log(youtubeThumb.val());
         youtubeThumb.val(thumb);
         console.log(youtubeThumb.val());
-        iframe.attr('src', thumb);
+       // iframe.attr('src', thumb);
     });
 
     function ytVidId(url) {

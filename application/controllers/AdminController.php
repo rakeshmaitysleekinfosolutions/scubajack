@@ -8,8 +8,8 @@ class AdminController extends BaseController {
     private $localeKey;
     private $foreignKey;
     private $relatedModels;
-
-
+    protected $selected;
+    protected $id;
     public function __constructor() {
          parent::__constructor();
          //$this->getTemplate();

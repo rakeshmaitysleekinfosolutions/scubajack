@@ -33,7 +33,7 @@
                         <div class="form-group">
                             <label class="control-label">Product <span class="text-danger">*</span></label>
                             <select name="featuresProduct[]" class="select floating" id="input-product" multiple >
-                                <option value=""></option>
+
                                 <?php if(!empty($products)) {
                                     foreach ($products as $product) {?>
                                         <option value="<?php echo $product->id;?>" ><?php echo $product->name;?></option>

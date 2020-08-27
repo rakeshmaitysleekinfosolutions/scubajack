@@ -35,7 +35,7 @@ class Category extends AdminController implements CategoryContract {
 			}
 			$i = 0;
 			foreach($this->rows as $row) {
-                    $selected = ($row['status'] == 1) ? 'selected' : '';
+                    $this->selected = ($row['status'] == 1) ? 'selected' : '';
 					$this->data[$i][] = '<td class="text-center">
 											<label class="css-control css-control-primary css-checkbox">
 												<input data-id="'.$row['id'].'" type="checkbox" class="css-control-input selectCheckbox" id="row_'.$row['id'].'" name="row_'.$row['id'].'">
@@ -52,8 +52,8 @@ class Category extends AdminController implements CategoryContract {
 //                                        </td>';
                     $this->data[$i][] = '<td>
                                             <select data-id="'.$row['id'].'" name="status" class="select floating checkboxStatus" id="input-payment-status" >
-                                                <option value="0" '.$selected.'>Inactive</option>
-                                                <option value="1" '.$selected.'>Active</option>
+                                                <option value="0" '.$this->selected.'>Inactive</option>
+                                                <option value="1" '.$this->selected.'>Active</option>
                                             </select>
                                         </td>';
                     $this->data[$i][] = '<td>'.$row['created_at'].'</td>';
@@ -63,7 +63,6 @@ class Category extends AdminController implements CategoryContract {
 	                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
 	                                <ul class="dropdown-menu pull-right">
 	                                    <li><a class="edit" href="javascript:void(0);" data-id="'.$row['id'].'" data-toggle="modal" data-target="#edit_client"><i class="fa fa-pencil m-r-5"></i> Edit</a></li>
-	                                    <li><a class="delete" href="#" data-toggle="modal" data-target="#delete_client"><i class="fa fa-trash-o m-r-5"></i> Delete</a></li>
 	                                </ul>
 	                            </div>
 	                        </td>
