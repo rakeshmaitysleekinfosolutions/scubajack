@@ -68,7 +68,7 @@
                                     <div class="form-group">
                                         <label class="control-label">Product Type <span class="text-danger">*</span></label>
                                         <select name="type" class="select floating" id="input-status" >
-                                            <option value="0" <?php echo ($type == 0) ? 'selected' : '';?>>Learn To READ</option>
+                                            <option value="0" <?php echo ($type == 0) ? 'selected' : '';?>>Activity Book</option>
                                             <option value="1" <?php echo ($type == 1) ? 'selected' : '';?>>Quizzes & Videos</option>
                                         </select>
                                         <?php if($error_type) { ?>

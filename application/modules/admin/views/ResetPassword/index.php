@@ -2,7 +2,7 @@
 //dd($_SESSION);
 ?>
 <div class="content container-fluid" id="my-container">
-    <form id="frm" action="<?php echo admin_url('ResetPassword/updatePassword');?>" method="post">
+    <form id="frm" action="<?php echo admin_url('resetpassword/updatePassword');?>" method="post">
         <input type="hidden" name="userId" value="<?php echo getSession('sess_data')['id'];?>">
         <div class="row">
 

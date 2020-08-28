@@ -5,12 +5,9 @@ class App extends AppController {
 
     public function index()
 	{
-	    $this->load->model('Category_model');
-	    $categories = $this->Category_model->findAll(['status' => 1]);
 
-        if($categories) {
-            $this->data['categories'] = $categories;
-        }
+        $this->data['categories'] = Category_model::factory()->findAll(['status' => 1]);
+
 		$this->template->set_template('layout/app');
 		$this->template->content->view('index', $this->data);
 		$this->template->publish();

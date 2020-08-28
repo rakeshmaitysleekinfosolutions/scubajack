@@ -801,3 +801,7 @@ button.btn.choose-password.btn-lg {
     color: #fff;
     line-height: 18px;
 }
+.splash-screen img{
+    height:100vh;
+    width:100%;
+}

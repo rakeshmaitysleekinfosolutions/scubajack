@@ -28,19 +28,18 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="profile-view">
-<!--                        <div class="profile-img-wrap">-->
-<!--                            <div class="profile-img">-->
-
-<!--                                <a href="" id="thumb-image" type="image" data-toggle="image" class="img-thumbnail"><img src="--><?php //echo $thumb;?><!--" alt="" title="" data-placeholder="--><?php //echo $placeholder;?><!--"/></a>-->
-<!--                                <input type="hidden" name="image" value="--><?php //echo $image;?><!--" id="input-image"/>-->
-<!--                                --><?php //if($error_image) { ?>
-<!--                                    <div class="text-danger">--><?php // echo $error_image;?><!--</div>-->
-<!--                                --><?php //} ?>
-<!--                            </div>-->
-<!--                        </div>-->
-                        <div class="">
+                        <div class="profile-img-wrap">
+                            <div class="profile-img">
+                                <a href="" id="thumb-image" type="image" data-toggle="image" class="img-thumbnail"><img src="<?php echo $thumb;?>" alt="" title="" data-placeholder="<?php echo $placeholder;?>"/></a>
+                                <input type="hidden" name="image" value="<?php echo $image;?>" id="input-image"/>
+                                <?php if($error_image) { ?>
+                                    <div class="text-danger"><?php  echo $error_image;?></div>
+                                <?php } ?>
+                            </div>
+                        </div>
+                        <div class="profile-basic">
                             <div class="row">
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Name <span class="text-danger">*</span></label>
                                         <input value="<?php echo $name;?>" class="form-control" type="text" name="name" id="input-payment-firstname" autocomplete="off" >
@@ -50,7 +49,7 @@
                                     </div>
 
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Slug <span class="text-danger"></span></label>
                                         <input value="<?php echo $slug;?>" class="form-control" type="text" name="slug" id="input-payment-lastname" autocomplete="off" >
@@ -59,7 +58,7 @@
                                         <?php } ?>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
+                                <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Status <span class="text-danger">*</span></label>
                                         <select name="status" class="select floating" id="input-payment-status" >

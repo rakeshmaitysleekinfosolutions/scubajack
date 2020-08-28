@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class ResetPassword extends AdminController {
+class Resetpassword extends AdminController {
     /**
      * @var mixed
      */
@@ -26,7 +26,7 @@ class ResetPassword extends AdminController {
         $this->template->javascript->add('assets/js/jquery.validate.js');
         $this->template->javascript->add('assets/js/additional-methods.js');
         $this->template->javascript->add('assets/js/admin/reset/ResetPassword.js');
-        $this->template->content->view('ResetPassword/index');
+        $this->template->content->view('resetpassword/index');
         $this->template->publish();
     }
     public function setRequest() {

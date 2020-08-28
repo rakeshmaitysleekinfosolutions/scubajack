@@ -139,13 +139,13 @@ class Category extends AdminController implements CategoryContract {
         } else {
             $this->data['error_status'] = '';
         }
-        /*
+
         if (isset($this->error['image'])) {
             $this->data['error_image'] = $this->error['image'];
         } else {
             $this->data['error_image'] = '';
         }
-        */
+
         if (isset($this->error['meta_title'])) {
             $this->data['error_meta_title'] = $this->error['meta_title'];
         } else {
@@ -220,7 +220,7 @@ class Category extends AdminController implements CategoryContract {
             $this->data['status'] = 0;
         }
         // Image
-        /*
+
 		if (!empty($this->input->post('image'))) {
 			$this->data['image'] = $this->input->post('image');
 		} elseif (!empty($this->categoryDescription)) {
@@ -238,7 +238,7 @@ class Category extends AdminController implements CategoryContract {
 		}
 
 		$this->data['placeholder'] = $this->resize('no_image.png', 100, 100);
-        */
+
 		$this->data['back'] = admin_url('category');
 		//$this->dd($this->data);
     }
@@ -258,11 +258,11 @@ class Category extends AdminController implements CategoryContract {
         if ((strlen($this->input->post('meta_title')) < 1) || (strlen(trim($this->input->post('meta_title'))) > 255)) {
             $this->error['meta_title'] = $this->lang->line('error_meta_title');
         }
-        /*
+
         if ((strlen($this->input->post('image')) < 1)) {
             $this->error['image'] = $this->lang->line('error_image');
         }
-        */
+
         $this->load->model('Category_model');
 
 		if ($this->error && !isset($this->error['warning'])) {
@@ -330,6 +330,7 @@ class Category extends AdminController implements CategoryContract {
                 $this->redirect(admin_url('category/edit/'.$this->categoryId));
             }
             $this->getData();
+            $this->create();
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }

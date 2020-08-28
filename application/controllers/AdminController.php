@@ -12,7 +12,7 @@ class AdminController extends BaseController {
     protected $id;
     public function __constructor() {
          parent::__constructor();
-         //$this->getTemplate();
+         $this->getTemplate();
     }
     public function getTemplate() {
         $this->load->library('template');

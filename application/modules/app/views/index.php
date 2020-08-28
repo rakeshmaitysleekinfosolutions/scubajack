@@ -125,18 +125,20 @@
       <div class="logo"> <img src="<?php echo base_url();?>assets/images/scuba-logo.png"> </div>
       <div class="skill-list">
         <div class="row">
-            <?php /*if($categories) { ?>
+            <?php if($categories) { ?>
                 <?php foreach ($categories as $category) {?>
                     <div class="col-md-6">
                         <div class="skillbox">
                           <div class="s-link">
-                            <button type="button" class="btn whitebtn">story books</button>
+                            <a href="<?php echo base_url($category->slug);?>" class="btn whitebtn"><?php echo $category->name;?></a>
                           </div>
                         </div>
                     </div>
                 <?php } ?>
-            <?php }*/ ?>
-            <div class="col-md-6">
+            <?php }  ?>
+            <?php
+            /*
+           <div class="col-md-6">
                 <div class="skillbox">
                   <div class="s-link">
                     <button type="button" class="btn whitebtn">story books</button>
@@ -164,6 +166,7 @@
               </div>
             </div>
           </div>
+            */?>
         </div>
         <center><a class="btn see-more">See all</a></center>
       </div>
@@ -207,3 +210,5 @@
       </div>
     </div>
   </section>
+
+
