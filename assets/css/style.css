@@ -830,6 +830,7 @@ button.btn.choose-password.btn-lg {
 .skillbox img{
     border-radius:10px;
     border:2px solid #dad5d5;
+    width: 100%;
 }
 .s-link {
     position: absolute;
@@ -848,4 +849,112 @@ button.btn.choose-password.btn-lg {
 
 .s-link a:hover{
     color:#fff;
+}
+/****31.08.20**********/
+section.skill-inner{
+    margin-top: 72px;
+    /* background: #0e7ae6; */
+    padding: 60px 60px;
+    height: auto;
+    position: relative;
+}
+/************product-details*************************/
+section.book-list {
+    padding-top: 110px;
+    /* margin-top: 169px; */
+}
+.book-list h3 {
+    font-size: 30px;
+    line-height: 39px;
+    color: #3c5d6b;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    text-transform: capitalize;
+}
+.book-list p{
+    font-size: 18px;
+    line-height: 20px;
+    color: #3c5d6b;
+    font-weight: 400;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    
+}
+.book-list span {
+    font-size: 30px;
+    line-height: 39px;
+    color: #0f7deb;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+    text-transform: capitalize;
+}
+a.btn.watch i {
+    padding: 5px;
+}
+a.btn.craft i{
+     padding: 5px;
+}
+a.btn.order i{
+     padding: 5px;
+}
+a.btn.craft {
+    float: right;
+    background: #004085;
+    font-size: 14px;
+    color: #fff;
+    padding: 5px 20px;
+    border-radius: 0;
+    font-family: 'Poppins', sans-serif;
+
+}
+
+a.btn.watch {
+    float: left;
+    background: #004085;
+    font-size: 14px;
+    color: #fff;
+    padding: 5px 20px;
+    border-radius: 0;
+    font-family: 'Poppins', sans-serif;
+}
+a.btn.order {
+    background: #137fea;
+    font-size: 16px;
+    padding: 5px 30px;
+    margin-top: 10px;
+    color: #fff;
+    border-radius: 0;
+    font-family: 'Poppins', sans-serif;
+}
+.book-details{
+    padding: 10px 10px;
+}
+.book-details img {
+    width: 100%;
+}
+.cards {
+    position: relative;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid #459af5; 
+    border-radius:0;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 270px;
+}
+.card-body h5{
+    text-align: center;
+    font-size: 20px;
+    color: #137fea;
+    line-height: 40px;
+    font-family: 'Poppins', sans-serif;
+
 }
