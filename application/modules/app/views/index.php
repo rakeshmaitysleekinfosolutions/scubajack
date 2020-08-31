@@ -21,7 +21,7 @@
   </section>
   <!-----------banner part end-------->
   <section class="pre-school">
-    <h3>We provide a <span>variety of  quality</span> of pre school and elimentary</h3>
+    <h3>We provide a <span>variety of  quality</span> of Pre-school and elementary</h3>
     <p>education for children</p>
     <div class="pre-banner">
       <a href="#"><img src="<?php echo base_url();?>assets/images/play-button.png" data-toggle="modal" data-target="#exampleModalCenter"></a>
@@ -33,7 +33,8 @@
               <button type="button" class="close" data-dismiss="modal" aria-label="Close"> <span aria-hidden="true">&times;</span> </button>
             </div>
             <div class="modal-body">
-              <iframe width="100%" height="460" src="https://www.youtube.com/embed/-x1HTBAAFk8" rel="0&amp;modestbranding=1&amp;autohide=1&amp;showinfo=0&amp;controls=0" frameborder="0" allowfullscreen=""></iframe>
+              <iframe width="100%" height="460" src="https://www.youtube.com/embed/aDGArpQMi78" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+             <!--  <iframe width="100%" height="460" src="https://www.youtube.com/embed/-x1HTBAAFk8" rel="0&amp;modestbranding=1&amp;autohide=1&amp;showinfo=0&amp;controls=0" frameborder="0" allowfullscreen=""></iframe> -->
             </div>
           </div>
         </div>
@@ -46,7 +47,7 @@
             <p>Preschool <span>learning</span></p>
           </div>
           <div class="col-md-6"> <img src="<?php echo base_url();?>assets/images/p2.jpg">
-            <p>Elimentary <span>learning</span></p>
+            <p>Elementary <span>learning</span></p>
           </div>
         </div>
       </div>
