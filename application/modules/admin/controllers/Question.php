@@ -13,6 +13,10 @@ class Question extends AdminController implements QuestionContract {
      * @var string
      */
     private $status;
+    /**
+     * @var object
+     */
+    private $question;
 
 
     public function __construct() {
@@ -27,8 +31,6 @@ class Question extends AdminController implements QuestionContract {
      * @var string
      */
     public function index() {
-
-
         $this->template->stylesheet->add('assets/theme/light/js/datatables/dataTables.bootstrap4.css');
         $this->template->javascript->add('assets/theme/light/js/datatables/jquery.dataTables.min.js');
         $this->template->javascript->add('assets/theme/light/js/datatables/dataTables.bootstrap4.min.js');
@@ -39,69 +41,98 @@ class Question extends AdminController implements QuestionContract {
     }
 
     public function setData() {
-        try {
-            if (isset($this->error['warning'])) {
-                $this->data['error_warning'] = $this->error['warning'];
-            } else {
-                $this->data['error_warning'] = '';
-            }
-            if (isset($this->error['quiz'])) {
-                $this->data['error_quiz'] = $this->error['quiz'];
-            } else {
-                $this->data['error_quiz'] = '';
-            }
-            if (isset($this->error['name'])) {
-                $this->data['error_name'] = $this->error['name'];
-            } else {
-                $this->data['error_name'] = '';
-            }
 
-            if (isset($this->error['slug'])) {
-                $this->data['error_slug'] = $this->error['slug'];
-            } else {
-                $this->data['error_slug'] = '';
-            }
-
-
-            // Quiz ID
-            if (!empty($this->input->post('id'))) {
-                $this->data['id'] = $this->input->post('id');
-            } elseif (!empty($this->quiz)) {
-                $this->data['id'] = $this->quiz->id;
-            } else {
-                $this->data['id'] = '';
-            }
-            // Name
-            if (!empty($this->input->post('name'))) {
-                $this->data['name'] = $this->input->post('name');
-            } elseif (!empty($this->quiz)) {
-                $this->data['name'] = $this->quiz->name;
-            } else {
-                $this->data['name'] = '';
-            }
-            // Slug
-            if (!empty($this->input->post('slug'))) {
-                $this->data['slug'] = url_title($this->input->post('slug'),'dash', true);
-            } elseif (!empty($this->quiz)) {
-                $this->data['slug'] = $this->quiz->slug;
-            } else {
-                $this->data['slug'] = url_title($this->input->post('name'),'dash', true);
-            }
-            // Status
-            // Status
-            if (!empty($this->input->post('status'))) {
-                $this->data['status'] = $this->input->post('status');
-            } elseif (!empty($this->quiz)) {
-                $this->data['status'] = $this->quiz->status;
-            } else {
-                $this->data['status'] = 0;
-            }
-            $this->data['back']         = admin_url('quiz');
-            $this->data['quizzes']      = Quiz_model::factory()->findAll(['status' => 1]);
-            //dd($this->data);
-        } catch (Exception $e) {
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
+        if (isset($this->error['warning'])) {
+            $this->data['error_warning'] = $this->error['warning'];
+        } else {
+            $this->data['error_warning'] = '';
         }
+
+        if (isset($this->error['question'])) {
+            $this->data['error_question'] = $this->error['question'];
+        } else {
+            $this->data['error_question'] = '';
+        }
+        // Question ID
+
+        if (!empty($this->question)) {
+            $this->data['id'] = $this->question->id;
+        } else {
+            $this->data['id'] = '';
+        }
+        // Quiz
+        if (!empty($this->input->post('quiz'))) {
+            $this->data['quizId'] = $this->input->post('quiz');
+        } elseif (!empty($this->question)) {
+            $this->data['quizId'] = $this->question->quiz_id;
+        } else {
+            $this->data['quizId'] = '';
+        }
+
+        // Name
+        if (!empty($this->input->post('question'))) {
+            $this->data['question'] = $this->input->post('question');
+        } elseif (!empty($this->question)) {
+            $this->data['question'] = $this->question->question;
+        } else {
+            $this->data['question'] = '';
+        }
+
+
+        // Status
+        if (!empty($this->input->post('status'))) {
+            $this->data['status'] = $this->input->post('status');
+        } elseif (!empty($this->question)) {
+            $this->data['status'] = $this->question->status;
+        } else {
+            $this->data['status'] = 0;
+        }
+        // Image
+        if (!empty($this->input->post('image'))) {
+            $this->data['image'] = $this->input->post('image');
+        } elseif (!empty($this->question)) {
+            $this->data['image'] = $this->question->image;
+        } else {
+            $this->data['image'] = '';
+        }
+        if (!empty($this->input->post('image')) && is_file(DIR_IMAGE . $this->input->post('image'))) {
+            $this->data['thumb'] = $this->resize($this->input->post('image'), 100, 100);
+        } elseif (!empty($this->question) && is_file(DIR_IMAGE . $this->question->image)) {
+            $this->data['thumb'] = $this->resize($this->question->image, 100, 100);
+        } else {
+            $this->data['thumb'] = $this->resize('no_image.png', 100, 100);
+        }
+        // Images
+        if (!empty($this->input->post('images'))) {
+            $images = $this->input->post('images');
+        } elseif (!empty($this->questionImages)) {
+            $images = $this->questionImages;
+        } else {
+            $images = array();
+        }
+
+        $this->data['images'] = array();
+
+        foreach ($images as $image) {
+            if (is_file(DIR_IMAGE . $image->image)) {
+                $image = $image->image;
+                $thumb = $image->image;
+            } else {
+                $image = '';
+                $thumb = 'no_image.png';
+            }
+
+            $this->data['images'][] = array(
+                'image'      => $image,
+                'thumb'      => $this->resize($thumb, 100, 100)
+            );
+        }
+
+        $this->data['placeholder'] = $this->resize('no_image.png', 100, 100);
+        $this->data['back']         = admin_url('quiz');
+        $this->data['quizzes']      = Quiz_model::factory()->findAll(['status' => 1]);
+        //dd($this->data);
+
     }
 
     public function create() {
@@ -119,13 +150,28 @@ class Question extends AdminController implements QuestionContract {
             if ($this->isPost() && $this->validateForm()) {
                 $this->setData();
 
-                Quiz_model::factory()->insert([
-                    'name'      => $this->data['name'],
-                    'slug'      => $this->data['slug'],
-                    'status'    => $this->data['status'],
+                Question_model::factory()->insert([
+                    'question'    => $this->data['question'],
+                    'quiz_id'     => $this->data['quizId'],
+                    'status'      => $this->data['status'],
                 ]);
-                $this->setMessage('message', "Success: You have modified features product! ");
-                $this->redirect(admin_url('quiz/create/'));
+                $this->setId(Question_model::factory()->getLastInsertID());
+
+                if(isset($this->data['image'])) {
+                    Question_model::factory()->update([
+                        'image' => $this->data['image'],
+                    ],$this->id);
+                }
+                /*
+                if(isset($this->data['images'])) {
+                    QuestionImage_model::factory()->insert([
+                        'question_id' => $this->id,
+                        'image' => $this->data['image']
+                    ]);
+                }
+                */
+                $this->setMessage('message', "Success: You have modified features question! ");
+                $this->redirect(admin_url('question/create/'));
             }
             $this->create();
         } catch (Exception $e) {
@@ -137,18 +183,20 @@ class Question extends AdminController implements QuestionContract {
     public function edit($id) {
         try {
             $this->id = $id;
-            $this->quiz = Quiz_model::factory()->findOne($this->id);
+            $this->question = Question_model::factory()->findOne($this->id);
 
-            if(!$this->quiz) {
-                $this->redirect(admin_url('quiz'));
+            if(!$this->question) {
+                $this->redirect(admin_url('question'));
             }
-            $this->setData();
+
             $this->template->javascript->add('assets/js/jquery.validate.js');
             $this->template->javascript->add('assets/js/additional-methods.js');
-            $this->template->javascript->add('assets/js/admin/product/FeaturesProduct.js');
+            $this->template->javascript->add('assets/js/admin/question/Question.js');
 
             $this->template->set_template('layout/admin');
-            $this->template->content->view('quiz/edit', $this->data);
+            $this->setData();
+
+            $this->template->content->view('question/edit', $this->data);
             $this->template->publish();
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
@@ -158,20 +206,19 @@ class Question extends AdminController implements QuestionContract {
     public function update($id) {
         try {
             $this->id = $id;
-            $this->quiz = Quiz_model::factory()->findOne($id);
-            if(!$this->quiz) {
+            $this->question = Question_model::factory()->findOne($id);
+            if(!$this->question) {
                 $this->setMessage('warning', $this->lang->line('text_notfound'));
                 $this->redirect(admin_url('quiz'));
             }
             if ($this->isPost() && $this->validateForm()) {
                 $this->setData();
-                //dd($this->data);
-                Quiz_model::factory()->update([
-                    'name'      => $this->data['name'],
-                    'slug'      => $this->data['slug'],
-                    'status'    => $this->data['status'],
+                Question_model::factory()->update([
+                    'question'    => $this->data['question'],
+                    'quiz_id'     => $this->data['quizId'],
+                    'status'      => $this->data['status'],
+                    'image'       => $this->data['image'],
                 ], $this->id);
-
                 $this->setMessage('message', $this->lang->line('text_success'));
                 $this->redirect(admin_url('quiz/edit/'.$this->id));
             }
@@ -290,13 +337,10 @@ class Question extends AdminController implements QuestionContract {
     public function validateForm()
     {
         // TODO: Implement validateForm() method.
-        if ((strlen($this->input->post('name')) < 1) || (strlen(trim($this->input->post('name'))) > 255)) {
-            $this->error['name'] = $this->lang->line('error_name');
+        if ((strlen($this->input->post('question')) < 1) || (strlen(trim($this->input->post('question'))) > 255)) {
+            $this->error['question'] = $this->lang->line('error_question');
         }
 
-        if ($this->input->post('quiz') == '' || $this->input->post('quiz') == NULL) {
-            $this->error['quiz'] = $this->lang->line('error_quiz');
-        }
         if ($this->error && !isset($this->error['warning'])) {
             $this->error['warning'] = $this->lang->line('error_warning');
         }

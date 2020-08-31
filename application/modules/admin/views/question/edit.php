@@ -1,5 +1,5 @@
 <div class="content container-fluid">
-    <form id="frmSignUp" action="<?php echo admin_url('question/store');?>" method="post">
+    <form id="frmSignUp" action="<?php echo admin_url('question/update/'.$id);?>" method="post">
 
         <div class="row">
             <?php if($error_warning) { ?>
@@ -15,7 +15,7 @@
         </div>
         <div class="row">
             <div class="col-sm-8">
-                <h4 class="page-title">Add Question</h4>
+                <h4 class="page-title">Edit Question</h4>
             </div>
             <div class="col-sm-4 text-right m-b-30">
                 <button type="submit" class="btn btn-primary rounded"><i class="fa fa-save"></i> Save</button>
@@ -35,7 +35,7 @@
                                         <select name="quiz" class="select floating" id="input-quiz" >
                                             <?php if(isset($quizzes)) {
                                                 foreach ($quizzes as $quiz) {?>
-                                                    <option value="<?php echo $quiz->id;?>"><?php echo $quiz->name;?></option>
+                                                    <option <?php echo ($quizId == $quiz->id) ? "selected" : "";?> value="<?php echo $quiz->id;?>"><?php echo $quiz->name;?></option>
                                                 <?php } ?>
                                             <?php } ?>
                                         </select>

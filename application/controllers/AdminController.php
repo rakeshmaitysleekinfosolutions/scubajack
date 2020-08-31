@@ -14,6 +14,10 @@ class AdminController extends BaseController {
          parent::__constructor();
          $this->getTemplate();
     }
+    public function setId($id) {
+        $this->id = $id;
+        return $this;
+    }
     public function getTemplate() {
         $this->load->library('template');
         return $this->template->set_template('layout/admin');
