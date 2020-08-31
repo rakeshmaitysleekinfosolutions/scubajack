@@ -56,10 +56,12 @@ $route['default_controller'] 	= 'app';
 $route['register'] 				= 'register';
 $route['login'] 				= 'login';
 
-$route['404_override'] = '';
+$route['404_override'] = 'PageNotFoundController/index';
 $route['translate_uri_dashes'] = FALSE;
 
-
+//Set Splash Screen
+$route['setSplashScreen'] 	= 'app/setSplashScreen';
+$route['category/(:any)'] 	= 'category/show/$1';
 
 $route['admin'] = 'adminDashboard';
 $route['admin-login'] = 'adminDashboard/login';

@@ -94,6 +94,53 @@
   <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.js"></script>
   <script type="text/javascript" src="<?php echo base_url();?>assets/js/app.js"></script>
   <?php echo $this->template->javascript; ?>
+<script>
+    !function ($) {
+        "use strict";
+        $(document).ready(function () {
+            <?php //unsetSession('splashscreen', 1);?>
+            <?php if(!hasSession('splashscreen')) {?>
+
+                $(".splash-screen").css('display', 'block');
+
+            <?php } else { ?>
+                //console.log(1);
+                $(".splash-screen").css('display', 'none');
+            <?php } ?>
+            // if( $.cookie('splashscreen') == null || $.cookie('splashscreen') == '') { // Here you are checking if cookie is existing if not you are showing a splash screen and set a cookie
+            //     //$(".splash-screen").fadeIn();
+            //
+            // } else {
+            //     $(".splash-screen").css('display', 'none');
+            // }
+            // setTimeout(function () {
+            //     $("#splashscreen").trigger('click');
+            // },8000);
+
+            $("#splashscreen").click(function (e) {
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: "<?php echo base_url('setSplashScreen');?>",
+                    cache: false,
+                    beforeSend: function() {},
+                    complete: function() {},
+                    success: function(res) {
+                        console.log(res);
+                        if(res.status) {
+                            $(".splash-screen").fadeOut(2000);
+                        }
+                    }
+                });
+
+                //$.cookie("splashscreen", 1, { expires : 10 }); // cookie is valid for 10 days
+
+            });
+
+        });
+
+    }(window.jQuery);
+</script>
 </body>
 
 </html>
