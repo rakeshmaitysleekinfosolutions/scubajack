@@ -1,10 +1,10 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
-class Question_model extends BaseModel {
+class Answer_model extends BaseModel {
 
 
-    protected $table = "questions";
+    protected $table = "answers";
 
     protected $primaryKey = 'id';
 
@@ -14,10 +14,10 @@ class Question_model extends BaseModel {
     const SOFT_DELETED = 'is_deleted';
 
     public static function factory($attr = array()) {
-        return new Question_model($attr);
+        return new Answer_model($attr);
     }
 
-    public function quiz() {
-        return $this->hasOne(Quiz_model::class, 'id', 'quiz_id');
+    public function question() {
+        return $this->hasOne(Question_model::class, 'id', 'question_id');
     }
 }
