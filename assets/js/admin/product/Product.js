@@ -66,13 +66,8 @@
                 var id = $(this).data('id');
                 window.location.href = myLabel.edit + id;
             }).on('change', '.checkboxStatus', function (e) {
-
                 var id      = $(this).attr('data-id');
                 var status  = $(this).val();
-
-
-
-                
                 $.ajax({
                     type: "POST",
                     url: myLabel.updateStatus,
@@ -86,27 +81,43 @@
 
                     }
                 });
-            }).on('click', '.delete', function (e) {
-                var selected = [];
-                $('.datatable .selectCheckbox').each(function () {
-                    if ($(this).is(":checked")) {
-                        var id = $(this).data('id');
+            }).on('click', '#checkAll', function () {
+                $('.datatable input[type=checkbox]').prop('checked', this.checked);
+            });
+        }
+        $(".alert").fadeTo(2000, 500).slideUp(500, function(){
+            $(".alert").slideUp(500);
+        });
+        $(document).ready(function(){
+            $('.summernote').summernote({
+                height: 200,                 // set editor height
+                minHeight: null,             // set minimum height of editor
+                maxHeight: null,             // set maximum height of editor
+                focus: false                 // set focus to editable area after initializing summernote
+            });
+        });
 
-                        if (id != undefined || id != 0 || id != '' || id != null) {
-                            selected.push(id);
-                        } 
+        //Delete Records
+        $(document).on('click', '#delete', function (e) {
+            var selected = [];
+            $('.datatable .selectCheckbox').each(function () {
+                if ($(this).is(":checked")) {
+                    var id = $(this).data('id');
+
+                    if (id != undefined || id != 0 || id != '' || id != null) {
+                        selected.push(id);
                     }
-                });
-
-                if (selected.length > 0) {
-                    swal({
-                        title: "Confirm Delete",
-                        text: "Are you want to delete this record?(Yes/No)",
-                        type: "info",
-                        showCancelButton: true,
-                        closeOnConfirm: false,
-                        showLoaderOnConfirm: true
-                    }, function () {
+                }
+            });
+            if (selected.length > 0) {
+                swal({
+                    title: "Confirm Delete",
+                    text: "Are you want to delete this record?(Yes/No)",
+                    type: "info",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    showLoaderOnConfirm: true
+                }, function () {
 
                     setTimeout(function () {
                         $.ajax({
@@ -126,31 +137,12 @@
                         });
                     }, 2000);
 
-                    });
-                } else {
-                    swal("You must select one record");
-                }
-
-            }).on('click', '#checkAll', function () {
-                $('.datatable input[type=checkbox]').prop('checked', this.checked);
-            });
-        }
-      
-        
-        $(".alert").fadeTo(2000, 500).slideUp(500, function(){
-            $(".alert").slideUp(500);
+                });
+            } else {
+                swal("You must select one record");
+            }
         });
-        
-       
-        $(document).ready(function(){
-            $('.summernote').summernote({
-                height: 200,                 // set editor height
-                minHeight: null,             // set minimum height of editor
-                maxHeight: null,             // set maximum height of editor
-                focus: false                 // set focus to editable area after initializing summernote
-            });
-        });
-        // Image Manager
+    // Image Manager
         $(document).on('click', 'a[data-toggle=\'image\']', function(e) {
             var $element = $(this);
             var $popover = $element.data('bs.popover'); // element has bs popover?
@@ -245,12 +237,12 @@
         }
        // alert(pastedData);
         var thumb = Youtube.thumb(url);
-        var iframe           = $('iframe:first');
+        //var iframe           = $('iframe:first');
         var youtubeThumb           = $('#youtubeThumb');
-        console.log(youtubeThumb.val());
+        //console.log(youtubeThumb.val());
         youtubeThumb.val(thumb);
         console.log(youtubeThumb.val());
-        iframe.attr('src', thumb);
+       // iframe.attr('src', thumb);
     });
 
     function ytVidId(url) {

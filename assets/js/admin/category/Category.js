@@ -57,27 +57,35 @@
 
                     }
                 });
-            }).on('click', '.delete', function (e) {
-                var selected = [];
-                $('.datatable .selectCheckbox').each(function () {
-                    if ($(this).is(":checked")) {
-                        var id = $(this).data('id');
+            }).on('click', '#checkAll', function () {
+                $('.datatable input[type=checkbox]').prop('checked', this.checked);
+            });
+        }
+        $(".alert").fadeTo(2000, 500).slideUp(500, function(){
+            $(".alert").slideUp(500);
+        });
+        //Delete
+        $(document).on('click', '#delete', function (e) {
+            var selected = [];
+            $('.datatable .selectCheckbox').each(function () {
+                if ($(this).is(":checked")) {
+                    var id = $(this).data('id');
 
-                        if (id != undefined || id != 0 || id != '' || id != null) {
-                            selected.push(id);
-                        } 
+                    if (id != undefined || id != 0 || id != '' || id != null) {
+                        selected.push(id);
                     }
-                });
+                }
+            });
 
-                if (selected.length > 0) {
-                    swal({
-                        title: "Confirm Delete",
-                        text: "Are you want to delete this record?(Yes/No)",
-                        type: "info",
-                        showCancelButton: true,
-                        closeOnConfirm: false,
-                        showLoaderOnConfirm: true
-                    }, function () {
+            if (selected.length > 0) {
+                swal({
+                    title: "Confirm Delete",
+                    text: "Are you want to delete this record?(Yes/No)",
+                    type: "info",
+                    showCancelButton: true,
+                    closeOnConfirm: false,
+                    showLoaderOnConfirm: true
+                }, function () {
 
                     setTimeout(function () {
                         $.ajax({
@@ -97,22 +105,12 @@
                         });
                     }, 2000);
 
-                    });
-                } else {
-                    swal("You must select one record");
-                }
-
-            }).on('click', '#checkAll', function () {
-                $('.datatable input[type=checkbox]').prop('checked', this.checked);
-            });
-        }
-      
-        
-        $(".alert").fadeTo(2000, 500).slideUp(500, function(){
-            $(".alert").slideUp(500);
+                });
+            } else {
+                swal("You must select one record");
+            }
         });
-        
-       
+        // Summer note
         $(document).ready(function(){
             $('.summernote').summernote({
                 height: 200,                 // set editor height

@@ -68,7 +68,9 @@
     <p>Comes with Quizzes & Videos!</p>
     <div class="container">
       <div class="row">
-        <div class="col-md-3 col-12">
+          <?php if($featuresProduct) {
+              foreach ($featuresProduct as $featureProduct) { ?>
+                <div class="col-md-3 col-12">
           <div class="books"> <img src="<?php echo base_url();?>assets/images/b1.jpg">
             <div class="books-details">
               <p>Dolphins</p>
@@ -80,42 +82,8 @@
             </div>
           </div>
         </div>
-        <div class="col-md-3 col-12">
-          <div class="books"> <img src="<?php echo base_url();?>assets/images/b2.jpg">
-            <div class="books-details">
-              <p>Great White Sharks</p>
-              <p class="qu">quiz</p>
-            </div>
-            <div class="more">
-              <button type="button" class="btn vdo"><i class="far fa-play-circle"></i>video</button>
-              <button type="button" class="btn dwnld"><i class="far fa-arrow-alt-circle-down"></i>download</button>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 col-12">
-          <div class="books"> <img src="<?php echo base_url();?>assets/images/b3.jpg">
-            <div class="books-details">
-              <p>Whale Sharks</p>
-              <p class="qu">quiz</p>
-            </div>
-            <div class="more">
-              <button type="button" class="btn vdo"><i class="far fa-play-circle"></i>video</button>
-              <button type="button" class="btn dwnld"><i class="far fa-arrow-alt-circle-down"></i>download</button>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-3 col-12">
-          <div class="books"> <img src="<?php echo base_url();?>assets/images/b4.jpg">
-            <div class="books-details">
-              <p>Sea Turtles</p>
-              <p class="qu">quiz</p>
-            </div>
-            <div class="more">
-              <button type="button" class="btn vdo"><i class="far fa-play-circle"></i>video</button>
-              <button type="button" class="btn dwnld"><i class="far fa-arrow-alt-circle-down"></i>download</button>
-            </div>
-          </div>
-        </div>
+        <?php } ?>
+          <?php } ?>
       </div>
       <center><a class="btn see-more">See more</a></center>
     </div>
@@ -126,18 +94,21 @@
       <div class="logo"> <img src="<?php echo base_url();?>assets/images/scuba-logo.png"> </div>
       <div class="skill-list">
         <div class="row">
-            <?php /*if($categories) { ?>
+            <?php if($categories) { ?>
                 <?php foreach ($categories as $category) {?>
                     <div class="col-md-6">
                         <div class="skillbox">
+                            <img src="<?php echo $category['img'];?>">
                           <div class="s-link">
-                            <button type="button" class="btn whitebtn">story books</button>
+                            <a href="<?php echo base_url('category/'.$category['slug']);?>" class="btn whitebtn"><?php echo $category['name'];?></a>
                           </div>
                         </div>
                     </div>
                 <?php } ?>
-            <?php }*/ ?>
-            <div class="col-md-6">
+            <?php }  ?>
+            <?php
+            /*
+           <div class="col-md-6">
                 <div class="skillbox">
                   <div class="s-link">
                     <button type="button" class="btn whitebtn">story books</button>
@@ -165,6 +136,7 @@
               </div>
             </div>
           </div>
+            */?>
         </div>
         <center><a class="btn see-more">See all</a></center>
       </div>
@@ -208,3 +180,5 @@
       </div>
     </div>
   </section>
+
+

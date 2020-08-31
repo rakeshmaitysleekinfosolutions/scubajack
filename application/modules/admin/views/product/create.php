@@ -44,8 +44,8 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Category <span class="text-danger">*</span></label>
-                                        <select name="category[]" class="select floating" id="input-category" multiple >
-                                            <option value=""></option>
+                                        <select name="category[]" class="select floating" id="input-category" >
+<!--                                            <option value="">select option</option>-->
                                             <?php if(!empty($categories)) {
                                                 foreach ($categories as $category) {?>
                                                     <option value="<?php echo $category->id;?>" ><?php echo $category->name;?></option>
@@ -63,13 +63,24 @@
                                             <div class="text-danger"><?php  echo $error_name;?></div>
                                         <?php } ?>
                                     </div>
-
+                                    <?php
+                                    /*
+                                    <div class="form-group">
+                                        <label class="control-label">Product Type <span class="text-danger">*</span></label>
+                                        <select name="type" class="select floating" id="input-status" >
+                                            <option value="0" <?php echo ($type == 0) ? 'selected' : '';?>>Activity Book</option>
+                                            <option value="1" <?php echo ($type == 1) ? 'selected' : '';?>>Quizzes & Videos</option>
+                                        </select>
+                                        <?php if($error_type) { ?>
+                                            <div class="text-danger"><?php echo $error_type;?></div>
+                                        <?php } ?>
+                                    </div>
+                                    */?>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="control-label">Status <span class="text-danger">*</span></label>
                                         <select name="status" class="select floating" id="input-status" >
-                                            <option value="" selected>Select option</option>
                                             <option value="0" <?php echo ($status == 0) ? 'selected' : '';?>>Inactive</option>
                                             <option value="1" <?php echo ($status == 1) ? 'selected' : '';?>>Active</option>
                                         </select>
@@ -138,9 +149,14 @@
                             <label class="control-label">Youtube URL <span class="text-danger"></span></label>
                             <input value="<?php echo $youtubeUrl;?>" id="videoInputBox" name="youtubeUrl" type="text" class="form-control">
                             <div id="iframe">
-                                <iframe src="<?php echo $youtubeThumb;?>">
-                                    <meta http-equiv="refresh" content="0;url=">
-                                </iframe>
+<!--                                <iframe src="--><?php //echo $youtubeThumb;?><!--">-->
+<!--                                    <meta http-equiv="refresh" content="0;url=">-->
+<!--                                </iframe>-->
+                                <?php if($youtubeUrl) {?>
+                                    <div id="iframe">
+                                        <video controls controlsList="nofullscreen nodownload" src="<?php echo $youtubeUrl;?>" poster="<?php echo $youtubeThumb;?>"preload="none"> </video>
+                                    </div>
+                                <?php } ?>
                                 <input type="hidden" value="<?php echo $youtubeThumb;?>" id="youtubeThumb" name="youtubeThumb">
                             </div>
                         </div>

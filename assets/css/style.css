@@ -366,7 +366,7 @@ section.skill{
     background: url(../images/s1.jpg) no-repeat;
     width: 100%;
     height: 200px;
-    margin-bottom: 20px;
+    margin-bottom: 35px;
 }
 .skillbox2  {
     border-radius: 20px;
@@ -390,7 +390,7 @@ section.skill{
 }
 .s-link {
     text-align: center;
-    padding-top: 82px;
+    /*padding-top: 82px;*/
 }
 button.btn.whitebtn {
     border: 1px solid #fff;
@@ -800,4 +800,52 @@ button.btn.choose-password.btn-lg {
     background: #02396f;
     color: #fff;
     line-height: 18px;
+}
+.splash-screen img{
+    height:100vh;
+    width:100%;
+}
+
+
+/*--------------css by madhumanti----------------*/
+
+.splash-screen {
+    height: 100%;
+    position: fixed;
+    z-index: 999;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+}
+
+.splash-screen img{
+    width:100%;
+    height:100vh;
+}
+
+.skillbox {
+    position:relative;
+}
+.skillbox img{
+    border-radius:10px;
+    border:2px solid #dad5d5;
+}
+.s-link {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    background: rgba(0,0,0,0.5);
+}
+
+.s-link a{
+    padding: 10px 20px;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.s-link a:hover{
+    color:#fff;
 }
