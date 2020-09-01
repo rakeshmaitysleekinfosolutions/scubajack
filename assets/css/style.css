@@ -958,3 +958,60 @@ a.btn.order {
     font-family: 'Poppins', sans-serif;
 
 }
+/****************************pricing page****************************/
+section.pricing{
+    margin-top: 110px;
+    margin-bottom: 50px;
+
+}
+.pricing .price-box {
+    background: #e9ecef7a;
+    height: auto;
+    text-align: center;
+    box-shadow: 0px 1px 10px 1px #0000002b;
+   /* border-bottom: 1px solid #6767675c;*/
+    padding: 10px 10px;
+    width: 100%;
+    transition: all 0.5s ease-in-out;
+     transition-timing-function: cubic-bezier(0, 0, 0.58, 1);
+
+}
+
+
+.pricing .features{
+    text-align: center;
+}
+
+.pricing .features h3 {
+    font-size: 36px;
+    line-height: 60px;
+    font-weight: bold;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+ul.list li {
+    list-style: none;
+    font-size: 16px;
+    line-height: 50px;
+    border-bottom: 1px solid #000;
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 500;
+    margin-right: 46px;
+}
+.price-box:hover{
+     background: linear-gradient(to right, #000046, #1cb5e0); 
+     /*border: 1px  solid  #000; */
+     color: #fff;
+     border-bottom: 1px solid #fff;
+    transform: scale(0.95);
+   
+}
+button.btn.sub-button {
+    background: #02396f;
+    border-radius: 20px 20px;
+    font-size: 16px;
+    color: #fff;
+    line-height: 24px;
+     font-family: 'Poppins', sans-serif;
+}

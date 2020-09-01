@@ -1,43 +1,59 @@
-<section class="book-list">
-    <h3><span>Story </span>Books</h3>
-    <p>Our Story Books are fun, engaging and kid tested in our classrooms!</p>
-    <p> These beautifully illustrated stories are guaranteed to become a childhood favorite.</p>
+ <section class="pricing">
     <div class="container">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="cards ">
-                    <div class="book-details"> <img src="<?php echo base_url();?>assets/images/pd1.jpg" alt="product-images"> </div>
-                    <div class="card-body">
-                        <h5>The Brave Little Crab</h5> <a href="#" class="btn  watch"><i class="fab fa-youtube"></i>Watch</a> <a href="#" class="btn  craft"><i class="fas fa-puzzle-piece"></i>Craft</a>
-                        <center> <a href="#" class="btn  order"><i class="fas fa-download"></i>Order now</a></center>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="cards ">
-                    <div class="book-details"> <img src="<?php echo base_url();?>assets/images/pd1.jpg" alt="product-images"> </div>
-                    <div class="card-body">
-                        <h5>The Brave Little Crab</h5> <a href="#" class="btn  watch"><i class="fab fa-youtube"></i>Watch</a> <a href="#" class="btn  craft"><i class="fas fa-puzzle-piece"></i>Craft</a>
-                        <center> <a href="#" class="btn  order"><i class="fas fa-download"></i>Order now</a></center>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="cards ">
-                    <div class="book-details"> <img src="<?php echo base_url();?>assets/images/pd1.jpg" alt="product-images"> </div>
-                    <div class="card-body">
-                        <h5>The Brave Little Crab</h5> <a href="#" class="btn  watch"><i class="fab fa-youtube"></i>Watch</a> <a href="#" class="btn  craft"><i class="fas fa-puzzle-piece"></i>Craft</a>
-                        <center> <a href="#" class="btn  order"><i class="fas fa-download"></i>Order now</a></center>
-                    </div>
-                </div>
-            </div>
-
+      <div class="row">
+        <div class="col-md-4">
+          <div class="price-box">
+            <img src="images/bike.png">
+       
+            <h2>10$</h2>
+            <p>per month</p>
+        
+            <h3>FREE</h3>
+           <ul class="list">
+              <li>5 team user included</li>
+              <li>3domains</li>
+              <li>1 mailbox</li>
+              <li>100mb of space</li>
+            </ul>
+            <button type="button" class="btn sub-button">Subscribe</button> 
+          </div>
         </div>
-    </div>
-</section>
-<!-- book-list part end -->
 
-<script>
-    var myLabel = myLabel || {};
-    myLabel.baseUrl = '<?php echo base_url();?>';
-</script>
+        <div class="col-md-4">
+           <div class="price-box">
+            <img src="images/bike.png">
+       
+            <h2>20$</h2>
+            <p>per month</p>
+        
+            <h3>FREE</h3>
+           <ul class="list">
+              <li>5 team user included</li>
+              <li>3domains</li>
+              <li>1 mailbox</li>
+              <li>100mb of space</li>
+            </ul> 
+             <button type="button" class="btn sub-button">Subscribe</button> 
+          </div>
+        </div>
+        <div class="col-md-4">
+           <div class="price-box">
+            <img src="images/bike.png">
+       
+            <h2>30$</h2>
+            <p>per month</p>
+        
+            <h3>FREE</h3>
+           <ul class="list">
+              <li>5 team user included</li>
+              <li>3domains</li>
+              <li>1 mailbox</li>
+              <li>100mb of space</li>
+            </ul> 
+             <button type="button" class="btn sub-button">Subscribe</button> 
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
