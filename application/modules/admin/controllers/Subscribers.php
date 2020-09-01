@@ -3,7 +3,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 use Carbon\Carbon;
 
 
-class Userquestionanswer extends AdminController{
+class Subscribers extends AdminController{
 
 
 
@@ -20,9 +20,9 @@ class Userquestionanswer extends AdminController{
         $this->template->stylesheet->add('assets/theme/light/js/datatables/dataTables.bootstrap4.css');
         $this->template->javascript->add('assets/theme/light/js/datatables/jquery.dataTables.min.js');
         $this->template->javascript->add('assets/theme/light/js/datatables/dataTables.bootstrap4.min.js');
-        $this->template->javascript->add('assets/js/admin/userquestionanswer/UserQuestionAnswer.js');
+        $this->template->javascript->add('assets/js/admin/subscribers/Subscriber.js');
 
-        $this->template->content->view('userquestionanswer/index');
+        $this->template->content->view('subscribers/index');
         $this->template->publish();
     }
 
@@ -39,7 +39,7 @@ class Userquestionanswer extends AdminController{
                 }
                 if($this->selected) {
                     foreach ($this->selected as $id) {
-                        UserQuestionAnswer_model::factory()->delete($id);
+                        Subscriber_model::factory()->delete($id);
                     }
                     return $this->output
                         ->set_content_type('application/json')
@@ -58,15 +58,15 @@ class Userquestionanswer extends AdminController{
     }
     public function onLoadDatatableEventHandler() {
 
-        $this->results = UserQuestionAnswer_model::factory()->findAll();
+        $this->results = Subscriber_model::factory()->findAll();
         if($this->results) {
             foreach($this->results as $result) {
                 $this->rows[] = array(
                     'id'			=> $result->id,
-                    'quiz'		    => $result->question->quiz->name,
                     'user'		    => $result->user->firstname.' ' .$result->user->lastname,
-                    'question'		=> $result->question->question,
-                    'answer'		=> $result->answer->answer,
+                    'plan'		    => $result->plan,
+                    'type'		    => $result->type,
+                    'price'		    => $result->price,
                     'created_at'    => Carbon::createFromTimeStamp(strtotime($result->created_at))->diffForHumans(),
                 );
             }
@@ -79,12 +79,12 @@ class Userquestionanswer extends AdminController{
 												<span class="css-control-indicator"></span>
 											</label>
 										</td>';
-                $this->data[$i][] = '<td>'.$row['quiz'].'</td>';
                 $this->data[$i][] = '<td>'.$row['user'].'</td>';
-                $this->data[$i][] = '<td>'.$row['question'].'</td>';
-                $this->data[$i][] = '<td>'.$row['answer'].'</td>';
+                $this->data[$i][] = '<td>'.$row['plan'].'</td>';
+                $this->data[$i][] = '<td>'.$row['type'].'</td>';
+                $this->data[$i][] = '<td>'.$row['price'].'</td>';
                 $this->data[$i][] = '<td>'.$row['created_at'].'</td>';
-
+                /*
                 $this->data[$i][] = '<td class="text-right">
 	                            <div class="dropdown">
 	                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
@@ -95,6 +95,7 @@ class Userquestionanswer extends AdminController{
 	                            </div>
 	                        </td>
                         ';
+                */
                 $i++;
             }
 

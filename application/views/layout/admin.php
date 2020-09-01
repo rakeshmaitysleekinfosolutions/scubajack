@@ -178,8 +178,20 @@
                                     <li><a href="<?php echo admin_url('userquestionanswer');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>User Question & Answers</span></a></li>
                                 </ul>
                             </li>
+                            <li class="submenu">
+                                <a href="#" ><i class="fa fa-tags fw"></i><span> Membership Plan</span><span class="menu-arrow"></span></a>
+                                <ul class="list-unstyled" style="display: none;">
+                                    <li class="categoryplus"><a href="<?php echo admin_url('membershipplan');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Plans</span></a></li>
+                                </ul>
+                            </li>
+                            <li class="submenu">
+                                <a href="#" ><i class="fa fa-tags fw"></i><span> Subscribers</span><span class="menu-arrow"></span></a>
+                                <ul class="list-unstyled" style="display: none;">
+                                    <li class="categoryplus"><a href="<?php echo admin_url('subscribers');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Subscribers</span></a></li>
+                                </ul>
+                            </li>
 							<li>
-								<a href="javascript:void(0);"><i class="fa fa-cog fw"></i> Settings</a>
+								<a href="javascript:void(0);"><i class="fa fa-cog fw"></i> Application Settings</a>
 							</li>
 							<!-- <li> 
 								<a href="<?php echo base_url('user');?>">Category</a>

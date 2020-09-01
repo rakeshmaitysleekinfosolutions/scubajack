@@ -619,6 +619,10 @@ $.validator.addMethod( "integer", function( value, element ) {
 	return this.optional( element ) || /^-?\d+$/.test( value );
 }, "A positive or negative non-decimal number please" );
 
+$.validator.addMethod( "decimal", function( value, element ) {
+	return this.optional( element ) || /^\d+(\.\d{1,2})?$/.test( value );
+}, "A positive or negative decimal number please" );
+
 $.validator.addMethod( "ipv4", function( value, element ) {
 	return this.optional( element ) || /^(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)\.(25[0-5]|2[0-4]\d|[01]?\d\d?)$/i.test( value );
 }, "Please enter a valid IP v4 address." );

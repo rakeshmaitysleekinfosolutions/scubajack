@@ -6,7 +6,7 @@
             </div>
         <?php } ?>
         <div class="col-sm-4 col-xs-3">
-            <h4 class="page-title">User Questions Answers</h4>
+            <h4 class="page-title">Subscribers</h4>
         </div>
         <div class="col-sm-8 col-xs-9 text-right m-b-20">
             <button class="btn btn-primary rounded pull-right " id="delete"><i class="fa fa-trash"></i> Delete</button>
@@ -25,12 +25,12 @@
                                 <span class="css-control-indicator"></span>
                             </label>
                         </th>
-                        <th>Quiz</th>
                         <th>User</th>
-                        <th>Question</th>
-                        <th>Answer</th>
+                        <th>Plan</th>
+                        <th>Type</th>
+                        <th>Price</th>
                         <th>Created At</th>
-                        <th class="text-right">Action</th>
+<!--                        <th class="text-right">Action</th>-->
                     </tr>
                     </thead>
 
@@ -43,6 +43,6 @@
 <script>
     var myLabel = myLabel || {};
     myLabel.baseUrl     = '<?php echo base_url();?>';
-    myLabel.index       = '<?php echo admin_url('userquestionanswer/onLoadDatatableEventHandler');?>';
-    myLabel.delete      = '<?php echo admin_url('userquestionanswer/delete');?>';
+    myLabel.index       = '<?php echo admin_url('subscribers/onLoadDatatableEventHandler');?>';
+    myLabel.delete      = '<?php echo admin_url('subscribers/delete');?>';
 </script>

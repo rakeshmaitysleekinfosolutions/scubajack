@@ -3,6 +3,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class App extends AppController {
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->template->set_template('layout/app');
+    }
 
     /**
      * @var object
@@ -94,7 +99,7 @@ class App extends AppController {
 
         //dd($this->data['featuresProduct']);
 
-		$this->template->set_template('layout/app');
+
 		$this->template->content->view('index', $this->data);
 		$this->template->publish();
 	}
@@ -114,7 +119,7 @@ class App extends AppController {
     }
 
     public function category() {
-        $this->template->set_template('layout/app');
+
         $this->template->content->view('category/index');
         $this->template->publish();
     }
@@ -142,8 +147,14 @@ class App extends AppController {
 //        $this->data['slug'] = $slug;
 //        $this->category = Category_model::factory()->find()->where('slug', $slug)->get()->row_object();
 
-        $this->template->set_template('layout/app');
+
         $this->template->content->view('product/index');
+        $this->template->publish();
+    }
+    public function subscribe() {
+//        echo 1;
+//        exit;
+        $this->template->content->view('subscribe/index');
         $this->template->publish();
     }
 }

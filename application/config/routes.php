@@ -62,6 +62,7 @@ $route['translate_uri_dashes'] = FALSE;
 //Set Splash Screen
 $route['setSplashScreen'] 	= 'app/setSplashScreen';
 
+$route['subscribe-now']         = 'app/subscribe';
 
 $route['admin'] = 'adminDashboard';
 $route['admin-login'] = 'adminDashboard/login';
@@ -72,6 +73,7 @@ $route['admin-logout'] = 'adminDashboard/admin_logout';
 $route['all'] 	            = 'app/category';
 $route['(:any)'] 	        = 'app/product/$1';
 //$route['all'] 	            = 'category/index';
+
 
 ////////////////////////STATE MANAGEMENT///////////////////////////	
 $route['add-state'] = 'adminStateManagement/add_state';
