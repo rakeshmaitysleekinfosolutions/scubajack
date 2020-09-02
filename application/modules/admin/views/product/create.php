@@ -106,7 +106,21 @@
         <div class="row">
 
             <div class="col-md-3">
-
+                <div class="card-box pdf">
+                    <h3 class="card-title">Quiz</h3>
+                    <div class="skills">
+                        <div class="form-group">
+                            <label class="control-label">Quiz <span class="text-danger"></span></label>
+                            <select name="quiz" class="select floating" id="input-quiz" >
+                                <?php if(isset($quizzes)) {
+                                    foreach ($quizzes as $quiz) {?>
+                                        <option value="<?php echo $quiz->id;?>"><?php echo $quiz->name;?></option>
+                                    <?php } ?>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <div class="card-box m-b-0">
                     <h3 class="card-title">Meta Data</h3>
                     <div class="skills">
@@ -163,21 +177,19 @@
                     </div>
                 </div>
 
-                   <div class="card-box pdf">
+                <div class="card-box pdf">
                     <h3 class="card-title">PDF Upload</h3>
                     <div class="skills">
                         <div class="form-group">
-                        <div class="profile-img-two">
+                            <div class="profile-img-two">
                                 <a href="avascript:void(0);" id="thumb-pdf" type="pdf" data-toggle="image" class="img-thumbnail"><img src="<?php echo $pdf_thumb;?>" alt="" title="" data-placeholder="<?php echo $pdfPlaceHolder;?>"/></a>
                                 <input type="hidden" name="pdf" value="<?php echo $pdf;?>" id="input-pdf"/>
                             </div>
-
                             <h3 class="card-title" id="pdf_text"></h3>
                         </div>
-
-
                     </div>
                 </div>
+
                 <div class="clearfix"></div>
             </div>
         </div>

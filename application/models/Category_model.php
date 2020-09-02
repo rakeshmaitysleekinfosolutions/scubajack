@@ -7,24 +7,8 @@ class Category_model extends BaseModel {
 
     protected $primaryKey = 'id';
 
-    protected $timestamps = true;
-
-    // Mainstream creating field name
-    const CREATED_AT = 'created_at';
-
-    // Mainstream updating field name
-    const UPDATED_AT = 'updated_at';
-
-    // Use unixtime for saving datetime
-    protected $dateFormat = 'datetime';
-
     // Record status for checking is deleted or not
     const SOFT_DELETED = 'is_deleted';
-
-    // 0: actived, 1: deleted
-    protected $recordDeletedFalseValue = '1';
-
-    protected $recordDeletedTrueValue = '0';
 
     public static function factory($attr = array()) {
         return new Category_model($attr);
@@ -64,6 +48,11 @@ class Category_model extends BaseModel {
         $this->db->query("UPDATE category SET status = '" . $this->db->escape_str($status) . "' WHERE id = '" . (int)$categoryId . "'");
     }
 
-
+    public function description() {
+        return $this->hasOne(CategoryDescription_model::class, 'category_id', 'id');
+    }
+    public function products() {
+        return $this->hasMany(CategoryToProduct_model::class, 'category_id', 'id');
+    }
 
 }

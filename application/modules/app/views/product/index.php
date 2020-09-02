@@ -1,82 +1,33 @@
 <section class="book-list">
-	<h3><span>Story </span>Books</h3>
-	<p>Our Story Books are fun, engaging and kid tested in our classrooms!</p>
-	<p> These beautifully illustrated stories are guaranteed to become a childhood favorite.</p>
+    <h3><span><?php echo ($category['name']) ? $category['name'] : "";?> </span></h3>
+	<p><?php echo ($category['description']) ? $category['description'] : "";?></p>
 	<div class="container">
+        <?php if(isset($products)) {?>
 		<div class="row">
-			<div class="col-md-3">
-				<div class="cards ">
-					<div class="book-details"> <img src="<?php echo base_url();?>assets/images/pd1.jpg" alt="product-images"> </div>
-					<div class="card-body">
-						<h5>The Brave Little Crab</h5> <a href="#" class="btn  watch"><i class="fab fa-youtube"></i>Watch</a> <a href="#" class="btn  craft"><i class="fas fa-puzzle-piece"></i>Craft</a>
-						<center> <a href="#" class="btn  order"><i class="fas fa-download"></i>Order now</a></center>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="cards ">
-					<div class="book-details"> <img src="<?php echo base_url();?>assets/images/pd1.jpg" alt="product-images"> </div>
-					<div class="card-body">
-						<h5>The Brave Little Crab</h5> <a href="#" class="btn  watch"><i class="fab fa-youtube"></i>Watch</a> <a href="#" class="btn  craft"><i class="fas fa-puzzle-piece"></i>Craft</a>
-						<center> <a href="#" class="btn  order"><i class="fas fa-download"></i>Order now</a></center>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="cards ">
-					<div class="book-details"> <img src="<?php echo base_url();?>assets/images/pd1.jpg" alt="product-images"> </div>
-					<div class="card-body">
-						<h5>The Brave Little Crab</h5> <a href="#" class="btn  watch"><i class="fab fa-youtube"></i>Watch</a> <a href="#" class="btn  craft"><i class="fas fa-puzzle-piece"></i>Craft</a>
-						<center> <a href="#" class="btn  order"><i class="fas fa-download"></i>Order now</a></center>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="cards ">
-					<div class="book-details"> <img src="<?php echo base_url();?>assets/images/pd1.jpg" alt="product-images"> </div>
-					<div class="card-body">
-						<h5>The Brave Little Crab</h5> <a href="#" class="btn  watch"><i class="fab fa-youtube"></i>Watch</a> <a href="#" class="btn  craft"><i class="fas fa-puzzle-piece"></i>Craft</a>
-						<center> <a href="#" class="btn  order"><i class="fas fa-download"></i>Order now</a></center>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="cards ">
-					<div class="book-details"> <img src="<?php echo base_url();?>assets/images/pd1.jpg" alt="product-images"> </div>
-					<div class="card-body">
-						<h5>The Brave Little Crab</h5> <a href="#" class="btn  watch"><i class="fab fa-youtube"></i>Watch</a> <a href="#" class="btn  craft"><i class="fas fa-puzzle-piece"></i>Craft</a>
-						<center> <a href="#" class="btn  order"><i class="fas fa-download"></i>Order now</a></center>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="cards ">
-					<div class="book-details"> <img src="<?php echo base_url();?>assets/images/pd1.jpg" alt="product-images"> </div>
-					<div class="card-body">
-						<h5>The Brave Little Crab</h5> <a href="#" class="btn  watch"><i class="fab fa-youtube"></i>Watch</a> <a href="#" class="btn  craft"><i class="fas fa-puzzle-piece"></i>Craft</a>
-						<center> <a href="#" class="btn  order"><i class="fas fa-download"></i>Order now</a></center>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="cards ">
-					<div class="book-details"> <img src="<?php echo base_url();?>assets/images/pd1.jpg" alt="product-images"> </div>
-					<div class="card-body">
-						<h5>The Brave Little Crab</h5> <a href="#" class="btn  watch"><i class="fab fa-youtube"></i>Watch</a> <a href="#" class="btn  craft"><i class="fas fa-puzzle-piece"></i>Craft</a>
-						<center> <a href="#" class="btn  order"><i class="fas fa-download"></i>Order now</a></center>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-3">
-				<div class="cards ">
-					<div class="book-details"> <img src="<?php echo base_url();?>assets/images/pd1.jpg" alt="product-images"> </div>
-					<div class="card-body">
-						<h5>The Brave Little Crab</h5> <a href="#" class="btn  watch"><i class="fab fa-youtube"></i>Watch</a> <a href="#" class="btn  craft"><i class="fas fa-puzzle-piece"></i>Craft</a>
-						<center> <a href="#" class="btn  order"><i class="fas fa-download"></i>Order now</a></center>
-					</div>
-				</div>
-			</div>
+            <?php foreach ($products as $product) {?>
+                <div class="col-md-3">
+                    <div class="cards ">
+                        <div class="book-details"> <img src="<?php echo $product['img'];?>" alt="<?php echo $product['name'];?>"> </div>
+                        <div class="card-body">
+                            <h5><?php echo $product['name'];?></h5>
+                            <?php if($product['video']) { ?>
+                                <a href="#headerPopup<?php echo $product['id'];?>" class="btn headerVideoLink"><i class="far fa-play-youtube"></i>Watch</a>
+                                <div id="headerPopup<?php echo $product['id'];?>" class="mfp-hide embed-responsive embed-responsive-21by9">
+                                    <iframe class="embed-responsive-item" width="854" height="480" src="<?php echo embedUrl($product['video']);?>?rel=0&enablejsapi=1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; frameborder="0"; fullscreen;"></iframe>
+                                </div>
+                            <?php } ?>
+                            <?php if($product['pdf']) { ?>
+                                <a href="#" class="btn  craft"><i class="fas fa-puzzle-piece"></i>Craft</a>
+                            <?php } ?>
+                            <center> <a href="#" class="btn  order"><i class="fas fa-download"></i>Order now</a></center>
+                        </div>
+                    </div>
+                </div>
+            <?php } ?>
 		</div>
+        <?php } else { ?>
+            <div class="row">Product no found!</div>
+        <?php } ?>
 	</div>
 </section>
 <!-- book-list part end -->

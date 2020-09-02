@@ -6,9 +6,10 @@
             <div class="tabs">
               <ul class="nav flex-column">
                 <li class="active"><a href="#home" data-toggle="tab">Dashboard</a></li>
+                  <li><a href="#passport" data-toggle="tab">Passport</a></li>
                 <li><a href="#Orders" data-toggle="tab">Orders</a></li>
                 <li><a href="#download" data-toggle="tab">Downloads</a></li>
-                <li><a href="#adress" data-toggle="tab">Adress</a></li>
+<!--                <li><a href="#adress" data-toggle="tab">Address</a></li>-->
                 <li><a href="#account-details" data-toggle="tab">Account Details</a></li>
                 <li><a href="#log-out" data-toggle="tab" onclick="return logout();">Log out</a></li>
               </ul>
@@ -35,6 +36,8 @@
                   </p>
                 </div>
               </div>
+                <?php
+                /*
               <div class="tab-pane" id="adress">
                 <div class="billing">
                   <h4>The following addresses will be used on the checkout page by default.</h4>
@@ -72,10 +75,7 @@
                           <option>...</option>
                         </select>
                       </div>
-                      <!--  <div class="form-group col-md-2">
-      <label for="inputZip">Zip</label>
-      <input type="text" class="form-control" id="inputZip">
-    </div> --></div>
+                    </div>
                     <div class="form-group">
                       <div class="form-check">
                         <input class="form-check-input" type="checkbox" id="gridCheck">
@@ -86,6 +86,8 @@
                   </form>
                 </div>
               </div>
+                */?>
+                <div class="tab-pane" id="passport"></div>
               <div class="tab-pane" id="account-details">
                 <div class="details flup">
                   <h3>fill your details</h3>

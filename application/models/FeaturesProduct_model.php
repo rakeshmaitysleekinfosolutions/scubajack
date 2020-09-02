@@ -69,6 +69,8 @@ class FeaturesProduct_model extends BaseModel {
         $this->db->query("UPDATE features_products SET is_deleted = 1 WHERE id = '" . (int)$featuresProductId . "'");
     }
 
-
+    public function product() {
+        return $this->hasOne(Product_model::class, 'id', 'product_id');
+    }
 
 }

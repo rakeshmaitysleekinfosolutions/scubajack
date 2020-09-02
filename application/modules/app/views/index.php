@@ -68,16 +68,24 @@
     <p>Comes with Quizzes & Videos!</p>
     <div class="container">
       <div class="row">
-          <?php if($featuresProduct) {
-              foreach ($featuresProduct as $featureProduct) { ?>
+          <?php if($products) {
+              foreach ($products as $product) { ?>
                 <div class="col-md-3 col-12">
-          <div class="books"> <img src="<?php echo base_url();?>assets/images/b1.jpg">
+          <div class="books"> <img src="<?php echo $product['img'];?>" alt="<?php echo $product['name'];?>">
             <div class="books-details">
-              <p>Dolphins</p>
-              <p class="qu">quiz</p>
+              <p><?php echo $product['name'];?></p>
+                <?php if($product['quiz']) {?>
+                    <p class="qu"><a href="<?php echo $product['quiz'];?>">quiz</a></p>
+                <?php } ?>
             </div>
             <div class="more">
-              <button type="button" class="btn vdo"><i class="far fa-play-circle"></i>video</button>
+
+                <?php if($product['video']) {?>
+                    <a href="#headerPopup<?php echo $product['id'];?>" id="" class="btn vdo popup-modal headerVideoLink"><i class="far fa-play-circle"></i>video</a>
+                    <div id="headerPopup<?php echo $product['id'];?>" class="mfp-hide embed-responsive embed-responsive-21by9">
+                        <iframe class="embed-responsive-item" width="854" height="480" src="<?php echo embedUrl($product['video']);?>?rel=0&enablejsapi=1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; frameborder="0"; fullscreen;"></iframe>
+                    </div>
+                <?php } ?>
               <button type="button" class="btn dwnld"><i class="far fa-arrow-alt-circle-down"></i>download</button>
             </div>
           </div>
@@ -100,7 +108,7 @@
                         <div class="skillbox">
                             <img src="<?php echo $category['img'];?>">
                           <div class="s-link">
-                            <a href="<?php echo base_url('category/'.$category['slug']);?>" class="btn whitebtn"><?php echo $category['name'];?></a>
+                            <a href="<?php echo base_url($category['slug']);?>" class="btn whitebtn"><?php echo $category['name'];?></a>
                           </div>
                         </div>
                     </div>
@@ -138,7 +146,7 @@
           </div>
             */?>
         </div>
-        <center><a class="btn see-more">See all</a></center>
+        <center><a href="<?php echo base_url('all');?>" class="btn see-more">See all</a></center>
       </div>
     </div>
   </section>

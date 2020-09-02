@@ -39,25 +39,29 @@ class Product extends AdminController implements ProductContract {
 
 
     public function onLoadDatatableEventHandler() {
-        $this->load->model('Product_model');
-		$this->results = $this->Product_model->findAll();
+		$this->results = Product_model::factory()->findAll();
 		if($this->results) {
 			foreach($this->results as $result) {
 
-			    $this->product = Product_model::factory()->findOne($result->id);
-			    $this->productImages = $this->product->productImages();
+			    //$this->product = Product_model::factory()->findOne($result->id);
+			    //$this->productImages = $this->product->productImages();
                // dd($this->productImages->image);
-                if (is_file(DIR_IMAGE . $this->productImages->image)) {
-                    $image = $this->resize($this->productImages->image, 40, 40);
+                if (is_file(DIR_IMAGE . $result->images->image)) {
+                    $image = $this->resize($result->images->image, 40, 40);
                 } else {
                     $image = $this->resize('no_image.png', 40, 40);
                 }
+
+
 				$this->rows[] = array(
 					'id'			=> $result->id,
                     'img'		    => $image,
 					'name'		    => $result->name,
 					'slug' 		    => $result->slug,
                     'status' 		=> ($result->status && $result->status == 1) ? 1 : 0,
+                    'hasVideo'      => ($result->videos) ? "YES" : "NO",
+                    'hasPdf'        => ($result->pdf) ? "YES" : "NO",
+                    'hasQuiz'       => ($result->quiz) ? "YES" : "NO",
                     'created_at'    => Carbon::createFromTimeStamp(strtotime($result->created_at))->diffForHumans(),
                     'updated_at'    => ($result->updated_at) ? Carbon::createFromTimeStamp(strtotime($result->updated_at))->diffForHumans() : ''
 				);
@@ -86,6 +90,9 @@ class Product extends AdminController implements ProductContract {
                                                 <option value="1" '.$selected.'>Active</option>
                                             </select>
                                         </td>';
+                    $this->data[$i][] = '<td>'.$row['hasVideo'].'</td>';
+                    $this->data[$i][] = '<td>'.$row['hasPdf'].'</td>';
+                    $this->data[$i][] = '<td>'.$row['hasQuiz'].'</td>';
                     $this->data[$i][] = '<td>'.$row['created_at'].'</td>';
                     $this->data[$i][] = '<td>'.$row['updated_at'].'</td>';
 					$this->data[$i][] = '<td class="text-right">
@@ -250,6 +257,16 @@ class Product extends AdminController implements ProductContract {
             } else {
                 $this->data['description'] = '';
             }
+            // Quiz
+            if (!empty($this->input->post('quiz'))) {
+                $this->data['quizId'] = $this->input->post('quiz');
+                //$this->dd($this->data);
+            } elseif (!empty($this->product)) {
+                $this->data['quizId'] = $this->product->quiz_id;
+            } else {
+                $this->data['quizId'] = '';
+            }
+
             // Meta Title
             if (!empty($this->input->post('meta_title'))) {
                 $this->data['meta_title'] = $this->input->post('meta_title');
@@ -321,7 +338,7 @@ class Product extends AdminController implements ProductContract {
                 $this->data['pdf'] = $this->input->post('pdf');
             } elseif (!empty($this->productPdf)) {
                 $name = str_split(basename($this->productPdf->pdf), 5);
-                $this->data['pdfText'] = implode('', $name);
+                $this->data['pdfText'] = ($name) ? implode('', $name) : '';
                 $this->data['pdf'] = $this->productPdf->pdf;
             } else {
                 $this->data['pdf'] = '';
@@ -340,7 +357,7 @@ class Product extends AdminController implements ProductContract {
             $this->load->model('Category_model');
             //$this->dd($this->data);
             $this->data['categories'] = $this->Category_model->findAll();
-
+            $this->data['quizzes']      = Quiz_model::factory()->findAll(['status' => 1]);
             $this->data['pdfPlaceHolder'] = $this->resize('pdf-placeholder.png', 100, 100);
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
@@ -368,9 +385,9 @@ class Product extends AdminController implements ProductContract {
 //            $this->error['category'] = $this->lang->line('error_category');
 //        }
         // product type
-        if ($this->input->post('type') == '') {
-            $this->error['type'] = $this->lang->line('error_type');
-        }
+//        if ($this->input->post('type') == '') {
+//            $this->error['type'] = $this->lang->line('error_type');
+//        }
         if ((strlen($this->input->post('meta_title')) < 1) || (strlen(trim($this->input->post('meta_title'))) > 255)) {
             $this->error['meta_title'] = $this->lang->line('error_meta_title');
         }
@@ -456,13 +473,14 @@ class Product extends AdminController implements ProductContract {
                 $this->productId = ($this->input->post('productId')) ? $this->input->post('productId') : '';
 
                 $this->getData();
-
+                //dd($this->data);
                 Product_model::factory()->editProduct($this->productId, $this->data);
                 $this->setMessage('message', $this->lang->line('text_success'));
 
                 $this->redirect(admin_url('product/edit/'.$this->productId));
             }
             $this->getData();
+            $this->edit($this->productId);
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }

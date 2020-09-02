@@ -3,6 +3,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class App extends AppController {
 
+    private $limit;
+    private $categorySlug;
+    /**
+     * @var object
+     */
+    private $categoryId;
+    /**
+     * @var array|int
+     */
+    private $categoryToProducts;
+    /**
+     * @var object
+     */
+    private $category;
+    private $productModelInstances;
+    private $products;
+    private $var = 'products';
+
     public function __construct()
     {
         parent::__construct();
@@ -42,17 +60,54 @@ class App extends AppController {
      */
     private $productVideos;
 
-    public function index()
-	{
+    /**
+     * @param $productModelInstance
+     * @param null $limit
+     * @param null $var
+     */
+    private function formatProductModelInstanceToArray($productModelInstance, $limit = null, $var = null) {
+        if($limit) $this->limit = $limit;
+        if($var) $this->var = $var;
+        if($productModelInstance) $this->productModelInstances = $productModelInstance;
 
-        $categories = Category_model::factory()->find()->where('status', 1)->order_by('id', 'asc')->limit(4)->get()->result_object();
+        if($this->productModelInstances) {
+            foreach ($this->productModelInstances as $productModelInstance) {
+                if (is_file(DIR_IMAGE . $productModelInstance->product->images->image)) {
+                    $this->image = $this->resize($productModelInstance->product->images->image, 255, 325);
+                } else {
+                    $this->image = $this->resize('no_image.png', 255, 325);
+                }
+               // dd($productModelInstance->product->categoryToProduct->category);
+                $this->data[$this->var][] = array(
+                    'id'            => $productModelInstance->product->id,
+                    'name'          => $productModelInstance->product->name,
+                    'slug'          => $productModelInstance->product->slug,
+                    'description'   => ($productModelInstance->product->description) ? $productModelInstance->product->description->description : "",
+                    'img'           => $this->image,
+                    'video'         => ($productModelInstance->product->videos) ? $productModelInstance->product->videos->url : "",
+                    'pdf'           => ($productModelInstance->product->pdf) ? $productModelInstance->product->pdf->pdf : "",
+                    'quiz'          => ($productModelInstance->product->quiz) ? base_url('quiz/'.$productModelInstance->product->quiz->slug) : "",
+                    'category'      => array(
+                        'name'        => $productModelInstance->product->categoryToProduct->category->name,
+                        'description' => $productModelInstance->product->categoryToProduct->category->description->description
+                    )
+                );
+            }
+        }
+    }
 
+    /**
+     * @param null $limit
+     * @throws Exception
+     */
+    private function getCategoryArray($limit = null) {
+        if($limit) $this->limit = $limit;
+        $categories = Category_model::factory()->findAll(['status' => 1], $this->limit);
         if($categories) {
             foreach ($categories as $category) {
-                $this->categoryDescription  = CategoryDescription_model::factory()->findOne(['category_id' => $category->id]);
-
-                if (is_file(DIR_IMAGE . $this->categoryDescription->image)) {
-                    $this->image = $this->resize($this->categoryDescription->image, 534, 205);
+                //$this->dd($category);
+                if (is_file(DIR_IMAGE . $category->description->image)) {
+                    $this->image = $this->resize($category->description->image, 534, 205);
                 } else {
                     $this->image = $this->resize('no_image.png', 534, 205);
                 }
@@ -65,45 +120,59 @@ class App extends AppController {
                 );
             }
         }
+    }
 
-        // Features product
-        $this->featuresProduct = FeaturesProduct_model::factory()->find()->limit(4)->get()->result_object();
-        if($this->featuresProduct) {
-            foreach ($this->featuresProduct as $featureProduct) {
-                $this->product              = Product_model::factory()->findOne($featureProduct->product_id);
-
-                if (is_file(DIR_IMAGE . $this->product->productImages()->image)) {
-                    $this->image = $this->resize($this->product->productImages()->image, 255, 325);
-                } else {
-                    $this->image = $this->resize('no_image.png', 255, 325);
-                }
-
-                $this->data['featuresProduct'][] = array(
-                    'id'            => $this->product->id,
-                    'name'          => $this->product->name,
-                    'slug'          => $this->product->slug,
-                    'description'   => $this->product->productDescription()->description,
-                    'img'           => $this->image,
-                    'video'         => $this->product->productVideos()->url,
-                    'pdf'           => $this->product->productPdf()->pdf,
-                );
-
-//                $this->productDescription   = ProductDescription_model::factory()->findOne($featureProduct->product_id);
-//                $this->productImages        = ProductImages_model::factory()->findOne($featureProduct->product_id);
-//                $this->productVideos        = ProductVideos_model::factory()->findOne($featureProduct->product_id);
-//                $this->productPdfs          = Productpdf_model::factory()->findOne($featureProduct->product_id);
-
-            }
-        }
-
-
-        //dd($this->data['featuresProduct']);
-
-
+    /**
+     * Home page features products and activity books
+     * @throws Exception
+     */
+    public function index() {
+        $this->getCategoryArray(4);
+        // Features Product
+        $this->formatProductModelInstanceToArray(FeaturesProduct_model::factory()->findAll(),4);
+        // Activity Books
+        //$this->formatProductModelInstanceToArray(FeaturesProduct_model::factory()->findAll(),4, 'activityBooks');
+        //dd($this->data['activityBooks']);
+        $this->template->stylesheet->add('assets/css/magnific-popup.min.css');
+        $this->template->javascript->add('assets/js/jquery.magnific-popup.min.js');
 		$this->template->content->view('index', $this->data);
 		$this->template->publish();
 	}
 
+    /**
+     * List of all product category
+     */
+    public function category() {
+        $this->getCategoryArray();
+        $this->template->content->view('category/index', $this->data);
+        $this->template->publish();
+    }
+    /**
+     * @param $categorySlug
+     */
+    public function products($categorySlug) {
+        if($categorySlug)               $this->categorySlug         = $categorySlug;
+        if($this->categorySlug)         $this->category             = Category_model::factory()->findOne(['slug' => $this->categorySlug,'status' => 1]);
+        $this->data['category'] = array();
+        if($this->category) {
+            $this->categoryToProducts   = $this->category->products;
+            $this->data['category'] = array(
+                'name'        => $this->category->name,
+                'description' => $this->category->description->description
+            );
+        }
+
+        $this->formatProductModelInstanceToArray($this->categoryToProducts);
+        $this->template->stylesheet->add('assets/css/magnific-popup.min.css');
+        $this->template->javascript->add('assets/js/jquery.magnific-popup.min.js');
+        $this->template->content->view('product/index', $this->data);
+        $this->template->publish();
+    }
+
+    /**
+     * splash screen
+     * @return mixed
+     */
 	public function setSplashScreen() {
         if($this->isAjaxRequest() && $this->isPost()) {
             $this->setSession('splashscreen',1);
@@ -117,43 +186,10 @@ class App extends AppController {
             ->set_status_header(200)
             ->set_output(json_encode(array('status' => false)));
     }
-
-    public function category() {
-
-        $this->template->content->view('category/index');
-        $this->template->publish();
-    }
-    public function product($slug) {
-        /*
-        $this->data['slug'] = $slug;
-        $this->category = Category_model::factory()->find()->where('slug', $slug)->get()->row_object();
-        if($this->category) {
-            $this->products = CategoryToProduct_model::factory()->findAll(['category_id' => $this->category->id]);
-        }
-        if($this->products) {
-            foreach ($this->products as $product) {
-                $this->product = Product_model::factory()->findOne($product->product_id);
-                $this->product = Product_model::factory()->findOne($product->product_id);
-               // $this->dd($this->product);
-                $this->data['products'][] = array(
-                    'id' => $this->product->id,
-                    'name' => $this->product->name,
-                    'slug' => $this->product->slug
-                );
-            }
-        }
-        dd($this->data['products']);
-        */
-//        $this->data['slug'] = $slug;
-//        $this->category = Category_model::factory()->find()->where('slug', $slug)->get()->row_object();
-
-
-        $this->template->content->view('product/index');
-        $this->template->publish();
-    }
+    /**
+     * Membership plan subscribe
+     */
     public function subscribe() {
-//        echo 1;
-//        exit;
         $this->template->content->view('subscribe/index');
         $this->template->publish();
     }

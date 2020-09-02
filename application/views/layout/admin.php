@@ -175,7 +175,7 @@
                                     <li class="categoryplus"><a href="<?php echo admin_url('quiz');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Quzzies</span></a></li>
                                     <li class="categoryplus"><a href="<?php echo admin_url('question');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Questions</span></a></li>
                                     <li><a href="<?php echo admin_url('answer');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Answers</span></a></li>
-                                    <li><a href="<?php echo admin_url('userquestionanswer');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>User Question & Answers</span></a></li>
+                                    <li><a href="<?php echo admin_url('userquestionanswer');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>User Results</span></a></li>
                                 </ul>
                             </li>
                             <li class="submenu">

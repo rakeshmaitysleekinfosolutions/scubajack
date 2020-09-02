@@ -35,7 +35,7 @@ class Product_model extends BaseModel {
     }
 
     public function addProduct($data = array()) {
-        $this->db->query("INSERT INTO products SET name = '" . $this->db->escape_str($data['name']) . "', slug = '" . $this->db->escape_str($data['slug']) . "', status = '" . $this->db->escape_str($data['status'])."'");
+        $this->db->query("INSERT INTO products SET name = '" . $this->db->escape_str($data['name']) . "', slug = '" . $this->db->escape_str($data['slug']) . "', quiz_id = '" . $this->db->escape_str($data['quizId']) . "', status = '" . $this->db->escape_str($data['status'])."'");
         $productId = $this->db->insert_id();
         if(isset($productId)) {
             $this->updateProductRelatedModels($productId, $data);
@@ -64,19 +64,33 @@ class Product_model extends BaseModel {
     }
     private function updateProductRelatedModels($productId, $data = array()) {
         if($data['categoryProducts']) {
+            $this->db->query("DELETE FROM category_to_products WHERE product_id = '" . (int)$productId . "'");
             foreach ($data['categoryProducts'] as $categoryId) {
                 $this->db->query("INSERT INTO category_to_products SET category_id = '".(int)$categoryId."', product_id = '" . (int)$productId . "'");
             }
         }
-        $this->db->query("INSERT INTO products_description SET product_id = '" . (int)$productId . "',description = '" . $this->db->escape_str($data['description']) . "', meta_title = '" . $this->db->escape_str($data['meta_title']) . "', meta_keyword = '" . $this->db->escape_str($data['meta_keyword']) . "', meta_description = '" . $this->db->escape_str($data['meta_description']) . "'");
-        $this->db->query("INSERT INTO products_images SET image = '".$data['image']."', product_id = '" . (int)$productId . "'");
-        $this->db->query("INSERT INTO products_videos SET url = '".$data['youtubeUrl']."', thumb = '" . $this->db->escape_str($data['youtubeThumb']) . "', product_id = '" . (int)$productId . "'");
-        $this->db->query("INSERT INTO products_pdf SET product_id = '" . (int)$productId . "', pdf = '" . $this->db->escape_str($data['pdf']) . "'");
+        if(isset($data['description'])) {
+            $this->db->query("DELETE FROM products_description WHERE product_id = '" . (int)$productId . "'");
+            $this->db->query("INSERT INTO products_description SET product_id = '" . (int)$productId . "',description = '" . $this->db->escape_str($data['description']) . "', meta_title = '" . $this->db->escape_str($data['meta_title']) . "', meta_keyword = '" . $this->db->escape_str($data['meta_keyword']) . "', meta_description = '" . $this->db->escape_str($data['meta_description']) . "'");
+        }
+        if(isset($data['image'])) {
+            $this->db->query("UPDATE products_images SET is_deleted = 1 WHERE product_id = '" . (int)$productId . "'");
+            $this->db->query("INSERT INTO products_images SET image = '".$data['image']."', product_id = '" . (int)$productId . "'");
+        }
+        if(isset($data['youtubeUrl'])) {
+            $this->db->query("UPDATE products_videos SET is_deleted = 1 WHERE product_id = '" . (int)$productId . "'");
+            $this->db->query("INSERT INTO products_videos SET url = '".$data['youtubeUrl']."', thumb = '" . $this->db->escape_str($data['youtubeThumb']) . "', product_id = '" . (int)$productId . "'");
+        }
+        if(isset($data['pdf'])) {
+            $this->db->query("UPDATE products_pdf SET is_deleted = 1 WHERE product_id = '" . (int)$productId . "'");
+            $this->db->query("INSERT INTO products_pdf SET product_id = '" . (int)$productId . "', pdf = '" . $this->db->escape_str($data['pdf']) . "'");
+        }
+
     }
     public function editProduct($productId, $data) {
+        //dd($data);
         try {
-            $this->db->query("UPDATE products SET name = '" . $this->db->escape_str($data['name']) . "', slug = '" . $this->db->escape_str($data['slug']) . "', status = '" . $this->db->escape_str($data['status'])."' WHERE id = '" . (int)$productId . "'");
-            $this->deleteProductRelatedModels($productId, true);
+            $this->db->query("UPDATE products SET name = '" . $this->db->escape_str($data['name']) . "', slug = '" . $this->db->escape_str($data['slug']) . "', quiz_id = '" .(int)$data['quizId'] . "', status = '" . $this->db->escape_str($data['status'])."' WHERE id = '" . (int)$productId . "'");
             $this->updateProductRelatedModels($productId, $data);
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
@@ -113,6 +127,22 @@ class Product_model extends BaseModel {
     public function featuresProduct() {
         return $this->hasMay('FeaturesProduct_model', 'product_id', 'id')->get()->result_object();
     }
-
-
+    public function images() {
+        return $this->hasOne(ProductImages_model::class, 'product_id', 'id');
+    }
+    public function description() {
+        return $this->hasOne(ProductDescription_model::class, 'product_id', 'id');;
+    }
+    public function videos() {
+        return $this->hasOne(ProductVideos_model::class, 'product_id', 'id');
+    }
+    public function pdf() {
+        return $this->hasOne(ProductPdf_model::class, 'product_id', 'id');
+    }
+    public function quiz() {
+        return $this->hasOne(Quiz_model::class, 'id', 'quiz_id');
+    }
+    public function categoryToProduct() {
+        return $this->hasOne(CategoryToProduct_model::class, 'product_id', 'id');
+    }
 }

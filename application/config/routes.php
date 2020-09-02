@@ -71,7 +71,10 @@ $route['admin-logout'] = 'adminDashboard/admin_logout';
 
 // $route['admin'] = 'welcome/index';
 $route['all'] 	            = 'app/category';
-$route['(:any)'] 	        = 'app/product/$1';
+$route['account'] 	        = 'account';
+$route['about'] 	        = 'app/about';
+$route['contact'] 	        = 'app/contact';
+$route['(:any)'] 	        = 'app/products/$1';
 //$route['all'] 	            = 'category/index';
 
 
