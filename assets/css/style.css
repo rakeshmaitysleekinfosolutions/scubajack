@@ -361,6 +361,7 @@ section.skill{
 .skill-list {
     margin-top: 38px;
 }
+/*
 .skillbox  {
     border-radius: 20px;
     background: url(../images/s1.jpg) no-repeat;
@@ -388,10 +389,13 @@ section.skill{
     width: 100%;
     height: 200px;
 }
+
+
 .s-link {
     text-align: center;
-    /*padding-top: 82px;*/
+
 }
+*/
 button.btn.whitebtn {
     border: 1px solid #fff;
     color: #fff;
@@ -826,6 +830,7 @@ button.btn.choose-password.btn-lg {
 
 .skillbox {
     position:relative;
+    margin-bottom: 35px;
 }
 .skillbox img{
     border-radius:10px;
@@ -958,6 +963,21 @@ a.btn.order {
     font-family: 'Poppins', sans-serif;
 
 }
+
+
+/** Youtube Popup*/
+@charset "utf-8";
+/* CSS Document */
+#headerPopup{
+    width:75%;
+    margin:0 auto;
+}
+
+#headerPopup iframe{
+    width:100%;
+    margin:0 auto;
+}
+
 /****************************pricing page****************************/
 section.pricing{
     margin-top: 110px;

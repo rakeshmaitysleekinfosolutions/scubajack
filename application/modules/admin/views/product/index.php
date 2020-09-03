@@ -59,6 +59,9 @@
                         <th>Name</th>
                         <th>Slug</th>
                         <th>Status</th>
+                        <th>Video</th>
+                        <th>Pdf</th>
+                        <th>Quiz</th>
                         <th>Created At</th>
                         <th>Updated At</th>
                         

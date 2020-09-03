@@ -204,6 +204,44 @@ if(!defined('BASEPATH')) EXIT("No direct script access allowed");
             $im->destroy();
         }
     }
+    if(!function_exists('getYoutubeIdFromUrl')) {
+        function getYoutubeIdFromUrl($url) {
+            $parts = parse_url($url);
+            if(isset($parts['query'])){
+                parse_str($parts['query'], $qs);
+                if(isset($qs['v'])){
+                    return $qs['v'];
+                }else if(isset($qs['vi'])){
+                    return $qs['vi'];
+                }
+            }
+            if(isset($parts['path'])){
+                $path = explode('/', trim($parts['path'], '/'));
+                return $path[count($path)-1];
+            }
+            return false;
+        }
+    }
+    if(!function_exists('embedUrl')) {
+        function embedUrl($url) {
+            $parts = parse_url($url);
+            if(isset($parts['query'])){
+                parse_str($parts['query'], $qs);
+                if(isset($qs['v'])){
+                    return "https://www.youtube.com/embed/".$qs['v'];
+                }else if(isset($qs['vi'])){
+                    return "https://www.youtube.com/embed/".$qs['vi'];
+                }
+            }
+            if(isset($parts['path'])){
+                $path = explode('/', trim($parts['path'], '/'));
+                return "https://www.youtube.com/embed/".$path[count($path)-1];
+            }
+            return false;
+        }
+    }
+
+
 
 }
 ?>

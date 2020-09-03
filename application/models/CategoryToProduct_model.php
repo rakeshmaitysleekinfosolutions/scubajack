@@ -13,5 +13,11 @@ class CategoryToProduct_model extends BaseModel {
     public static function factory($attr = array()) {
         return new CategoryToProduct_model($attr);
     }
-    
+
+    public function product() {
+        return $this->hasOne(Product_model::class, 'id', 'product_id');
+    }
+    public function category() {
+        return $this->hasOne(Category_model::class, 'id', 'category_id');
+    }
 }
