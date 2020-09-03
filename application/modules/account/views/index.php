@@ -10,6 +10,8 @@
                 <li><a href="#download" data-toggle="tab">Downloads</a></li>
                 <li><a href="#adress" data-toggle="tab">Adress</a></li>
                 <li><a href="#account-details" data-toggle="tab">Account Details</a></li>
+                <li><a href="#passport" data-toggle="tab">Passport</a></li>
+                
                 <li><a href="#log-out" data-toggle="tab" onclick="return logout();">Log out</a></li>
               </ul>
             </div>
@@ -114,6 +116,32 @@
                   <button type="button" class="btn savechanges">Save changes</button>
                 </div>
               </div>
+              <div class="tab-pane" id="passport">
+                                        <div class="blue-box">
+                                          <div class="row">
+                                            <div class="col-md-7">
+                                              <div class="blue-text">
+                                                <!--  <p>More off this less hello salamander lied porpoise much over tightly circa horse taped so innocuously outside crud mightily rigorous plot life. .</p> -->
+                                              </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                              <div class="blue-right">
+                                                <img src="images/p-image.png">
+                                                <form>
+                                                  <div class="form-group pfile">
+                                                    <label for="formGroupExampleInput">Write your name</label>
+                                                    <input type="text" class="form-control" id="formGroupExampleInput " placeholder="your name">
+                                                  </div>
+                                                  <div class="form-group pfile">
+                                                    <label for="formGroupExampleInput2">Date of issue</label>
+                                                    <input type="text" class="form-control" id="formGroupExampleInput2" placeholder="date of joining">
+                                                  </div>
+                                                </form>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
               <div class="tab-pane" id="log-out" >
                 <p>Hello <span>user</span> (not you? <a href="javascript:void(0);" onclick="return logout();">Log out</a>)</p>
                 <p> From your account dashboard you can view your<a href="#"> recent orders,</a> manage your <a href="#">shipping and billing addresses</a>, and edit your<a href="#"> password and account 

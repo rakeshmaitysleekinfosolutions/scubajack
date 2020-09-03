@@ -1015,3 +1015,19 @@ button.btn.sub-button {
     line-height: 24px;
      font-family: 'Poppins', sans-serif;
 }
+ .product-options{
+     width: 900px;
+     margin:30px auto !important;
+ }
+ .modal-dialog {
+    width: 600px !important;
+    margin: 0px auto !important;
+}
+div#modal-image {
+    width: 900px !important;
+    left: 140px;
+    top: 172px;
+    height: 100%;
+    position: fixed;
+    margin: 30px auto !important;
+}

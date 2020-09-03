@@ -1,4 +1,4 @@
-<div id="filemanager" class="modal-dialog modal-lg">
+<div id="filemanager" class="modal-dialog product-options modal-lg modal-dialog-scrollable "  data-target="#exampleModalLong" >
   <div class="modal-content">
     <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -24,7 +24,7 @@
 
       <div class="row">
         <?php foreach($images as $img) { ?>
-        <div class="col-sm-3 col-xs-6 text-center">
+        <div class="col-md-4 text-center">
          
           <?php if($img['type'] == 'directory') { ?>
             <div class="text-center"><a href="<?php echo $img['href'];?>" class="directory" style="vertical-align: middle;" type="<?php echo $img['type'];?>"><i class="fa fa-folder fa-5x"></i></a></div>
