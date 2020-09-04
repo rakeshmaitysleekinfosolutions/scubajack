@@ -14,6 +14,7 @@ return array(
     'Symfony\\Contracts\\Translation\\' => array($vendorDir . '/symfony/translation-contracts'),
     'Symfony\\Component\\Yaml\\' => array($vendorDir . '/symfony/yaml'),
     'Symfony\\Component\\Translation\\' => array($vendorDir . '/symfony/translation'),
+    'Stripe\\' => array($vendorDir . '/stripe/stripe-php/lib'),
     'Prophecy\\' => array($vendorDir . '/phpspec/prophecy/src/Prophecy'),
     'Mail\\' => array($baseDir . '/application/mail'),
     'Doctrine\\Instantiator\\' => array($vendorDir . '/doctrine/instantiator/src/Doctrine/Instantiator'),

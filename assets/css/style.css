@@ -1043,10 +1043,12 @@ body {
     font-family: "Archivo Narrow";
     margin:0;
 }
+
 #chartdiv {
-    width: 100%;
-    height: 98vh;
+ width: 100%;
+ height: 500px;
 }
+
 .map__image {
     width: 50%;
     /*float: left;*/
@@ -1078,3 +1080,37 @@ div#modal-image {
     margin: 30px auto !important;
 }
 
+/* Passport */
+.blue-box {
+    background: #fff;
+    padding: 5px 10px;
+    display: inline-block;
+    border: 1px solid #000;
+    height: 388px;
+    max-height: 387px;
+    width: 100%;
+    box-shadow: 0 3px 12px -1px rgba(7,10,25,.2), 0 22px 27px -20px rgba(7,10,25,.2);
+}
+.blue-right {
+    text-align: center;
+}
+.blue-right img {
+    width: 68%;
+}
+.form-group.pfile input{
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    background:none;
+    border-radius: 0;
+    outline: none;
+    resize: none;
+    border: 0;
+    font-family: 'Montserrat',sans-serif;
+    transition: all .3s;
+    border-bottom: 2px solid #BEBED2;
+}
+.form-group.pfile label {
+    color: #333;
+    text-align: left;
+}

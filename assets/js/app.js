@@ -14,13 +14,17 @@
 // }
 
 $( document ).ready(function() {
-    $('.headerVideoLink').magnificPopup({
-        type:'inline',
-        midClick: true // Allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source in href.
-    });
-
+    var headerVideolinkDiv = $('.headerVideoLink');
+    if(headerVideolinkDiv.length != 0) {
+        headerVideolinkDiv.magnificPopup({
+            type:'inline',
+            midClick: true // Allow opening popup on middle mouse click. Always set it to true if you don't provide alternative source in href.
+        })
+    }
 });
 
+
+/*
 var map = document.querySelector('#map');
 var paths = map.querySelectorAll('.map__image a');
 
@@ -37,3 +41,4 @@ paths.forEach(function (path) {
         console.log(path);
     })
 })
+ */

@@ -196,7 +196,12 @@ class App extends AppController {
      * Membership plan subscribe
      */
     public function subscribe() {
-        $this->template->content->view('subscribe/index');
+        if($this->isPost()) {
+
+        }
+
+        $this->data['plans'] = Membershipplan_model::factory()->findAll();
+        $this->template->content->view('subscribe/index', $this->data);
         $this->template->publish();
     }
 }

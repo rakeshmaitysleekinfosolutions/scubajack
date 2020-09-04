@@ -97,8 +97,8 @@ if(!defined('BASEPATH')) EXIT("No direct script access allowed");
         }
     }
     if ( ! function_exists('encrypt')) {
-        function encrypt($str) {
-            return base64_encode($str);
+        function encrypt($str, $salt) {
+            return sha1($salt . sha1($salt . sha1($str)));
         }
     }
     if ( ! function_exists('decrypt')) {
@@ -203,6 +203,12 @@ if(!defined('BASEPATH')) EXIT("No direct script access allowed");
             return ($ci->session->userdata('user_id')) && (int) $ci->session->userdata('user_id') > 0 ? (int) $ci->session->userdata('user_id') : false;
         }
     }
+if(!function_exists('userId')) {
+    function userId() {
+        $ci = get_instance();
+        return (int)$ci->session->userdata('user_id');
+    }
+}
     if ( ! function_exists('url')) {
 	/**
 	 * Site URL

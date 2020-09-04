@@ -282,4 +282,12 @@ class User_model extends BaseModel {
         $this->db->query("UPDATE users_ip SET is_deleted = 1 WHERE user_id = '" . (int)$user_id . "'");
         $this->db->query("UPDATE users_address SET is_deleted = 1 WHERE user_id = '" . (int)$user_id . "'");
     }
+    public function updateAccount($id, $data) {
+
+        $this->db->query("UPDATE users SET firstname = '" . $this->db->escape_str($data['firstname']) . "', lastname = '" . $this->db->escape_str($data['lastname']) . "', email = '" . $this->db->escape_str($data['email']) . "', phone = '" . $this->db->escape_str($data['phone']) . "' WHERE id = '" . (int)$id . "'");
+        if (!empty($data['password'])) {
+            $salt = token(9);
+            $this->db->query("UPDATE `users` SET salt = '" . $this->db->escape_str($salt) . "', password = '" . $this->db->escape_str(sha1($salt . sha1($salt . sha1($data['password'])))) . "' WHERE id = '" . (int)$id . "'");
+        }
+    }
 }

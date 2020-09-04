@@ -74,9 +74,13 @@ $route['all'] 	            = 'app/category';
 $route['account'] 	        = 'account';
 $route['about'] 	        = 'app/about';
 $route['contact'] 	        = 'app/contact';
+
+$route['country']           = 'app/country';
 $route['(:any)'] 	        = 'app/products/$1';
 //$route['all'] 	            = 'category/index';
 
+// Update Children Account
+$route['account/update'] = 'account/update';
 
 ////////////////////////STATE MANAGEMENT///////////////////////////	
 $route['add-state'] = 'adminStateManagement/add_state';

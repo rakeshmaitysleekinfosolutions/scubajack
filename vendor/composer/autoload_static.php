@@ -30,6 +30,7 @@ class ComposerStaticInit6d412981c3d126d27b00e82b7caba88f
             'Symfony\\Contracts\\Translation\\' => 30,
             'Symfony\\Component\\Yaml\\' => 23,
             'Symfony\\Component\\Translation\\' => 30,
+            'Stripe\\' => 7,
         ),
         'P' => 
         array (
@@ -88,6 +89,10 @@ class ComposerStaticInit6d412981c3d126d27b00e82b7caba88f
         'Symfony\\Component\\Translation\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/translation',
+        ),
+        'Stripe\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/stripe/stripe-php/lib',
         ),
         'Prophecy\\' => 
         array (

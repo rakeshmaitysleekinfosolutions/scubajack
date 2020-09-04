@@ -218,7 +218,7 @@
 		<!-- <script type="text/javascript" src="<?php echo base_url();?>assets/theme/light/js/jquery.dataTables.min.js"></script>
 		<script type="text/javascript" src="<?php echo base_url();?>assets/theme/light/js/dataTables.bootstrap.min.js"></script>
 	 -->
-		<script type="text/javascript" src="<?php echo base_url();?>assets/theme/light//js/select2.min.js"></script>
+		<script type="text/javascript" src="<?php echo base_url();?>assets/theme/light/js/select2.min.js"></script>
 
 		<script type="text/javascript" src="<?php echo base_url();?>assets/theme/light/js/sweetalert/sweetalert.js" ></script>
 		 <script type="text/javascript" src="<?php echo base_url();?>assets/theme/light/js/summernote/summernote.js" ></script>

@@ -1,59 +1,27 @@
  <section class="pricing">
     <div class="container">
-      <div class="row">
-        <div class="col-md-4">
-          <div class="price-box">
-<!--            <img src="--><?php //echo base_url('assets/images/bike.png');?><!--">-->
-       
-            <h2>10$</h2>
-            <p>per month</p>
-        
-            <h3>FREE</h3>
-           <ul class="list">
-              <li>5 team user included</li>
-              <li>3domains</li>
-              <li>1 mailbox</li>
-              <li>100mb of space</li>
-            </ul>
-            <button type="button" class="btn sub-button">Subscribe</button> 
-          </div>
-        </div>
+        <?php if(isset($plans)) { ?>
+            <div class="row">
+            <?php foreach ($plans as $plan) { ?>
 
-        <div class="col-md-4">
-           <div class="price-box">
-<!--            <img src="--><?php //echo base_url('assets/images/bike.png');?><!--">-->
-       
-            <h2>20$</h2>
-            <p>per month</p>
-        
-            <h3>FREE</h3>
-           <ul class="list">
-              <li>5 team user included</li>
-              <li>3domains</li>
-              <li>1 mailbox</li>
-              <li>100mb of space</li>
-            </ul> 
-             <button type="button" class="btn sub-button">Subscribe</button> 
-          </div>
-        </div>
-        <div class="col-md-4">
-           <div class="price-box">
-<!--            <img src="--><?php //echo base_url('assets/images/bike.png');?><!--">-->
-       
-            <h2>30$</h2>
-            <p>per month</p>
-        
-            <h3>FREE</h3>
-           <ul class="list">
-              <li>5 team user included</li>
-              <li>3domains</li>
-              <li>1 mailbox</li>
-              <li>100mb of space</li>
-            </ul> 
-             <button type="button" class="btn sub-button">Subscribe</button> 
-          </div>
-        </div>
-      </div>
+                    <div class="col-md-4">
+                      <div class="price-box">
+                        <h2>$<?php echo $plan->price;?></h2>
+                        <p>QUARTERLY</p>
+                        <h3><?php echo $plan->name;?></h3>
+                       <ul class="list">
+                          <li><?php echo $plan->description;?></li>
+                        </ul>
+                        <button type="button" class="btn sub-button">Subscribe</button>
+                      </div>
+                    </div>
+
+            <?php } ?>
+            </div>
+        <?php } else { ?>
+
+            <div class="row"></div>
+        <?php } ?>
     </div>
   </section>
 
