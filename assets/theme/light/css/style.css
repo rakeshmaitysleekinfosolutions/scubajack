@@ -1364,11 +1364,11 @@ table.table-inbox tbody tr.checked {background-color: #ffffcc;}
     color: #fff;
 }
 
-div#modal-image {
+/* div#modal-image {
 	left: 140px;
 	top: 172px;
 	position: fixed;
-}
+} */
 /*******************24.08.2020**************************/
 .profile-img-two {
     cursor: pointer;
@@ -1408,4 +1408,59 @@ button#button-image {
 #iframe {
     overflow-y: hidden;
     overflow-x: hidden;
+}
+/*****************03.09.20***********************/
+/*****************dasboard modal****************/
+.product-options{
+	width: 900px;
+	margin:30px auto !important;
+}
+.modal-dialog {
+   width: 600px !important;
+   margin: 0px auto !important;
+}
+div#modal-image {
+   /* width: 600px !important; */
+	width: 44%;
+   left: 140px;
+   top: 172px;
+   /* height: 100%; */
+   position: fixed;
+   margin: 30px auto !important;
+}
+/******************passport section************/
+.blue-box {
+    background: #fff;
+    padding: 5px 10px;
+    display: inline-block;
+    border: 1px solid #000;
+    height: 388px;
+    max-height: 387px;
+    width: 100%;
+     box-shadow: 0 3px 12px -1px rgba(7,10,25,.2), 0 22px 27px -20px rgba(7,10,25,.2);
+}
+.blue-right {
+    text-align: center;
+}
+.blue-right img {
+    width: 68%;
+}
+
+.form-group.pfile input{
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+
+    background:none;
+    border-radius: 0;
+    outline: none;
+    resize: none;
+    border: 0;
+    font-family: 'Montserrat',sans-serif;
+    transition: all .3s;
+    border-bottom: 2px solid #bebed2;
+}
+.form-group.pfile label {
+    color: #333;
+    text-align: left;
 }

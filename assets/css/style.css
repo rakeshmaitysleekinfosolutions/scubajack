@@ -1036,6 +1036,7 @@ button.btn.sub-button {
      font-family: 'Poppins', sans-serif;
 }
 
+
 @import url("https://fonts.googleapis.com/css?family=Archivo+Narrow");
 
 body {
@@ -1059,3 +1060,21 @@ body {
 .map__image path:hover {
     fill: #0d47a1;
 }
+
+ .product-options{
+     width: 900px;
+     margin:30px auto !important;
+ }
+ .modal-dialog {
+    width: 600px !important;
+    margin: 0px auto !important;
+}
+div#modal-image {
+    width: 900px !important;
+    left: 140px;
+    top: 172px;
+    height: 100%;
+    position: fixed;
+    margin: 30px auto !important;
+}
+
