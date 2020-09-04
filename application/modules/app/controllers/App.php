@@ -204,4 +204,19 @@ class App extends AppController {
         $this->template->content->view('subscribe/index', $this->data);
         $this->template->publish();
     }
+    /**
+     * Membership plan subscribe
+     */
+    public function country() {
+        $this->template->content->view('country/index');
+        $this->template->publish();
+    }
+     /**
+     * Membership plan subscribe
+     */
+    public function about() {
+      
+        $this->template->content->view('information/about');
+        $this->template->publish();
+    }
 }
