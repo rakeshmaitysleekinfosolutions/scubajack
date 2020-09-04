@@ -181,9 +181,9 @@ class Category extends AdminController implements CategoryContract {
         }
         // Slug
         if (!empty($this->input->post('slug'))) {
-            $this->data['slug'] = url_title($this->input->post('slug'),'dash', true);
+            $this->data['slug'] = url_title($this->input->post('name'),'dash', true);
         } elseif (!empty($this->category)) {
-            $this->data['slug'] = $this->category->slug;
+            $this->data['slug'] = ($this->category->slug) ? $this->category->slug : url_title($this->input->post('name'),'dash', true);
         } else {
             $this->data['slug'] = url_title($this->input->post('name'),'dash', true);
         }

@@ -167,6 +167,8 @@
                                     <li class="categoryplus"><a href="<?php echo admin_url('category');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Categories</span></a></li>
 									<li><a href="<?php echo admin_url('product');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Products</span></a></li>
                                     <li><a href="<?php echo admin_url('features_product');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Features Products</span></a></li>
+                                    <li><a href="<?php echo admin_url('information');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Information</span></a></li>
+
 								</ul>
 							</li>
                             <li class="submenu">
@@ -193,6 +195,7 @@
 							<li>
 								<a href="javascript:void(0);"><i class="fa fa-cog fw"></i> Application Settings</a>
 							</li>
+
 							<!-- <li> 
 								<a href="<?php echo base_url('user');?>">Category</a>
 							</li> -->

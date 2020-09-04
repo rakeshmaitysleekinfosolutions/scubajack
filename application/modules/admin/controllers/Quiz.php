@@ -78,9 +78,9 @@ class Quiz extends AdminController implements QuizContract {
             }
             // Slug
             if (!empty($this->input->post('slug'))) {
-                $this->data['slug'] = url_title($this->input->post('slug'),'dash', true);
+                $this->data['slug'] = url_title($this->input->post('name'),'dash', true);
             } elseif (!empty($this->quiz)) {
-                $this->data['slug'] = $this->quiz->slug;
+                $this->data['slug'] = ($this->quiz->slug) ? $this->quiz->slug  : url_title($this->input->post('name'),'dash', true);
             } else {
                 $this->data['slug'] = url_title($this->input->post('name'),'dash', true);
             }

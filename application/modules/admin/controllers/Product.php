@@ -243,7 +243,7 @@ class Product extends AdminController implements ProductContract {
             }
             // Slug
             if (!empty($this->input->post('slug'))) {
-                $this->data['slug'] = url_title($this->input->post('slug'),'dash', true);
+                $this->data['slug'] = url_title($this->input->post('name'),'dash', true);
             } elseif (!empty($this->product)) {
                 $this->data['slug'] = $this->product->slug;
             } else {
