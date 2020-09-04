@@ -20,14 +20,15 @@ class Category extends AdminController implements CategoryContract {
     private $status;
 
     public function onLoadDatatableEventHandler() {
-		$this->load->model('Category_model');
-		$this->results = $this->Category_model->findAll();
+
+		$this->results = Category_model::factory()->findAll();
 		if($this->results) {
 			foreach($this->results as $result) {
 				$this->rows[] = array(
 					'id'			=> $result->id,
 					'name'		    => $result->name,
 					'slug' 		    => $result->slug,
+                    'sortOrder'     => $result->sort_order,
                     'status' 		=> ($result->status && $result->status == 1) ? 1 : 0,
                     'created_at'    => Carbon::createFromTimeStamp(strtotime($result->created_at))->diffForHumans(),
                     'updated_at'    => ($result->updated_at) ? Carbon::createFromTimeStamp(strtotime($result->updated_at))->diffForHumans() : ''
@@ -44,6 +45,7 @@ class Category extends AdminController implements CategoryContract {
 										</td>';
 					$this->data[$i][] = '<td>'.$row['name'].'</td>';
 					$this->data[$i][] = '<td>'.$row['slug'].'</td>';
+                    $this->data[$i][] = '<td>'.$row['sortOrder'].'</td>';
 //					$this->data[$i][] = '<td>
 //											<div class="material-switch pull-right">
 //											<input data-id="'.$row['id'].'" class="checkboxStatus" name="switch_checkbox" id="chat_module" type="checkbox" value="'.$row['status'].'" '.$checked.'/>
@@ -128,10 +130,10 @@ class Category extends AdminController implements CategoryContract {
             $this->data['error_name'] = '';
         }
 
-        if (isset($this->error['slug'])) {
-            $this->data['error_slug'] = $this->error['slug'];
+        if (isset($this->error['sortOrder'])) {
+            $this->data['error_sortOrder'] = $this->error['sortOrder'];
         } else {
-            $this->data['error_slug'] = '';
+            $this->data['error_sortOrder'] = '';
         }
         //dd($this->data);
         if (isset($this->error['status'])) {
@@ -169,7 +171,14 @@ class Category extends AdminController implements CategoryContract {
         } else {
             $this->data['name'] = '';
         }
-
+        // Sort Order
+        if (!empty($this->input->post('sortOrder'))) {
+            $this->data['sortOrder'] = $this->input->post('sortOrder');
+        } elseif (!empty($this->category)) {
+            $this->data['sortOrder'] = $this->category->sort_order;
+        } else {
+            $this->data['sortOrder'] = '';
+        }
         // Slug
         if (!empty($this->input->post('slug'))) {
             $this->data['slug'] = url_title($this->input->post('slug'),'dash', true);
@@ -248,9 +257,9 @@ class Category extends AdminController implements CategoryContract {
 			$this->error['name'] = $this->lang->line('error_name');
 		}
 
-//		if ((strlen($this->input->post('slug')) < 1) || (strlen(trim($this->input->post('slug'))) > 255)) {
-//			$this->error['slug'] = $this->lang->line('error_slug');
-//		}
+		if ((strlen($this->input->post('sortOrder')) < 1)) {
+			$this->error['sortOrder'] = $this->lang->line('error_sortOrder');
+		}
 		//dd($this->input->post('status'));
         if ($this->input->post('status') == '') {
             $this->error['status'] = $this->lang->line('error_status');

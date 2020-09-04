@@ -54,9 +54,9 @@
                                     <div class="form-group">
                                         <label class="control-label">Slug <span class="text-danger"></span></label>
                                         <input value="<?php echo $slug;?>" class="form-control" type="text" name="slug" id="input-payment-lastname" autocomplete="off" >
-                                        <?php if($error_slug) { ?>
-                                            <div class="text-danger"><?php  echo $error_slug;?></div>
-                                        <?php } ?>
+<!--                                        --><?php //if($error_slug) { ?>
+<!--                                            <div class="text-danger">--><?php // echo $error_slug;?><!--</div>-->
+<!--                                        --><?php //} ?>
                                     </div>
                                 </div>
 
@@ -72,6 +72,15 @@
                                         <?php } ?>
                                     </div>
 
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Sort Order <span class="text-danger"></span></label>
+                                        <input value="<?php echo $sortOrder;?>" class="form-control" type="text" name="sortOrder" id="input-ortOrder" autocomplete="off" >
+                                        <?php if($error_sortOrder) { ?>
+                                            <div class="text-danger"><?php echo $error_sortOrder;?></div>
+                                        <?php } ?>
+                                    </div>
                                 </div>
                             </div>
                         </div>

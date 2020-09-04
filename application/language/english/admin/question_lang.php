@@ -1,4 +1,6 @@
 <?php
+
+
 // Heading
 $lang['heading_title'] = 'Quiz';
 // Text

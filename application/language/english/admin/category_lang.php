@@ -16,3 +16,4 @@ $lang['error_slug']             = 'required| this field must be between 4 and 15
 $lang['error_meta_title']       = 'required| this field must be between 3 and 255 characters!';
 $lang['error_image']            = 'required';
 $lang['error_status']           = 'required';
+$lang['error_sortOrder']        = 'required|Numeric Value';

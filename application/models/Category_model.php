@@ -14,7 +14,7 @@ class Category_model extends BaseModel {
         return new Category_model($attr);
     }
     public function addCategory($data = array()) {
-        $this->db->query("INSERT INTO category SET name = '" . $this->db->escape_str($data['name']) . "', slug = '" . $this->db->escape_str($data['slug']) . "', status = '" . $this->db->escape_str($data['status'])."'");
+        $this->db->query("INSERT INTO category SET name = '" . $this->db->escape_str($data['name']) . "', slug = '" . $this->db->escape_str($data['slug']) . "',sort_order = '" . $this->db->escape_str($data['sortOrder']) . "', status = '" . $this->db->escape_str($data['status'])."'");
         $categoryId = $this->db->insert_id();
         if(isset($categoryId)) {
             $this->db->query("INSERT INTO category_description SET category_id = '" . (int)$categoryId . "', description = '" . $this->db->escape_str($data['description']) . "',image = '" . $this->db->escape_str($data['image']) . "', meta_title = '" . $this->db->escape_str($data['meta_title']) . "', meta_keyword = '" . $this->db->escape_str($data['meta_keyword']) . "', meta_description = '" . $this->db->escape_str($data['meta_description']) . "'");
@@ -32,7 +32,7 @@ class Category_model extends BaseModel {
 
     public function editCategory($categoryId, $data) {
         //dd($data);
-        $this->db->query("UPDATE category SET name = '" . $this->db->escape_str($data['name']) . "', slug = '" . $this->db->escape_str($data['slug']) . "', status = '" . $this->db->escape_str($data['status'])."' WHERE id = '" . (int)$categoryId . "'");
+        $this->db->query("UPDATE category SET name = '" . $this->db->escape_str($data['name']) . "', slug = '" . $this->db->escape_str($data['slug']) . "', sort_order = '" . $this->db->escape_str($data['sortOrder']) . "',status = '" . $this->db->escape_str($data['status'])."' WHERE id = '" . (int)$categoryId . "'");
         $this->db->query("DELETE FROM category_description WHERE category_id = '" . (int)$categoryId . "'");
         $this->db->query("INSERT INTO category_description SET category_id = '" . (int)$categoryId . "', description = '" . $this->db->escape_str($data['description']) . "', image = '" . $this->db->escape_str($data['image']) . "', meta_title = '" . $this->db->escape_str($data['meta_title']) . "', meta_keyword = '" . $this->db->escape_str($data['meta_keyword']) . "', meta_description = '" . $this->db->escape_str($data['meta_description']) . "'");
     }

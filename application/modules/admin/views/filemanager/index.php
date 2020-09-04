@@ -27,7 +27,7 @@
         <div class="col-sm-3 col-xs-6 text-center">
          
           <?php if($img['type'] == 'directory') { ?>
-            <div class="text-center"><a href="<?php echo $img['href'];?>" class="directory" style="vertical-align: middle;" type="<?php echo $img['type'];?>"><i class="fa fa-folder fa-5x"></i></a></div>
+            <div class="text-center"><a type="<?php echo $img['type'];?>" href="<?php echo $img['href'];?>" class="directory" style="vertical-align: middle;" type="<?php echo $img['type'];?>"><i class="fa fa-folder fa-5x"></i></a></div>
             <label><input type="checkbox" name="path[]" value="<?php echo $img['path'];?>"/>&nbsp;<?php echo $img['name'];?></label>
           <?php } ?>
           

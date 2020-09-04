@@ -20,3 +20,20 @@ $( document ).ready(function() {
     });
 
 });
+
+var map = document.querySelector('#map');
+var paths = map.querySelectorAll('.map__image a');
+
+
+if(NodeList.prototype.forEach == undefined) {
+    NodeList.prototype.forEach = function (callback) {
+        [].forEach().call(this, callback);
+    }
+}
+paths.forEach(function (path) {
+    path.addEventListener('click', function (e) {
+        e.preventDefault();
+
+        console.log(path);
+    })
+})

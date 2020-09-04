@@ -56,6 +56,7 @@
                         </th>
                         <th>Name</th>
                         <th>Slug</th>
+                        <th>Sort Order</th>
                         <th>Status</th>
                         <th>Created At</th>
                         <th>Updated At</th>

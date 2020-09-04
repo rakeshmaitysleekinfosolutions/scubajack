@@ -2,16 +2,33 @@
   <section>
     <div class="bluebg">
       <h3>Majestic Learning</h3> </div>
-       <div class="continent"> <img src="<?php echo base_url();?>assets/images/world-map.png" usemap="#imagemap">
-      <map name="imagemap">
-        <area coords="650,20,100,100" shape="rect" href="https://getbootstrap.com/" title="Greenland" alt="greeen" target="_blank">
-        <area coords="150,100,300,350" shape="rect" href="https://www.wikipedia.org/" title="United states" alt="test333" target="_blank">
-        <area coords="700,100,300,350" shape="rect" href="https://www.w3schools.com/" title="Brazil" alt="test" target="_blank">
-          <area coords="1000,100,300,350" shape="rect" href="https://es.wikipedia.org/wiki/Wikipedia:Portada" title="africa" alt="test" target="_blank">
-       <!--  <area shape="circle" coords="800,150,150" alt="Coffee" href="https://es.wikipedia.org/wiki/Wikipedia:Portada"   title="Africa"target="_blank"> -->
-        <area coords="1450,100,300,350" shape="rect" href="https://www.w3schools.com/" title="Test" alt="test" target="_blank"> </area>
-    </map>
-    </div>
+<!--       <div class="continent"> <img src="--><?php //echo base_url();?><!--assets/images/world-map.png" usemap="#imagemap">-->
+<!--          <map name="imagemap">-->
+<!--            <area coords="650,20,100,100" shape="rect" href="https://getbootstrap.com/" title="Greenland" alt="greeen" target="_blank">-->
+<!--            <area coords="150,100,300,350" shape="rect" href="https://www.wikipedia.org/" title="United states" alt="test333" target="_blank">-->
+<!--            <area coords="700,100,300,350" shape="rect" href="https://www.w3schools.com/" title="Brazil" alt="test" target="_blank">-->
+<!--              <area coords="1000,100,300,350" shape="rect" href="https://es.wikipedia.org/wiki/Wikipedia:Portada" title="africa" alt="test" target="_blank">-->
+<!--            <area coords="1450,100,300,350" shape="rect" href="https://www.w3schools.com/" title="Test" alt="test" target="_blank"> </area>-->
+<!--            </map>-->
+<!---->
+<!--        </div>-->
+<!--      <div id="chartdiv"></div>-->
+
+   
+          <div class="continent" id="map">
+              <div class="map__image">
+                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 597 585">
+                      <g>
+                          <?php if(isset($maps)) { ?>
+                              <?php foreach ($maps as $map) { ?>
+                                  <a xlink:title="<?php echo $map->country->name;?>" xlink:href="javascript:void(0);" ><path id="<?php echo $map->country->iso_code_2;?>"  title="<?php echo $map->country->name;?>"  d="<?php echo $map->path_d;?>"/></a>
+                              <?php } ?>
+                          <?php } ?>
+                      </g>
+                  </svg>
+              </div>
+          </div>
+
     <div class="tagline">
       <div class="darkbluebg">
         <h4>where the world and reading collide</h4>

@@ -92,6 +92,9 @@ class Filemanager extends AdminController {
 				if ($this->input->get('thumb')) {
 					$url .= '&thumb=' . $this->input->get('thumb');
 				}
+                if ($this->input->get('type')) {
+                    $url .= '&type=' . $this->input->get('type');
+                }
 
 				$this->data['images'][] = array(
 					'thumb' => '',
@@ -187,6 +190,9 @@ class Filemanager extends AdminController {
 		if ($this->input->get('thumb')) {
 			$url .= '&thumb=' . $this->input->get('thumb');
 		}
+        if ($this->input->get('type')) {
+            $url .= '&type=' . $this->input->get('type');
+        }
 
 		$this->data['parent'] = admin_url('filemanager?'.$url);
 

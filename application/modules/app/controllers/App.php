@@ -20,6 +20,7 @@ class App extends AppController {
     private $productModelInstances;
     private $products;
     private $var = 'products';
+    private $orderBy;
 
     public function __construct()
     {
@@ -98,11 +99,14 @@ class App extends AppController {
 
     /**
      * @param null $limit
+     * @param null $orderBy
      * @throws Exception
      */
-    private function getCategoryArray($limit = null) {
+    private function getCategoryArray($limit = null, $orderBy = null) {
         if($limit) $this->limit = $limit;
-        $categories = Category_model::factory()->findAll(['status' => 1], $this->limit);
+        if($orderBy) $this->orderBy = $orderBy;
+        $categories = Category_model::factory()->findAll([],$limit,$this->orderBy);
+        //$this->dd($categories);
         if($categories) {
             foreach ($categories as $category) {
                 //$this->dd($category);
@@ -127,12 +131,14 @@ class App extends AppController {
      * @throws Exception
      */
     public function index() {
-        $this->getCategoryArray(4);
+        $this->getCategoryArray(4, 'sort_order');
         // Features Product
         $this->formatProductModelInstanceToArray(FeaturesProduct_model::factory()->findAll(),4);
         // Activity Books
         //$this->formatProductModelInstanceToArray(FeaturesProduct_model::factory()->findAll(),4, 'activityBooks');
         //dd($this->data['activityBooks']);
+        $this->data['maps'] = Map_model::factory()->findAll(['status' => 1]);
+        //dd($this->data['maps']);
         $this->template->stylesheet->add('assets/css/magnific-popup.min.css');
         $this->template->javascript->add('assets/js/jquery.magnific-popup.min.js');
 		$this->template->content->view('index', $this->data);

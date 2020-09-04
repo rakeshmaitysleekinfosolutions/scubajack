@@ -1036,3 +1036,26 @@ button.btn.sub-button {
      font-family: 'Poppins', sans-serif;
 }
 
+@import url("https://fonts.googleapis.com/css?family=Archivo+Narrow");
+
+body {
+    font-family: "Archivo Narrow";
+    margin:0;
+}
+#chartdiv {
+    width: 100%;
+    height: 98vh;
+}
+.map__image {
+    width: 50%;
+    /*float: left;*/
+}
+.map__image path {
+    fill: #4fc3f7;
+    stroke: #FFFFFF;
+    stroke-width: 1px;
+    transition: fill 0.3s;
+}
+.map__image path:hover {
+    fill: #0d47a1;
+}

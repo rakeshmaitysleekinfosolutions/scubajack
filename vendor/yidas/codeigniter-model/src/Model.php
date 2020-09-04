@@ -569,9 +569,12 @@ class Model extends \CI_Model implements \ArrayAccess
     /**
      * Returns a list of active record models that match the specified primary key value(s) or a set of column values.
      *
-     * @param mixed $condition Refer to _findByCondition() for the explanation 
+     * @param mixed $condition Refer to _findByCondition() for the explanation
      * @param integer|array $limit Limit or [offset, limit]
+     * @param null $orderBy
+     * @param string $direction
      * @return array Set of ActiveRecord(Model)s
+     * @throws Exception
      * @example
      *  $post = $this->PostModel->findAll([3,21,135]);
      * @example
@@ -579,7 +582,7 @@ class Model extends \CI_Model implements \ArrayAccess
      *  $this->Model->find()->where_in('id', [3,21,135]);
      *  $this->Model->findAll();
      */
-    public static function findAll($condition=[], $limit=null)
+    public static function findAll($condition=[], $limit=null, $orderBy = null, $direction = 'ASC')
     {
         $instance = (isset($this)) ? $this : new static;
 
@@ -598,6 +601,10 @@ class Model extends \CI_Model implements \ArrayAccess
             
             $query = ($limit) ? $query->limit($limit) : $query;
             $query = ($offset) ? $query->offset($offset) : $query;
+        }
+        // Order By
+        if ($orderBy) {
+            $query = ($orderBy) ? $query->order_by($orderBy, $direction) : $query;
         }
         
         $records = $query->get()->result_array();
@@ -619,6 +626,11 @@ class Model extends \CI_Model implements \ArrayAccess
         }
 
         return $set;
+    }
+
+    public function orderBy() {
+        $instance = (isset($this)) ? $this : new static;
+
     }
 
     /**
