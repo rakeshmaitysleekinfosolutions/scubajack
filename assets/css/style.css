@@ -12,21 +12,13 @@ header.menu-area {
 header.sticky {
     position: fixed;
     width: 100%;
-    transition: all ease-in 0.8s;
-    box-shadow: 1px 3px 2px rgb(0 0 0 / 22%);
+    transition: all ease-in 0.3s;
+    box-shadow: 1px 3px 10px rgb(0 0 0 / 14%);
     background: #fff;
     z-index: 99;
     top: 0;
 }
-header.sticky {
-    position: fixed;
-    width: 100%;
-    transition: all ease-in 0.8s;
-    box-shadow: 1px 3px 10px rgb(0 0 0 / 22%);
-    background: #fff;
-    z-index: 99;
-    top: 0;
-}
+
 
 a.nav-link {
     font-size: 16px;
@@ -287,7 +279,7 @@ section.world_reading {
 
 .books p {
     float: left;
-    font-size: 23px;
+    font-size: 18px;
     width: 63%;
     text-align: left;
     color: #0f7deb;
@@ -905,14 +897,13 @@ a.btn.order i{
      padding: 5px;
 }
 a.btn.craft {
+    background: #137fea;
     float: right;
-    background: #004085;
     font-size: 14px;
     color: #fff;
     padding: 5px 20px;
     border-radius: 0;
     font-family: 'Poppins', sans-serif;
-
 }
 
 a.btn.watch {
@@ -933,6 +924,34 @@ a.btn.order {
     border-radius: 0;
     font-family: 'Poppins', sans-serif;
 }
+/******************07.09.20************/
+a.btn.headerVideoLink.btn.watch {
+    float: left;
+    background: #004085;
+    font-size: 14px;
+    color: #fff;
+    padding: 5px 20px;
+    border-radius: 0;
+    font-family: 'Poppins', sans-serif;
+}
+a.btn.watch-only {
+    background: #004085;
+    font-size: 14px;
+    color: #fff;
+    padding: 8px 45px;
+    border-radius: 0;
+    font-family: 'Poppins', sans-serif;
+}
+a.btn.craft-only {
+    background: #137fea;
+    font-size: 16px;
+    padding: 8px 45px;
+    margin-top: 10px;
+    color: #fff;
+    border-radius: 0;
+    font-family: 'Poppins', sans-serif;
+}
+/*******************************************/
 .book-details{
     padding: 10px 10px;
 }
@@ -1116,13 +1135,79 @@ div#modal-image {
 }
 /************04.09.20******************/
 .country{
-    margin-top: 100px;
+    margin-top: 130px;
     margin-bottom: 40px;
 }
 .city-picture img {
     width: 100%; 
-    height: 400px;
+    height: 450px;
     box-shadow: 0 3px 12px -1px rgba(7,10,25,.2), 0 22px 27px -20px rgba(7,10,25,.2);
  
 }
+/**********************07.09.20****************************/
 
+.city-text {
+    padding: 10px 20px 0px 20px;
+}
+h3.gallery {
+    text-align: center;
+    font-size: 40px;
+    line-height: 40px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 400;
+    color:#137fea;
+}
+p.sub-text {
+    font-size: 16px;
+    line-height: 34px;
+    color: #3c5d6b;
+    font-weight: 400;
+    font-family: 'Poppins', sans-serif;
+    text-align: center;
+}
+.card-body a h4 {
+  
+    font-size: 18px;
+    line-height: 30px;
+    text-decoration: none;
+    
+    text-align: left;
+    color: #0f7deb;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+}
+.card-body p {
+    font-size: 14px;
+    line-height: 26px;
+    text-align: left;
+    color: #1b1e21;
+    font-weight: 400;
+    font-family: 'Poppins', sans-serif;
+}
+.date-price h6 {
+    font-size: 15px;
+    color: #3c5d6b;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    text-align: left;
+    line-height: 18px;
+}
+.date-price p {
+    font-size: 14px;
+    color: #1b1e21;
+    font-weight: 300;
+    font-family: 'Poppins', sans-serif;
+    text-align: left;
+    line-height: 2px;
+}
+.card.blog {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    width: 100%;
+}
+.card.blog:hover {
+    border: 1px solid #343a4033;
+    padding: 5px;
+    /* transform: rotate( 4deg); */
+    box-shadow: 0 3px 12px -1px rgba(7,10,25,.2), 0 22px 27px -20px rgba(7,10,25,.2);
+}
