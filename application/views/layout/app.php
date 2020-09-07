@@ -18,6 +18,9 @@
 </head>
 
 <body>
+<div id="app">
+
+
 <div class="splash-screen">
     <a href="javascript:void(0);" id="splashscreen">
         <img src="<?php echo base_url('assets/images/splash-bg.jpg');?>" alt="" />
@@ -40,6 +43,7 @@
           <?php if(isLogged()) {?> 
             <a href="<?php echo base_url('account');?>">
               <button class="btn my-account" type="submit"><i class="fas fa-user"></i>My Account</button>
+                <a href="javascript:void(0);" onclick="return logout();">Log out</a>
             </a>
           <?php } else { ?>
             <a href="<?php echo base_url('login');?>">
@@ -79,6 +83,7 @@
       </div>
     </div>
   </footer>
+</div>
    <!-------------------------footer end-------------------------->
 
 
@@ -94,6 +99,7 @@
 
 
   <script type="text/javascript" src="<?php echo base_url();?>assets/js/app.js"></script>
+
   <?php echo $this->template->javascript; ?>
 <script>
     !function ($) {
@@ -142,7 +148,15 @@
 
     }(window.jQuery);
 </script>
+<script>
+    var myLabel = myLabel || {};
+    myLabel.baseUrl = '<?php echo base_url();?>';
 
+    function logout () {
+        window.location.href = '<?php echo base_url('account/logout');?>';
+        // return true or false, depending on whether you want to allow the `href` property to follow through or not
+    }
+</script>
 </body>
 
 </html>

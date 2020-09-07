@@ -131,6 +131,8 @@ class App extends AppController {
      * @throws Exception
      */
     public function index() {
+
+
         $this->getCategoryArray(4, 'sort_order');
         // Features Product
         $this->formatProductModelInstanceToArray(FeaturesProduct_model::factory()->findAll(),4);
@@ -144,12 +146,32 @@ class App extends AppController {
 		$this->template->content->view('index', $this->data);
 		$this->template->publish();
 	}
+    /**
+     * Home page features products and activity books
+     * @throws Exception
+     */
+    public function index2() {
+
+
+        $this->getCategoryArray(4, 'sort_order');
+        // Features Product
+        $this->formatProductModelInstanceToArray(FeaturesProduct_model::factory()->findAll(),4);
+        // Activity Books
+        //$this->formatProductModelInstanceToArray(FeaturesProduct_model::factory()->findAll(),4, 'activityBooks');
+        //dd($this->data['activityBooks']);
+        $this->data['maps'] = Map_model::factory()->findAll(['status' => 1]);
+        //dd($this->data['maps']);
+        $this->template->stylesheet->add('assets/css/magnific-popup.min.css');
+        $this->template->javascript->add('assets/js/jquery.magnific-popup.min.js');
+        $this->template->content->view('static', $this->data);
+        $this->template->publish();
+    }
 
     /**
      * List of all product category
      */
     public function category() {
-        $this->getCategoryArray();
+        $this->getCategoryArray(null,'sort_order');
         $this->template->content->view('category/index', $this->data);
         $this->template->publish();
     }
@@ -157,6 +179,8 @@ class App extends AppController {
      * @param $categorySlug
      */
     public function products($categorySlug) {
+        if(!$this->isSubscribed()) redirect('subscribe-now');
+
         if($categorySlug)               $this->categorySlug         = $categorySlug;
         if($this->categorySlug)         $this->category             = Category_model::factory()->findOne(['slug' => $this->categorySlug,'status' => 1]);
         $this->data['category'] = array();
@@ -196,6 +220,7 @@ class App extends AppController {
      * Membership plan subscribe
      */
     public function subscribe() {
+        
         if($this->isPost()) {
 
         }
@@ -207,7 +232,7 @@ class App extends AppController {
     /**
      * Membership plan subscribe
      */
-    public function country() {
+    public function explore() {
         $this->template->content->view('country/index');
         $this->template->publish();
     }
@@ -215,7 +240,7 @@ class App extends AppController {
      * Membership plan subscribe
      */
     public function about() {
-      
+
         $this->template->content->view('information/about');
         $this->template->publish();
     }

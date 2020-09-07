@@ -1052,7 +1052,6 @@ body {
 .map__image {
     width: 100%;
     /*float: left;*/
-    margin-left:-360px;
 }
 .map__image path {
     fill: #4fc3f7;

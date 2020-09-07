@@ -1,6 +1,5 @@
 <div class="content container-fluid">
-    <form id="frmSignUp" action="<?php echo admin_url('product/update');?>" method="post">
-        <input type="hidden" name="productId" value="<?php echo $productId;?>">
+    <form id="frmSignUp" action="<?php echo admin_url('product/update/'.$primaryKey);?>" method="post">
         <div class="row">
             <?php if($error_warning) { ?>
                 <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i><?php echo $error_warning;?>

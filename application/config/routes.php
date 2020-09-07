@@ -61,7 +61,7 @@ $route['translate_uri_dashes'] = FALSE;
 
 //Set Splash Screen
 $route['setSplashScreen'] 	= 'app/setSplashScreen';
-
+$route['index2'] 	= 'app/index2';
 $route['subscribe-now']         = 'app/subscribe';
 
 $route['admin'] = 'adminDashboard';
@@ -75,7 +75,7 @@ $route['account'] 	        = 'account';
 $route['about'] 	        = 'app/about';
 $route['contact'] 	        = 'app/contact';
 
-$route['country']           = 'app/country';
+$route['(:any)/explore']    = 'app/explore';
 $route['(:any)'] 	        = 'app/products/$1';
 //$route['all'] 	            = 'category/index';
 
