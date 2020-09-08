@@ -12,7 +12,7 @@
                        <ul class="list">
                           <li><?php echo $plan->description;?></li>
                         </ul>
-                        <button type="button" class="btn sub-button">Subscribe</button>
+                        <a href="<?php echo base_url('plan/'.$plan->slug);?>" class="btn sub-button">Subscribe</a>
                       </div>
                     </div>
 

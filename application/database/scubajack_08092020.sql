@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 14, 2020 at 12:12 PM
+-- Generation Time: Sep 08, 2020 at 08:12 AM
 -- Server version: 10.4.13-MariaDB
--- PHP Version: 7.4.8
+-- PHP Version: 7.4.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -31,8 +31,20 @@ CREATE TABLE `answers` (
   `id` int(11) UNSIGNED NOT NULL,
   `question_id` int(11) UNSIGNED NOT NULL,
   `answer` varchar(150) NOT NULL,
-  `is_correct` tinyint(1) NOT NULL COMMENT '1 = true, 0 = false'
+  `is_correct` tinyint(1) NOT NULL DEFAULT 0 COMMENT '1 = YES, 0 = NO',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `is_deleted` char(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `answers`
+--
+
+INSERT INTO `answers` (`id`, `question_id`, `answer`, `is_correct`, `created_at`, `updated_at`, `is_deleted`) VALUES
+(22, 12, 'Abc', 1, '2020-08-31 08:26:10', '2020-08-31 08:43:32', '0'),
+(23, 12, 'xyz', 0, '2020-08-31 08:26:10', '2020-08-31 09:52:59', '0'),
+(24, 12, 'def', 0, '2020-08-31 08:26:10', '2020-08-31 13:51:13', '1');
 
 -- --------------------------------------------------------
 
@@ -57,7 +69,7 @@ CREATE TABLE `bd_admins` (
 --
 
 INSERT INTO `bd_admins` (`admin_id`, `admin_name`, `admin_user_name`, `admin_password`, `admin_email`, `admin_role`, `admin_status`, `admin_create_date`, `admin_last_login`) VALUES
-(1, 'Silk Portal', 'Adminn', '5FEB0F5BE0FF45BF2BEE2C5BDB2A996F', 'silk@test.com', 0, 'Active', '2020-06-11 00:00:00', '2020-08-14 15:13:34');
+(1, 'Scubajack', 'Adminn', '25d55ad283aa400af464c76d713c07ad', 'admin@admin.com', 0, 'Active', '2020-06-11 00:00:00', '2020-09-04 12:35:26');
 
 -- --------------------------------------------------------
 
@@ -68,10 +80,37 @@ INSERT INTO `bd_admins` (`admin_id`, `admin_name`, `admin_user_name`, `admin_pas
 CREATE TABLE `category` (
   `id` int(11) UNSIGNED NOT NULL,
   `name` varchar(255) NOT NULL,
-  `slug` int(150) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `sort_order` int(11) UNSIGNED NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `is_deleted` char(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `category`
+--
+
+INSERT INTO `category` (`id`, `name`, `slug`, `status`, `sort_order`, `created_at`, `updated_at`, `is_deleted`) VALUES
+(1, 'CREATURES BIG AND SMALL', 'creatures-big-and-small', 1, 5, '2020-08-21 12:41:10', '2020-09-04 12:36:36', '0'),
+(2, 'test', 'tests', 0, 0, '2020-08-24 14:13:47', '2020-08-25 11:07:02', '1'),
+(3, 'ABC', 'abc', 1, 0, '2020-08-25 09:31:21', '2020-08-25 09:55:47', '1'),
+(4, 'STORY BOOKS', 'story-books', 1, 4, '2020-08-25 11:03:02', '2020-09-04 12:36:31', '0'),
+(5, 'LEARN TO READ', 'learn-to-read', 1, 3, '2020-08-25 11:07:19', '2020-09-04 12:36:25', '0'),
+(6, 'ELEMENTARY SCHOOL READING', 'elementary-school-reading', 1, 2, '2020-08-25 11:07:46', '2020-09-04 12:36:18', '0'),
+(7, 'LEARNING MODULES', 'learning-modules', 1, 1, '2020-08-25 11:08:09', '2020-09-04 12:36:08', '0'),
+(8, 'PARENTING BOOKS', 'parenting-books', 1, 14, '2020-08-25 11:08:19', '2020-09-04 12:37:53', '0'),
+(9, 'PEOPLE', 'people', 1, 6, '2020-08-25 11:08:39', '2020-09-04 12:36:49', '0'),
+(10, 'ARTS', 'arts', 1, 7, '2020-08-25 11:08:48', '2020-09-04 12:36:56', '0'),
+(11, 'PLACES', 'places', 1, 8, '2020-08-25 11:08:59', '2020-09-04 12:37:02', '0'),
+(12, 'CRYPTICS', 'cryptics', 1, 9, '2020-08-25 11:09:08', '2020-09-04 12:37:08', '0'),
+(13, 'SHAPES', 'shapes', 1, 10, '2020-08-25 11:09:18', '2020-09-04 12:37:18', '0'),
+(14, 'COLORS', 'colors', 1, 11, '2020-08-25 11:09:26', '2020-09-04 12:37:25', '0'),
+(15, 'NUMBERS', 'numbers', 1, 12, '2020-08-25 11:09:35', '2020-09-04 12:37:32', '0'),
+(16, 'SPANISH', 'spanish', 1, 13, '2020-08-25 11:09:45', '2020-09-04 12:37:39', '0'),
+(17, 'Test', 'test', 0, 0, '2020-08-26 10:47:38', '2020-08-26 10:47:58', '1'),
+(18, 'Test', 'ttsts', 0, 0, '2020-08-26 11:36:40', '2020-08-26 11:37:18', '1');
 
 -- --------------------------------------------------------
 
@@ -86,8 +125,34 @@ CREATE TABLE `category_description` (
   `description` text NOT NULL,
   `meta_title` varchar(255) NOT NULL,
   `meta_description` varchar(255) NOT NULL,
-  `meta_keyword` varchar(255) NOT NULL
+  `meta_keyword` varchar(255) NOT NULL,
+  `is_deleted` char(1) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `category_description`
+--
+
+INSERT INTO `category_description` (`id`, `category_id`, `image`, `description`, `meta_title`, `meta_description`, `meta_keyword`, `is_deleted`) VALUES
+(76, 1, 'catalog/category/[adventuresofscubajack.com][405]animal.jpg', '<p>CREATURES BIG AND SMALL</p>', 'CREATURES BIG AND SMALL', 'CREATURES BIG AND SMALL', 'CREATURES BIG AND SMALL', '0'),
+(4, 2, 'catalog/crop.jpg', '', 'sfafsaf', '', '', '1'),
+(5, 0, 'catalog/Is-Anybody-Out-There-Cover-160x200.jpg', '<p><div id=\"info\" class=\"style-scope ytd-video-primary-info-renderer\" style=\"margin: 0px; padding: 0px; border: 0px; background: rgb(249, 249, 249); display: flex; flex-direction: row; align-items: center; color: rgb(0, 0, 0); font-family: Roboto, Arial, sans-serif; font-size: 10px; font-style: normal; font-variant-ligatures: normal; font-variant-caps: normal; font-weight: 400; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial;\"></div></p><h1 class=\"title style-scope ytd-video-primary-info-renderer\" style=\"margin: 0px; padding: 0px; border: 0px; background: rgb(249, 249, 249); display: block; max-height: calc(2 * var(--yt-navbar-title-line-height, 2.4rem)); overflow: hidden; font-weight: 400; line-height: var(--yt-navbar-title-line-height, 2.4rem); color: var(--ytd-video-primary-info-renderer-title-color, var(--yt-spec-text-primary)); font-family: Roboto, Arial, sans-serif; font-size: var(--ytd-video-primary-info-renderer-title-font-size, var(--yt-navbar-title-font-size, inherit)); font-variant-ligatures: normal; font-variant-caps: normal; font-variant-numeric: ; font-variant-east-asian: ; transform: var(--ytd-video-primary-info-renderer-title-transform, none); text-shadow: var(--ytd-video-primary-info-renderer-title-text-shadow, none); font-style: normal; letter-spacing: normal; orphans: 2; text-align: start; text-indent: 0px; text-transform: none; white-space: normal; widows: 2; word-spacing: 0px; -webkit-text-stroke-width: 0px; text-decoration-style: initial; text-decoration-color: initial;\"><yt-formatted-string force-default-style=\"\" class=\"style-scope ytd-video-primary-info-renderer\" style=\"word-break: break-word;\">Seven Silly Shark</yt-formatted-string></h1>', 'Seven Silly Shark', 'Seven Silly Shark\r\n', 'Seven Silly Shark\r\n', '0'),
+(7, 3, 'catalog/The-Brave-little-crab-book-cover-160x200.jpg', '', 'ABC', '', '', '0'),
+(86, 8, 'catalog/category/[adventuresofscubajack.com][442]parent.jpg', '', 'PARENTING BOOKS', '', '', '0'),
+(79, 10, 'catalog/category/[adventuresofscubajack.com][506]art-2.jpg', '', 'ARTS', '', '', '0'),
+(26, 17, '', '', 'Test', '', '', '1'),
+(27, 18, '', '', 'tests', '', '', '1'),
+(75, 4, 'catalog/category/[adventuresofscubajack.com][199]Books-Home-page-1-400.jpg', '<h2 class=\"vc_custom_heading vc_custom_1576680391456\" style=\"text-size-adjust: none; outline: none; margin-right: 0px; margin-left: 0px; padding-right: 0px; padding-bottom: 0px; padding-left: 0px; border: 0px; vertical-align: baseline; clear: both; overflow-wrap: break-word; font-size: 18px; line-height: 32px; font-family: Roboto; letter-spacing: -1px; color: rgb(10, 0, 0); font-variant-ligatures: none; text-align: center; padding-top: 0px !important;\">Our Story Books are fun, engaging and kid tested in our classrooms! These beautifully illustrated stories are guaranteed to become a childhood favorite.</h2>', 'STORY BOOKS', '', '', '0'),
+(74, 5, 'catalog/category/[adventuresofscubajack.com][196]learn-3.jpg', '', 'LEARN TO READ', '', '', '0'),
+(73, 6, 'catalog/category/[adventuresofscubajack.com][250]element.jpg', '', 'ELEMENTARY SCHOOL READING', '', '', '0'),
+(72, 7, 'catalog/category/[adventuresofscubajack.com][386]activity.jpg', '', 'LEARNING MODULES', '', '', '0'),
+(78, 9, 'catalog/category/[adventuresofscubajack.com][191]people-2.jpg', '', 'PEOPLE', '', '', '0'),
+(80, 11, 'catalog/category/[adventuresofscubajack.com][284]place2.jpg', '', 'PLACES', '', '', '0'),
+(81, 12, 'catalog/category/[adventuresofscubajack.com][64]crypt.jpg', '', 'CRYPTICS', '', '', '0'),
+(82, 13, 'catalog/category/[adventuresofscubajack.com][64]crypt.jpg', '', 'SHAPES', '', '', '0'),
+(83, 14, 'catalog/category/[adventuresofscubajack.com][70]colors.jpg', '', 'COLORS', '', '', '0'),
+(84, 15, 'catalog/category/[adventuresofscubajack.com][357]numbers.jpg', '', 'NUMBERS', '', '', '0'),
+(85, 16, 'catalog/category/[adventuresofscubajack.com][691]spanish.jpg', '', 'SPANISH', '', '', '0');
 
 -- --------------------------------------------------------
 
@@ -99,8 +164,23 @@ CREATE TABLE `category_to_products` (
   `id` int(11) UNSIGNED NOT NULL,
   `category_id` int(11) UNSIGNED NOT NULL,
   `product_id` int(11) UNSIGNED NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `is_deleted` char(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `category_to_products`
+--
+
+INSERT INTO `category_to_products` (`id`, `category_id`, `product_id`, `is_deleted`) VALUES
+(4, 1, 4, '1'),
+(9, 5, 5, '1'),
+(19, 4, 1, '0'),
+(20, 1, 2, '0'),
+(21, 1, 3, '0'),
+(24, 1, 6, '0'),
+(25, 4, 7, '0'),
+(26, 4, 8, '0'),
+(27, 1, 9, '0');
 
 -- --------------------------------------------------------
 
@@ -115,267 +195,382 @@ CREATE TABLE `country` (
   `iso_code_3` varchar(3) NOT NULL,
   `address_format` text NOT NULL,
   `postcode_required` tinyint(1) NOT NULL,
-  `status` tinyint(1) NOT NULL DEFAULT 1
+  `status` tinyint(1) NOT NULL DEFAULT 1,
+  `is_deleted` char(1) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `country`
 --
 
-INSERT INTO `country` (`id`, `name`, `iso_code_2`, `iso_code_3`, `address_format`, `postcode_required`, `status`) VALUES
-(1, 'Afghanistan', 'AF', 'AFG', '', 0, 1),
-(2, 'Albania', 'AL', 'ALB', '', 0, 1),
-(3, 'Algeria', 'DZ', 'DZA', '', 0, 1),
-(4, 'American Samoa', 'AS', 'ASM', '', 0, 1),
-(5, 'Andorra', 'AD', 'AND', '', 0, 1),
-(6, 'Angola', 'AO', 'AGO', '', 0, 1),
-(7, 'Anguilla', 'AI', 'AIA', '', 0, 1),
-(8, 'Antarctica', 'AQ', 'ATA', '', 0, 1),
-(9, 'Antigua and Barbuda', 'AG', 'ATG', '', 0, 1),
-(10, 'Argentina', 'AR', 'ARG', '', 0, 1),
-(11, 'Armenia', 'AM', 'ARM', '', 0, 1),
-(12, 'Aruba', 'AW', 'ABW', '', 0, 1),
-(13, 'Australia', 'AU', 'AUS', '', 0, 1),
-(14, 'Austria', 'AT', 'AUT', '', 0, 1),
-(15, 'Azerbaijan', 'AZ', 'AZE', '', 0, 1),
-(16, 'Bahamas', 'BS', 'BHS', '', 0, 1),
-(17, 'Bahrain', 'BH', 'BHR', '', 0, 1),
-(18, 'Bangladesh', 'BD', 'BGD', '', 0, 1),
-(19, 'Barbados', 'BB', 'BRB', '', 0, 1),
-(20, 'Belarus', 'BY', 'BLR', '', 0, 1),
-(21, 'Belgium', 'BE', 'BEL', '{firstname} {lastname}\r\n{company}\r\n{address_1}\r\n{address_2}\r\n{postcode} {city}\r\n{country}', 0, 1),
-(22, 'Belize', 'BZ', 'BLZ', '', 0, 1),
-(23, 'Benin', 'BJ', 'BEN', '', 0, 1),
-(24, 'Bermuda', 'BM', 'BMU', '', 0, 1),
-(25, 'Bhutan', 'BT', 'BTN', '', 0, 1),
-(26, 'Bolivia', 'BO', 'BOL', '', 0, 1),
-(27, 'Bosnia and Herzegovina', 'BA', 'BIH', '', 0, 1),
-(28, 'Botswana', 'BW', 'BWA', '', 0, 1),
-(29, 'Bouvet Island', 'BV', 'BVT', '', 0, 1),
-(30, 'Brazil', 'BR', 'BRA', '', 0, 1),
-(31, 'British Indian Ocean Territory', 'IO', 'IOT', '', 0, 1),
-(32, 'Brunei Darussalam', 'BN', 'BRN', '', 0, 1),
-(33, 'Bulgaria', 'BG', 'BGR', '', 0, 1),
-(34, 'Burkina Faso', 'BF', 'BFA', '', 0, 1),
-(35, 'Burundi', 'BI', 'BDI', '', 0, 1),
-(36, 'Cambodia', 'KH', 'KHM', '', 0, 1),
-(37, 'Cameroon', 'CM', 'CMR', '', 0, 1),
-(38, 'Canada', 'CA', 'CAN', '', 0, 1),
-(39, 'Cape Verde', 'CV', 'CPV', '', 0, 1),
-(40, 'Cayman Islands', 'KY', 'CYM', '', 0, 1),
-(41, 'Central African Republic', 'CF', 'CAF', '', 0, 1),
-(42, 'Chad', 'TD', 'TCD', '', 0, 1),
-(43, 'Chile', 'CL', 'CHL', '', 0, 1),
-(44, 'China', 'CN', 'CHN', '', 0, 1),
-(45, 'Christmas Island', 'CX', 'CXR', '', 0, 1),
-(46, 'Cocos (Keeling) Islands', 'CC', 'CCK', '', 0, 1),
-(47, 'Colombia', 'CO', 'COL', '', 0, 1),
-(48, 'Comoros', 'KM', 'COM', '', 0, 1),
-(49, 'Congo', 'CG', 'COG', '', 0, 1),
-(50, 'Cook Islands', 'CK', 'COK', '', 0, 1),
-(51, 'Costa Rica', 'CR', 'CRI', '', 0, 1),
-(52, 'Cote D\'Ivoire', 'CI', 'CIV', '', 0, 1),
-(53, 'Croatia', 'HR', 'HRV', '', 0, 1),
-(54, 'Cuba', 'CU', 'CUB', '', 0, 1),
-(55, 'Cyprus', 'CY', 'CYP', '', 0, 1),
-(56, 'Czech Republic', 'CZ', 'CZE', '', 0, 1),
-(57, 'Denmark', 'DK', 'DNK', '', 0, 1),
-(58, 'Djibouti', 'DJ', 'DJI', '', 0, 1),
-(59, 'Dominica', 'DM', 'DMA', '', 0, 1),
-(60, 'Dominican Republic', 'DO', 'DOM', '', 0, 1),
-(61, 'East Timor', 'TL', 'TLS', '', 0, 1),
-(62, 'Ecuador', 'EC', 'ECU', '', 0, 1),
-(63, 'Egypt', 'EG', 'EGY', '', 0, 1),
-(64, 'El Salvador', 'SV', 'SLV', '', 0, 1),
-(65, 'Equatorial Guinea', 'GQ', 'GNQ', '', 0, 1),
-(66, 'Eritrea', 'ER', 'ERI', '', 0, 1),
-(67, 'Estonia', 'EE', 'EST', '', 0, 1),
-(68, 'Ethiopia', 'ET', 'ETH', '', 0, 1),
-(69, 'Falkland Islands (Malvinas)', 'FK', 'FLK', '', 0, 1),
-(70, 'Faroe Islands', 'FO', 'FRO', '', 0, 1),
-(71, 'Fiji', 'FJ', 'FJI', '', 0, 1),
-(72, 'Finland', 'FI', 'FIN', '', 0, 1),
-(74, 'France, Metropolitan', 'FR', 'FRA', '{firstname} {lastname}\r\n{company}\r\n{address_1}\r\n{address_2}\r\n{postcode} {city}\r\n{country}', 1, 1),
-(75, 'French Guiana', 'GF', 'GUF', '', 0, 1),
-(76, 'French Polynesia', 'PF', 'PYF', '', 0, 1),
-(77, 'French Southern Territories', 'TF', 'ATF', '', 0, 1),
-(78, 'Gabon', 'GA', 'GAB', '', 0, 1),
-(79, 'Gambia', 'GM', 'GMB', '', 0, 1),
-(80, 'Georgia', 'GE', 'GEO', '', 0, 1),
-(81, 'Germany', 'DE', 'DEU', '{company}\r\n{firstname} {lastname}\r\n{address_1}\r\n{address_2}\r\n{postcode} {city}\r\n{country}', 1, 1),
-(82, 'Ghana', 'GH', 'GHA', '', 0, 1),
-(83, 'Gibraltar', 'GI', 'GIB', '', 0, 1),
-(84, 'Greece', 'GR', 'GRC', '', 0, 1),
-(85, 'Greenland', 'GL', 'GRL', '', 0, 1),
-(86, 'Grenada', 'GD', 'GRD', '', 0, 1),
-(87, 'Guadeloupe', 'GP', 'GLP', '', 0, 1),
-(88, 'Guam', 'GU', 'GUM', '', 0, 1),
-(89, 'Guatemala', 'GT', 'GTM', '', 0, 1),
-(90, 'Guinea', 'GN', 'GIN', '', 0, 1),
-(91, 'Guinea-Bissau', 'GW', 'GNB', '', 0, 1),
-(92, 'Guyana', 'GY', 'GUY', '', 0, 1),
-(93, 'Haiti', 'HT', 'HTI', '', 0, 1),
-(94, 'Heard and Mc Donald Islands', 'HM', 'HMD', '', 0, 1),
-(95, 'Honduras', 'HN', 'HND', '', 0, 1),
-(96, 'Hong Kong', 'HK', 'HKG', '', 0, 1),
-(97, 'Hungary', 'HU', 'HUN', '', 0, 1),
-(98, 'Iceland', 'IS', 'ISL', '', 0, 1),
-(99, 'India', 'IN', 'IND', '', 0, 1),
-(100, 'Indonesia', 'ID', 'IDN', '', 0, 1),
-(101, 'Iran (Islamic Republic of)', 'IR', 'IRN', '', 0, 1),
-(102, 'Iraq', 'IQ', 'IRQ', '', 0, 1),
-(103, 'Ireland', 'IE', 'IRL', '', 0, 1),
-(104, 'Israel', 'IL', 'ISR', '', 0, 1),
-(105, 'Italy', 'IT', 'ITA', '', 0, 1),
-(106, 'Jamaica', 'JM', 'JAM', '', 0, 1),
-(107, 'Japan', 'JP', 'JPN', '', 0, 1),
-(108, 'Jordan', 'JO', 'JOR', '', 0, 1),
-(109, 'Kazakhstan', 'KZ', 'KAZ', '', 0, 1),
-(110, 'Kenya', 'KE', 'KEN', '', 0, 1),
-(111, 'Kiribati', 'KI', 'KIR', '', 0, 1),
-(112, 'North Korea', 'KP', 'PRK', '', 0, 1),
-(113, 'South Korea', 'KR', 'KOR', '', 0, 1),
-(114, 'Kuwait', 'KW', 'KWT', '', 0, 1),
-(115, 'Kyrgyzstan', 'KG', 'KGZ', '', 0, 1),
-(116, 'Lao People\'s Democratic Republic', 'LA', 'LAO', '', 0, 1),
-(117, 'Latvia', 'LV', 'LVA', '', 0, 1),
-(118, 'Lebanon', 'LB', 'LBN', '', 0, 1),
-(119, 'Lesotho', 'LS', 'LSO', '', 0, 1),
-(120, 'Liberia', 'LR', 'LBR', '', 0, 1),
-(121, 'Libyan Arab Jamahiriya', 'LY', 'LBY', '', 0, 1),
-(122, 'Liechtenstein', 'LI', 'LIE', '', 0, 1),
-(123, 'Lithuania', 'LT', 'LTU', '', 0, 1),
-(124, 'Luxembourg', 'LU', 'LUX', '', 0, 1),
-(125, 'Macau', 'MO', 'MAC', '', 0, 1),
-(126, 'FYROM', 'MK', 'MKD', '', 0, 1),
-(127, 'Madagascar', 'MG', 'MDG', '', 0, 1),
-(128, 'Malawi', 'MW', 'MWI', '', 0, 1),
-(129, 'Malaysia', 'MY', 'MYS', '', 0, 1),
-(130, 'Maldives', 'MV', 'MDV', '', 0, 1),
-(131, 'Mali', 'ML', 'MLI', '', 0, 1),
-(132, 'Malta', 'MT', 'MLT', '', 0, 1),
-(133, 'Marshall Islands', 'MH', 'MHL', '', 0, 1),
-(134, 'Martinique', 'MQ', 'MTQ', '', 0, 1),
-(135, 'Mauritania', 'MR', 'MRT', '', 0, 1),
-(136, 'Mauritius', 'MU', 'MUS', '', 0, 1),
-(137, 'Mayotte', 'YT', 'MYT', '', 0, 1),
-(138, 'Mexico', 'MX', 'MEX', '', 0, 1),
-(139, 'Micronesia, Federated States of', 'FM', 'FSM', '', 0, 1),
-(140, 'Moldova, Republic of', 'MD', 'MDA', '', 0, 1),
-(141, 'Monaco', 'MC', 'MCO', '', 0, 1),
-(142, 'Mongolia', 'MN', 'MNG', '', 0, 1),
-(143, 'Montserrat', 'MS', 'MSR', '', 0, 1),
-(144, 'Morocco', 'MA', 'MAR', '', 0, 1),
-(145, 'Mozambique', 'MZ', 'MOZ', '', 0, 1),
-(146, 'Myanmar', 'MM', 'MMR', '', 0, 1),
-(147, 'Namibia', 'NA', 'NAM', '', 0, 1),
-(148, 'Nauru', 'NR', 'NRU', '', 0, 1),
-(149, 'Nepal', 'NP', 'NPL', '', 0, 1),
-(150, 'Netherlands', 'NL', 'NLD', '', 0, 1),
-(151, 'Netherlands Antilles', 'AN', 'ANT', '', 0, 1),
-(152, 'New Caledonia', 'NC', 'NCL', '', 0, 1),
-(153, 'New Zealand', 'NZ', 'NZL', '', 0, 1),
-(154, 'Nicaragua', 'NI', 'NIC', '', 0, 1),
-(155, 'Niger', 'NE', 'NER', '', 0, 1),
-(156, 'Nigeria', 'NG', 'NGA', '', 0, 1),
-(157, 'Niue', 'NU', 'NIU', '', 0, 1),
-(158, 'Norfolk Island', 'NF', 'NFK', '', 0, 1),
-(159, 'Northern Mariana Islands', 'MP', 'MNP', '', 0, 1),
-(160, 'Norway', 'NO', 'NOR', '', 0, 1),
-(161, 'Oman', 'OM', 'OMN', '', 0, 1),
-(162, 'Pakistan', 'PK', 'PAK', '', 0, 1),
-(163, 'Palau', 'PW', 'PLW', '', 0, 1),
-(164, 'Panama', 'PA', 'PAN', '', 0, 1),
-(165, 'Papua New Guinea', 'PG', 'PNG', '', 0, 1),
-(166, 'Paraguay', 'PY', 'PRY', '', 0, 1),
-(167, 'Peru', 'PE', 'PER', '', 0, 1),
-(168, 'Philippines', 'PH', 'PHL', '', 0, 1),
-(169, 'Pitcairn', 'PN', 'PCN', '', 0, 1),
-(170, 'Poland', 'PL', 'POL', '', 0, 1),
-(171, 'Portugal', 'PT', 'PRT', '', 0, 1),
-(172, 'Puerto Rico', 'PR', 'PRI', '', 0, 1),
-(173, 'Qatar', 'QA', 'QAT', '', 0, 1),
-(174, 'Reunion', 'RE', 'REU', '', 0, 1),
-(175, 'Romania', 'RO', 'ROM', '', 0, 1),
-(176, 'Russian Federation', 'RU', 'RUS', '', 0, 1),
-(177, 'Rwanda', 'RW', 'RWA', '', 0, 1),
-(178, 'Saint Kitts and Nevis', 'KN', 'KNA', '', 0, 1),
-(179, 'Saint Lucia', 'LC', 'LCA', '', 0, 1),
-(180, 'Saint Vincent and the Grenadines', 'VC', 'VCT', '', 0, 1),
-(181, 'Samoa', 'WS', 'WSM', '', 0, 1),
-(182, 'San Marino', 'SM', 'SMR', '', 0, 1),
-(183, 'Sao Tome and Principe', 'ST', 'STP', '', 0, 1),
-(184, 'Saudi Arabia', 'SA', 'SAU', '', 0, 1),
-(185, 'Senegal', 'SN', 'SEN', '', 0, 1),
-(186, 'Seychelles', 'SC', 'SYC', '', 0, 1),
-(187, 'Sierra Leone', 'SL', 'SLE', '', 0, 1),
-(188, 'Singapore', 'SG', 'SGP', '', 0, 1),
-(189, 'Slovak Republic', 'SK', 'SVK', '{firstname} {lastname}\r\n{company}\r\n{address_1}\r\n{address_2}\r\n{city} {postcode}\r\n{zone}\r\n{country}', 0, 1),
-(190, 'Slovenia', 'SI', 'SVN', '', 0, 1),
-(191, 'Solomon Islands', 'SB', 'SLB', '', 0, 1),
-(192, 'Somalia', 'SO', 'SOM', '', 0, 1),
-(193, 'South Africa', 'ZA', 'ZAF', '', 0, 1),
-(194, 'South Georgia &amp; South Sandwich Islands', 'GS', 'SGS', '', 0, 1),
-(195, 'Spain', 'ES', 'ESP', '', 0, 1),
-(196, 'Sri Lanka', 'LK', 'LKA', '', 0, 1),
-(197, 'St. Helena', 'SH', 'SHN', '', 0, 1),
-(198, 'St. Pierre and Miquelon', 'PM', 'SPM', '', 0, 1),
-(199, 'Sudan', 'SD', 'SDN', '', 0, 1),
-(200, 'Suriname', 'SR', 'SUR', '', 0, 1),
-(201, 'Svalbard and Jan Mayen Islands', 'SJ', 'SJM', '', 0, 1),
-(202, 'Swaziland', 'SZ', 'SWZ', '', 0, 1),
-(203, 'Sweden', 'SE', 'SWE', '{company}\r\n{firstname} {lastname}\r\n{address_1}\r\n{address_2}\r\n{postcode} {city}\r\n{country}', 1, 1),
-(204, 'Switzerland', 'CH', 'CHE', '', 0, 1),
-(205, 'Syrian Arab Republic', 'SY', 'SYR', '', 0, 1),
-(206, 'Taiwan', 'TW', 'TWN', '', 0, 1),
-(207, 'Tajikistan', 'TJ', 'TJK', '', 0, 1),
-(208, 'Tanzania, United Republic of', 'TZ', 'TZA', '', 0, 1),
-(209, 'Thailand', 'TH', 'THA', '', 0, 1),
-(210, 'Togo', 'TG', 'TGO', '', 0, 1),
-(211, 'Tokelau', 'TK', 'TKL', '', 0, 1),
-(212, 'Tonga', 'TO', 'TON', '', 0, 1),
-(213, 'Trinidad and Tobago', 'TT', 'TTO', '', 0, 1),
-(214, 'Tunisia', 'TN', 'TUN', '', 0, 1),
-(215, 'Turkey', 'TR', 'TUR', '', 0, 1),
-(216, 'Turkmenistan', 'TM', 'TKM', '', 0, 1),
-(217, 'Turks and Caicos Islands', 'TC', 'TCA', '', 0, 1),
-(218, 'Tuvalu', 'TV', 'TUV', '', 0, 1),
-(219, 'Uganda', 'UG', 'UGA', '', 0, 1),
-(220, 'Ukraine', 'UA', 'UKR', '', 0, 1),
-(221, 'United Arab Emirates', 'AE', 'ARE', '', 0, 1),
-(222, 'United Kingdom', 'GB', 'GBR', '', 1, 1),
-(223, 'United States', 'US', 'USA', '{firstname} {lastname}\r\n{company}\r\n{address_1}\r\n{address_2}\r\n{city}, {zone} {postcode}\r\n{country}', 0, 1),
-(224, 'United States Minor Outlying Islands', 'UM', 'UMI', '', 0, 1),
-(225, 'Uruguay', 'UY', 'URY', '', 0, 1),
-(226, 'Uzbekistan', 'UZ', 'UZB', '', 0, 1),
-(227, 'Vanuatu', 'VU', 'VUT', '', 0, 1),
-(228, 'Vatican City State (Holy See)', 'VA', 'VAT', '', 0, 1),
-(229, 'Venezuela', 'VE', 'VEN', '', 0, 1),
-(230, 'Viet Nam', 'VN', 'VNM', '', 0, 1),
-(231, 'Virgin Islands (British)', 'VG', 'VGB', '', 0, 1),
-(232, 'Virgin Islands (U.S.)', 'VI', 'VIR', '', 0, 1),
-(233, 'Wallis and Futuna Islands', 'WF', 'WLF', '', 0, 1),
-(234, 'Western Sahara', 'EH', 'ESH', '', 0, 1),
-(235, 'Yemen', 'YE', 'YEM', '', 0, 1),
-(237, 'Democratic Republic of Congo', 'CD', 'COD', '', 0, 1),
-(238, 'Zambia', 'ZM', 'ZMB', '', 0, 1),
-(239, 'Zimbabwe', 'ZW', 'ZWE', '', 0, 1),
-(242, 'Montenegro', 'ME', 'MNE', '', 0, 1),
-(243, 'Serbia', 'RS', 'SRB', '', 0, 1),
-(244, 'Aaland Islands', 'AX', 'ALA', '', 0, 1),
-(245, 'Bonaire, Sint Eustatius and Saba', 'BQ', 'BES', '', 0, 1),
-(246, 'Curacao', 'CW', 'CUW', '', 0, 1),
-(247, 'Palestinian Territory, Occupied', 'PS', 'PSE', '', 0, 1),
-(248, 'South Sudan', 'SS', 'SSD', '', 0, 1),
-(249, 'St. Barthelemy', 'BL', 'BLM', '', 0, 1),
-(250, 'St. Martin (French part)', 'MF', 'MAF', '', 0, 1),
-(251, 'Canary Islands', 'IC', 'ICA', '', 0, 1),
-(252, 'Ascension Island (British)', 'AC', 'ASC', '', 0, 1),
-(253, 'Kosovo, Republic of', 'XK', 'UNK', '', 0, 1),
-(254, 'Isle of Man', 'IM', 'IMN', '', 0, 1),
-(255, 'Tristan da Cunha', 'TA', 'SHN', '', 0, 1),
-(256, 'Guernsey', 'GG', 'GGY', '', 0, 1),
-(257, 'Jersey', 'JE', 'JEY', '', 0, 1);
+INSERT INTO `country` (`id`, `name`, `iso_code_2`, `iso_code_3`, `address_format`, `postcode_required`, `status`, `is_deleted`) VALUES
+(1, 'Afghanistan', 'AF', 'AFG', '', 0, 1, '0'),
+(2, 'Albania', 'AL', 'ALB', '', 0, 1, '0'),
+(3, 'Algeria', 'DZ', 'DZA', '', 0, 1, '0'),
+(4, 'American Samoa', 'AS', 'ASM', '', 0, 1, '0'),
+(5, 'Andorra', 'AD', 'AND', '', 0, 1, '0'),
+(6, 'Angola', 'AO', 'AGO', '', 0, 1, '0'),
+(7, 'Anguilla', 'AI', 'AIA', '', 0, 1, '0'),
+(8, 'Antarctica', 'AQ', 'ATA', '', 0, 1, '0'),
+(9, 'Antigua and Barbuda', 'AG', 'ATG', '', 0, 1, '0'),
+(10, 'Argentina', 'AR', 'ARG', '', 0, 1, '0'),
+(11, 'Armenia', 'AM', 'ARM', '', 0, 1, '0'),
+(12, 'Aruba', 'AW', 'ABW', '', 0, 1, '0'),
+(13, 'Australia', 'AU', 'AUS', '', 0, 1, '0'),
+(14, 'Austria', 'AT', 'AUT', '', 0, 1, '0'),
+(15, 'Azerbaijan', 'AZ', 'AZE', '', 0, 1, '0'),
+(16, 'Bahamas', 'BS', 'BHS', '', 0, 1, '0'),
+(17, 'Bahrain', 'BH', 'BHR', '', 0, 1, '0'),
+(18, 'Bangladesh', 'BD', 'BGD', '', 0, 1, '0'),
+(19, 'Barbados', 'BB', 'BRB', '', 0, 1, '0'),
+(20, 'Belarus', 'BY', 'BLR', '', 0, 1, '0'),
+(21, 'Belgium', 'BE', 'BEL', '{firstname} {lastname}\r\n{company}\r\n{address_1}\r\n{address_2}\r\n{postcode} {city}\r\n{country}', 0, 1, '0'),
+(22, 'Belize', 'BZ', 'BLZ', '', 0, 1, '0'),
+(23, 'Benin', 'BJ', 'BEN', '', 0, 1, '0'),
+(24, 'Bermuda', 'BM', 'BMU', '', 0, 1, '0'),
+(25, 'Bhutan', 'BT', 'BTN', '', 0, 1, '0'),
+(26, 'Bolivia', 'BO', 'BOL', '', 0, 1, '0'),
+(27, 'Bosnia and Herzegovina', 'BA', 'BIH', '', 0, 1, '0'),
+(28, 'Botswana', 'BW', 'BWA', '', 0, 1, '0'),
+(29, 'Bouvet Island', 'BV', 'BVT', '', 0, 1, '0'),
+(30, 'Brazil', 'BR', 'BRA', '', 0, 1, '0'),
+(31, 'British Indian Ocean Territory', 'IO', 'IOT', '', 0, 1, '0'),
+(32, 'Brunei Darussalam', 'BN', 'BRN', '', 0, 1, '0'),
+(33, 'Bulgaria', 'BG', 'BGR', '', 0, 1, '0'),
+(34, 'Burkina Faso', 'BF', 'BFA', '', 0, 1, '0'),
+(35, 'Burundi', 'BI', 'BDI', '', 0, 1, '0'),
+(36, 'Cambodia', 'KH', 'KHM', '', 0, 1, '0'),
+(37, 'Cameroon', 'CM', 'CMR', '', 0, 1, '0'),
+(38, 'Canada', 'CA', 'CAN', '', 0, 1, '0'),
+(39, 'Cape Verde', 'CV', 'CPV', '', 0, 1, '0'),
+(40, 'Cayman Islands', 'KY', 'CYM', '', 0, 1, '0'),
+(41, 'Central African Republic', 'CF', 'CAF', '', 0, 1, '0'),
+(42, 'Chad', 'TD', 'TCD', '', 0, 1, '0'),
+(43, 'Chile', 'CL', 'CHL', '', 0, 1, '0'),
+(44, 'China', 'CN', 'CHN', '', 0, 1, '0'),
+(45, 'Christmas Island', 'CX', 'CXR', '', 0, 1, '0'),
+(46, 'Cocos (Keeling) Islands', 'CC', 'CCK', '', 0, 1, '0'),
+(47, 'Colombia', 'CO', 'COL', '', 0, 1, '0'),
+(48, 'Comoros', 'KM', 'COM', '', 0, 1, '0'),
+(49, 'Congo', 'CG', 'COG', '', 0, 1, '0'),
+(50, 'Cook Islands', 'CK', 'COK', '', 0, 1, '0'),
+(51, 'Costa Rica', 'CR', 'CRI', '', 0, 1, '0'),
+(52, 'Cote D\'Ivoire', 'CI', 'CIV', '', 0, 1, '0'),
+(53, 'Croatia', 'HR', 'HRV', '', 0, 1, '0'),
+(54, 'Cuba', 'CU', 'CUB', '', 0, 1, '0'),
+(55, 'Cyprus', 'CY', 'CYP', '', 0, 1, '0'),
+(56, 'Czech Republic', 'CZ', 'CZE', '', 0, 1, '0'),
+(57, 'Denmark', 'DK', 'DNK', '', 0, 1, '0'),
+(58, 'Djibouti', 'DJ', 'DJI', '', 0, 1, '0'),
+(59, 'Dominica', 'DM', 'DMA', '', 0, 1, '0'),
+(60, 'Dominican Republic', 'DO', 'DOM', '', 0, 1, '0'),
+(61, 'East Timor', 'TL', 'TLS', '', 0, 1, '0'),
+(62, 'Ecuador', 'EC', 'ECU', '', 0, 1, '0'),
+(63, 'Egypt', 'EG', 'EGY', '', 0, 1, '0'),
+(64, 'El Salvador', 'SV', 'SLV', '', 0, 1, '0'),
+(65, 'Equatorial Guinea', 'GQ', 'GNQ', '', 0, 1, '0'),
+(66, 'Eritrea', 'ER', 'ERI', '', 0, 1, '0'),
+(67, 'Estonia', 'EE', 'EST', '', 0, 1, '0'),
+(68, 'Ethiopia', 'ET', 'ETH', '', 0, 1, '0'),
+(69, 'Falkland Islands (Malvinas)', 'FK', 'FLK', '', 0, 1, '0'),
+(70, 'Faroe Islands', 'FO', 'FRO', '', 0, 1, '0'),
+(71, 'Fiji', 'FJ', 'FJI', '', 0, 1, '0'),
+(72, 'Finland', 'FI', 'FIN', '', 0, 1, '0'),
+(74, 'France, Metropolitan', 'FR', 'FRA', '{firstname} {lastname}\r\n{company}\r\n{address_1}\r\n{address_2}\r\n{postcode} {city}\r\n{country}', 1, 1, '0'),
+(75, 'French Guiana', 'GF', 'GUF', '', 0, 1, '0'),
+(76, 'French Polynesia', 'PF', 'PYF', '', 0, 1, '0'),
+(77, 'French Southern Territories', 'TF', 'ATF', '', 0, 1, '0'),
+(78, 'Gabon', 'GA', 'GAB', '', 0, 1, '0'),
+(79, 'Gambia', 'GM', 'GMB', '', 0, 1, '0'),
+(80, 'Georgia', 'GE', 'GEO', '', 0, 1, '0'),
+(81, 'Germany', 'DE', 'DEU', '{company}\r\n{firstname} {lastname}\r\n{address_1}\r\n{address_2}\r\n{postcode} {city}\r\n{country}', 1, 1, '0'),
+(82, 'Ghana', 'GH', 'GHA', '', 0, 1, '0'),
+(83, 'Gibraltar', 'GI', 'GIB', '', 0, 1, '0'),
+(84, 'Greece', 'GR', 'GRC', '', 0, 1, '0'),
+(85, 'Greenland', 'GL', 'GRL', '', 0, 1, '0'),
+(86, 'Grenada', 'GD', 'GRD', '', 0, 1, '0'),
+(87, 'Guadeloupe', 'GP', 'GLP', '', 0, 1, '0'),
+(88, 'Guam', 'GU', 'GUM', '', 0, 1, '0'),
+(89, 'Guatemala', 'GT', 'GTM', '', 0, 1, '0'),
+(90, 'Guinea', 'GN', 'GIN', '', 0, 1, '0'),
+(91, 'Guinea-Bissau', 'GW', 'GNB', '', 0, 1, '0'),
+(92, 'Guyana', 'GY', 'GUY', '', 0, 1, '0'),
+(93, 'Haiti', 'HT', 'HTI', '', 0, 1, '0'),
+(94, 'Heard and Mc Donald Islands', 'HM', 'HMD', '', 0, 1, '0'),
+(95, 'Honduras', 'HN', 'HND', '', 0, 1, '0'),
+(96, 'Hong Kong', 'HK', 'HKG', '', 0, 1, '0'),
+(97, 'Hungary', 'HU', 'HUN', '', 0, 1, '0'),
+(98, 'Iceland', 'IS', 'ISL', '', 0, 1, '0'),
+(99, 'India', 'IN', 'IND', '', 0, 1, '0'),
+(100, 'Indonesia', 'ID', 'IDN', '', 0, 1, '0'),
+(101, 'Iran (Islamic Republic of)', 'IR', 'IRN', '', 0, 1, '0'),
+(102, 'Iraq', 'IQ', 'IRQ', '', 0, 1, '0'),
+(103, 'Ireland', 'IE', 'IRL', '', 0, 1, '0'),
+(104, 'Israel', 'IL', 'ISR', '', 0, 1, '0'),
+(105, 'Italy', 'IT', 'ITA', '', 0, 1, '0'),
+(106, 'Jamaica', 'JM', 'JAM', '', 0, 1, '0'),
+(107, 'Japan', 'JP', 'JPN', '', 0, 1, '0'),
+(108, 'Jordan', 'JO', 'JOR', '', 0, 1, '0'),
+(109, 'Kazakhstan', 'KZ', 'KAZ', '', 0, 1, '0'),
+(110, 'Kenya', 'KE', 'KEN', '', 0, 1, '0'),
+(111, 'Kiribati', 'KI', 'KIR', '', 0, 1, '0'),
+(112, 'North Korea', 'KP', 'PRK', '', 0, 1, '0'),
+(113, 'South Korea', 'KR', 'KOR', '', 0, 1, '0'),
+(114, 'Kuwait', 'KW', 'KWT', '', 0, 1, '0'),
+(115, 'Kyrgyzstan', 'KG', 'KGZ', '', 0, 1, '0'),
+(116, 'Lao People\'s Democratic Republic', 'LA', 'LAO', '', 0, 1, '0'),
+(117, 'Latvia', 'LV', 'LVA', '', 0, 1, '0'),
+(118, 'Lebanon', 'LB', 'LBN', '', 0, 1, '0'),
+(119, 'Lesotho', 'LS', 'LSO', '', 0, 1, '0'),
+(120, 'Liberia', 'LR', 'LBR', '', 0, 1, '0'),
+(121, 'Libyan Arab Jamahiriya', 'LY', 'LBY', '', 0, 1, '0'),
+(122, 'Liechtenstein', 'LI', 'LIE', '', 0, 1, '0'),
+(123, 'Lithuania', 'LT', 'LTU', '', 0, 1, '0'),
+(124, 'Luxembourg', 'LU', 'LUX', '', 0, 1, '0'),
+(125, 'Macau', 'MO', 'MAC', '', 0, 1, '0'),
+(126, 'FYROM', 'MK', 'MKD', '', 0, 1, '0'),
+(127, 'Madagascar', 'MG', 'MDG', '', 0, 1, '0'),
+(128, 'Malawi', 'MW', 'MWI', '', 0, 1, '0'),
+(129, 'Malaysia', 'MY', 'MYS', '', 0, 1, '0'),
+(130, 'Maldives', 'MV', 'MDV', '', 0, 1, '0'),
+(131, 'Mali', 'ML', 'MLI', '', 0, 1, '0'),
+(132, 'Malta', 'MT', 'MLT', '', 0, 1, '0'),
+(133, 'Marshall Islands', 'MH', 'MHL', '', 0, 1, '0'),
+(134, 'Martinique', 'MQ', 'MTQ', '', 0, 1, '0'),
+(135, 'Mauritania', 'MR', 'MRT', '', 0, 1, '0'),
+(136, 'Mauritius', 'MU', 'MUS', '', 0, 1, '0'),
+(137, 'Mayotte', 'YT', 'MYT', '', 0, 1, '0'),
+(138, 'Mexico', 'MX', 'MEX', '', 0, 1, '0'),
+(139, 'Micronesia, Federated States of', 'FM', 'FSM', '', 0, 1, '0'),
+(140, 'Moldova, Republic of', 'MD', 'MDA', '', 0, 1, '0'),
+(141, 'Monaco', 'MC', 'MCO', '', 0, 1, '0'),
+(142, 'Mongolia', 'MN', 'MNG', '', 0, 1, '0'),
+(143, 'Montserrat', 'MS', 'MSR', '', 0, 1, '0'),
+(144, 'Morocco', 'MA', 'MAR', '', 0, 1, '0'),
+(145, 'Mozambique', 'MZ', 'MOZ', '', 0, 1, '0'),
+(146, 'Myanmar', 'MM', 'MMR', '', 0, 1, '0'),
+(147, 'Namibia', 'NA', 'NAM', '', 0, 1, '0'),
+(148, 'Nauru', 'NR', 'NRU', '', 0, 1, '0'),
+(149, 'Nepal', 'NP', 'NPL', '', 0, 1, '0'),
+(150, 'Netherlands', 'NL', 'NLD', '', 0, 1, '0'),
+(151, 'Netherlands Antilles', 'AN', 'ANT', '', 0, 1, '0'),
+(152, 'New Caledonia', 'NC', 'NCL', '', 0, 1, '0'),
+(153, 'New Zealand', 'NZ', 'NZL', '', 0, 1, '0'),
+(154, 'Nicaragua', 'NI', 'NIC', '', 0, 1, '0'),
+(155, 'Niger', 'NE', 'NER', '', 0, 1, '0'),
+(156, 'Nigeria', 'NG', 'NGA', '', 0, 1, '0'),
+(157, 'Niue', 'NU', 'NIU', '', 0, 1, '0'),
+(158, 'Norfolk Island', 'NF', 'NFK', '', 0, 1, '0'),
+(159, 'Northern Mariana Islands', 'MP', 'MNP', '', 0, 1, '0'),
+(160, 'Norway', 'NO', 'NOR', '', 0, 1, '0'),
+(161, 'Oman', 'OM', 'OMN', '', 0, 1, '0'),
+(162, 'Pakistan', 'PK', 'PAK', '', 0, 1, '0'),
+(163, 'Palau', 'PW', 'PLW', '', 0, 1, '0'),
+(164, 'Panama', 'PA', 'PAN', '', 0, 1, '0'),
+(165, 'Papua New Guinea', 'PG', 'PNG', '', 0, 1, '0'),
+(166, 'Paraguay', 'PY', 'PRY', '', 0, 1, '0'),
+(167, 'Peru', 'PE', 'PER', '', 0, 1, '0'),
+(168, 'Philippines', 'PH', 'PHL', '', 0, 1, '0'),
+(169, 'Pitcairn', 'PN', 'PCN', '', 0, 1, '0'),
+(170, 'Poland', 'PL', 'POL', '', 0, 1, '0'),
+(171, 'Portugal', 'PT', 'PRT', '', 0, 1, '0'),
+(172, 'Puerto Rico', 'PR', 'PRI', '', 0, 1, '0'),
+(173, 'Qatar', 'QA', 'QAT', '', 0, 1, '0'),
+(174, 'Reunion', 'RE', 'REU', '', 0, 1, '0'),
+(175, 'Romania', 'RO', 'ROM', '', 0, 1, '0'),
+(176, 'Russian Federation', 'RU', 'RUS', '', 0, 1, '0'),
+(177, 'Rwanda', 'RW', 'RWA', '', 0, 1, '0'),
+(178, 'Saint Kitts and Nevis', 'KN', 'KNA', '', 0, 1, '0'),
+(179, 'Saint Lucia', 'LC', 'LCA', '', 0, 1, '0'),
+(180, 'Saint Vincent and the Grenadines', 'VC', 'VCT', '', 0, 1, '0'),
+(181, 'Samoa', 'WS', 'WSM', '', 0, 1, '0'),
+(182, 'San Marino', 'SM', 'SMR', '', 0, 1, '0'),
+(183, 'Sao Tome and Principe', 'ST', 'STP', '', 0, 1, '0'),
+(184, 'Saudi Arabia', 'SA', 'SAU', '', 0, 1, '0'),
+(185, 'Senegal', 'SN', 'SEN', '', 0, 1, '0'),
+(186, 'Seychelles', 'SC', 'SYC', '', 0, 1, '0'),
+(187, 'Sierra Leone', 'SL', 'SLE', '', 0, 1, '0'),
+(188, 'Singapore', 'SG', 'SGP', '', 0, 1, '0'),
+(189, 'Slovak Republic', 'SK', 'SVK', '{firstname} {lastname}\r\n{company}\r\n{address_1}\r\n{address_2}\r\n{city} {postcode}\r\n{zone}\r\n{country}', 0, 1, '0'),
+(190, 'Slovenia', 'SI', 'SVN', '', 0, 1, '0'),
+(191, 'Solomon Islands', 'SB', 'SLB', '', 0, 1, '0'),
+(192, 'Somalia', 'SO', 'SOM', '', 0, 1, '0'),
+(193, 'South Africa', 'ZA', 'ZAF', '', 0, 1, '0'),
+(194, 'South Georgia &amp; South Sandwich Islands', 'GS', 'SGS', '', 0, 1, '0'),
+(195, 'Spain', 'ES', 'ESP', '', 0, 1, '0'),
+(196, 'Sri Lanka', 'LK', 'LKA', '', 0, 1, '0'),
+(197, 'St. Helena', 'SH', 'SHN', '', 0, 1, '0'),
+(198, 'St. Pierre and Miquelon', 'PM', 'SPM', '', 0, 1, '0'),
+(199, 'Sudan', 'SD', 'SDN', '', 0, 1, '0'),
+(200, 'Suriname', 'SR', 'SUR', '', 0, 1, '0'),
+(201, 'Svalbard and Jan Mayen Islands', 'SJ', 'SJM', '', 0, 1, '0'),
+(202, 'Swaziland', 'SZ', 'SWZ', '', 0, 1, '0'),
+(203, 'Sweden', 'SE', 'SWE', '{company}\r\n{firstname} {lastname}\r\n{address_1}\r\n{address_2}\r\n{postcode} {city}\r\n{country}', 1, 1, '0'),
+(204, 'Switzerland', 'CH', 'CHE', '', 0, 1, '0'),
+(205, 'Syrian Arab Republic', 'SY', 'SYR', '', 0, 1, '0'),
+(206, 'Taiwan', 'TW', 'TWN', '', 0, 1, '0'),
+(207, 'Tajikistan', 'TJ', 'TJK', '', 0, 1, '0'),
+(208, 'Tanzania, United Republic of', 'TZ', 'TZA', '', 0, 1, '0'),
+(209, 'Thailand', 'TH', 'THA', '', 0, 1, '0'),
+(210, 'Togo', 'TG', 'TGO', '', 0, 1, '0'),
+(211, 'Tokelau', 'TK', 'TKL', '', 0, 1, '0'),
+(212, 'Tonga', 'TO', 'TON', '', 0, 1, '0'),
+(213, 'Trinidad and Tobago', 'TT', 'TTO', '', 0, 1, '0'),
+(214, 'Tunisia', 'TN', 'TUN', '', 0, 1, '0'),
+(215, 'Turkey', 'TR', 'TUR', '', 0, 1, '0'),
+(216, 'Turkmenistan', 'TM', 'TKM', '', 0, 1, '0'),
+(217, 'Turks and Caicos Islands', 'TC', 'TCA', '', 0, 1, '0'),
+(218, 'Tuvalu', 'TV', 'TUV', '', 0, 1, '0'),
+(219, 'Uganda', 'UG', 'UGA', '', 0, 1, '0'),
+(220, 'Ukraine', 'UA', 'UKR', '', 0, 1, '0'),
+(221, 'United Arab Emirates', 'AE', 'ARE', '', 0, 1, '0'),
+(222, 'United Kingdom', 'GB', 'GBR', '', 1, 1, '0'),
+(223, 'United States', 'US', 'USA', '{firstname} {lastname}\r\n{company}\r\n{address_1}\r\n{address_2}\r\n{city}, {zone} {postcode}\r\n{country}', 0, 1, '0'),
+(224, 'United States Minor Outlying Islands', 'UM', 'UMI', '', 0, 1, '0'),
+(225, 'Uruguay', 'UY', 'URY', '', 0, 1, '0'),
+(226, 'Uzbekistan', 'UZ', 'UZB', '', 0, 1, '0'),
+(227, 'Vanuatu', 'VU', 'VUT', '', 0, 1, '0'),
+(228, 'Vatican City State (Holy See)', 'VA', 'VAT', '', 0, 1, '0'),
+(229, 'Venezuela', 'VE', 'VEN', '', 0, 1, '0'),
+(230, 'Viet Nam', 'VN', 'VNM', '', 0, 1, '0'),
+(231, 'Virgin Islands (British)', 'VG', 'VGB', '', 0, 1, '0'),
+(232, 'Virgin Islands (U.S.)', 'VI', 'VIR', '', 0, 1, '0'),
+(233, 'Wallis and Futuna Islands', 'WF', 'WLF', '', 0, 1, '0'),
+(234, 'Western Sahara', 'EH', 'ESH', '', 0, 1, '0'),
+(235, 'Yemen', 'YE', 'YEM', '', 0, 1, '0'),
+(237, 'Democratic Republic of Congo', 'CD', 'COD', '', 0, 1, '0'),
+(238, 'Zambia', 'ZM', 'ZMB', '', 0, 1, '0'),
+(239, 'Zimbabwe', 'ZW', 'ZWE', '', 0, 1, '0'),
+(242, 'Montenegro', 'ME', 'MNE', '', 0, 1, '0'),
+(243, 'Serbia', 'RS', 'SRB', '', 0, 1, '0'),
+(244, 'Aaland Islands', 'AX', 'ALA', '', 0, 1, '0'),
+(245, 'Bonaire, Sint Eustatius and Saba', 'BQ', 'BES', '', 0, 1, '0'),
+(246, 'Curacao', 'CW', 'CUW', '', 0, 1, '0'),
+(247, 'Palestinian Territory, Occupied', 'PS', 'PSE', '', 0, 1, '0'),
+(248, 'South Sudan', 'SS', 'SSD', '', 0, 1, '0'),
+(249, 'St. Barthelemy', 'BL', 'BLM', '', 0, 1, '0'),
+(250, 'St. Martin (French part)', 'MF', 'MAF', '', 0, 1, '0'),
+(251, 'Canary Islands', 'IC', 'ICA', '', 0, 1, '0'),
+(252, 'Ascension Island (British)', 'AC', 'ASC', '', 0, 1, '0'),
+(253, 'Kosovo, Republic of', 'XK', 'UNK', '', 0, 1, '0'),
+(254, 'Isle of Man', 'IM', 'IMN', '', 0, 1, '0'),
+(255, 'Tristan da Cunha', 'TA', 'SHN', '', 0, 1, '0'),
+(256, 'Guernsey', 'GG', 'GGY', '', 0, 1, '0'),
+(257, 'Jersey', 'JE', 'JEY', '', 0, 1, '0');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `features_products`
+--
+
+CREATE TABLE `features_products` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `product_id` int(11) UNSIGNED NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `is_deleted` char(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `features_products`
+--
+
+INSERT INTO `features_products` (`id`, `product_id`, `created_at`, `updated_at`, `is_deleted`) VALUES
+(33, 6, '2020-09-04 13:10:25', NULL, '0'),
+(34, 7, '2020-09-04 13:10:25', NULL, '0'),
+(35, 8, '2020-09-04 13:10:25', NULL, '0'),
+(36, 9, '2020-09-04 13:10:25', NULL, '0');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `informations`
+--
+
+CREATE TABLE `informations` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `title` varchar(50) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `heading` varchar(255) NOT NULL,
+  `body` longtext DEFAULT NULL,
+  `meta_title` varchar(255) DEFAULT NULL,
+  `meta_keyword` varchar(255) DEFAULT NULL,
+  `meta_description` varchar(255) DEFAULT NULL,
+  `status` tinyint(1) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `is_deleted` char(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `informations`
+--
+
+INSERT INTO `informations` (`id`, `title`, `slug`, `heading`, `body`, `meta_title`, `meta_keyword`, `meta_description`, `status`, `created_at`, `updated_at`, `is_deleted`) VALUES
+(1, 'About Us', 'about-us', 'About Us', '<p style=\"text-size-adjust: none; outline: none; margin-bottom: 12px; padding: 0px; border: 0px; vertical-align: baseline; color: rgb(119, 119, 119); font-family: Roboto, Arial, Helvetica, sans-serif; font-size: 14px; font-variant-ligatures: none;\">Hello,</p><p style=\"text-size-adjust: none; outline: none; margin-bottom: 12px; padding: 0px; border: 0px; vertical-align: baseline; color: rgb(119, 119, 119); font-family: Roboto, Arial, Helvetica, sans-serif; font-size: 14px; font-variant-ligatures: none; text-align: center;\">My name is Beth Costanzo M Ed. and I began my teaching career at the age of 6 when I converted my parents’ garage into a classroom. Desks and blackboards were salvaged from old schools and worksheets were given at the end of each day by all my “teachers”. On my birthday, I didn’t ask for presents, but for items to fill my classroom, such as construction paper, chalk, crayons and markers. Even at a young age I loved being around children and helping them become successful, confident learners.</p><p style=\"text-size-adjust: none; outline: none; margin-bottom: 12px; padding: 0px; border: 0px; vertical-align: baseline; color: rgb(119, 119, 119); font-family: Roboto, Arial, Helvetica, sans-serif; font-size: 14px; font-variant-ligatures: none; text-align: center;\">They say that “necessity is the mother of invention.” That has certainly been true at Woodland Place, the school I have owned and operated since 1996. With almost 25 years of teaching experience, I often created the content that was used in my classroom. I quickly understood that nature was a catalyst for learning and I have always brought that aspect into my curriculum. This type of learning resulted in the creation of The Adventures of Scuba Jack, a learning website that educates children 2-12 years of age.</p><p class=\"text-center\" style=\"text-size-adjust: none; outline: none; margin-bottom: 12px; padding: 0px; border: 0px; vertical-align: baseline; color: rgb(119, 119, 119); font-family: Roboto, Arial, Helvetica, sans-serif; font-size: 14px; font-variant-ligatures: none;\"><span style=\"text-size-adjust: none; outline: none; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;\"><em style=\"text-size-adjust: none; outline: none; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;\">http://www.adventuresofscubajack.com</em></span></p><p style=\"text-size-adjust: none; outline: none; margin-bottom: 12px; padding: 0px; border: 0px; vertical-align: baseline; color: rgb(119, 119, 119); font-family: Roboto, Arial, Helvetica, sans-serif; font-size: 14px; font-variant-ligatures: none;\"><span data-text=\"Our Virtual Field Trips take children 2-12 years of age on amazing learning adventures around the world via their own laptop. They offer opportunities for students to learn about creatures big and small, to visit historical sites, national parks, museums and the arts. This is all done through printed media, story books and videos. This type of learning is transforming education by giving students a window to a world they may not otherwise have the opportunity to explore. To enhance this learning, each video comes with a quiz, crafts and worksheets. Our videos and hands-on reading resources assist parents, teachers and other educators in helping struggling readers build fluency, vocabulary and comprehension skills. It is our goal to take students on Virtual Field Trips around the world and to experience and explore the many possibilities just waiting to be discovered. Equally important, is to create a culture of reading both inside and outside the classroom, that improves children\'s literacy development, enabling students to gain the essential skills and knowledge needed to build a strong academic foundation.\" data-orgid=\"443555288741355520\" data-userid=\"443555288632303616\" data-timestamp=\"1589632455694\" data-room-id=\"room_a63440b01d9cc86370fe73bb5dd66661\" data-story-id=\"story_d676b8025a6b496ca59f8e1b8dc6c996\" style=\"text-size-adjust: none; outline: none; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;\">Our Virtual Field Trips take children 2-12 years of age on amazing learning adventures around the world via their own laptop. They offer opportunities for students to learn about creatures big and small, to visit historical sites, national parks, museums and the arts. This is all done through printed media, story books and videos. This type of learning is transforming education by giving students a window to a world they may not otherwise have the opportunity to explore. To enhance this learning, each video comes with a quiz, crafts and worksheets. Our videos and hands-on reading resources assist parents, teachers and other educators in helping struggling readers build fluency, vocabulary and comprehension skills.</span></p><p style=\"text-size-adjust: none; outline: none; margin-bottom: 12px; padding: 0px; border: 0px; vertical-align: baseline; color: rgb(119, 119, 119); font-family: Roboto, Arial, Helvetica, sans-serif; font-size: 14px; font-variant-ligatures: none;\">It is our goal to take students on Virtual Field Trips around the world and to experience and explore the many possibilities just waiting to be discovered. Equally important, is to create a culture of reading both inside and outside the classroom, that improves children’s literacy development, enabling students to gain the essential skills and knowledge needed to build a strong academic foundation.</p>', 'About Us', 'About Us', 'About Us', 1, '2020-09-04 07:54:58', '2020-09-04 08:14:08', '0');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `maps`
+--
+
+CREATE TABLE `maps` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `country_id` int(11) UNSIGNED NOT NULL,
+  `path_d` text CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+  `status` tinyint(1) NOT NULL COMMENT '0 = Inactive, 1 = Active',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `is_deleted` char(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `maps`
+--
+
+INSERT INTO `maps` (`id`, `country_id`, `path_d`, `status`, `created_at`, `updated_at`, `is_deleted`) VALUES
+(11, 5, 'M480.487,331.376L480.41,331.401L480.152,331.556L480.005,331.61L479.871,331.637L479.766,331.626L479.708,331.535L479.714,331.396L479.69,331.272L479.67,331.205L479.708,331.024L479.794,330.927L479.913,330.847L480.101,330.876L480.499,330.992L480.582,331.101L480.583,331.173L480.51,331.292z', 1, '2020-09-03 07:04:18', '2020-09-03 10:40:04', '1'),
+(12, 221, 'M633.699,388.616l0.184,0.251l0.026,1.701l0.042,0.121l-0.098,0.018l-0.11,0.129l-0.129,0.199l-0.177,0.103l-0.142,0.116l-0.134,0.144l-0.12,0.031l-0.155,-0.183l-0.107,-0.187l0.026,-0.041l0.075,-0.013l0.028,-0.097l-0.045,-0.14l-0.105,-0.053l-0.132,-0.004l-0.127,0.063l-0.135,0.124l-0.076,0.133l-0.011,0.267l0.035,0.3l-0.001,0.146l-0.074,0.181l-0.026,0.266l0.053,0.206l0.048,0.123l0.005,0.104l-0.126,0.328l0.109,0.062l0.361,0.023l0.106,0.222l0.072,0.152l-0.02,0.09l-0.256,0.067l-0.322,0.074l-0.231,-0.021l-0.418,0.1l-0.223,0.154l0.065,0.096l0.077,0.074l0.035,0.203l-0.065,0.288l-0.118,0.279l-0.147,0.348l-0.17,0.399l-0.233,0.6l-0.197,0.471l-0.021,0.339l0.005,0.221l-0.022,0.441l-0.187,0.243l-0.042,0.007l-0.223,-0.029l-0.075,-0.01l-0.213,-0.028l-0.33,-0.043l-0.429,-0.057l-0.507,-0.066l-0.565,-0.075l-0.604,-0.08l-0.625,-0.082l-0.624,-0.082l-0.605,-0.08l-0.565,-0.074l-0.507,-0.067l-0.428,-0.057l-0.33,-0.043l-0.213,-0.028l-0.075,-0.01l-0.236,-0.031l-0.127,-0.164l-0.154,-0.198l-0.155,-0.199l-0.154,-0.199l-0.154,-0.199l-0.154,-0.199l-0.154,-0.199l-0.154,-0.199l-0.154,-0.199l-0.154,-0.2l-0.154,-0.199l-0.155,-0.2l-0.154,-0.2l-0.154,-0.2l-0.154,-0.2l-0.154,-0.2l-0.154,-0.2l-0.104,-0.134l-0.057,-0.151l-0.011,-0.396v-0.087l0.104,-0.16l0.05,0.114l0.116,0.155l0.197,-0.038l0.092,0.026l0.068,0.549l0.145,0.195l0.176,0.078l0.597,0.043l0.371,-0.074l0.731,-0.358l0.384,-0.129l1.062,0.022l0.851,0.149l1.325,0.088l0.257,-0.023l0.715,-0.288l0.438,-0.254l0.261,-0.073l0.172,-0.246l0.113,-0.32l0.101,-0.209l0.129,-0.1l0.122,-0.178l0.099,-0.289l0.246,-0.292l0.986,-0.711l0.576,-0.602l0.051,-0.195l0.313,-0.292l0.251,-0.32l1.175,-0.916l0.235,-0.379l0.139,-0.425l0.017,-0.03l0.101,-0.018l0.144,0.064l0.015,0.318l-0.053,0.3l-0.006,0.318l-0.021,0.172l0.109,0.141l0.186,0.061l0.081,-0.007L633.699,388.616zM633.653,389.899l0.017,-0.133l-0.029,-0.069l-0.12,-0.009l-0.05,0.115l-0.017,0.165l0.083,0.014L633.653,389.899zM628.557,392.337l-0.025,0.06l-0.079,-0.005l-0.198,-0.054l-0.064,-0.086l0.124,-0.103l0.055,-0.005l0.079,0.108L628.557,392.337zM625.376,392.901l-0.208,0.017l-0.188,-0.116l0.397,-0.155l0.107,-0.07l0.116,-0.143l0.093,0.123l-0.103,0.193l-0.073,0.083L625.376,392.901zM623.368,392.81l-0.047,0.022l-0.05,-0.165l0.003,-0.052l0.129,-0.075l0.079,0.135L623.368,392.81zM627.047,393.15l0.001,0.104l-0.285,-0.03l-0.076,0.054l-0.234,-0.03l-0.229,-0.075l0.155,-0.125l0.404,-0.147l0.168,0.134L627.047,393.15z', 1, '2020-09-03 07:06:36', '2020-09-03 10:40:05', '1'),
+(13, 85, 'M391.637,0.873l2.697,1.497l1.426,1.724l0.299,-0.057l1.933,0.657l1.835,0.817l3.051,2.11l0.428,0.687l-0.33,0.56l-0.758,0.384l-3.899,0.682l-7.073,0.833l-4.047,1.605l-1.287,0.082l-0.112,2.358l0.55,0.128l0.901,-0.315l3.17,-2.365l1.186,-0.392l2.213,0.198l2.873,0.892l1.159,-0.313l2.067,0.233l2.417,-0.682l2.855,-1.481l0.781,3.29l1.052,3.227l0.833,-0.354l0.713,0.18l0.241,1.046l0.39,0.441l0.808,-0.236l2.475,0.907l1.699,1.619l0.64,0.749l0.307,1.062l0.174,0.846l-0.267,1.035l-1.062,1.828l-1.343,1.661l-1.812,1.267l-2.088,0.789l-16.045,2.611l-0.543,0.615l-0.322,1.559l0.214,2.004l0.75,0.311l1.752,-1.123l3.031,-1.072l2.227,0.051l5.324,0.915l1.571,2.369l0.831,3.574l1.842,-0.796l0.394,-0.611l0.29,-1.065l0.231,-1.151l0.173,-1.236l0.193,-0.847l0.214,-0.451l0.459,-0.378l1.057,-0.457l2.772,-0.445l0.667,0.127l0.479,1.717l0.104,0.995l0.035,1.287l-0.015,1.574l-0.065,1.852l-0.236,1.812l-0.767,3.118l-0.617,1.673l-0.666,1.196l-1.275,2.696l-0.442,0.713l-1.402,3.075l-0.348,1.406l-0.021,1.021l0.241,0.194l0.407,-0.959l0.151,-0.688l0.262,-0.724l2.066,-1.923l0.443,-0.54l1.352,-2.326l0.863,-0.879l0.709,-0.927l0.376,-0.66l2.077,-4.757l1.083,-1.451l1.137,-0.003l0.201,2.449l1.363,0.375l0.592,-0.105l0.951,0.59l0.417,0.484l0.709,0.246l0.731,0.572l0.645,-0.615l0.188,-0.387l0.623,-1.765l0.842,-1.579l0.78,-1.993l0.259,-0.487l0.41,-0.443l0.426,-0.175l1.16,-0.947l0.294,-0.066l0.626,0.3l2.766,0.156l1.509,0.488l2.101,1.347l1.464,0.733l0.678,0.646l0.987,1.377l0.796,1.429l0.37,0.417l-0.014,0.45l-0.275,0.619l-1.972,2.146l-0.646,1.419l-1.866,2.642l-0.912,0.898l-0.991,0.351l-1.103,0.084l-0.716,0.374l-0.106,0.355l0.51,1.07l0.224,0.758l-0.032,0.671l-0.537,0.99l-0.203,0.223l-1.938,0.73l-0.978,1.232l-1.276,0.149l-0.902,-0.14l-1.24,1.315l0.485,1.062l0.444,0.458l1.381,0.958l0.013,0.548l-0.66,1.101l-0.901,1.289l-1.065,0.888l-0.4,0.132l-0.505,-0.223l-0.466,0.048l-1.026,0.408l-0.977,0.065l-1.745,-0.577l-0.944,-0.67l-0.497,-0.232l-0.626,0.064l-0.241,0.271l-0.987,1.593l-0.484,1.078l-0.311,1.096l-0.133,1.186l0.045,1.274l0.12,0.868l0.195,0.468l0.234,0.283l0.41,0.148l0.902,-0.14l0.354,0.08l0.108,0.254l0.195,0.802l-0.034,0.752l-0.164,1.052l-0.126,1.219l-0.09,1.382l0.048,0.75l0.365,0.164l0.171,-0.054l0.199,0.246l0.226,0.543l0.17,0.573l0.113,0.602l-0.059,0.495l-0.233,0.388l-0.525,0.437l-1.293,0.859l-0.131,0.261l-0.102,0.52l-0.072,0.778l-0.156,0.705l-0.24,0.63l-0.218,0.375l-0.419,0.166l-0.549,0.022l-0.617,0.36l-1.454,2.085l-0.022,0.23l0.544,0.663l-0.023,0.578l-0.671,2.459l-0.184,1.205l-0.146,1.638l-0.239,1.369l-0.333,1.106l-0.328,1.268l-0.322,1.424l0.05,1.085l0.423,0.751l0.559,-0.607l0.695,-1.982l0.756,-0.864l0.816,0.271l0.711,0.396l0.908,0.779l0.76,0.484l0.656,0.635l0.271,0.533l0.272,0.749l0.002,0.471l-0.481,0.253l-0.159,-0.081l-1.204,-1.235l-0.586,-0.309l-0.778,0.372l-0.678,0.559l0.609,2.231l0.651,1.016l1.188,0.461l0.62,0.484l0.453,0.617l0.354,0.3l0.475,-0.132l0.639,-0.606l0.891,-0.033l0.402,0.301l0.291,0.56l0.131,1.042l-0.029,1.514l-0.097,1.131l-0.165,0.756l-0.321,1.008l-0.268,0.183l-0.377,-0.055l-0.351,-0.206l-0.325,-0.359l-0.492,-0.28l-0.989,-0.303l-1,-0.66l-0.56,-0.163l-1.185,0.084l-1.278,0.418l-0.05,0.547l-1.838,1.897l-0.377,-0.026l-0.51,-0.649l-0.714,-0.624l-0.418,0.004l-0.618,0.79l-0.154,0.305l0.008,0.287l0.455,0.677l0.185,0.155l0.235,0.13l0.817,0.162l0.355,0.177l0.334,2.076l0.53,1.27l0.227,0.258l0.2,0.093l0.65,-0.046l0.836,-0.427l0.292,0.342l0.616,0.417l0.36,0.104l0.438,-0.017l0.493,0.158l0.676,1.155l-0.266,1.444l0.423,1.147l0.676,1.175l0.16,0.428l0.065,0.772l0.015,0.507l0.051,0.463l0.086,0.416l0.089,0.814l0.093,1.206l-0.024,0.978l-0.143,0.754l-0.282,0.545l-0.42,0.338l-0.343,-0.089l-0.266,-0.516l-0.375,-0.552l-0.483,-0.588l-0.803,-0.069l-1.182,1.732l-0.527,0.086l-0.429,0.171l-0.457,0.749l-0.673,0.449l-0.594,-0.178l-1.043,-0.87l0.379,0.582l0.542,0.679l0.338,0.351l0.249,0.076l0.273,-0.081l0.394,-0.277l0.889,-0.771l0.235,-0.118l0.199,0.055l0.163,0.228l0.188,0.661l0.211,1.088l-0.027,0.921l-0.266,0.755l-0.228,0.483l-0.189,0.212l0,0.167l0.497,0.192l0.703,-0.979l0.223,-1.226l0.322,-1.425l0.569,-0.477l0.644,0.477l0.52,1.331l0.735,2.421l0.31,0.25l0.394,0.575l0.174,0.703l-0.046,0.829l-0.084,0.6l-0.122,0.372l-0.152,0.236l-0.274,0.15l-0.504,0.12l-1.126,-0.251l-0.586,-0.006l0.073,0.808l-1.186,0.692l-1.337,0.271l-1.266,-0.54l-1.051,-0.833l0.345,-1.171l0.197,-1.31l-0.508,-0.873l-0.111,-0.019l0.175,1.347l-0.147,0.513l-0.574,0.623l-0.405,0.287l-0.036,0.167l0.199,0.145l0.129,0.278l0.061,0.411l-0.068,0.414l-0.198,0.417l-0.108,0.349l-0.018,0.282l0.181,0.342l0.381,0.401l0.413,0.198l1.935,0.086l0.775,0.215l1.838,0.941l0.082,0.288l-0.311,1.669l-0.17,1.588l-0.357,0.289l-1.934,0.068l-0.623,0.246l-0.912,0.722l-0.876,0.862l-0.454,0.006l-1.798,-0.752l-0.689,-0.504l-1.48,-1.434l-1.114,-2.206l-0.511,0.921l-0.313,0.438l-0.323,0.227l-0.311,0.035l-0.3,-0.157l-0.34,-0.347l-0.571,-0.808l-0.681,-0.803l-0.477,-0.383l-0.018,0.109l0.282,0.473l0.412,0.544l1.043,1.589l0.367,0.399l-0.037,0.283l-0.658,0.251l-0.8,0.54l-0.391,0.396l-0.604,0.958l-0.21,0.148l-0.904,0.24l-0.298,-0.058l-0.668,-0.526l-1.007,-0.345l-0.593,-0.307l-0.824,-0.558l0.284,0.61l1.587,0.925l0.174,0.297l-0.325,0.552l-0.199,0.201l-0.378,0.042l-0.557,-0.115l-0.57,0.023l-0.583,0.162l-0.25,0.206l0.082,0.251l0.139,0.228l0.196,0.206l0.184,-0.002l0.444,-0.623l0.336,-0.044l0.889,0.154l0.899,-0.487l0.648,-0.211l0.486,-0.054l1.767,-0.749l0.367,-0.842l0.593,-0.339l1.318,-0.26l1.276,0.133l0.656,0.109l0.531,0.798l0.712,0.563l0.594,0.64l0.696,0.21l0.403,0.847l1.128,0.941l0.718,0.202l0.443,0.446l0.036,1.877l0.047,0.804l-0.191,2.206l-0.577,0.504l0.115,1.148l-0.151,0.922l-0.573,-0.349l-0.587,-0.607l-1.407,-0.946l-1.309,-0.611l-0.509,-0.556l-0.599,-0.432l-0.813,-1.768l-0.529,-2.225l-0.232,-1.111l-0.445,-0.062l-0.572,0.298l-0.5,0.315l-0.239,0.537l-1.698,0.736l-0.617,0.502l-0.352,-0.015l-1.268,0.754l0.508,0.36l0.237,0.045l0.513,-0.203l0.308,-0.26l1.156,-0.714l0.928,-0.123l0.337,-0.309l0.709,-0.442l0.481,-0.117l0.067,0.112l0.052,0.202l0.339,2.703l-0.142,0.712l-0.382,0.308l-0.817,0.503l-0.212,0.244l0.241,0.426l0.768,-0.401l0.498,-0.437l0.266,0.159l0.435,0.667l0.491,0.341l1.248,1.018l0.591,0.558l0.832,0.537l0.94,0.742l0.245,0.261l0.859,0.383l0.184,0.131l0.355,1.296l0.296,0.144l0.855,0.082l-0.15,0.5l-0.835,1.105l-0.432,0.352l-0.107,0.216l0.041,0.386l0.025,0.645l0.174,1.18l0.196,-1.092l0.137,-0.518l0.183,-0.155l0.18,-0.023l0.584,-0.492l0.587,0.264l0.152,1.239l0.075,1.148l-0.051,0.986l0.064,1.521l-0.022,0.511l0.139,0.441l0.144,1.816l0.144,0.542l-0.289,0.484l-0.893,0.21l-0.353,-0.238l-0.883,0.08l-0.001,-0.426l-0.043,-0.49l-0.003,-0.343l-0.059,-0.311l-0.042,-1.798l-0.25,0.446l-0.015,0.365l-0.066,0.371l-0.153,1.927l-0.228,0.47l-0.707,-0.113l-0.696,0.069l-0.385,-0.071l-1.302,-0.875l-0.504,-0.796l-0.446,-1.203l-0.275,-1.131l-0.104,-1.059l-0.313,-0.866l-0.52,-0.671l-0.614,-0.545l-0.708,-0.419l-0.622,-0.542l-0.536,-0.666l-0.589,-0.52l-0.644,-0.372l-0.916,-0.16l-1.339,0.059l-0.904,-0.42l-0.215,0.036l-0.211,0.217l0.155,0.617l1.038,0.282l0.8,0.064l1.061,-0.04l0.649,0.158l0.238,0.355l0.164,0.63l0.09,0.902l-0.21,0.712l-0.763,0.787l-0.402,0.368l-1.175,0.704l-0.398,0.156l-0.98,0.048l-0.753,-0.067l-0.991,-0.35l-0.562,-0.071l-1.163,-0.047L396,176.287l0.3,0.375l0.493,0.212l0.347,0.252l0.036,0.477l-0.125,0.705l-0.129,0.491l-0.213,0.368l-0.763,0.694l-0.316,0.219l-1.422,0.723l-0.099,0.139l0.333,-0.019l0.899,-0.256l0.259,0.007l1.476,0.625l1.176,-0.037l2.382,-0.577l0.196,0.011l0.156,0.091l0.158,0.216l0.16,0.342l-0.192,0.331l-0.544,0.318l-0.847,0.313l-0.367,0.211l-0.351,0.32l-0.653,0.767l-0.191,0.792l0.687,0.3l0.309,-0.38l0.364,-0.847l0.328,-0.499l0.773,-0.339l0.944,0.172l0.729,-0.201l1.49,-0.843l0.267,-0.052l2.192,0.483l1.987,0.945l1.048,0.346l1.387,0.204l2.494,-0.093l0.219,0.148l-0.081,0.333l-0.145,0.281l-0.416,0.391l-0.505,0.258l-0.312,0.073l-0.266,0.184l-0.597,0.18l-0.153,0.146l0.207,0.636l-0.098,0.098l-0.526,0.011l-0.886,0.413l-0.727,-0.029l-0.152,0.06l0.138,0.153l0.146,0.295l0.155,0.436l-0.085,0.311l-0.326,0.185l-0.247,0.06l-0.853,-0.259l-0.138,0.039l0.125,0.187l0.071,0.284l0.017,0.382l-0.209,0.319l-0.436,0.257l-0.813,0.706l-0.354,0.201l-0.746,0.166l-0.157,0.092l0.303,0.538l-0.034,0.215l-0.504,0.579l-0.763,0.36l-0.104,0.194l-0.07,0.52l-0.056,0.207l-0.202,0.297l-0.724,0.564l-0.513,0.28l-0.254,0.229l-0.315,0.382l-0.397,0.202l-0.479,0.023l-0.454,0.143l-0.746,0.405l-0.52,0.134l-1.642,0.696l-0.772,0.111l-0.668,0.248l-1.375,0.661l-0.655,0.212l-0.454,0.251l-0.496,0.072l-0.807,-0.163l-0.435,-0.006l-0.268,0.099l-0.245,0.202l-0.405,0.552l-0.344,0.042l-1.128,-0.437l0.023,0.198l0.298,0.473l-0.014,0.334l-0.671,0.339l-0.361,0.086l-0.533,-0.139l-0.705,-0.366l-0.905,-0.766l-1.109,-1.175l-0.534,-0.399l0.039,0.379l0.124,0.37l0.209,0.359l0.042,0.26l-0.124,0.161l-0.163,0.081l-0.203,0.001l-0.035,0.091l0.331,0.558l0.261,0.571l-0.024,0.54l-0.31,0.51l-0.266,0.298l-0.222,0.088l-1.317,1.262l-0.367,0.159l-0.167,0.155l-0.137,0.232l-0.383,1.035l-0.155,0.315l-0.308,0.409l-0.129,0.071l-0.037,0.167l0.056,0.262l-0.085,0.436l-0.225,0.608l-0.767,1.668l-0.618,1.542l-0.271,0.502l-0.198,0.212l-0.125,-0.076l-0.307,0.039l-0.149,0.269l-0.135,0.485l-0.147,0.369l-0.159,0.253l-1.24,1.088l-0.319,0.201l-0.287,-0.127l-0.339,0.049l-0.703,-0.573l-0.122,-0.211l-0.454,-0.473l0.015,0.247l0.076,0.136l0.063,0.199l0.159,0.244l0.352,1.277l-0.278,0.261l-0.249,0.297l-0.635,0.501l-0.687,0.836l-0.253,0.233l-0.057,-0.681l0.029,-0.204l-0.388,-0.331l0.012,0.238l-0.04,0.222l-0.281,0.882l-0.078,0.152l-0.139,-0.034l-0.302,0.162l-0.309,-0.077l-0.263,-0.4l-0.104,-0.208l-0.478,0.571l-0.232,-0.015l-0.039,0.478l-0.225,0.435l-0.297,0.188l-0.415,-0.015l-0.254,0.257l-0.563,-0.275l-0.13,-0.517l0.446,-0.711l0.126,-0.294l-0.082,-0.363l0.108,-0.47l0.852,-1.499l0.577,-0.764l-0.033,-0.137l-0.784,-0.167l-0.685,-0.263l-0.667,-0.09l-0.295,0.089l0.47,0.44l0.665,0.426l-0.327,0.406l-0.282,0.43l-0.292,1.165l-0.187,0.475l-0.725,-0.545l-0.343,-0.185l0.218,0.605l0.635,0.572l0.041,0.188l-0.004,0.677l-1.216,0.595l-1.269,0.09l-0.911,0.168l-1.537,0.204l-0.597,0l-0.051,0.228l1.503,1.036l0.219,0.189l-0.209,0.355l-0.311,0.22l-0.488,0.757l-0.255,0.26l-0.632,0.357l-1.163,-0.398l-0.598,0.178l-0.572,-0.125l-0.012,0.435l0.171,0.317l0.173,0.785l0.384,-0.061l0.488,-0.247l0.377,0.593l0.248,1l0.433,0.505l0.192,0.39l0.078,0.367l-0.27,0.365l-0.559,0.514l-0.62,0.096l0.034,0.406l-0.268,0.291l-0.569,-0.085l-0.266,-0.204l-0.276,-0.096l-1.132,-0.109l1.14,0.78l0.405,0.362l0.18,-0.214l0.395,-0.052l0.583,0.198l-0.097,1.306l0.255,1.051l0.031,0.235l-0.621,0.626l-0.01,0.583l-0.37,0.162l-0.398,-0.037l-0.021,0.637l-0.27,0.396l0.048,0.248l0.077,0.221l-0.246,0.402l-0.222,0.488l-0.318,0.426l-0.168,-0.044l-0.505,0.028l-0.607,-0.036l-0.492,-0.554l-0.204,-0.185l-0.23,-0.121l0.088,0.357l0.138,0.214l0.454,0.4l0.836,0.493l-0.026,0.349l-0.223,0.151l-0.521,0.945l-0.185,0.021l-0.234,0.243l-0.722,-0.082l-0.303,-0.097l-0.891,0.062l-0.303,-0.083l-0.26,0.04l0.242,0.266l0.51,0.239l0.58,0.24l0.882,0.181l-0.032,0.342l-0.221,0.28l0.127,0.417l-0.099,0.298l-0.042,0.354l-0.206,0.82l0.24,0.56l0.261,0.273l-0.03,0.359l0.123,0.572l-0.392,0.509l-0.325,-0.019l-0.463,0.114l-0.154,0.224l0.734,0.211l-0.067,0.379l-0.2,0.474l-0.21,1.021l-0.427,1.738l-0.2,1.71l-0.917,1.394l-0.325,0.039l-0.082,0.055l-0.447,-0.071l-0.702,-0.321l-0.543,-0.106l-0.367,-0.004l-0.047,0.16l0.304,0.258l0.465,0.108l0.372,0.171l0.667,0.159l0.232,0.308l0.159,0.328l-0.023,0.18l-0.001,0.212l0.119,1.139l-0.314,0.392l-0.24,0.354l-0.833,-0.049l-0.145,-0.124l-0.804,-0.373l0.049,0.175l0.582,0.506l0.203,0.252l-0.136,0.052l-0.235,0.019l-0.327,0.17l-0.591,-0.092l0.033,-0.255l0.112,-0.263l-0.27,0.045l-0.301,0.133l-0.175,-0.049l-0.146,0.015l-0.083,-0.132l-0.114,-0.515l0.136,-0.259l0.487,-0.672l0.155,-0.362l-0.135,-0.165l-0.348,0.388l-0.359,0.615l-0.16,0.371l-0.225,0.072l-0.559,-0.187l-1.591,-0.861l0.047,-0.525l-0.015,-0.436l0.464,-0.055l0.337,-0.19l0.302,-0.233l0.34,-0.425l0.312,-0.704l-0.04,-0.054l-0.915,0.898l-0.563,0.299l-0.272,0.055l-0.136,-0.132l-0.453,-0.288l-0.294,-0.131l-0.671,-0.214l-0.119,-0.115l-0.197,-0.092l-0.268,-0.92l0.346,-1.124l0.238,-0.328l0.151,-0.38l0.085,-0.505l-0.059,-0.216l-0.202,0.074l-0.094,0.173l0.015,0.271l-0.116,0.188l-0.8,0.431l-0.802,0.349l-0.38,0.33l-0.247,0.257l-0.193,0.252l-0.295,-0.022l-0.407,0.051l-0.279,0.164l-0.408,-0.101l-0.266,-0.243l-0.321,-0.028l-0.36,0.117l-0.249,-0.01l0.021,0.165l0.166,0.405l-0.275,0.027l-0.522,0.016l-0.263,-0.118l-0.206,-0.154l-0.171,-0.215l0.103,-0.282l0.84,-0.518l0.381,-0.301l-0.249,-0.103l-0.806,0.093l-0.134,-0.078l-0.54,0.047l0.023,-0.775l-0.131,-0.193l-0.009,-0.091l-0.187,-0.217l-0.177,-0.054l-0.11,-0.078l-0.912,-0.175l-0.119,-0.435l-0.063,-0.449l-0.174,-0.559l-0.437,-0.146l-0.236,-0.243l0.188,-0.249l0.082,-0.316l-0.202,-0.145l-0.129,-0.223l0.019,-0.145l-0.164,-0.393l-0.049,-0.307l0.188,-0.289l0.516,-0.327l0.167,-0.132l0.086,-0.143l0.592,-0.241l-0.504,-0.17l-0.315,-0.026l-0.23,0.08l-0.212,0.32l-0.198,0.212l-0.772,0.069l-0.114,-0.11l-0.054,-0.452l0.044,-0.349l0.321,-0.492l-0.37,-0.244l-0.339,-0.08l-0.385,-0.229l-0.356,-0.242l-0.306,-0.282l-0.298,-0.333l-0.095,-0.042l0.107,-0.349l0.061,-0.288l0.009,-0.62l-0.12,-0.258l0.267,-0.532l0.359,-0.583l0.794,-0.869l-0.84,0.419l-0.69,0.911l-0.146,0.042l-0.051,-0.165l-0.262,-0.591l-0.197,-0.162l-0.088,-0.178l-0.393,-0.317l-0.17,-0.244l-0.242,-0.472l-0.344,-0.564l-0.489,-1.117l-0.79,-1.295l-0.195,-0.732l0.245,-0.933l-0.271,-0.646l0.75,-0.3l1.073,-0.337l0.557,-0.281l0.321,-0.084l0.682,-0.052l0.228,-0.283l-0.379,0.072l-0.255,-0.037l-0.016,-0.132l0.094,-0.235l0.061,-0.304l-0.13,0.055l-0.667,0.523l-0.986,0.414l-0.77,0.23l-0.125,-0.012l-0.27,0.139l-0.155,0.04l-0.12,-0.04l-0.272,-0.396l-0.073,-0.259l0.489,-0.705l0.365,-0.966l0.483,-0.635l0.341,-0.08l0.571,0.034l0.201,0.056l-0.064,-0.377l0.024,-0.183l0.463,-0.22l0.54,-0.098l0.384,0.069l0.242,0.444l0.311,0.816l0.419,0.275l-0.019,-0.391l-0.217,-0.505l-0.081,-0.778l-0.276,-0.329l-0.221,-0.162l-0.612,0.079l-0.368,-0.572l-0.083,-0.21l-0.009,-0.28l-0.368,-0.824l-0.118,-0.414l-0.195,-0.552l-0.104,-0.03l0.132,0.695l0.172,0.487l0.246,1.066l0.122,0.428l-0.165,0.338l-0.311,0.334l-0.275,0.199l-0.65,0.238l0.14,-0.52l0.089,-0.512l-0.327,0.182l-0.304,0.372l-0.105,0.514l-0.195,0.465l-0.579,1.137l-0.228,0.628l-0.216,0.309l-0.246,0.085l-0.213,-0.245l-0.181,-0.577l-0.085,-0.453l-0.01,-1.18l0.023,-0.553l-0.099,-0.748l-0.313,-1.753l-0.066,-0.629l-0.529,-0.335l-0.008,-0.108l-0.138,-0.36l-0.107,-0.361l0.088,-0.132l0.126,-0.095l0.791,-0.534l0.586,-0.6l0.701,-0.945l0.286,-0.294l1.028,-0.227l0.456,-0.031l-0.004,-0.169l-0.153,-0.067l-0.694,0.044l-0.925,0.38l-0.159,0.137l-0.405,0.589l-0.312,0.321l-0.878,0.731h-0.57l-0.588,-0.876l-0.657,0.168l-0.443,-0.058l-0.129,-0.132l-0.098,-1.204l0.357,-1.415l-0.386,-0.014l-0.08,-0.057l-0.204,-0.324l-0.133,-0.097l0.099,-0.172l0.951,-0.676l1.423,-1.334l0.612,-0.527l0.378,-0.228l0.286,-0.261l0.348,-0.568l0.115,-0.249l0.194,-0.201l0.409,-0.227l0.447,-0.344l0.725,-0.776l0.095,-0.288l-0.158,-0.067l-0.339,0.266l-0.689,0.71l-0.492,0.398l-1.679,1.771l-0.715,0.64l-0.389,0.408l-0.302,0.388l-0.319,0.276l-0.338,0.165l-0.72,0.123l-0.354,0.143l-0.213,-0.104l-0.094,-0.828l0.072,-0.492l-0.034,-0.487l0.18,-0.7l0.267,-0.497l0.112,-0.271l0.047,-0.186l0.55,-0.517l0.303,-0.229l0.214,-0.52l1.221,-0.185l0.315,0.019l0.167,-0.07l0.125,-0.151l-0.121,-0.117l-0.366,-0.083l-0.973,0.016l-0.899,-0.089l-0.41,-0.09l-0.198,0.052l-0.327,-0.152l-0.357,-0.291l-0.554,-1.072l0.222,-1.386l0.019,-0.666l0.704,-0.585l0.376,-0.194l0.534,-0.442l0.713,-0.754l0.851,-0.462l0.434,-0.086l0.36,0.066l1.332,0.655l0.685,0.128l0.602,-0.157l0.755,0.229l1.336,0.938l0.258,-0.139l-0.075,-0.227l-1.49,-0.993l0.008,-0.298l0.381,-0.078l0.407,-0.29l-0.229,-0.172l-0.99,0.149l-0.286,0.238l-0.96,0.123l-0.501,-0.202l-0.45,-0.101l-0.675,-0.432l-0.565,0.141l-0.357,0.17l-0.631,0.161l-0.228,0.115l-1.233,1.352l-0.519,0.28l-0.369,-0.092l0.259,-0.878l0.075,-0.348l0,-0.379l0.107,-0.521l0.632,-0.997l0.397,-1.098l0.168,-0.685l0.311,-0.077l0.424,0.101l1.274,0.444l1.06,0.528l0.782,0.141l0.514,0.015l0.22,-0.168l0.174,-0.293l0.067,-0.203l0.05,-0.416l0.059,-0.148l0.172,-0.182l0.351,-0.635l0.107,-0.453l-0.115,-0.265l-0.234,0.027l-0.457,0.174l-0.062,0.072l0.008,0.142l-0.441,0.701l-0.481,0.161l-1.107,0.234l-0.505,0.017l-0.898,-0.325l-0.136,-0.127l-0.093,-0.239l-1.102,0.054l-0.329,0.072l-0.262,-0.031l0.128,-0.416l0.348,-0.463l0.488,-1.515l0.409,-0.39l0.812,-0.364l0.847,0.059l1.465,1.177l0.442,0.102l0.405,-0.095l0.969,-0.393l0.178,-0.16l0.349,-0.489l0.407,-0.84l-0.02,-0.199l-0.625,0.47l-0.333,0.126h-0.282l0.262,-1.542l0.102,-1.19l0.098,-0.297l0.821,0.089l1.122,-0.162l0.267,-0.262l-0.004,-0.116l-0.45,-0.159l-0.217,-0.335l-0.377,0.106l-0.505,0.223l-0.634,-0.025l0.053,-0.517l0.465,-1.089l0.048,-0.499l0.181,-1.001l0.019,-0.516l0.235,-0.503l0.733,-0.359l0.308,-0.215l0.017,-0.236l-0.439,-0.901l0.111,-0.25l0.345,-0.228l0.128,-0.167l-0.088,-0.104l-0.317,-0.1l-0.488,0.2l-0.54,0.096l-0.478,-0.301l-0.374,-0.145l-0.236,0.045l-0.643,0.515l-0.225,0.017l-0.278,-0.143l-1.842,-0.446l-0.229,-0.158l-0.66,-0.775l-0.544,-0.514l-0.724,-0.563l-0.939,-0.429l-1.153,-0.294l-0.69,-0.277l-0.34,-0.392l-0.583,-0.865l-0.443,-0.724l-0.083,-0.359l0.26,-0.445l0.265,-0.32l0.499,-0.263l0.861,0.087l0.462,0.117l0.509,0.251l0.385,0.047l0.799,-0.071l0.813,0.16l0.481,0.176l0.632,0.366l1.744,1.549l0.728,0.535l0.316,0.064l1.305,0.57l0.209,-0.011l0.534,-0.267l0.053,-0.173l-0.18,-0.171l-0.576,-0.133l-0.676,-0.632l-0.419,-0.503l-0.048,-0.835l0.055,-0.47l0.105,-0.214l0.074,-0.723l-0.392,-0.431l-0.273,-0.136l-0.727,-0.631l-0.061,-0.157l0.349,-0.074l0.342,0.043l0.733,0.32l0.384,0.044l0.28,-0.125l0.032,-0.129l-0.446,-0.364l-0.558,-0.653l-1.166,-0.097l-0.756,0.074l-0.483,-0.225l-0.514,-0.366l-0.331,-0.094l-0.675,0.23l-0.341,0.029l-0.311,-0.081l-0.307,-1.16l0.082,-0.349l0.241,-0.151l0.182,-0.377l0.127,-0.395l0.4,-0.387l2.195,-0.865l0.554,-0.646l-0.024,-0.1l-0.374,0.12l-0.478,0.292l-0.319,0.06l-1.292,-0.377l-0.202,0.086l-0.523,0.541l-0.71,0.585l-0.327,-0.036l-0.438,-0.346l-0.069,-0.247l-0.032,-0.297l0.481,-0.408l0.154,-0.216l0.311,-0.583l-0.016,-0.289l-0.531,0.159l-0.069,-0.269l0.008,-0.461l-0.051,-0.585l-0.13,-0.58l-0.436,-0.895l-0.181,-0.23l-0.149,-0.333l-0.329,-1.221l0.095,-0.307l0.292,-0.233l0.056,-0.107l-0.697,0.193l-0.076,0.212l0.131,0.313l0.094,0.416l0.056,0.518l0.097,0.452l0.252,0.494l0.202,0.259l0.329,0.684l0.144,0.749l-0.042,0.393l-0.255,0.399l-0.412,0.429l-0.125,0.355l-0.056,0.353l-0.321,0.326l-0.197,-0.122l-0.156,-0.019l0.184,0.58l0.119,0.592l-0.143,0.591l-0.381,0.357l-0.207,0.011l-0.407,0.289l-1.042,0.151l-0.363,-0.071l-0.665,-0.293l-0.789,-0.16l-0.313,-0.396l-0.41,-0.723l-0.207,-0.65l-0.004,-0.577l0.111,-0.421l0.226,-0.266l0.272,-1.707l0.384,-1.391l0.967,-1.446l0.276,-0.526l0.091,-0.283l-0.001,-0.216l-0.156,-0.137l-1.189,1.795l-0.733,0.19l-0.219,-0.402l0.066,-0.716l0.131,-0.167l0.593,0.068l0.23,-0.4l-0.371,-0.606l-0.395,-0.16l-0.092,-0.153l0.406,-0.464l0.94,0.034l0.212,-0.325l0.34,-0.351l0.378,-0.654l0.141,-0.552l0.032,-0.475l-0.082,-0.384l-0.008,-0.386l0.064,-0.388l-0.099,-0.43l-0.261,-0.472l-0.581,-0.462l-0.171,0.522l-0.181,0.214l-0.254,0.048l-0.234,-0.22l-0.245,-0.079l-0.24,-0.196l-0.25,-0.063l-0.097,-0.158l-0.063,-0.444l-0.005,-0.566l0.282,-0.266l0.393,-0.209l0.263,-0.397l0.173,-0.577l0.025,-0.633l-0.123,-0.688l-0.319,-0.621l-0.591,0.604l-0.232,0.148l-0.053,-0.432l-0.082,-0.32l-0.248,-0.436l-0.327,-0.318l-0.314,-0.212l-0.014,-0.323l0.074,-0.365l0.14,-0.426l0.181,-0.893l0.199,0.08l0.166,-0.082l-0.096,-0.741l-0.16,-0.625l-0.188,-0.357l-0.007,-0.155l-0.043,-0.182l-0.145,-0.441l-0.163,-0.324l-0.284,-0.921l-0.205,-0.353l-0.263,-0.183l-0.283,-0.01l-0.455,0.244l-0.839,0.28l-0.665,0.133l-0.111,-0.073l0.333,-0.351l0.49,-0.366l0.648,-0.249l0.189,-0.612l-0.07,-0.531l0.027,-0.505l-0.178,-0.533l0.173,-0.296l0.59,-0.299l0.268,-0.046l0.266,-0.381l-0.748,-0.923l-0.784,-0.607l-0.196,-0.248l-0.172,-0.408l-0.148,-0.57l-0.242,-0.572l-0.334,-0.576l-0.488,-0.557l-1.258,-1.024l-0.432,-0.71l-0.398,-1.092l-0.199,-0.468l-0.207,-0.347l-0.876,-0.816l-0.106,-0.362l0.905,-0.968l0.088,-0.388l-0.37,-1.185l-0.378,-0.872l-0.412,-0.311l-0.613,-0.16l-0.562,-0.39l-0.511,-0.62l-0.51,-0.455l-0.764,-0.434l-1.278,-1.121l-1.97,-1.208l-0.88,-0.71l-0.524,-0.259l-0.69,-0.066l-1.335,-0.667l-1.122,-0.214l-0.692,0.098l-0.226,-0.111l-0.512,-0.681l-0.801,-0.392l-0.414,0.149l-0.514,0.73l-0.62,0.717l-0.33,0.097l-0.49,-0.655l-0.247,-0.459l-0.236,-0.157l-0.225,0.148l-0.438,0.603l-0.417,0.434l-0.617,0.514l-0.493,0.246l-0.633,0.06l-0.159,0.186l-0.244,0.008l-0.328,-0.168l-0.308,-0.334l-0.287,-0.501l-0.253,-0.271l-0.22,-0.04l-0.505,0.26l-0.639,0.762l-0.292,0.183l-0.245,-0.079l-0.3,-0.237l-0.601,-0.608l-0.333,0.059l-0.242,0.213l0.067,0.504l0.563,1.19l0.503,0.843l-0.425,0.099l-3.712,-1.141l-0.473,-0.276l-0.683,-0.695l-0.568,-0.428l-0.967,-1.111l-0.745,-0.604l-0.247,-0.474l-0.065,-0.327l0.237,-0.443l1.5,-1.503l0.573,-0.305l1.166,-0.365l0.275,-0.229l0.092,-0.182l-0.306,-0.329l-1.527,0.118l-1.36,-0.22l-1.184,-0.607l-0.206,-0.202l-0.201,-0.373l-0.195,-0.544l0.044,-0.611l0.284,-0.679l0.167,-0.468l0.049,-0.254l-1.488,1.672l-0.608,0.582l-0.482,-0.178l-0.338,-0.275l-0.166,-0.307l0.006,-0.339l0.055,-0.248l0.103,-0.155l-0.787,-0.694l-0.354,-0.547l-0.038,-0.566l0.279,-0.586l0.273,-0.426l0.267,-0.267l0.728,-0.232l2.658,-0.445l1.903,0.427l0.648,-1.419l0.438,-0.455l1.28,-0.475l1.97,-0.066l1.391,0.263l0.652,0.335l0.888,0.737l0.051,-0.222l-0.214,-0.666l-0.015,-0.555l0.359,-0.969l0.165,-0.611l-0.112,-0.639l-0.39,-0.667l-0.69,-0.86l-0.372,-0.071l-0.413,0.208l-0.496,0.477l-1.031,1.196l-0.487,0.249l-0.812,0.063l-0.449,-0.15l-0.434,-0.179l-0.678,-0.633l-0.247,-0.119l-0.3,0.278l-0.352,0.673l-0.339,0.47l-0.327,0.268l-0.305,0.116l-0.426,-0.055l-1.755,-1.044l-0.396,-0.467l-0.023,-0.71l-0.539,-0.691l-0.609,-0.121l-0.074,-0.232l0.772,-1.073l0.576,-0.44l-0.092,-0.133l-0.836,-0.023l-0.564,0.573l-0.323,0.097l-0.743,0.016l-0.78,-0.287l-0.332,-0.251l-0.344,-0.578l-0.386,-0.326l-1.165,-0.496l-0.263,-0.271l-0.249,-0.451l-0.952,-1.283l-0.576,-0.949l-0.075,-0.541l0.665,-1.167l0.029,-0.271l-0.285,-0.507l-0.119,-0.375l0.098,-0.519l0.582,-1.155l0.216,-0.314l1.043,-0.683l1.045,-0.998l0.38,-0.225l0.339,-0.052l1.373,0.06l0.425,-0.247l0.361,-0.49l0.593,-0.498l1.237,-0.759l2.75,-1.154l0.179,-0.137l0.016,-0.22l-0.247,-0.599l-0.052,-0.29l0.563,-0.54l1.271,-0.855l0.869,-0.413l0.559,-0.03l0.451,-0.185l0.633,-0.542l0.358,-0.096l2.163,-0.213l0.957,0.296l0.47,-0.006l0.302,-0.21l0.399,-0.617l0.746,-1.542l0.393,-0.965l0.371,-1.479l0.479,-2.338l0.358,-2.313l0.237,-2.289l0.185,-1.41l0.131,-0.508l0.449,-0.646l0.468,-0.506l0.804,-0.449l-0.073,-0.21l-0.341,-0.352l-0.317,-0.135l-0.293,0.081l-0.535,0.531l-0.693,0.359l-0.673,-0.056l-0.485,0.133l-0.445,0.484l-0.721,0.388l-0.481,-0.088l-0.869,-0.695l-0.438,-0.13l-1.111,0.066l-0.325,-0.259l-0.284,-0.507l-0.226,-0.71l-0.169,-0.918l0.023,-0.959l0.4,-1.746l0.153,-0.479l1.083,-1.977l0.667,-0.933l0.664,-0.702l0.483,-0.414l0.456,-0.186l0.438,-0.438l0.805,-1.418l0.831,-1.225l1.034,-2.301l0.5,-0.609l1.751,-1.016l0.476,-0.016l0.404,0.253l0.383,0.529l1.075,2.288l0.084,-0.07l-0.188,-0.863l-0.392,-2.609l0.063,-1.085l0.615,-1.168l0.252,-0.209l0.649,0.078l1.047,0.362l0.7,0.396l0.531,0.642l0.631,0.397l0.327,-0.02l0.233,-0.306l0.334,-1.002l0.435,-1.713l0.174,-2.136l-0.086,-2.576l-0.126,-1.908l-0.168,-1.214l0.092,-1.019l0.527,-1.231l0.483,-0.905l1.152,-1.288l0.935,-0.344l0.554,0.087l0.729,0.606l1.011,0.371l0.913,1.165l1.479,2.645l0.981,1.312l0.813,0.586l0.801,0.993l1.184,2.084l0.62,0.886l0.368,0.32l0.325,0.051l-0.121,-0.588l-0.566,-1.235l-0.866,-1.371l-1.921,-2.493l-1.059,-1.784l-0.949,-2.058l-0.698,-1.237l-1.266,-1.236l0.017,-0.495l1.528,-1.754l2.808,-1.542l3.165,-1.216l1.059,0.125l1.861,-0.511l0.175,-0.775l0.4,-0.349l1.733,-1.088l0.497,0.015l0.763,0.517l0.813,0.981l0.376,0.883l0.511,1.505l0.25,2.096l-0.038,6.444l0.014,1.19l0.098,0.457l0.353,-0.681l0.421,-1.271l0.379,-0.905l0.291,-1.407l0.204,-1.92l0.121,-1.438l-0.495,-1.64l-0.024,-2.73l0.248,-1.474h0.693l2.867,5.035l1.128,1.067l1.284,2.617l1.5,-0.276l1.384,0.319l0.612,-0.095l0.302,-0.404l-0.43,-1.083l-1.966,-3.014l-0.893,-2.405l-0.625,-3.051l-0.152,-1.645l0.478,-0.298l2.196,0.035l3.3,1.429l4.22,4.848l2.077,1.573l3.722,5.382l1.123,0.798l0.453,0.167l0.342,-0.651l0.211,-0.71l0.016,-0.951l-0.18,-1.196l-0.104,-1.394l-0.026,-1.597l0.252,-3.21l0.6,-1.061l0.265,-1.208l-0.247,-2.203l-0.703,-1.526l-2.737,-3.997l-0.011,-0.483l0.553,-0.533l0.82,-0.313l6.783,0.969l1.172,0.354l0.5,0.347l0.219,0.457l0.281,0.195l1.457,-0.544l-0.035,-0.998l-0.182,-0.638l-7.872,-1.755l-1.467,-0.604l-0.747,-0.046l-0.772,0.464l-1.601,0.229l-0.739,-0.088l-0.958,-2.115l0.867,-2.582l0.73,0.059l1.387,1.011l0.822,-1.414l1.304,-1.178l1.29,-0.417l2.814,-2.567l0.52,-0.226l0.656,0.138L357.099,9l0.575,0.637l0.659,1.355l0.382,0.417l0.454,0.077l0.622,0.608l0.9,-1.977l0.813,-2.149l0.934,-1.373l1.321,0.802l0.836,1.039l0.764,1.23l1.081,0.676l1.832,4.115l0.342,0.004l0.162,-0.344l0.173,-0.756l0.062,-1.129l0.225,-1.546l-0.163,-0.575l-1.535,-1.737l-0.29,-0.673l-0.294,-1.115l-0.005,-0.927l0.285,-0.735l0.3,-0.337l0.992,0.306l0.328,-0.24l0.31,-0.626l0.373,-1.181l0.294,-0.302l0.664,-0.035l1.021,0.76l0.894,0.064l0.322,-0.349l0.049,-0.742l0.078,-0.474l0.106,-0.2l3.24,-0.041l0.804,-0.178l0.628,-0.567l0.769,-0.067l0.672,0.339l0.832,0.722l0.827,-0.034l1.232,-1.18L383.129,0l6.403,0.156L391.637,0.873zM349.788,34.267l-0.569,0.358l-1.188,-2.166l-1.881,-2.195l-1.659,-1.48l-1.559,-3.951l-0.123,-1.427l0.221,-1.262l1.361,-0.193l1.089,-0.583l2.772,2.509l1.386,2.095l0.47,1.693L350.035,31L349.788,34.267zM423.317,39.028l-0.289,0.635l-0.74,-0.254l-0.948,-1.789l-0.632,-1.483l-0.045,-1.759l0.325,-0.788l0.506,-0.132l0.695,1.508l0.713,2.011L423.317,39.028zM426.271,74.774l-1.188,1.811l-1.757,-0.139l-1.04,-0.834l-0.297,-1.259l0.396,-1.41l1.262,-1.138l1.584,-0.715l1.436,0.43l0.198,1.423L426.271,74.774zM422.384,101.829l-0.372,0.474l-0.247,-1.427l-0.223,-1.922l-0.05,-2.19l0.569,-1.106l0.297,-0.247l0.198,0.247l-0.05,0.984v1.949l0.198,1.328L422.384,101.829zM425.313,106.232h-0.545l-0.202,-0.341l0.129,-0.605l0.759,-1.966l0.253,-0.161l0.371,0.214l0.113,1.012l-0.248,1.005L425.313,106.232zM274.566,110.337l-1,0.113l-0.985,-0.499l-0.338,-0.387l0.015,-0.593l0.149,-0.206l0.532,-0.206l0.442,-0.046l0.298,0.092l0.701,0.366l0.507,0.365l0.333,0.114l-0.095,0.523L274.566,110.337zM423.548,125.976l-0.322,0.307l-1.089,-4.883v-1.803l0.074,-1.392l0.495,-0.108l0.421,0.751l0.198,2.867L423.548,125.976zM425.181,133.202l0.223,1.174l0.099,1.069l0.347,0.676l0.743,-0.096l0.297,1.25l-0.544,0.479l-2.153,-0.191l-0.891,0.095l-0.619,-0.766l0.025,-1.35l0.074,-1.361l0.619,-0.782l0.52,0.685l0.619,-0.489L425.181,133.202zM321.295,160.048l-0.397,0.642l-0.323,0.367l-0.702,1.089l-0.121,0.038l-0.189,-0.141l-0.147,-0.286l-0.265,-0.069l-0.092,-0.181l-0.037,-0.147l-0.118,-0.094l-0.187,-0.059l-0.3,0.112l-0.275,-0.112l-0.208,-0.479l0.384,-0.322l0.237,-0.275l0.917,-0.108l0.259,0.126l0.163,-0.003l0.248,-0.075l0.542,-0.343l0.081,-0.16l0.485,0.201L321.295,160.048zM325.454,175.874l-0.263,0.057l-0.754,-0.439l-0.123,-0.166l-0.047,-0.203l0.029,-0.241l0.24,-0.45l0.451,-0.661l0.327,-0.124l0.203,0.415l0.199,0.556l0.026,0.281l-0.013,0.331l-0.052,0.28l-0.091,0.23L325.454,175.874zM404.324,176.902l0.099,0.505l0.01,0.238l-0.021,0.199l-0.055,0.143l-0.132,0.126l0.246,0.333l0.08,0.224l0.015,0.178l-0.157,0.344l-1.118,0.454l-0.311,0.218l-0.388,0.539l-0.472,0.462l-0.157,-0.002l-0.183,-0.479l-0.746,-0.353l-1.403,0.184l-1.643,0.444l-0.583,0.207l-0.295,-0.11l-0.09,-0.166l-0.004,-0.231l0.194,-0.678l0.079,-0.173l0.377,-0.226l0.255,-0.6l-0.083,-0.655l0.098,-0.917l0.258,-0.143l0.645,0.327l0.417,0.069l0.739,0.042l0.993,-0.11l0.798,-0.374l1.456,-1.07l0.258,0.014l0.185,0.38l0.136,0.186l0.433,0.291L404.324,176.902zM330.674,177.469l-0.375,0.023l-0.872,-0.155l-0.07,-0.1l-0.011,-0.189l0.116,-0.546l0.384,-0.073l0.457,0.299l0.493,0.425l0.068,0.2L330.674,177.469zM327.71,185.082l0.935,0.664l0.991,0.457l0.097,0.208l0.077,0.315l0.018,0.164l-0.022,0.152l-0.063,0.14l0.072,0.18l0.208,0.22l0.021,0.257l-0.248,0.44l-0.349,0.488l-1.846,0.999l-0.653,0.169l-1.614,0.682l-0.494,-0.028l-0.109,-0.032l-0.305,-0.3l-0.418,-0.279l-0.196,-0.217l-0.173,-0.312l0.069,-0.193l0.311,-0.076l0.442,0.005l0.649,-0.227l-0.18,-0.205l-0.17,-0.125l-0.118,-0.272l-0.271,0.053l-0.203,-0.156l-0.391,-0.099l-1.021,-0.094l-0.666,-0.268l-0.196,-0.161l-0.173,-0.278l-0.15,-0.392l0.218,-1.53l0.15,-0.392l0.346,-0.129l0.846,0.342l0.114,-0.147l-0.926,-0.568l-0.34,-0.339l-0.1,-0.268l-0.06,-0.395l0,-0.232l0.042,-0.234l0.083,-0.235l0.225,-0.318l0.938,-0.508l1.022,0.174l1.774,0.624l0.22,0.132l0.544,0.533L327.71,185.082zM332.53,188.26l-0.44,0.283l-0.089,-0.063l-0.089,-0.216l-0.227,-0.984l-0.067,-0.468l0.056,-0.584l-0.088,-0.413l0.397,-0.482l0.321,-0.083l0.433,0.126l0.733,0.49l-0.053,0.159l-0.159,0.255l-0.441,0.333l-0.156,0.748l-0.03,0.374l0.021,0.28L332.53,188.26zM371.772,217.846l-0.437,0.004l-0.145,-0.532l0.043,-0.582l0.492,-0.183l0.265,0.401l-0.095,0.596L371.772,217.846zM345.853,247.406l-0.322,0.694l-0.322,-0.151l-0.159,-0.31l-0.317,-0.144l-0.342,0.043l-0.005,-0.123l1.111,-0.742l0.53,-0.2l-0.038,0.313l-0.101,0.274L345.853,247.406z', 1, '2020-09-03 07:09:41', '2020-09-03 07:09:41', '0'),
+(14, 193, 'M563.508,526.797l0.015,0.159l0.02,0.072l0.134,0.419l0.2,0.628l0.133,0.58l0.183,0.797l-0.006,0.445l0.045,0.172l0.164,0.215l0.201,0.37l0.068,0.209l0.067,0.157l0.212,0.298l0.165,0.452l0.14,0.599l0.12,0.288l0.045,0.142l0.054,0.258l-0.007,0.545l0.003,0.633l0.004,0.707l0.003,0.585l-0.021,0.296l0.015,0.843l-0.181,0.439l0.022,0.346l0.056,0.224l-0.074,0.035l-0.141,0.04l-0.648,-0.355l-0.632,-0.375l-0.091,-0.011l-0.133,0.039l-0.358,0.272l-0.335,0.426l-0.154,0.364l-0.247,0.376l-0.398,0.606l-0.041,0.131l-0.004,0.494l0.019,0.471l0.035,0.066l0.215,0.022l0.154,0.386l0.352,0.616l0.591,0.396l0.549,0.18l0.766,0.045l0.606,-0.013l-0.035,-0.416l0.06,-0.667l0.077,-0.448l0.085,-0.02l0.159,0.043l0.088,0.046l0.243,-0.019l0.432,0.088l0.349,-0.009l0.312,-0.009l0.527,-0.015l0.308,-0.005l-0.104,0.723l-0.402,1.135l-0.137,0.522l-0.343,1.871l-0.448,0.947l-0.251,0.392l-0.726,0.694l-0.202,0.141l-0.179,0.09l-0.318,0.08l-1.244,1.41l-0.463,0.682l-0.412,0.997l-0.409,0.549l-0.601,1.174l-0.537,0.909l-0.515,0.832l-0.891,1.148l-0.396,0.333l-0.267,0.152l-0.708,0.669l-0.997,1.08l-0.763,0.96l-1.141,1.094l-0.661,0.48l-0.992,0.947l-0.277,0.14l-1.118,0.883l-0.804,0.538l-1.301,0.625l-0.517,0.175l-1.235,-0.162l-0.515,0.086l-0.431,0.378l-0.04,0.544l-0.18,0.082l-0.272,-0.024l-0.863,-0.227l-0.468,0.043l-0.273,0.291l-0.22,0.368l-0.65,0.019l-1.158,-0.381l-1.362,-0.232l-0.315,-0.026l-0.66,0.283l-0.23,0.041l-0.961,-0.061l-0.533,-0.178l-0.51,-0.001l-0.391,0.147l-0.474,0.052l-1.281,1.025l-0.662,0.001l-0.571,0.119l-0.283,-0.004l-0.53,-0.144l-0.197,0.01l-0.302,0.064l-0.302,0.181l-0.688,0.078l-0.267,0.155l-1.162,0.941l-0.265,-0.038l-0.214,-0.061l-0.604,-0.012l-0.683,-0.501l-0.262,0.032l0.07,-0.15l0.021,-0.266l-0.145,-0.188l-0.097,-0.084l-0.268,0.016l-0.143,-0.226l-0.41,-0.021l-0.142,0.057l-0.197,0.012l-0.017,-0.229l0.015,-0.144l-0.012,-0.221l-0.049,-0.271l-0.159,-0.086l-0.122,-0.036l-0.29,0.019l-0.2,0.029l-0.094,0.079l-0.107,0.199l-0.001,0.604l-0.144,-0.173l-0.164,-0.362l-0.053,-0.386l0.059,-0.455l0.311,-0.173l-0.024,-0.307l-0.066,-0.266l-0.347,-0.68l-0.135,-0.311l-0.294,-0.21l-0.229,-0.506l-0.23,-0.183l-0.096,-0.354l-0.225,-0.282l-0.076,-0.446l0.124,-0.255l0.196,-0.14l0.2,0.221l0.249,-0.086l0.353,-0.322l0.209,-0.488l0.013,-0.779l-0.054,-0.485l-0.28,-1.25l-0.132,-0.287l-0.632,-0.891l-0.733,-1.189l-0.927,-1.865l-0.443,-1.116l-0.671,-2.24l-0.591,-1.261l-0.726,-1.172l-0.093,-0.076l0.111,-0.142l0.391,-0.27l0.177,-0.073l0.095,0.034l0.092,-0.074l0.089,-0.183l0.02,-0.171l0.044,-0.242l0.087,-0.145l0.096,-0.288l0.163,-0.185l0.345,-0.123l0.261,0.163l0.109,0.159l0.045,0.21l0.116,0.102l0.186,-0.007l0.131,0.129l0.076,0.266l-0.015,0.192l-0.106,0.12l0.015,0.157l0.135,0.195l0.056,0.186l0.09,0.246l0.474,0.143l0.232,0.08l0.399,0.027l0.377,0.11l0.355,0.192l0.584,0.046l0.813,-0.099l0.669,0.044l0.525,0.188l0.381,0.035l0.236,-0.119l0.103,-0.171l-0.032,-0.224l0.117,-0.141l0.265,-0.06l0.212,-0.168l0.16,-0.277l0.369,-0.225l0.579,-0.173l0.288,0.006v-0.447v-1.408v-1.401v-1.396v-1.391v-1.385v-1.379v-1.375v-1.293l0.135,0.093l0.889,0.686l0.24,0.361l0.119,0.229l0.382,0.833l0.284,0.749l0.231,0.566l0.018,0.259l0.033,0.253l0.033,0.125l-0.021,0.138l-0.163,0.309l-0.166,0.236l-0.2,0.323l-0.019,0.427l0.06,0.504l0.123,0.251l0.154,0.083l0.368,-0.125l0.233,0.039l0.329,0.096l1.078,-0.059l0.13,0.031l0.407,0.036l0.136,-0.042l0.122,-0.107l0.141,-0.302l0.126,-0.1l0.229,-0.051l0.271,-0.082l0.224,-0.174l0.355,-0.597l0.711,-0.529l0.218,-0.126l0.138,-0.142l0.12,-0.191l0.249,-0.664l0.188,-0.552l0.064,-0.26l0.168,-0.424l0.203,-0.271l0.199,-0.143l0.1,-0.036l0.256,-0.073l0.329,-0.068l0.346,0.076l0.371,0.164l0.419,0.276l0.429,0.342l0.197,0.174l0.213,0.078l0.379,0.027l0.248,-0.006l0.386,0.34l0.195,0.021l0.437,0.103l0.54,0.106l0.339,-0.012l0.364,-0.184l0.262,-0.008l0.339,0.015l0.373,-0.05l0.273,-0.079l0.209,-0.16l0.184,-0.175l0.212,-0.521l0.122,-0.418l0.188,-0.481l0.231,-0.651l0.083,-0.453l0.084,-0.125l0.336,-0.138l0.277,-0.095l0.748,-0.178l0.153,-0.095l0.14,-0.213l0.326,-0.361l0.402,-0.301l0.208,-0.172l0.38,-1.458l0.046,-0.18l0.276,-0.386l0.171,-0.163l0.11,-0.003l0.156,-0.102l0.203,-0.2l0.241,-0.124l0.279,-0.046l0.181,-0.133l0.083,-0.218l0.144,-0.106l0.205,0.006l0.117,-0.069l0.028,-0.145l0.124,-0.125l0.219,-0.103l0.114,-0.123l0.011,-0.141l0.261,-0.343l0.511,-0.545l0.481,-0.303l0.452,-0.062l0.429,-0.113l0.405,-0.165l0.297,-0.259l0.19,-0.352l0.327,-0.197l0.659,-0.058l0.036,-0.003l0.802,-0.14l0.671,0.114l0.809,0.322l0.757,0.114l0.706,-0.094l0.574,-0.021l0.441,0.052l0.348,0.112L563.508,526.797zM556.349,550.789l0.461,-0.205l0.208,-0.125l0.15,-0.103l0.194,-0.156l0.067,-0.379l0.057,-0.322l0.148,-0.159l0.152,-0.105l0.125,-0.167l0.155,-0.401l0.106,-0.392l0.011,-0.16l-0.055,-0.164l-0.099,-0.175l-0.097,-0.236l-0.117,-0.037l-0.229,-0.132l-0.337,-0.266l-0.292,-0.231l-0.274,-0.335l-0.112,-0.055l-0.265,-0.227l-0.114,-0.13l-0.08,-0.156l-0.075,-0.051l-0.119,0.04l-0.313,0.069l-0.671,0.272l-0.416,0.25l-0.35,0.298l-0.363,0.114l-0.266,0.099l-0.211,0.341l-0.197,0.318l-0.177,0.287l-0.102,0.129l-0.092,0.083l-0.093,0.184l-0.191,0.306l-0.175,0.205l-0.244,0.112l-0.315,0.145l-0.107,0.084l-0.015,0.124l0.112,0.288l0.108,0.278l0.177,0.326l0.13,0.239l0.205,0.292l0.12,0.171l-0.016,0.287l0.041,0.103l0.068,0.119l0.057,0.03l0.064,0.043l0.17,0.083l0.041,0.055l0.119,0.098l0.114,0.179l0.216,0.246l0.243,0.187l0.417,0.077l0.326,0.06l0.108,-0.037l0.111,-0.151l0.091,-0.192l0.029,-0.244l0.104,-0.13l0.391,-0.619l0.215,-0.229l0.132,-0.017l0.169,-0.044l0.216,-0.019l0.162,0.019l0.035,-0.007L556.349,550.789zM581.944,611.46l-0.121,0.076l-0.567,-0.067l-0.061,-0.157l0.167,-0.242l0.099,-0.102l0.293,0.055l0.234,0.196l0.042,0.066L581.944,611.46z', 1, '2020-09-03 07:11:34', '2020-09-03 07:11:34', '0');
+INSERT INTO `maps` (`id`, `country_id`, `path_d`, `status`, `created_at`, `updated_at`, `is_deleted`) VALUES
+(15, 30, 'M317.181,457.255l0.084,0.027l0.188,0.023l0.446,0.107l0.582,0.121l0.159,-0.042l0.095,-0.085l0.022,-0.249l0.018,-0.176l-0.131,-0.155l-0.163,-0.176l-0.15,-0.219l-0.18,-0.063l0.023,-0.113l0.117,-0.117l0.12,-0.064l0.069,-0.079l0.076,-0.292l0.05,-0.052l0.051,-0.013l0.06,0.011l0.119,0.076l0.458,0.232l0.201,-0.035l0.768,-0.061l0.116,-0.134l0.163,-0.03l0.276,-0.134l0.109,-0.009l0.098,0.032l0.123,-0.025l0.181,-0.125l0.076,-0.013l0.029,0.138l0.117,0.143l0.142,0.131l0.068,0.03l0.238,-0.042l0.125,0.037l0.054,0.122l0.016,0.106l0.1,0.09l0.128,0.002l0.068,0.037l0.117,0.058l0.099,0.133l0.23,0.106l0.393,0.148l0.183,0.002l0.17,0.045l0.104,0.045l0.113,-0.083l0.402,-0.229l0.196,-0.128l0.132,-0.097l0.099,-0.092l0.074,-0.024l0.05,0.055l0.043,0.074l0.144,0.043l0.336,0.086l0.154,0.024l0.216,-0.073l0.185,-0.125l0.088,-0.043l0.137,0.125l0.094,0.175l0.063,0.077l0.139,-0.018l0.275,0.027l0.203,0.056l0.126,-0.005l0.172,-0.078l0.093,-0.154l0.244,-0.141l0.232,-0.13l0.133,-0.173l0.197,-0.288l0.066,-0.123l0.014,-0.208l0.277,-0.604l0.105,-0.111l0.062,-0.191l0.111,-0.221v-0.185l0.081,-0.179l0.159,-0.154l0.117,-0.097l0.188,-0.26l0.131,-0.245l0.327,-0.543l0.025,-0.154l0.13,-0.092l0.043,-0.117l0.139,-0.145l0.146,-0.114l0.063,-0.169l0.107,-0.175l0.234,-0.131l0.087,-0.06l0.266,-0.482l0.03,-0.215l0.24,-0.008l0.377,0.249l0.301,0.367l0.403,1.179l0.067,1.089l0.163,0.57l0.469,1.188l0.03,0.22l0.075,0.266l0.148,0.282l0.164,0.464l0.006,0.086l-0.106,0.126l0.156,0.009l0.141,0.075l0.092,0.294l0.117,0.199l0.212,0.272l0.434,0.089l0.328,0.033l0.373,0.154l0.274,0.197l0.212,0.669l-0.069,0.42l0.021,0.296l-0.11,0.116l-0.307,0.194l-0.067,0.103l-0.627,0.5l-0.137,0.236l-0.336,0.317l-0.333,0.604l-0.487,0.552l-0.172,0.14l-0.263,0.032l-0.16,0.085l-0.378,0.451l-0.508,0.15l-0.047,0.261l-0.293,0.596l-0.259,0.326l-0.165,0.11l-0.415,0.594l-0.053,0.26l0.002,0.455l-0.277,0.277l-0.288,0.176l-0.036,0.389l-0.13,0.133l-0.111,0.086l-0.586,-0.102l-0.91,0.423l-0.311,0.105l0.993,0.021l0.319,0.225l0.699,-0.149l0.846,-0.536l0.323,-0.113l0.656,-0.364l0.267,-0.243l0.486,-0.291l0.104,-0.128l0.272,-0.136l0.148,0.173l0.012,0.109l-0.224,0.213l0.058,0.137l0.147,0.172l0.053,0.238l0.02,0.181l0.091,0.317l0.301,0.429l0.01,0.142l-0.042,0.187l0.144,0.154l0.149,0.091l0.512,0.462l0.4,-0.258l0.247,-0.075l0.157,-0.108l0.33,-0.072l0.27,0.108l0.515,0.155l0.377,-0.165l0.762,-0.378l-0.238,0.669l-0.173,0.614l-0.131,0.248l-0.13,0.668l-0.128,0.179l-0.104,0.204l0.17,-0.071l0.146,-0.097l0.187,-0.257l0.14,-0.447l0.552,-1.193l0.158,-0.106l0.459,-0.136l0.79,-0.954l0.309,0.003l0.198,0.219l0.187,0.13l0.048,-0.261l0.27,-0.106l-0.285,-0.129l-0.046,-0.117l-0.027,-0.195l0.194,-0.264l-0.116,-0.234l0.402,-0.294l-0.031,-0.221l0.144,-0.182l0.182,-0.188l0.206,-0.091l0.038,-0.161l0.13,-0.066l0.102,-0.024l0.201,0.18l0.218,-0.212l0.212,-0.083l0.095,0.037l0.119,0.094l0.125,0.04l0.101,-0.017l0.263,-0.136l0.243,0.219l0.146,0.048l-0.04,-0.123l-0.077,-0.114l0.06,-0.093l0.115,-0.058l0.364,0.052l0.191,0.098l0.207,0.181l0.287,0.013l0.226,-0.019l0.142,0.102l0.231,-0.001l0.116,0.159l0.352,0.223l0.076,0.151l0.283,0.073l0.266,0.093l0.283,0.025l0.286,-0.022l0.012,0.191l0.209,0.052l0.269,-0.042l0.203,0.235l0.543,0.177l0.376,0.271l0.247,-0.048l0.276,0.072l0.296,0.589l0.067,0.418l0.132,-0.058l0.123,-0.187l0.158,-0.342l0.297,-0.113l0.142,0.131l0.297,0.21l0.256,0.23l0.108,0.148l0.193,0.024l-0.161,0.182l0.162,-0.019l0.195,-0.129l0.167,0.268l0.126,0.292l0.025,0.297l-0.119,0.17l-0.104,0.107l-0.116,0.21l-0.137,0.038l-0.137,0.068l0.156,0.153l0.107,0.147l0.234,-0.398l0.165,-0.112l0.238,-0.062l0.124,0.283l0.026,0.268l-0.388,0.111l-0.001,0.211l-0.116,0.12l-0.076,0.138l-0.061,0.288l-0.079,0.239l-0.231,1.06l-0.004,0.175l0.282,-0.187l0.52,-0.54l0.158,-0.575l0.205,-0.567l0.223,-0.178l0.139,0l0.207,0.062l0.012,0.186l-0.032,0.107l-0.222,0.282l-0.094,0.154l0.091,0.152l0.503,-0.467l0.226,-0.164l0.192,0.033l0.381,-0.216l0.768,-0.045l0.058,-0.247l0.153,-0.105l0.422,0.028l0.822,0.22l0.293,0.18l0.439,0.167l0.231,0.199l0.965,0.366l0.701,0.039l0.347,-0.166l0.433,0.174l0.229,0.195l0.45,0.105l0.454,0.055l0.347,-0.14l0.896,-0.046l1.125,-0.207l0.671,0.049l0.76,0.135l0.542,0.347l0.456,0.196l0.276,0.193l0.445,0.201l0.949,0.539l0.333,0.312l0.588,0.424l0.591,0.178l0.319,0.444l0.253,0.2l0.626,0.75l0.71,0.525l0.475,0.525l0.912,0.338l0.356,0.558l0.617,0.068l0.263,0.083l0.32,0.235l0.439,0.131l0.572,-0.037l0.631,0.027l0.511,-0.11l1.208,0.209l0.19,0.103l0.25,0.237l0.441,0.885l0.263,0.982l0.13,0.751l0.301,0.584l0.164,1.098l0.14,0.346l0.011,0.267l0.119,0.06l0.08,0.742l-0.031,0.299l-0.116,0.389l-0.008,0.174l0.017,0.11l-0.051,0.163l-0.016,0.156l0.117,0.35l0.006,0.28l-0.157,0.34l-0.214,0.889l-0.536,1.475l-0.514,0.848l-0.719,0.876l-0.469,0.458l-0.186,0.047l-0.17,-0.091l0.121,0.242l-0.105,0.213l-0.476,0.646l-0.473,0.422l-0.491,0.734l-0.037,0.017l-0.629,0.284l-0.372,0.232l-0.476,0.422l-0.437,0.666l-0.09,0.085l-0.161,-0.047l0.005,0.338l-0.376,0.536l-0.115,0.079l0.003,-0.152l0.065,-0.116l0.03,-0.123l-0.002,-0.146l-0.105,0.106l-0.223,0.402l0.075,0.294l-0.161,0.445l-0.616,1.272l-0.754,1.071l-0.174,0.331l-0.619,0.723l-0.455,0.349l-0.128,0.002l-0.145,-0.03l-0.073,-0.556l-0.362,-0.336l-0.104,-0.059l-0.148,0.356l-0.124,0.098l-0.179,0.021l0.191,0.155l0.056,0.18l-0.195,0.36l-0.006,0.327l-0.348,0.361l-0.202,0.264l-0.102,0.331l-0.062,0.309l0.153,-0.084l0.073,0.065l0.057,0.096l-0.035,0.142l-0.112,0.269l0.017,0.669l-0.037,0.152l0.111,0.165l0.118,-0.281l0.068,0.079l-0.329,1.796l0.129,0.81l0.048,0.919l0.148,0.899l0.163,0.804l0.013,0.064l-0.225,0.935l-0.288,0.924l-0.173,0.755l-0.109,0.816l-0.109,0.393l-0.035,0.402l0.125,0.954l0.047,0.181l-0.349,0.426l-0.377,0.207l-0.208,0.206l-0.46,0.77l-0.25,1.14l-0.006,0.607l0.118,1.274l-0.088,0.521l-0.146,0.349l-0.172,0.229l-0.439,0.275l-0.394,0.671l-0.171,0.706l-0.27,0.258l-0.055,0.396l-0.217,0.428l-0.563,0.639l-0.366,0.186l-0.174,0.179l-0.111,0.375l-0.353,0.618l-0.26,0.803l0.068,0.273l0.004,0.042l0.095,0.93l-0.035,0.237l-0.343,0.257l-1.292,0.48l-0.344,0.199l-0.771,0.818l-0.048,0.193l0.032,0.276l0.126,0.159l-0.13,0.172l-0.154,0.309l-0.225,-0.019h-1.287l-0.696,0.098l-0.362,-0.019l-0.163,-0.074l-0.182,-0.121l-0.055,-0.159l0.099,-0.24l-0.059,-0.143l-0.191,0.005l-0.209,0.068l-0.036,0.143l0.015,0.103l0.078,0.149l0.043,0.184l-0.086,0.159l-0.408,0.021l-0.458,0.146l-0.572,0.061l-0.456,0.106l-0.21,-0.134l0.21,-0.067l0.302,0.032l0.324,-0.111l-0.076,-0.131l-0.458,-0.168l-0.509,0.103l-0.282,0.201l-0.617,-0.019l-0.756,0.153l-0.123,0.156l0.021,0.302l0.147,0.066l0.145,0.138l-0.139,0.129l-0.135,0.057l-0.798,0.141l-0.74,0.591l-0.309,0.074l-0.275,0.261l-0.028,0.223l-0.087,0.135l-0.176,0.007l-0.386,-0.122l-0.501,-0.003l-0.362,0.097l-1.849,0.961l-0.664,0.386l-0.757,0.787l-1.277,0.884l-0.671,0.529l-0.127,0.137l-0.106,0.007l-0.21,0.11l0.083,0.091l0.143,0.008l-0.059,0.309l-0.267,0.211l-0.501,0.555l-0.111,-0.041l0.159,-0.289l-0.246,-0.011l-0.362,-0.106l-0.157,0.119l0.087,0.286l-0.136,0.123l-0.247,0.014l-0.224,-0.034l-0.246,-0.209l0.111,0.379l0.52,0.092l0.216,0.089l0.081,0.146l-0.404,0.677l-0.338,0.088l-0.037,0.096l0.186,0l0.103,0.188l-0.121,0.758l-0.167,0.144l-0.098,0.004l-0.097,0.13l0.133,0.248l0.138,0.181l-0.019,0.352l-0.052,0.291l-0.003,0.283l0.174,0.548l0.063,0.563l0.07,0.205l0.04,0.228l-0.116,0.213l0.066,0.342l-0.198,0.583l0.104,0.842l-0.042,0.792l-0.078,0.417l-0.126,0.326l-0.292,0.42l-0.006,0.421l-0.629,0.393l-0.695,0.549l-0.642,0.652l-0.691,0.921l-0.806,1.406l-0.747,2.017l-0.899,1.532l-0.36,0.555l-0.486,0.622l-0.647,0.726l-0.866,0.728l-0.948,0.65l-0.342,0.293l-0.334,0.413l-0.083,-0.171l0.072,-0.282l-0.046,-0.211l-0.01,-0.273l0.191,-0.051l0.286,0.174l0.146,-0.118l0.106,-0.116l0.345,-0.073l0.658,-0.713l0.488,-0.263l0.275,-0.449l0.047,-0.238l-0.011,-0.483l0.156,-0.123l0.353,0.042l0.072,-0.138l-0.031,-0.152l0.069,-0.332l0.479,-0.294l0.227,-0.354l-0.076,-0.902l0.088,-0.041l0.197,0.14l0.093,-0.058l0.099,-0.395l-0.048,-0.205l-0.232,-0.054l-0.802,0.445l-0.261,-0.019l-0.043,-0.349l-0.39,-0.16l-0.152,-0.29l-0.045,-0.198l-0.135,-0.081l0.008,0.343l0.037,0.333l0.35,0.389l-0.085,0.155l-0.166,0.18l-0.116,0.401l0.013,0.521l-0.094,-0.159l-0.12,-0.092l-0.049,0.56l-0.232,0.215l-0.073,0.211l0.061,0.245l-0.12,0.169l-0.591,0.455l-0.589,0.311l-0.128,0.146l-0.063,0.348l-0.09,0.357l-0.261,0.315l-0.207,0.626l0.005,0.27l0.069,0.398l0.111,0.262l-0.176,0.175l-0.237,0.34l-0.188,0.384l-0.468,1.445l-0.403,0.875l-0.311,0.429l-0.443,0.453l-1.262,1.141l-0.076,-0.016l-0.185,-0.092l-0.155,-0.109l-0.035,-0.073l-0.018,-0.109l0.021,-0.411l-0.003,-1.102l0.055,-0.208l0.082,-0.134l0.246,-0.194l0.239,-0.277l0.27,-0.353l0.249,-0.28l-0.089,-0.188l-0.208,-0.182l-0.369,-0.146l-0.355,-0.258l-0.315,-0.332l-0.146,-0.345l-0.134,-0.372l-0.127,-0.293l-0.042,-0.134l-0.125,-0.056l-0.198,-0.149l-0.124,-0.139l-0.181,-0.08l-0.324,-0.087l-0.337,-0.153l-0.419,-0.362l-0.302,-0.401l-0.149,-0.265l-0.159,-0.186l-0.865,-0.308l-0.393,-0.367l-0.155,0.115l-0.231,-0.112l-0.228,-0.176l-0.068,-0.136l-0.096,-0.139l-0.09,-0.159l-0.058,-0.152l-0.234,-0.267l-0.303,-0.288l-0.128,-0.082l-0.068,0.024l-0.065,0.11l-0.042,0.107l-0.114,0.071l-0.141,0.132l-0.145,0.162l-0.185,0.107l-0.22,0.037l-0.148,-0.005l-0.03,-0.064l-0.008,-0.221l0.055,-0.503l-0.128,-0.194l-0.171,-0.208l-0.197,-0.277l-0.648,-0.587l-0.883,-0.843l-0.312,-0.257l-0.293,-0.02l-0.268,0.029l-0.247,0.111l-0.187,0.389l-0.077,0.06l-0.476,-0.008l-0.473,-0.063l-0.159,-0.237l0.126,-0.154l0.445,-0.342l0.246,-0.305l0.047,-0.267l0.213,-0.24l0.38,-0.212l0.423,-0.39l0.466,-0.568l0.284,-0.418l0.1,-0.27l0.183,-0.208l0.266,-0.146l0.232,-0.304l0.199,-0.462l0.271,-0.367l0.344,-0.272l0.193,-0.226l0.041,-0.179l0.097,-0.114l0.154,-0.05l0.074,-0.094l-0.005,-0.138l0.042,-0.094l0.088,-0.05l0.148,0.018l0.208,0.085l0.125,-0.016l0.043,-0.117l-0.055,-0.134l-0.153,-0.15l0.058,-0.163l0.402,-0.264l0.296,-0.1l0.188,-0.163l0.178,-0.259l0.289,-0.18l0.399,-0.102l0.106,-0.097l-0.015,-0.125l0.082,-0.09l0.236,-0.065l0.128,-0.122l0.021,-0.179l0.076,-0.166l0.131,-0.153l0.146,-0.057l0.161,0.039l0.151,-0.058l0.142,-0.155l0.17,-0.072l0.198,0.01l0.102,-0.034l0.34,-0.072l0.188,-0.13l0.154,-0.291l0.137,-0.112l0.12,0.065l0.207,-0.097l0.294,-0.259l0.056,-0.005l0.217,-0.121l0.224,-0.448l0.115,-0.299l-0.027,-0.245l-0.074,-0.175l0.025,-0.257l0.074,-0.697l0.02,-0.285l0.119,-0.198l-0.008,-0.196l-0.212,-0.44l-0.214,-0.386l-0.115,-0.653l-0.076,-0.248l-0.178,-0.066l-0.162,-0.216l-0.204,-0.019l-0.096,-0.083l-0.099,-0.068l-0.145,0.02l-0.124,0.126l-0.229,0.004l-0.145,0.052l-0.17,0.112l-0.162,-0.051l-0.102,-0.099l-0.219,-0.001l0.015,-0.443l0.386,-0.656l0.104,-0.305l-0.05,-0.173l0.115,-0.609l0.281,-1.042l0.09,-0.681l-0.102,-0.321l-0.003,-0.224l0.145,-0.19l0.07,-0.057l-0.362,-0.232l-0.195,-0.212l-0.25,-0.151l-0.269,-0.121l-0.13,0.051l-0.139,0.07l-0.269,0.111l-0.306,0.192l-0.158,0.07l-0.279,0.071l-0.315,0.061l-0.26,-0.04l-0.223,-0.041l-0.14,-0.121l-0.074,-0.263v-0.222l-0.046,-0.322l-0.167,-0.182l-0.056,-0.141l-0.009,-0.171l0.019,-0.191l0.046,-0.141l-0.028,-0.171l-0.074,-0.121l0.019,-0.211l-0.037,-0.292l-0.111,-0.181l-0.056,-0.21v-0.21l-0.083,-0.21l-0.009,-0.23l0.074,-0.21l0.028,-0.21l-0.083,-0.15l-0.158,-0.09l-0.121,-0.24l-0.019,-0.31l-0.13,-0.169l-0.139,-0.14h-0.158l-0.241,-0.08l-0.213,0.01l-0.344,-0.01l-0.158,-0.05l-0.083,-0.109l-0.213,-0.149l-0.121,-0.259l-0.148,-0.05l-0.214,0.08l-0.074,0.1l-0.083,0.14l-0.148,0.16l-0.195,-0.01l-0.204,0.09l-0.195,0.01l-0.26,0.02l-0.26,-0.08l-0.315,-0.09l-0.27,-0.06l-0.26,0.06l-0.176,-0.05l-0.232,-0.03l-0.26,-0.02l-0.204,-0.16l-0.223,-0.089l-0.121,0.03l-0.158,0.1l-0.167,-0.02l-0.214,-0.08l-0.083,-0.189l0.019,-0.12l0.046,-0.12l0.083,-0.169l-0.046,-0.179l0.019,-0.159l0.037,-0.139l0.037,-0.159l-0.028,-0.149l-0.009,-0.159l-0.019,-0.149l-0.028,-0.159l0.111,-0.228l0.093,-0.188l-0.056,-0.158l0.019,-0.109l0.074,-0.178l0.093,-0.218l-0.009,-0.406l-0.083,-0.237l-0.091,-0.064l-0.023,-0.071l0.044,-0.094l-0.048,-0.096l-0.019,-0.099l0.048,-0.086l-0.066,-0.17l-0.133,-0.049l-0.046,-0.049l-0.046,-0.188l-0.037,-0.217l0.019,-0.167l-0.065,-0.147l-0.093,-0.089l-0.093,-0.157l-0.093,-0.118l-0.037,-0.167l-0.062,-0.216l0.185,-0.04l0.073,-0.121l0.13,-0.164l0.171,-0.043l0.204,-0.06l0.075,-0.121l-0.475,-0.436l-0.285,-0.261l0.167,-0.354l0.282,-0.595l0.272,-0.576l0.208,-0.438l0.053,-0.081l0.182,-0.028l-0.033,-0.226l-0.006,-0.148l-0.146,-0.008l0.163,-0.534l0.241,-0.76l0.183,-0.575l0.059,-0.096l0.131,-0.027l0.03,-0.066l-0.158,-0.092l-0.097,-0.179l-0.211,-0.513l-0.333,-0.808l-0.024,-0.289l-0.122,-0.178l-0.204,0.06l-0.241,-0.057l-0.603,-0.438l-0.399,-0.237l-0.135,-0.14l-0.06,-0.449l-0.119,-0.495l-0.051,-0.612l0.021,-0.146l0.337,-0.464l-0.001,-0.234l0.028,-0.205l-0.014,-0.162l-0.083,-0.002l-0.135,0.071l-0.205,0.054l-0.116,0.005l-1.177,-0.044l-1.339,-0.05l-1.114,-0.042l-0.967,-0.036l-0.032,-0.399l-0.055,-0.667l-0.039,-0.474l-0.062,-0.75l-0.388,-0.467l-0.421,-0.506l-0.148,-0.13l0.509,-0.016l0.361,-0.011l-0.071,-1.357l-0.11,-0.138l-0.098,-0.438l-0.066,-0.248l-0.179,-0.2l-0.041,-0.226l0.033,-0.15l0.098,-0.093l0.065,-0.232l-0.049,-0.233l-0.106,-0.217l-0.13,-0.208l-0.249,-0.128l-0.356,-0.232l-0.54,-0.295l-0.456,-0.206l-0.146,0.025l-0.806,0.08l-0.268,0.042l-0.18,-0.047l-0.601,0.002l-0.236,-0.158l-0.198,-0.185l-0.421,-0.47l-0.065,-0.235l-0.163,-0.075l-0.247,0.029l-0.25,-0.032l-0.484,-0.195l-0.454,-0.2l-0.22,0.008l-0.195,-0.125l-0.345,-0.305l-0.161,-0.119l-0.073,-0.158l-0.073,-0.232l-0.139,-0.05l-0.179,0.042l-0.194,0.119l-0.272,-0.079l-0.333,-0.214l-0.215,-0.167l-0.123,-0.079l-0.289,-0.117l-0.279,-0.024l-0.422,0.172l-0.346,-0.071l-0.542,-0.062l-0.464,-0.125l-0.169,-0.324l-0.091,-0.214l-0.276,-0.134l-0.22,-0.164l-0.262,-0.249l-0.13,-0.083l-0.237,-0.069l-0.219,-0.088l-0.024,-0.157l-0.082,-0.207l-0.019,-0.051l-0.149,-0.251l-0.07,-0.018l-0.077,0.05l-0.058,0.036l-0.063,-0.044l-0.011,-0.112l0.04,-0.18l-0.086,-0.188l-0.213,-0.198l-0.112,-0.205l-0.01,-0.212l-0.047,-0.141l-0.085,-0.072l-0.048,-0.124l-0.01,-0.176l0.062,-0.21l0.134,-0.243l-0.029,-0.375l-0.191,-0.506l-0.106,-0.364l-0.02,-0.224l0.029,-0.166l0.116,-0.161l0.231,-0.395l0.041,-0.301l-0.073,-0.339l-0.01,-0.259l0.053,-0.178l-0.08,-0.233l-0.164,-0.22l-0.114,-0.005l-0.155,0.06l-0.187,0.186l-0.22,0.033l-0.195,-0.115l-0.612,0.048l-0.951,0.115l-0.38,0.119l-0.224,0.051l-0.271,0.039l-0.434,0.214l-1.071,0.831l-0.222,0.121l-0.252,0.017l-0.147,0.115l-0.236,0.09l-0.464,0.329l-0.236,0.264l-0.155,0.239l-0.179,0.008l-0.139,-0.066l-0.439,0.033l-0.225,0.082l-0.244,0.232l-0.303,0.42l-0.125,0.12l-0.244,0.124l-0.282,0.103l-0.349,0.154l-0.156,0.01l-0.138,0.027l-0.119,-0.07l-0.04,-0.151l-0.18,-0.095l-0.43,-0.048l-0.637,-0.11l-0.657,-0.021l-0.326,0.01l-0.268,0.007l-0.465,-0.059l-0.339,-0.01l-0.297,0.149l-0.432,0.185l-0.197,0.047l-0.145,0.007l-0.141,-0.023l-0.165,-0.096l-0.231,-0.221l-0.178,0.085l-0.128,0.095l0.002,-0.481l0.003,-0.723l0.003,-0.637l0.002,-0.509l0.002,-0.594l0.002,-0.419l0.121,-0.159l0.074,-0.178l-0.089,-0.238l0.02,-0.218l0.062,-0.152l0.081,-0.148l-0.187,0.074l-0.082,0.041l-0.1,0.112l-0.242,0.152l-0.162,0.152l-0.191,0.124l-0.242,0.273l-0.199,0.15l-0.207,0.096l-0.344,0.321l-0.285,0.064l-0.754,0.049l-0.784,-0.001l-0.717,-0.001l-0.108,-0.004l0.007,-0.265l0.018,-0.187l-0.245,-0.197l-0.017,-0.243l-0.065,-0.168l-0.082,-0.205l-0.171,-0.131l-0.241,-0.051l-0.395,-0.113l-0.586,-0.118l-0.56,-0.008l-0.549,0.011l0.335,-0.412l0.335,-0.411l-0.01,-0.358l-0.271,-0.312l-0.146,-0.194l-0.226,-0.267l-0.279,-0.185l-0.152,-0.246l0.014,-0.149l-0.024,-0.098l-0.106,-0.057l-0.106,-0.09l-0.146,-0.099l-0.171,-0.131v-0.131l-0.065,-0.139l-0.106,-0.163v-0.131l-0.098,-0.205l-0.106,-0.147l-0.106,-0.098l-0.155,-0.139l0.008,-0.114l0.114,-0.057l0.049,-0.131l-0.016,-0.131l-0.13,-0.082l-0.155,-0.041l-0.204,-0.237l-0.147,-0.123l-0.098,-0.074l-0.057,-0.082l0.057,-0.057l0.065,-0.082l0.017,-0.131l-0.033,-0.122v-0.106l0.098,-0.033l0.106,0.017l0.106,-0.065l0.139,-0.024l0.155,-0.017l0.082,-0.073l-0.008,-0.13l-0.098,-0.253l-0.098,-0.106l-0.033,-0.155l0.08,-0.298l0.051,-0.191l0.179,-0.202l0.546,-0.433l0.49,-0.294l0.239,-0.03l0.177,-0.109l0.112,-0.167l0.031,-0.182l-0.025,-0.159l-0.091,-0.234l-0.109,-0.292l-0.082,-0.163l0.073,-0.195l0.13,-0.267l0.266,-0.403l0.248,-0.434l0.027,-0.126l0.032,-0.265l0.114,-0.54l0.063,-0.292l-0.033,-0.113l0.057,-0.098l0.155,-0.082l0.374,-0.074l0.254,-0.161l0.391,-0.303l0.326,-0.322l0.27,-0.104l0.489,-0.298l0.281,-0.189l0.11,-0.059l0.276,-0.137l0.495,-0.047l0.412,-0.049l0.233,-0.09l0.341,-0.037l0.229,-0.101l0.255,-0.003l0.479,-0.103l0.163,-0.154l0.139,-0.184l0.187,-0.157l0.219,-0.041l0.244,0.027l0.292,-0.003l0.354,-0.049l0.171,0.122l0.075,0.149l0.218,0.151l0.155,-0.008l0.155,-0.033l0.212,0.13l0.139,-0.016l0.089,-0.073l0.017,-0.182l0.05,-0.099l0.104,-0.57l0.172,-0.941l0.156,-0.853l0.172,-0.943l0.179,-0.974l0.181,-0.986l0.148,-0.809l0.127,-0.695l0.079,-0.427l0.122,-0.559l0.048,-0.491l0.049,-0.141l-0.031,-0.119l-0.106,-0.169l0.001,-0.074l0.012,-0.098l-0.012,-0.086l-0.111,-0.092l-0.086,-0.055l-0.068,-0.08l-0.031,-0.111l-0.056,-0.111l-0.025,-0.117l-0.081,-0.092l-0.024,-0.117l0.056,-0.111l0.024,-0.117l-0.024,-0.11l-0.031,-0.129l-0.062,-0.123l-0.094,-0.075l-0.225,-0.083l-0.226,-0.199l-0.267,-0.178l-0.34,-0.338l-0.074,-0.16l-0.001,-0.439l0.015,-0.476l0.022,-0.719l0.011,-0.366l0.192,-0.021l0.169,-0.01l0.177,-0.025l0.154,-0.025l0.142,-0.053l0.106,-0.065l0.126,-0.042l0.099,0.015l0.099,-0.058l0.109,-0.055l0.106,-0.045l0.154,-0.038l0.144,0.088l0.081,0.088l0.094,0.042l0.088,-0.01l0.061,0.008l0.063,0.07l0.081,0.005l0.116,-0.013l0.109,-0.015l0.05,-0.021l0.008,-0.045l-0.028,-0.078l-0.038,-0.073l0.03,-0.113l0.003,-0.136l0.005,-0.173l-0.086,-0.096l-0.086,-0.181l-0.096,-0.146l-0.149,-0.098l-0.139,-0.038l-0.116,0.061l-0.108,0.01l-0.081,-0.055l-0.131,-0.002l-0.142,-0.018l-0.149,-0.021l-0.27,0.04l-0.096,-0.049l-0.131,-0.005l-0.152,0.053l0.004,-0.695l0.004,-0.655l0.002,-0.46l0.136,0.01l0.169,-0.083l0.251,-0.013l0.193,-0.087l0.108,-0.007l0.204,0.042l0.213,0.09l0.209,0.013l0.548,0h0.592l0.659,0l0.66,0h0.572l0.177,0.005l-0.103,-0.153l-0.12,-0.198l0.046,-0.156l0.059,-0.157l0.069,-0.082l0.178,0.087l0.149,0.267l0.124,0.201l0.121,0.099l0.15,0.011l0.17,-0.034l0.17,-0.083l0.29,-0.368l0.288,-0.315l0.149,-0.106l0.158,-0.097l0.118,-0.037l0.161,0.012l0.136,0.086l0.088,0.15l0.322,0.522l0.243,0.394l0.082,0.246l0.005,0.6l-0.015,0.531l0.032,0.069l0.048,0.02l0.531,-0.125l0.721,0.644l0.533,0.476l0.23,0.152l0.128,0.042l0.31,-0.032l0.368,-0.062l0.179,-0.068l0.198,-0.149l0.321,-0.207l0.262,-0.114l0.103,-0.015l0.104,0.037l0.221,0.124l0.121,0.23l-0.111,0.267l0.019,0.166l0.232,-0.009l0.186,-0.276l0.13,-0.218l0.272,-0.177l0.265,-0.251l0.185,-0.24l0.217,-0.14l0.327,-0.171l0.259,-0.104l0.242,0.011l0.18,-0.113l0.233,-0.212l0.163,-0.17l0.113,-0.061l0.227,0.017l0.283,-0.023l0.278,-0.207l0.253,-0.25l0.134,-0.422l0.088,-0.374l0.076,-0.076l0.092,-0.06l0.108,-0.039l0.26,-0.027l0.456,-0.199l0.314,-0.202l0.298,-0.043l0.088,-0.054l0.108,-0.187l0.054,-0.329l-0.041,-0.199l-0.548,-0.062l-0.359,0l-0.594,-0.051l-0.283,-0.082l-0.061,-0.057l-0.006,-0.063l0.057,-0.143l0.055,-0.267l-0.081,-0.362l-0.296,-0.567l-0.211,-0.558l-0.028,-0.389l0.005,-0.411l0.017,-0.269l-0.152,-0.21l-0.821,-0.663l-0.284,-0.313l-0.094,-0.217l-0.324,-0.399l0.082,-0.123l0.187,0.004l0.159,0.104l0.146,0.222l0.104,0.05l0.143,0l0.757,-0.001l0.177,0.038l0.107,0.075l0.091,0.093l0.136,0.259l0.146,0.126l0.3,-0.004l0.47,-0.005l0.264,-0.023l0.158,0.072l0.196,0.06l0.413,-0.138l0.115,-0.003l0.124,0.061l0.445,0.463l0.255,0.195l0.215,0.259l0.313,0.001l0.26,-0.222l0.069,-0.747l0.078,-0.217l0.131,-0.061l0.156,-0.007l0.185,-0.117l0.2,-0.152l0.174,-0.051l0.723,0.163l0.201,-0.078l0.732,-0.197l0.748,-0.254l0.21,-0.32l0.313,-0.086l0.246,-0.234l0.198,0.024l0.3,0.01l0.186,-0.041l0.094,-0.044l0.103,-0.11l0.169,-0.313l0.205,-0.119l0.257,-0.126l0.176,-0.148l0.145,-0.183l0.067,-0.159l-0.002,-0.126l-0.085,-0.245l-0.104,-0.23l-0.112,-0.076l-0.084,-0.029l0.255,-0.054l0.21,0.081l0.328,0.012l0.143,-0.062l0.207,0.03l0.262,-0.165l0.168,0.054h0.111l0.101,0.125l0.079,0.141l0.245,0.171l-0.024,0.26l-0.045,0.23l-0.032,0.266l-0.014,0.202l-0.104,0.207l-0.156,0.193l-0.046,0.078l-0.022,0.102l0.105,0.062l0.186,0.018l0.232,0.008l0.158,0.06l0.204,0.012l0.246,0.166l0.119,0.1l0.01,0.077l-0.078,0.184l-0.031,0.17l0.061,0.108l0.072,0.078l0.199,0.384l0.095,0.133l0.08,0.043l0.019,0.074l-0.068,0.14l-0.082,0.178l-0.185,0.187l-0.025,0.148l-0.147,0.093l-0.345,0.221l0.06,0.35l0.012,0.177l-0.006,0.138l-0.118,0.185l-0.204,0.545l-0.075,0.272l-0.066,0.628l0.004,0.211l0.094,0.283l0.2,0.629l0.114,0.101l0.263,0.147l0.033,0.425l-0.023,0.444l-0.012,0.172l0.043,0.074l0.118,0.036l0.084,0.053l0.013,0.131l-0.008,0.137l0.196,0.079l0.171,0.05l0.158,0.188l0.285,0.293l0.114,0.054l0.057,0.121l0.241,0.247l0.367,0.09l0.37,0.109l0.146,0.155l0.152,0.126l0.115,0.006l0.097,-0.02l0.16,-0.109l0.128,-0.094l0.223,0.006l0.262,-0.016l0.045,-0.077l0.025,-0.099l-0.054,-0.253l0.093,-0.077l0.217,-0.043l0.043,-0.135l0.049,-0.074l0.062,-0.086l0.074,-0.012l0.093,0.049l0.143,0.031l0.161,0.043l0.086,0.086l0.143,0.007l0.159,-0.016l0.064,-0.055l0.047,-0.096l0.035,-0.207l0.102,-0.006l0.205,-0.046l0.218,-0.091l0.292,-0.014l0.273,0.002l0.137,-0.061l0.127,-0.133l0.246,-0.377l0.129,-0.087l0.139,-0.065l0.118,0.012l0.241,-0.063l0.198,-0.09l0.074,0.023l0.154,0.193l0.078,0.042l0.114,0.014l0.373,0.098l0.198,-0.031l0.214,-0.062l0.206,-0.023l0.148,0.043l0.107,-0.056L317.181,457.255zM334.536,457.265l-0.28,0.127l-0.161,-0.049l-0.148,-0.332l0.05,-0.276l0.203,-0.092l0.157,0.02l0.058,0.035l0.14,0.453L334.536,457.265zM334.946,461.575l-0.305,0.094l-0.057,-0.088l0,-0.351l0.086,-0.192l0.388,-0.054l0.04,-0.057l0.111,-0.036l0.062,0.121l-0.009,0.201L334.946,461.575zM334.179,462.282l-0.05,0.41l-0.505,-0.173l0.038,-0.419l0.236,-0.118l0.209,-0.223l0.072,-0.273l0.004,-0.372l0.078,-0.064l0.068,-0.026l0.061,0.025l0.024,0.558l0.029,0.342L334.179,462.282zM336.11,461.923l0.115,0.146l-0.397,0.583l-0.219,0.084l-0.24,0.017l-0.311,-0.174l-0.484,0.013l-0.151,-0.041l-0.016,-0.254l0.203,-0.271l0.406,0.015l0.699,-0.218L336.11,461.923zM336.936,462.984l-0.744,0.087l-0.34,-0.139l0.077,-0.117l0.254,-0.187l0.309,-0.132l0.277,-0.059l0.289,0.074l0.079,0.157l-0.024,0.158L336.936,462.984zM333.543,463.037l-0.768,0.546l-0.26,-0.179l-0.054,-0.104l0.044,-0.105l-0.009,-0.044l0.086,-0.187l0.429,-0.153l0.216,-0.026l0.276,0.048l0.046,0.134L333.543,463.037zM336.417,463.31l0.262,0.012l0.371,-0.053l0.249,-0.13l0.278,-0.026l0.275,0.014l0.927,0.145l0.557,0.045l0.204,0.046l0.199,0.066l0.146,0.071l0.036,0.154l-0.135,0.248l-0.101,0.26l-0.094,0.363l-0.073,0.073l-0.122,-0.019l0.076,0.325l-0.027,0.13l-0.061,0.126l-0.149,0.262l-0.226,0.334l-0.067,0.07l-0.172,0.116l-0.14,0.148l0.03,0.14l0.07,0.141l-0.083,0.176l-0.267,0.257l-0.16,0.062l-0.147,0.026l-0.136,-0.025l-0.241,-0.258l-0.025,0.202l-0.065,0.207l-0.082,0.113l-0.311,-0.012l-0.173,-0.111l-0.281,-0.123l-0.053,0.332l-0.175,0.229l-0.176,0.072l-0.276,0.048l-0.158,0.098l-0.298,-0.076l-0.277,-0.152l-0.157,-0.013l-0.122,0.123l-0.643,0.023l-0.295,0.125l-0.18,-0.035l-0.265,-0.252l-0.042,-0.167l-0.158,-0.339l-0.142,-0.403l-0.101,-0.366l0.085,-0.316l0.172,0.01l0.203,0.047l0.043,-0.022l0.01,-0.102l-0.045,-0.084l-0.327,0.013l-0.207,-0.188l-0.036,-0.29l0.042,-0.604l0.027,-0.124l0.145,-0.173l0.047,-0.153l-0.036,-0.162l0.062,-0.295l0.135,-0.255l0.516,-0.322l0.599,-0.115L336.417,463.31zM330.232,466.668l-0.297,0.053l0.383,-0.698l0.342,-0.325l0.005,-0.644l0.371,-0.573l0.341,-0.233l0.479,-0.068l0.262,0.349l-0.325,0.99l-0.095,0.006l-0.435,0.522l-0.484,0.365L330.232,466.668zM349.736,466.345l-0.18,0.134l-0.059,0.069l-0.148,-0.052l0.027,-0.077l0.044,0.008l0.048,-0.224l0.253,0.027L349.736,466.345zM350.813,470.869l-0.276,0.274l0.091,-0.317l-0.046,-0.219l0.036,-0.169l0.189,-0.164l0.057,-0.024l-0.016,0.202l0.013,0.062L350.813,470.869zM366.965,499.508l-0.11,0.062l-0.011,-0.182l0.287,-0.229l0.047,-0.271l0.15,0.125l0.04,0.139l-0.002,0.058L366.965,499.508zM366.517,500.586l-0.096,0.169l-0.111,-0.025l-0.044,-0.113l-0.082,-0.11l0.044,-0.086l0.074,-0.049l0.205,0.007L366.517,500.586zM351.851,529.036l0.088,0.083l-0.162,-0.008l-0.182,0.073l-0.279,0.065l-0.112,-0.122l0.241,-0.17l0.088,-0.127l0.063,0.027l0.081,0.092L351.851,529.036zM348.677,531.311l-0.002,0.159l-0.117,-0.081l-0.31,0.062l-0.108,-0.12l0.418,-0.513l0.084,0.075l0.065,0.093l0.045,0.13l-0.048,0.084L348.677,531.311zM339.348,539.058l-0.052,0.038l-0.176,-0.387l0.354,-0.371l0.118,0.15l-0.094,0.294l-0.104,0.208L339.348,539.058zM339.625,543.339l-0.193,0.143l0.035,-0.749l0.104,-0.25l0.113,-0.187l0.14,-0.115l0.104,0.163l-0.089,0.361l-0.245,0.443L339.625,543.339z', 1, '2020-09-03 07:15:05', '2020-09-03 07:15:05', '0'),
+(16, 13, 'M841.679,494.395l-0.102,-0.256l0.045,-0.064l0.052,-0.034l0.066,0.008l0.26,0.274l0.113,0.075l0.166,0.199l0.375,0.024l0.45,-0.214l0.21,0.087l0.1,-0.016l0.33,-0.203l0.215,-0.058l0.144,-0.15l0.146,0.162l0.326,0.188l0.103,0.197l0.138,0.093l0.046,0.062l-0.199,0.207l-0.025,0.223l-0.213,-0.015l-0.255,0.366l-0.957,0.614l-0.859,-0.524l-0.373,-0.354l-0.25,-0.49L841.679,494.395zM860.146,507.078l0.032,0.145l0.152,0.141l0.12,-0.134l-0.063,-0.116l-0.019,-0.218l-0.154,-0.197l-0.066,0.167l-0.063,0.039l-0.059,0.133L860.146,507.078zM866.473,509.962l0.123,0.002l0.2,-0.066l0.104,-0.14l0.109,0.036l0.217,-0.256l0.146,-0.126l0.388,-0.042l-0.262,-0.325l-0.047,-0.023l-0.362,0.126l-0.466,0.083l-0.18,0.175l-0.186,0.287l-0.042,0.256l0.033,0.081L866.473,509.962zM874.691,491.128l0.068,-0.195l-0.121,-0.095l-0.144,0.199l0.124,0.168L874.691,491.128zM859.062,494.604l0.401,-0.523l0.109,-0.518l-0.137,0.035l-0.013,0.228l-0.047,0.153l-0.063,0.055l-0.109,0.097l-0.25,0.416l-0.107,0.103l0.014,0.128L859.062,494.604zM847.542,493.993l0.224,0.439l0.056,-0.044l0.101,-0.38l-0.091,-0.178l-0.01,-0.309l-0.041,-0.082l-0.115,0.169l-0.151,0.025l0.091,0.224L847.542,493.993zM858.446,495.186l0.256,-0.21l0.025,-0.123l-0.085,0.06l-0.511,0.254l-0.244,0.286l0.444,-0.212L858.446,495.186zM859.758,506.792l0.045,-0.021l0.077,-0.09l-0.037,-0.25l-0.088,0.12L859.758,506.792zM874.588,492.508l-0.015,0.079l0.032,0.18l0.152,0.085l0.234,-0.163l-0.216,-0.32L874.588,492.508zM858.793,506.664l0.032,0.128l0.047,0.015l0.168,-0.012l0.061,-0.244l-0.074,-0.03l-0.178,0.027L858.793,506.664zM859.867,502.665l-0.276,-0.113l-0.104,-0.123l-0.013,-0.122l0.12,-0.365l0.075,-0.11l0.079,-0.031l0.176,-0.2l-0.042,-0.116l-0.057,-0.066l-0.071,-0.037l-0.114,0.263l-0.131,0.008l-0.121,-0.119l-0.053,-0.223l0.017,-0.128l-0.13,-0.016l-0.204,0.13l-0.138,0.208l-0.307,0.205l-0.037,0.42l0.046,0.331l-0.1,0.142l-0.159,0.104l0.078,0.049l0.272,0.016l0.531,0.132l0.318,-0.021l0.368,0.057l0.104,-0.135l0.055,-0.178l-0.047,-0.015L859.867,502.665zM900.147,530.964l0.065,-0.041l0.097,-0.128l-0.061,-0.158l-0.128,-0.224l0.032,-0.198l-0.079,-0.05l-0.088,0.009l-0.096,-0.077l-0.243,-0.092l-0.075,0.212l0.424,0.641L900.147,530.964zM905.238,537.121l0.071,-0.085l0.018,-0.212l0.162,-0.525l0.586,-1.388l0.025,-0.263l-0.172,-0.192l-0.045,-0.544l-0.07,-0.029l-0.095,0.033l-0.119,0.078l-0.104,0.154l0.12,0.055l0.156,0.276l-0.041,0.256l-0.107,0.2l-0.424,0.377l0.063,0.337l-0.026,0.161l-0.146,0.291l-0.063,0.318l0.085,0.55L905.238,537.121zM906.273,541.966l0.061,-0.047l-0.045,-0.36l0.113,-0.513l-0.097,-0.025l-0.147,0.061l-0.042,0.28l0.032,0.303L906.273,541.966zM906.217,542.516l-0.014,0.502l0.086,0.13l0.073,0.017l0.242,-0.867l-0.048,-0.044l-0.242,-0.054L906.217,542.516zM898.123,526.557l0.09,-0.047l-0.076,-0.237l-0.094,-0.053l-0.01,0.172l-0.063,0.121l0.072,0.051L898.123,526.557zM896.472,526.167l-0.001,-0.132l-0.044,-0.303l-0.104,0.076l-0.017,0.23l0.067,0.22L896.472,526.167zM885.772,514.565l0.211,0.207l0.125,0.258l0.177,0.1l0.079,-0.106l0.042,-0.143l-0.121,-0.217l-0.058,-0.279l-0.082,-0.016l-0.051,0.045l-0.124,0.041l-0.247,-0.01L885.772,514.565zM875.005,491.412l0.167,-0.176l-0.112,-0.147l-0.225,0.026l-0.066,0.141l0.059,0.103L875.005,491.412zM893.686,520.053l0.058,-0.045l0.033,-0.269l-0.103,0.073l-0.07,0.098l-0.055,0.124l0.074,0.032L893.686,520.053zM893.831,520.504l0.091,0.002l0.067,-0.033l0.004,-0.042l-0.114,-0.167l-0.066,-0.202l-0.118,0.387L893.831,520.504zM867.09,510.925l-0.143,0.121l0.037,0.12l0.105,-0.05l0.313,-0.059l-0.03,-0.153l-0.188,-0.15L867.09,510.925zM884.006,578.721l-0.169,-0.145l-0.368,0.017l-0.026,0.079l-0.016,0.177l0.156,0.108L884.006,578.721zM891.895,584.602l-0.077,-0.069l-0.258,-0.103l-0.499,-0.659l-0.188,-0.115l-0.264,0.384l-0.202,0.141l0.127,0.146l0.18,-0.018l0.083,0.24l-0.043,0.157l0.376,0.575l0.063,0.149l0.075,0.103l0.09,0.078l0.294,-0.104l0.25,-0.224l0.039,0.004l0.027,-0.106l-0.203,-0.165l0.109,-0.125L891.895,584.602zM891.725,586.541l-0.052,-0.037l-0.071,-0.007l-0.213,0.067l0.027,0.083l0.171,0.179L891.725,586.541zM883.001,579.338l0.399,-0.028l0.236,0.133l-0.017,-0.067l-0.098,-0.169l-0.074,-0.066l-0.196,-0.048L883.001,579.338zM882.035,586.51l0.018,-0.244l-0.021,-0.02l-0.09,0.13l-0.115,0.055l0.105,0.383L882.035,586.51zM857.83,501.341l-0.071,0.047l-0.034,0.079l0.002,0.104l0.255,0.055l0.066,-0.032l0.106,-0.096l-0.05,-0.243l-0.118,-0.12L857.83,501.341zM921.642,644.991l-0.171,0.957l0.026,0.22l0.094,-0.191l0.188,-0.652l0.037,-0.495L921.642,644.991zM891.976,585.776l-0.36,0.187l-0.391,-0.003l-0.136,0.087l0.027,0.086l0.231,0.174l0.313,0.022l0.296,-0.084l0.094,0.23l0.144,-0.039l0.197,-0.199l-0.15,-0.24L891.976,585.776zM892.017,592.482l-0.036,-0.141l-0.074,-0.127v-0.135l0.039,-0.288l-0.078,-0.42l0.025,-0.635l-0.027,-0.341l0.008,-0.336l0.063,-0.43l-0.017,-0.434l-0.041,-0.217l-0.018,-0.22l0.021,-0.624l-0.218,-0.341l-0.512,-0.273l-0.181,-0.005l-0.269,0.344l-0.155,-0.003l-0.55,-0.1l-0.119,0.114l-0.221,0.328l-0.129,0.139l-0.188,-0.06l-0.189,-0.107l-0.145,0.012l-0.141,0.088l-0.317,0.04l-0.325,-0.007l-0.197,0.094l-0.177,0.15l-0.058,0.189l0.034,0.218l-0.175,-0.202l-0.175,-0.132l-0.205,0.142l-0.214,0.097l-0.721,0.078l-0.579,-0.168l-0.813,-0.347l-0.129,-0.102l-0.117,-0.13l-0.134,-0.085l-0.308,-0.129l-0.12,-0.148l-0.136,-0.042l-0.156,0.021l-0.225,-0.118l-0.187,-0.208l-0.165,-0.018l-0.184,0.094l-0.325,-0.014l-0.63,-0.24l-0.28,-0.182l-0.025,0.408l-0.179,0.732l0.046,0.363l0.1,0.415l0.187,0.561l0.005,0.181l0.034,0.107l0.386,0.841l0.393,0.685l0.513,0.725l0.059,0.33l-0.067,0.338l0.167,-0.022l0.103,-0.166l0.024,0.165l0.058,0.139l0.438,0.48l0.03,0.127l-0.166,0.397l-0.094,-0.328l-0.174,-0.257l-0.488,-0.407l0.107,0.85l0.087,0.337l0.616,1.455l0.084,0.094l0.14,0.064l0.119,0.116l0.201,0.297l0.34,0.644l0.198,0.186l0.286,-0.059l0.421,0.131l0.144,-0.036l0.089,0.055l0.052,0.15l-0.33,-0.003l-0.321,0.083l-0.035,0.125l0.088,0.141l0.084,0.395l0.403,-0.133l0.636,0.026l0.38,-0.042l0.423,0.359l0.379,0.067l0.111,-0.026l0.227,-0.425l0.141,-0.511l0.087,-0.195l0.117,-0.166l-0.252,-0.219l-0.008,-0.111l0.033,-0.128l0.494,0.382l0.202,-0.154l0.042,-0.343v-0.212l0.059,-0.151l0.124,-0.07l0.05,-0.188l0.014,-0.145l-0.128,-0.328l-0.012,-0.189l0.31,0.393l0.124,0.533l0.237,-0.141l0.034,-0.084l-0.037,-0.369l0.106,-0.123l0.336,0.1l0.299,0.214l0.021,0.099l-0.02,0.1l-0.074,0.088l-0.243,-0.09l-0.111,0.156l0.144,0.39l0.244,0.374l0.147,-0.096l0.3,-0.051l0.1,-0.095l-0.064,-0.752l-0.12,-0.55l-0.008,-0.601l0.034,-0.327l0.138,-0.252l0.101,-0.266l-0.013,-0.343l0.05,-0.324l0.123,-0.336l0.172,-0.251l0.08,-0.058l-0.042,-0.07l0.073,-0.217l0.13,-0.159l0.079,0.195l-0.104,0.076l-0.061,0.085l0.204,0.143l0.061,0.127l0.021,0.14l-0.021,0.174l0.037,0.134l0.115,0.025l0.032,-0.175l-0.033,-0.212L892.017,592.482zM906.708,544.836l-0.339,-0.608l-0.075,-0.477l-0.119,-0.408l-0.527,-1.146l-0.228,-0.661l0.127,-0.664l-0.219,-2.121l0.227,-1.056l-0.11,-0.129l-0.273,-0.163l-0.121,-0.167l-0.181,-0.396l-0.02,-0.793l-0.35,-0.488l-0.378,-0.223l-0.256,-0.4l-0.172,-0.333l-0.024,-0.185l-0.104,-0.313l-0.29,-0.215l-0.199,-0.102l-0.427,-0.313l-0.209,-0.316l-0.429,-0.899l-0.199,-0.239l-0.396,-0.258l-0.324,-0.015l-0.209,-0.064l-0.742,-0.572l-0.231,-0.125l-0.186,-0.268l-0.278,-0.288l-0.161,-0.212l-0.247,-0.225l-0.169,-0.855v-0.83l-0.054,-0.989l-0.257,-0.477l-0.139,-0.154l-0.152,0.051l-0.012,0.308l0.042,0.21l-0.107,0.01l-0.382,-0.272l-0.478,-0.29l-0.258,-0.324l-0.188,-0.304l-0.156,0.012l-0.11,0.048l-0.11,0.374l0.179,0.645l-0.088,0.088l-0.151,-0.149l-0.275,-0.337l-0.143,0.11l-0.189,0.043l-0.165,-0.338l-0.139,-0.213l-0.201,-0.705l-0.18,-0.776l-0.017,-0.561l-0.351,-0.308l-0.137,-0.529l-0.109,-0.147l-0.103,-0.375l-0.405,-0.49l-0.416,-0.346l-0.345,-0.327l-0.297,-0.463l0.13,-0.335l0.211,0.071l0.224,-0.032l-0.179,-0.341l-0.174,-0.229l-0.445,-0.429l-0.207,-0.108l-0.448,-0.063l-0.498,-0.391l-0.305,-0.169l-0.215,-0.027l-0.249,-0.061l-0.176,-0.221l-0.311,-0.073l-0.438,-0.437l-0.215,-0.44l-0.108,-0.162l-0.147,-0.122l-0.216,0.073l-0.178,0.033l-0.392,-0.062l-0.129,-0.179l-0.253,-0.227l-0.487,-0.06l-0.385,-0.143l-0.294,-0.141l-0.298,-0.18l-0.274,-0.3l-0.243,-0.401l0.042,-0.514l0.061,-0.333l-0.31,-0.129l-0.535,-0.697l-0.026,-0.285l0.144,-0.582l0.146,-1.002l-0.213,-0.744l-0.415,-0.907l0.028,-0.46l-0.209,-0.006l-0.232,-0.09l-0.327,-0.447l-0.248,-0.294l-0.167,-0.271l-0.181,-0.367l0.029,-0.294l0.043,-0.198l0.018,-0.524l-0.231,-0.509l-0.073,-0.521l-0.219,-0.651l0.061,-0.432l-0.048,-0.356l-0.068,-0.308l0.071,-0.196l0.029,-0.249l-0.302,-0.249l-0.324,-0.19l-0.418,-0.336l-0.751,-0.524l-0.173,-0.396l-0.318,-0.354l-0.425,0.137l-0.313,0.065l-0.292,0.267l-0.404,0.197l-0.392,-0.178l-0.186,-0.15l-0.138,-0.53l-0.179,-0.578l-0.152,-0.29l-0.114,-0.35l0.107,-0.853l-0.16,-0.401l-0.05,-0.599l-0.152,-0.684l-0.169,-0.342l0.012,-0.275l-0.314,-0.403l-0.1,-0.289l-0.178,-0.104l-0.226,-0.165l-0.032,-0.221l0.017,-0.161l0.135,-0.267l0.073,-0.346l-0.315,-0.086l-0.219,-0.015l-0.153,-0.109l-0.172,-0.169l-0.062,-0.538l0.006,-0.57l-0.045,-0.356l-0.094,-0.265l-0.066,-0.28l-0.159,-0.298l-0.478,-0.387l0.035,-0.156l0.111,-0.202l-0.169,-0.116h-0.248l-0.14,0.27l-0.226,0.232l-0.443,0.177l-0.083,0.928l-0.275,1.02l-0.25,0.753l0.046,0.228l-0.02,0.223l-0.135,-0.1l-0.119,-0.125l-0.182,0.298l-0.329,0.773l-0.03,0.401l0.193,0.108l0.135,0.106l0.161,0.035l0.073,0.099l0.041,0.194l0.104,0.167l-0.026,0.181l-0.125,-0.071l-0.263,0.001l-0.134,0.157l-0.339,0.314l0.089,0.904l-0.159,0.476l-0.153,0.369l-0.173,0.7l0.023,0.371l0.153,0.264l0.165,0.386l-0.1,0.532l-0.101,0.381l0.226,1.104l0.063,0.588l-0.124,0.401l-0.364,1.186l-0.164,0.868l0.053,0.479l-0.158,0.44l-0.18,0.704l-0.203,0.532l-0.711,1.074l-0.141,0.52l-0.239,0.648l-0.511,0.378l-0.386,0.236l-0.846,0.234l-0.488,-0.005l-0.252,-0.143l-0.145,-0.124l-0.575,-0.207l-0.699,-0.468l-0.538,-0.152l-0.266,-0.47l-0.026,-0.195l-0.096,-0.254l-0.282,-0.334l-0.532,-0.113l-0.546,-0.241l-0.337,0.034l-0.731,-0.207l-0.487,-0.295l-0.445,-0.409l-0.587,-0.708l-0.498,-0.191l-0.637,-0.293l-0.366,-0.244l-0.222,-0.118l-0.246,-0.183l-0.224,0.041l-0.387,0.005l-0.243,-0.172l-0.031,-0.135l0.037,-0.106l0.014,-0.193l-0.085,-0.029l-0.086,0l-0.071,0.052l-0.099,0.038l-0.342,-0.148l-0.479,-0.247l-0.09,-0.217l-0.151,-0.265l-0.662,-0.385l-0.384,-0.318l-0.848,-0.461l-0.217,-0.223l-0.071,-0.195l-0.063,-0.281l0.19,-0.292l0.185,-0.207l0.577,-0.859l0.173,-0.15l0.217,-0.233l0.199,-0.627l0.099,-0.358l-0.169,-0.542l-0.006,-0.91l0.67,-0.353l0.187,-0.046l0.173,-0.078l0.198,0.11l0.133,0.171l0.138,-0.031l0.374,-0.634l-0.06,-0.264l-0.155,-0.225l0.054,-0.139l1.152,-1.241l-0.141,-0.304l-0.171,-0.07l-0.328,0.021l-0.309,-0.265l-0.194,-0.501l-0.272,-0.018l-0.486,0.514l-0.057,0.118l0.118,0.067l0.103,0.312l-0.19,0.366l-0.19,0.003l-0.312,-0.036l-0.142,-0.261l-0.064,-0.398l-0.198,-0.112l-0.226,0.075l-0.187,0.14l-0.132,0.04l-0.11,-0.091l-0.006,-0.166l0.285,-0.276l0.239,-0.177l0.019,-0.066l-0.174,-0.054l0.026,-0.128l0.222,-0.227l-0.104,-0.012l-0.271,0.243l-0.289,0.14l-0.384,0.298l-0.551,0.195l-0.378,0.264l-0.527,-0.08l-0.491,-0.26l-0.107,-0.137l-0.242,-0.201l-0.539,0.218l-0.339,-0.023l-0.187,-0.077l-0.319,-0.052l-0.274,-0.193l-0.66,-0.308l-0.701,-0.059l-0.34,0.014l-0.253,-0.159l-0.244,-0.091l-0.479,-0.064l-0.199,-0.239l-0.251,-0.481l-0.18,-0.129l-0.291,-0.046l-0.309,0.221l-0.181,0.104l-0.353,-0.395l-0.627,-0.408l-0.2,-0.056l-0.105,0.099l-0.076,0.188l-0.119,0.018l-0.139,-0.085l-0.245,-0.241l-0.16,-0.044l-0.42,0.257l0.029,0.088l0.343,0.131l0.36,0.359l0.171,0.074l0.404,-0.094l0.554,0.068l0.559,0.448l-0.082,0.223l-0.042,0.31l0.015,0.338l-0.013,0.229l0.23,0.252l-0.103,0.019l-0.26,-0.057l-0.205,0.07l-0.193,0.119l-0.086,0.339l-0.109,-0.16l-0.334,-0.152l-0.198,0.117l-0.332,0.154l-0.302,-0.062l-0.192,-0.078l-0.454,0.132l-0.809,-0.004l-0.27,-0.19l-0.079,-0.326l-0.063,-0.08l-0.074,0.146l-0.127,0.168l-0.489,0.034l-0.073,0.069l0.029,0.163l-0.019,0.205l-0.188,0.015l-0.232,0.054l0.025,0.251l0.043,0.196l-0.086,0.098l-0.255,-0.179l-0.114,-0.193l-0.179,-0.06l-0.14,0.069l-0.036,0.172l0.021,0.444l-0.127,0.05l-0.331,-0.017l-0.152,0.084l-0.229,0.558l-0.421,0.213l-0.064,0.291l-0.028,0.248l0.35,0.449l-0.169,0.23l-0.178,0.188l-0.178,0.08l-0.378,0.073l-0.278,0.205l-0.117,0.216l-0.022,0.206l-0.077,0.264l-0.121,0.313l-0.024,0.169l-0.253,0.168l-0.45,0.503l-0.227,0.515l0.296,0.28l0.348,0.201l0.253,-0.006l0.002,0.051l-0.264,0.207l0.164,0.212l0.253,0.198l0.154,0.029l0.113,0.084l-0.239,0.047l-0.354,0.017l-0.068,0.216l0.043,0.249l0.063,0.216l-0.044,0.153l-0.132,-0.105l-0.058,-0.162l-0.304,-0.33l-0.218,-0.101l-0.319,-0.078l-0.096,0.1l0.013,0.503l-0.063,0.231l-0.113,-0.131l-0.028,-0.368l-0.301,-0.298l-1.186,-0.298l-0.168,-0.019l-0.276,0.039l-0.189,0.118l-0.019,0.116l-0.126,0.094l-0.205,0.107l-0.188,0.164l-0.122,0.137l-0.006,0.171l0.152,0.321l0.089,0.093l-0.012,0.153l-0.148,-0.159l-0.13,-0.051l-0.123,0.25l-0.118,0.05l0.031,-0.698l0.123,-0.473l0.1,-0.279l0.11,-0.218l-0.053,-0.115l-0.822,-0.653l-0.348,-0.535l-0.255,-0.3l-0.397,-0.289l-0.207,-0.182l-0.461,-0.278l-0.544,-0.193l-0.262,-0.261l-0.289,-0.093l-0.358,0.127l-0.03,0.243l0.045,0.236l-0.285,0.386l-0.307,0.206l-0.245,-0.236l-0.223,-0.172l-0.225,0.124l-0.068,0.213l-0.113,0.079l-0.085,-0.145l-0.123,-0.32l-0.183,-0.127l-0.183,0.056l0.055,0.254l0.105,0.14l-0.029,0.202l-0.132,0.093l-0.025,0.191l-0.079,0.254l0.012,0.355l-0.209,0.075l-0.156,0.281l-0.113,-0.06l-0.029,-0.183l-0.057,-0.187l-0.228,-0.071l-0.084,0.174l-0.051,0.059l-0.081,0.012l0.055,-0.142v-0.266l0.066,-0.278l-0.216,-0.1l-0.086,0.062l0.003,0.24l-0.052,0.35l-0.214,0.055l-0.19,0.157l-0.281,0.003l-0.143,0.076l-0.051,0.185l-0.247,0.191l0.005,0.229l0.166,0.232l0.011,0.202l0.395,0.205l-0.023,0.206l-0.056,0.096l-0.149,-0.038l-0.319,-0.178l-0.325,-0.038l-0.098,-0.082l-0.039,0.059l-0.002,0.137l-0.126,0.1l-0.181,0.01l-0.211,0.147l0.15,0.23l-0.027,0.091l0.074,0.11l0.322,0.02l0.137,-0.029l0.014,0.196l-0.041,0.196l-0.131,0.07l-0.125,-0.18l-0.621,-0.345l-0.163,-0.033l-0.034,0.108l0.029,0.141l-0.131,0.171l-0.231,0.224l-0.157,-0.061l-0.186,0.053l-0.12,0.383l-0.042,0.383l0.206,0.268l0.138,0.353l0.287,-0.434l0.117,-0.05l0.001,0.188l-0.112,0.195l-0.066,0.24l-0.022,0.271l-0.188,0.007l-0.211,-0.036l-0.051,0.086l-0.079,0.202l0.046,0.279l0.14,0.105l0.325,-0.01l0.277,0.02l0.247,0.101l0.041,0.085l-0.223,-0.048l-0.456,0.026l-0.217,-0.038L824.547,509l-0.32,-0.159l-0.158,-0.159l-0.239,-0.041l-0.233,0.064l-0.13,0.223l-0.157,0.054l-0.365,-0.552l-0.229,-0.037l-0.113,0.129l0.11,0.346l-0.058,0.213l-0.125,0.159l-0.158,-0.01l-0.098,0.067l0.078,0.146l0.25,0.371l0.205,0.162l0.182,0.225l0.093,0.194l0.22,-0.009l0.051,0.157l-0.126,0.228l0.004,0.362l-0.09,0.019l-0.127,-0.08l-0.252,-0.223l-0.13,-0.043l-0.067,0.064l-0.021,0.153l0.061,0.4l-0.129,0.571l0.026,0.167l-0.023,0.142l-0.106,-0.103l-0.13,-0.221l-0.269,-0.343l-0.329,-0.747l-0.348,-0.506l-0.189,-0.431l-0.291,-0.811l-0.151,-0.012l-0.193,0.349l-0.213,0.459l-0.145,0.226l-0.344,0.225l-0.212,0.228l-0.254,0.08l-0.279,0.26l-0.201,0.223l-0.282,0.52l-0.048,0.335l0.012,0.353l0.123,0.501l0.13,0.728l0.191,0.078l0.154,0.123l-0.043,0.22l-0.234,0.139l-0.718,0.689l-0.483,0.246l-0.138,0.173l-0.177,0.365l-0.256,0.461l-0.116,0.291l-0.269,0.564l-0.438,0.63l-0.443,0.468l-0.511,0.375l-0.335,0.179l-1.248,0.524l-0.666,0.2l-1.203,0.146l-0.51,0.237l-0.638,-0.077l-0.714,-0.051l-0.991,0.792l-0.822,0.193l-0.728,0.145l-0.313,0.13l-0.716,0.457l-0.417,0.209l-0.778,0.234l-0.319,-0.024l-0.431,-0.215l-0.403,0.05l-0.446,-0.031l-0.364,0.02l-0.283,0.178l-1.669,0.946l-0.33,0.258l-0.343,0.375l-0.492,0.347l-0.393,0.4l-0.826,0.417l-0.85,0.316l-0.42,0.263l-0.299,0.357l-0.521,0.96l-0.11,0.243l-0.208,0.253l-0.276,0.092l-0.179,0.082l0.063,-0.482l-0.199,-0.428l0.14,-0.817l-0.052,-0.244l-0.284,0.159l-0.181,0.174l-0.459,1.184l-0.314,0.923l0.238,0.53l0.077,0.308l-0.001,0.331l-0.084,0.476l0.006,0.31l-0.028,0.413l-0.572,0.958l-0.178,0.417l-0.192,0.802l-0.023,0.372l0.014,0.557l0.241,0.488l0.184,0.302l0.285,0.874l0.342,0.581l0.563,1.171l0.621,0.95l0.04,0.364l-0.07,0.49l0.034,0.507l-0.111,0.149l-0.24,0.175l-0.275,-0.225l-0.14,-0.195l-0.176,-0.718l-0.072,-0.041l-0.118,0.314l-0.13,0.137l-0.118,-0.093l-0.09,-0.119l-0.022,-0.124l0.04,-0.148l0.043,-0.538l-0.258,-0.307l-0.229,-0.33l-0.247,-0.081l-0.152,0.149l-0.005,0.205l0.331,0.574l0.213,0.622l0.329,0.389l0.194,0.1l0.217,0.237l-0.047,0.525l-0.157,0.196l-0.131,0.1l-0.427,-0.116l-0.099,-0.378l-0.334,-0.743l-0.108,-0.288l-0.092,-0.078l-0.037,0.142l0.007,0.256l-0.062,0.11l-0.065,-0.011l-0.132,-0.134l-0.119,-0.072l-0.072,0.025l0.13,0.185l0.286,0.548l1.056,1.344l0.895,1.566l0.197,0.62l0.099,1.364l0.089,0.33l0.528,0.679l0.517,0.787l0.152,0.392l-0.003,0.336l0.105,0.319l0.642,0.866l0.286,0.93l0.035,0.34l-0.082,0.584l0.075,1.033l0.072,0.562l0.233,1.114l0.278,0.804l0.329,0.5l0.45,1.112l0.684,1.284l0.111,0.635l-0.035,1.693l-0.049,0.552l-0.15,0.095l-0.101,0.233l0.146,1.114l0.034,0.636l-0.221,0.6l-0.25,0.533l-0.439,0.364l-0.497,0.012l-0.231,-0.212l-0.295,-0.217l-0.052,0.969l-0.006,0.832l0.09,0.317l0.01,0.374l0.334,0.291l0.188,-0.113l0.232,-0.016l0.807,0.412l0.453,0.34l0.73,0.914l0.646,0.241l0.842,0.416l0.978,0.132l0.782,0.024l1.229,0.219l0.263,-0.078l0.526,-0.068l0.402,-0.142l0.362,-0.091l1.08,-0.849l1.053,-0.874l0.521,-0.069l0.467,-0.01l0.57,-0.298l0.518,-0.903l0.264,-0.201l0.351,-0.225l0.997,-0.132l0.587,0.093l0.314,-0.146l0.797,-0.163l1.658,-0.15l0.91,0.121l0.608,-0.02l0.322,0.06l0.252,0.395l1.759,-0.34l0.5,-0.024l0.313,0.057l0.394,0.295l0.442,-0.279l0.397,0.037l0.402,-0.269l0.611,-0.806l0.278,-0.503l0.445,-1.059l0.33,-0.38l0.363,-0.189l0.426,-0.061l0.657,-0.191l1.425,-0.891l0.553,-0.192l0.292,-0.168l0.981,-0.691l0.615,-0.133l1.804,0.179l0.855,-0.046l0.662,-0.108l1.005,-0.372l1.094,-0.28l1.343,-0.588l1.122,-0.608l0.679,-0.14l1.069,-0.107l1.574,-0.158l1.833,0.082l0.464,-0.125l0.228,-0.111l0.321,-0.119l0.396,0.083l0.304,0.09l0.92,0.485l1.386,1.021l0.306,0.043l0.912,-0.233l0.305,0.023l1.276,0.75l0.529,0.016l0.423,-0.019l0.32,0.081l0.34,0.204l0.403,0.472l0.853,0.453l0.043,0.366l-0.063,0.238l-0.192,0.009l-0.163,0.051l0.205,0.767l0.358,0.62l0.86,0.084l0.313,0.217l0.201,0.245l0.157,0.389l0.117,0.609l0.431,0.508l0.402,0.434l0.094,0.179l0.189,0.615l0.072,0.18l0.157,0.609l0.229,0.696l-0.063,0.071l-0.136,-0.015l-0.242,-0.177l-0.213,-0.197l-0.114,0.031l-0.13,0.135l-0.019,0.167l0.19,-0.044l0.111,0.024l0.263,0.213l0.245,0.248l0.194,0.145l0.468,0.618l0.183,-0.138l0.224,-0.123l0.356,0.336l0.142,0.067l0.081,-0.129l-0.135,-0.603l-0.135,-0.146l-0.032,-0.214l0.167,-0.153l0.081,-0.183l0.397,-0.451l0.869,-1.347l0.267,-0.154l0.308,-0.295l0.416,-0.225l0.43,-0.267l0.274,-0.104l0.269,-0.055l0.301,-0.247l0.328,-0.668l0.247,-0.791l0.264,-0.348l0.404,-0.371l0.311,-0.515l-0.025,-0.403l0.004,-0.411l0.224,0.317l0.141,0.322l0.223,1.077l-0.191,0.237l-0.202,0.119l0.039,0.378l0.135,0.493l0.05,0.395l-0.424,0.417l-0.366,0.524l-0.439,1.018l-0.028,0.308l-0.069,0.428l0.026,0.377l0.068,0.365l-0.108,0.566l-0.177,0.506l-0.232,0.013l-0.158,-0.019l-0.347,0.045l-0.32,-0.03l-0.367,1.106l0.233,0.052l0.178,-0.063h0.321l0.359,-0.198l0.525,-0.162l0.3,0.057l0.352,-0.018l0.512,-1.416l0.127,-0.921l0.261,-0.413l0.081,-0.285l0.135,-0.27l0.272,0.464l0.219,0.451l0.482,0.732l0.151,0.365l0.06,0.888l-0.313,1.03l-0.188,0.295l-0.227,0.257l-0.19,0.433l0.575,0.11l0.373,-0.008l0.583,-0.315l0.115,-0.042l0.293,-0.005l0.112,-0.165l0.287,-0.157l0.214,-0.184l0.277,-0.145l0.252,0.096l0.057,0.083l0.063,0.093l-0.093,0.204l-0.008,0.431l-0.165,-0.047l-0.147,-0.256l-0.184,0.066l-0.128,0.193l-0.275,-0.061l0.046,0.126l0.147,0.247l0.581,0.476l0.621,0.631l0.231,0.298l0.506,0.951l0.36,1.011l-0.029,0.299l-0.177,0.54l-0.127,0.549l0.011,0.288l0.117,0.365l0.255,0.374l0.946,1.021l0.5,0.9l0.665,0.467l1.077,0.172l0.569,0.338l0.591,0.682l0.188,0.058l0.287,0.028l0.368,-0.415l0.561,0.044l0.738,0.412l0.439,-0.098l0.313,0.051l0.438,0.233l0.641,0.461l0.68,0.232l0.404,0.349l0.314,0.052l0.563,0.227l0.414,-0.194l0.352,-0.244l0.813,-0.845l0.637,-0.407l0.335,-0.158l0.269,-0.07l0.341,-0.264l-0.212,-0.186l-0.201,0.031l-0.344,-0.105l0.196,-0.122l0.205,-0.091l0.99,-0.628l0.263,0.186l0.182,0.208l0.197,0.285l-0.148,0.403l-0.132,0.19l-0.305,0.305l-0.368,0.012l-0.175,-0.025l0.363,0.342l0.314,0.23l0.65,-0.418l0.162,-0.329l0.123,-0.191l0.206,-0.042l0.308,0.064l0.119,0.241l0.067,0.294l-0.223,0.08l-0.108,0.218l-0.076,0.207l0.388,0.266l0.199,0.169l0.24,-0.004l0.277,0.041l0.21,0.391l0.196,0.451l0.232,-0.125l0.145,-0.118l0.248,0.113l0.27,0.355l0.219,0.403l0.022,0.17l0.168,0.078l0.159,-0.12l0.076,-0.17l-0.006,-0.313l-0.043,-0.494l-0.111,-0.075l-0.253,0.268l-0.144,-0.194l-0.194,-0.206l0.003,-0.199l0.211,-0.099l0.179,0.043h0.224l1.182,-0.173l1.512,-1.585l0.662,-0.581l0.688,-0.431l0.712,-0.277l0.371,-0.089l1.912,-0.149l0.995,0.048l0.512,-0.109l0.237,-0.146l0.402,-0.399l0.282,-0.244l0.346,-0.068l0.084,-0.298l0.001,-0.319l0.066,-0.333l-0.101,-0.625l0.027,-0.821l0.078,-0.428l0.209,-0.601l0.092,-0.617l0.094,-0.874l0.083,-0.518l0.104,-0.473l0.271,-0.521l0.23,-0.337l0.543,-1.268l0.188,-0.125h0.157l0.068,-0.077l0.021,-0.07l-0.046,-0.051l-0.069,-0.147l0.046,-0.119l0.165,-0.118l0.052,0.045l0.084,-0.025l0.013,-0.065l-0.078,-0.347l0.114,-0.486l0.139,-0.849l0.157,-0.381l0.093,-0.303l0.363,-0.455l0.397,-0.448l-0.113,-0.048l-0.186,-0.034l0.12,-0.107l0.095,-0.032l0.121,0.071l0.1,-0.197l0.022,-0.309l0.097,-0.456l-0.086,-0.397l0.184,-0.124l0.209,-0.075l0.088,-0.416l0.058,-0.167l0.13,-0.155l0.218,-0.331l0.171,-0.345l0.405,-0.658l0.396,-0.269l0.59,-0.208l0.066,-0.119l-0.15,-0.073l0.006,-0.072h0.222l0.09,-0.23l0.234,-0.17l0.391,-0.392l0.13,-0.36l0.081,-0.288l0.039,-0.651l0.636,-0.854l0.443,-1.153l0.107,-0.739l0.11,-0.399l0.074,-0.584l-0.067,-0.608l0.019,-0.509l0.442,-1.292l0.101,-0.533l0.136,-0.342l0.209,-1.273l0.004,-0.66l0.32,-0.768l0.399,-0.625l0.034,-0.578l-0.134,-0.444L906.708,544.836zM840.911,495.874l0.522,-0.151l0.52,0.182l0.291,-0.054l-0.01,-0.123l-0.064,-0.103l-0.106,-0.097l-0.231,-0.067l-0.074,-0.249l-0.133,-0.234l-0.024,-0.256l-0.105,-0.236l-0.124,0l-0.123,0.067l-0.276,0.333l0.097,0.182l0.029,0.333l-0.164,0.11l-0.188,-0.046l-0.081,0.304l0.094,0.108L840.911,495.874zM793.203,537.66l-0.001,-0.216l-0.1,-0.209l-0.319,-0.913l-0.1,0.035l-0.108,0.119l0.157,0.66l0.539,0.967l0.074,-0.128l-0.097,-0.246L793.203,537.66zM799.535,522.186l0.163,-0.233l0.031,-0.213l-0.064,-0.144l-0.225,0.233l-0.129,0.193l0.026,0.118L799.535,522.186zM825.175,506.197l0.1,0.025l0.105,-0.082l0.022,-0.131l-0.114,-0.132l-0.038,-0.117l-0.089,-0.008l-0.043,0.072l-0.06,0.139l0.115,0.122L825.175,506.197zM827.068,503.766l-0.015,-0.078l0.013,-0.224l-0.107,-0.054l-0.119,0.104l-0.073,0.288l0.122,0.144L827.068,503.766zM889.243,596.164l-0.071,0.131l-0.023,0.118l-0.064,0.063l0.117,0.083l0.031,0.188l0.064,0.032l0.176,0l-0.104,-0.47L889.243,596.164zM889.13,596.931l-0.08,-0.005l-0.14,0.198l-0.04,0.157l-0.06,0.03l-0.039,0.11l-0.061,0.086l-0.164,-0.067l0.001,0.07l0.137,0.266l0.218,-0.065l0.218,0.068l0.132,-0.4l-0.038,-0.195L889.13,596.931zM891.461,594.393l-0.197,-0.087l-0.141,0.18l0.023,0.087l-0.004,0.196l0.053,0.017l0.157,-0.034l-0.011,-0.113l0.193,-0.11L891.461,594.393zM862.795,569.516l-0.261,0.124l-0.672,-0.081l0.005,-0.057l0.104,-0.226l-0.142,-0.125l-0.153,-0.052l-0.551,-0.043l-0.68,0.245l-1.271,0.293l-0.168,0.206l-0.107,0.281l0.137,0.156l0.465,0.338l0.442,0.046l0.317,-0.079l0.342,0.053l0.174,-0.196l0.484,0.133l0.186,0.187l0.398,-0.165l0.09,-0.307l0.137,-0.139l0.462,-0.104l0.495,0.137l0.153,-0.024l0.16,-0.167l-0.216,-0.335L862.795,569.516zM880.173,583.871l-0.083,-0.535l-0.254,-0.21l-0.146,0.013l-0.027,0.27l-0.168,0.152l-0.049,0.138l0.009,0.313l-0.074,0.291l0.138,0.29l-0.033,0.293l0.064,0.206l0.082,-0.015l0.3,-0.138l0.217,-0.205l0.081,-0.25l-0.098,-0.291L880.173,583.871zM822.568,497.617l-0.002,-0.029l-0.063,-0.005l0.002,0.029L822.568,497.617z', 1, '2020-09-03 07:21:53', '2020-09-03 07:21:53', '0'),
+(17, 5, 'M480.487,331.376L480.41,331.401L480.152,331.556L480.005,331.61L479.871,331.637L479.766,331.626L479.708,331.535L479.714,331.396L479.69,331.272L479.67,331.205L479.708,331.024L479.794,330.927L479.913,330.847L480.101,330.876L480.499,330.992L480.582,331.101L480.583,331.173L480.51,331.292z', 1, '2020-09-03 08:33:59', '2020-09-03 08:33:59', '0');
+INSERT INTO `maps` (`id`, `country_id`, `path_d`, `status`, `created_at`, `updated_at`, `is_deleted`) VALUES
+(18, 221, 'M633.699,388.616l0.184,0.251l0.026,1.701l0.042,0.121l-0.098,0.018l-0.11,0.129l-0.129,0.199l-0.177,0.103l-0.142,0.116l-0.134,0.144l-0.12,0.031l-0.155,-0.183l-0.107,-0.187l0.026,-0.041l0.075,-0.013l0.028,-0.097l-0.045,-0.14l-0.105,-0.053l-0.132,-0.004l-0.127,0.063l-0.135,0.124l-0.076,0.133l-0.011,0.267l0.035,0.3l-0.001,0.146l-0.074,0.181l-0.026,0.266l0.053,0.206l0.048,0.123l0.005,0.104l-0.126,0.328l0.109,0.062l0.361,0.023l0.106,0.222l0.072,0.152l-0.02,0.09l-0.256,0.067l-0.322,0.074l-0.231,-0.021l-0.418,0.1l-0.223,0.154l0.065,0.096l0.077,0.074l0.035,0.203l-0.065,0.288l-0.118,0.279l-0.147,0.348l-0.17,0.399l-0.233,0.6l-0.197,0.471l-0.021,0.339l0.005,0.221l-0.022,0.441l-0.187,0.243l-0.042,0.007l-0.223,-0.029l-0.075,-0.01l-0.213,-0.028l-0.33,-0.043l-0.429,-0.057l-0.507,-0.066l-0.565,-0.075l-0.604,-0.08l-0.625,-0.082l-0.624,-0.082l-0.605,-0.08l-0.565,-0.074l-0.507,-0.067l-0.428,-0.057l-0.33,-0.043l-0.213,-0.028l-0.075,-0.01l-0.236,-0.031l-0.127,-0.164l-0.154,-0.198l-0.155,-0.199l-0.154,-0.199l-0.154,-0.199l-0.154,-0.199l-0.154,-0.199l-0.154,-0.199l-0.154,-0.199l-0.154,-0.2l-0.154,-0.199l-0.155,-0.2l-0.154,-0.2l-0.154,-0.2l-0.154,-0.2l-0.154,-0.2l-0.154,-0.2l-0.104,-0.134l-0.057,-0.151l-0.011,-0.396v-0.087l0.104,-0.16l0.05,0.114l0.116,0.155l0.197,-0.038l0.092,0.026l0.068,0.549l0.145,0.195l0.176,0.078l0.597,0.043l0.371,-0.074l0.731,-0.358l0.384,-0.129l1.062,0.022l0.851,0.149l1.325,0.088l0.257,-0.023l0.715,-0.288l0.438,-0.254l0.261,-0.073l0.172,-0.246l0.113,-0.32l0.101,-0.209l0.129,-0.1l0.122,-0.178l0.099,-0.289l0.246,-0.292l0.986,-0.711l0.576,-0.602l0.051,-0.195l0.313,-0.292l0.251,-0.32l1.175,-0.916l0.235,-0.379l0.139,-0.425l0.017,-0.03l0.101,-0.018l0.144,0.064l0.015,0.318l-0.053,0.3l-0.006,0.318l-0.021,0.172l0.109,0.141l0.186,0.061l0.081,-0.007L633.699,388.616zM633.653,389.899l0.017,-0.133l-0.029,-0.069l-0.12,-0.009l-0.05,0.115l-0.017,0.165l0.083,0.014L633.653,389.899zM628.557,392.337l-0.025,0.06l-0.079,-0.005l-0.198,-0.054l-0.064,-0.086l0.124,-0.103l0.055,-0.005l0.079,0.108L628.557,392.337zM625.376,392.901l-0.208,0.017l-0.188,-0.116l0.397,-0.155l0.107,-0.07l0.116,-0.143l0.093,0.123l-0.103,0.193l-0.073,0.083L625.376,392.901zM623.368,392.81l-0.047,0.022l-0.05,-0.165l0.003,-0.052l0.129,-0.075l0.079,0.135L623.368,392.81zM627.047,393.15l0.001,0.104l-0.285,-0.03l-0.076,0.054l-0.234,-0.03l-0.229,-0.075l0.155,-0.125l0.404,-0.147l0.168,0.134L627.047,393.15z', 1, '2020-09-03 08:34:38', '2020-09-03 08:34:38', '0'),
+(19, 1, 'M685.881,350.592L685.737,350.615L685.533,350.531L685.453,350.403L685.419,350.385L685.257,350.469L684.948,350.575L684.424,350.852L684.436,350.923L684.777,351.204L684.857,351.297L684.899,351.326L684.59,351.461L683.926,351.765L683.489,352.013L683.385,352.022L683.121,351.918L682.731,351.794L682.627,351.796L681.727,351.817L680.9,351.863L680.556,351.923L679.917,351.98L679.515,352L679.258,352.096L678.977,352.222L678.685,352.304L678.468,352.331L678.207,352.449L678.035,352.683L677.544,353.029L677.268,353.196L677.129,353.385L676.971,353.403L676.701,353.369L676.492,353.573L676.261,353.865L675.838,354.288L675.613,354.459L675.479,354.735L675.578,354.878L675.922,355.092L676.076,355.294L676.16,355.454L676.317,355.864L676.417,356.267L676.565,356.441L676.608,356.736L676.646,356.917L676.565,357.046L676.491,357.189L676.491,357.325L676.58,357.465L676.658,357.589L676.701,357.688L676.648,357.798L676.491,357.966L676.411,358.138L676.237,358.425L675.965,358.621L675.785,358.763L675.594,359.063L675.278,359.396L675.145,359.674L675.006,359.827L674.863,359.909L674.9,360.059L675.024,360.246L675.229,360.455L675.22,360.78L675.21,361.014L675.217,361.297L675.105,361.535L674.535,361.763L673.989,361.863L673.32,361.869L673.067,361.833L672.865,361.783L672.139,361.527L671.844,361.678L671.783,362.047L672.313,362.645L672.53,362.978L672.771,363.534L672.951,363.82L672.887,364.088L672.407,364.392L671.93,364.677L671.322,364.736L670.94,364.838L670.755,364.985L670.619,365.608L670.482,365.836L670.485,366.107L670.356,366.414L670.161,366.611L670.024,366.933L670.067,367.542L670.131,368.572L669.872,368.896L669.58,369.224L669.272,369.458L668.979,369.566L668.736,369.526L668.544,369.324L668.43,369.154L668.218,369.012L668.002,369.041L667.785,369.171L667.438,369.128L667.142,368.998L666.992,369.012L666.906,369.143L666.589,369.423L665.811,369.848L665.493,369.879L665.357,369.985L665.411,370.159L665.55,370.301L665.793,370.401L665.805,370.517L665.591,370.618L665.408,370.733L665.005,370.874L664.54,370.929L664.06,370.847L663.813,370.66L663.521,370.642L663.255,370.779L662.98,371.005L662.68,371.489L662.6,371.574L662.519,371.651L662.323,371.755L662.042,371.925L661.901,372.281L661.732,372.914L661.772,373.254L661.785,373.843L661.719,374.256L661.597,374.527L661.621,374.74L661.807,374.982L661.732,375.139L661.576,375.313L661.425,375.41L660.82,375.593L659.991,375.842L659.443,376.002L658.628,376.24L658.39,376.298L657.894,376.319L657.637,376.283L657.289,376.273L656.777,376.282L656.42,376.347L656.062,376.466L655.798,376.616L655.646,376.764L655.592,376.835L655.233,376.713L654.102,376.495L651.039,376.783L650.75,376.728L649.705,376.391L648.358,375.957L647.525,375.688L646.456,375.336L647.188,374.466L647.826,373.706L648.466,372.942L649.096,372.187L649.171,371.922L649.181,371.403L649.015,370.708L648.748,370.391L647.867,370.263L647.206,370.166L646.485,370.061L646.393,370.022L646.311,369.479L646.346,369.237L646.299,368.768L646.306,368.406L646.41,367.811L646.416,367.542L646.083,366.381L645.897,365.736L645.707,365.069L645.666,364.856L645.662,364.593L646.104,363.973L646.241,363.838L646.5,363.529L646.662,363.364L646.634,363.251L646.352,363.186L645.926,363.18L645.699,363.086L645.522,362.917L645.452,362.671L645.568,362.234L645.452,361.383L645.689,360.961L645.893,360.666L646.585,360.624L646.345,360.29L646.229,360.096L646.155,360.04L646.127,359.951L646.164,359.861L646.341,359.827L646.461,359.715L646.656,359.558L646.758,359.49L646.776,359.299L646.869,359.165L647.009,358.996L647.12,358.804L647.092,358.579L647.194,358.309L647.241,358.139L647.315,357.992L647.25,357.778L647.194,357.597L647.176,357.382L647.287,357.325L647.427,357.246L647.454,357.076L647.528,356.861L647.584,356.69L647.677,356.555L647.687,356.418L647.631,356.191L647.862,356.157L647.955,356.282L648.079,356.444L648.418,356.746L648.638,356.834L648.915,356.878L649.256,356.837L649.528,356.78L649.656,356.795L649.953,357.014L650.3,357.321L650.411,357.458L650.463,357.667L650.565,357.729L650.787,357.522L651.001,357.454L651.198,357.493L651.415,357.516L651.633,357.44L651.73,357.385L652.109,357.117L652.453,356.913L652.667,356.788L652.744,356.368L652.843,356.129L652.984,355.99L652.932,355.817L652.873,355.685L652.813,355.506L652.873,355.411L653.01,355.369L653.354,355.369L653.959,355.18L654.463,354.991L654.929,354.837L655.141,354.812L655.342,354.838L655.434,354.793L655.459,354.646L655.573,354.491L655.832,354.365L656.319,354.098L656.749,353.701L656.902,353.399L657.006,352.958L657.207,352.276L657.429,351.527L657.511,351.196L657.605,350.941L657.985,350.726L658.373,350.57L658.974,350.539L659.679,350.523L659.828,350.112L659.921,349.762L660.038,349.581L660.209,349.434L660.269,349.405L660.649,349.62L661.232,349.949L661.911,350.113L662.252,350.195L662.394,350.182L663.251,350.102L663.928,350.23L664.283,350.58L664.632,350.669L664.974,350.5L665.186,350.469L665.268,350.578L665.438,350.624L665.698,350.607L665.848,350.704L665.864,350.801L665.884,350.913L666.076,351.179L666.423,351.502L666.731,351.58L667.136,351.329L667.273,351.358L667.34,351.277L667.381,351.094L667.626,350.922L668.074,350.761L668.328,350.617L668.419,350.498L668.57,350.464L668.735,350.5L668.853,350.455L668.894,350.342L668.941,350.293L669.025,350.253L669.1,350.233L669.236,350.264L669.487,350.47L669.853,350.85L670.091,351.024L670.2,350.995L670.34,350.878L670.511,350.676L670.553,350.384L670.468,350.003L670.526,349.695L670.729,349.461L671.104,349.317L671.651,349.262L671.987,349.295L672.111,349.416L672.279,349.482L672.49,349.495L672.684,349.358L672.859,349.069L672.869,348.712L672.714,348.285L672.756,348.149L672.823,348.09L673.033,347.935L673.326,347.614L673.609,347.2L673.882,346.692L674.219,346.378L674.62,346.257L675.106,346.395L675.679,346.791L675.894,347.277L675.754,347.854L675.742,348.17L675.858,348.229L676.054,348.213L676.329,348.123L676.509,348.118L676.594,348.2L676.589,348.362L676.493,348.605L676.378,349.286L676.307,349.874L676.236,350.451L676.175,350.957L676.284,351.351L676.45,351.945L676.637,352.337L676.828,352.462L677.02,352.507L677.211,352.472L677.604,352.22L678.197,351.752L678.773,351.464L679.611,351.302L679.892,350.799L680.28,350.466L681.166,349.971L681.647,349.781L681.924,349.749L682.27,349.838L682.349,349.87L682.417,349.894L682.596,349.935L682.633,350.086L682.586,350.249L682.395,350.383L682.334,350.487L682.407,350.565L682.677,350.592L683.236,350.411L683.598,350.295L683.849,350.249L683.95,350.098L684.108,349.946L684.359,349.935L684.628,350.016L684.851,350.063L685.23,350.02L685.43,350.152L685.71,350.401L685.836,350.556z', 1, '2020-09-03 08:34:56', '2020-09-03 08:34:56', '0'),
+(20, 9, 'M302.494,414.451l-0.09,0.116l-0.313,-0.047l-0.063,-0.145l-0.014,-0.102l0.196,-0.207l0.221,0.088l0.085,0.098l0.063,0.02l-0.001,0.083l-0.024,0.061L302.494,414.451zM302.407,412.879l-0.042,0.077l-0.229,-0.139l-0.07,-0.261l0.007,-0.055l0.039,-0.029l0.091,0.05l0.121,0.019l0.077,0.085L302.407,412.879z', 1, '2020-09-03 08:35:38', '2020-09-03 08:35:38', '0'),
+(21, 7, 'M298.888,410.983L298.442,411.131L298.46,411.046L298.818,410.843L298.948,410.857z', 1, '2020-09-03 08:35:52', '2020-09-03 08:35:52', '0'),
+(22, 2, 'M532.009,331.209L532.12,331.295L532.351,331.669L532.504,331.999L532.807,332.113L532.975,332.241L533.192,332.436L533.296,332.631L533.444,333.228L533.461,333.588L533.418,333.752L533.382,333.795L533.247,334.379L533.279,334.676L533.278,334.872L533.164,334.949L533.088,335.072L533.211,335.556L533.196,335.763L533.202,335.999L533.423,336.537L533.554,336.703L533.67,336.782L533.82,337.276L533.908,337.361L534.271,337.314L534.449,337.369L534.52,337.486L534.536,337.566L534.512,337.842L534.602,338.054L534.723,338.272L534.723,338.405L534.641,338.623L534.496,338.876L534.304,338.974L534.092,339.056L533.99,339.253L533.939,339.462L533.844,339.617L533.786,339.787L533.695,340.133L533.674,340.258L533.531,340.385L533.309,340.437L533.109,340.448L532.975,340.507L532.906,340.625L532.779,340.72L532.703,340.762L532.703,340.867L532.795,341.086L532.9,341.264L532.903,341.406L532.851,341.446L532.688,341.428L532.654,341.48L532.636,341.64L532.593,341.775L532.526,341.858L532.41,341.948L532.197,341.919L531.997,341.783L531.893,341.741L531.833,341.745L531.817,341.412L531.73,341.153L531.414,340.528L530.383,339.92L530.14,339.646L530.034,339.415L529.927,339.197L530.029,339.191L530.13,339.246L530.259,339.313L530.312,339.204L530.256,338.965L529.99,338.407L529.97,338.253L530.1,337.785L530.317,337.258L530.303,336.618L530.37,336.133L530.295,335.818L530.259,335.432L530.418,334.917L530.555,334.79L530.639,334.626L530.644,334.076L530.337,333.818L529.984,333.77L529.992,333.583L530.036,333.286L530.011,333.187L530.037,333.017L529.951,332.791L529.811,332.627L529.946,332.338L530.144,331.987L530.328,331.709L530.551,331.419L530.7,331.141L530.859,330.9L530.997,330.827L531.065,330.878L531.102,330.983L531.093,331.293L531.14,331.4L531.235,331.479L531.436,331.44L531.658,331.363L531.958,331.199z', 1, '2020-09-03 08:36:08', '2020-09-03 08:36:08', '0'),
+(23, 11, 'M606.175,344.646l-0.485,-0.021l-0.414,0.156l-0.156,-0.031l-0.104,-0.277l-0.089,-0.225l-0.264,-0.579l0.071,-0.237l-0.147,-0.137l-0.354,-0.247l-0.091,-0.102l0.05,-0.141l0.035,-0.257l-0.034,-0.208l-0.096,-0.063l-0.177,-0.004l-0.215,0.052l-0.432,0.201l-0.3,-0.128l-0.173,-0.129l-0.101,-0.108l-0.225,0.09l-0.055,-0.043l-0.012,-0.268l-0.068,-0.145l-0.135,-0.169l-0.126,-0.081l-0.461,0.167l-0.277,0.057l-0.097,-0.156l-0.487,-0.514l-0.451,-0.395l-0.31,-0.163l-0.312,0.017l-0.484,0.079l-0.178,-0.033l-0.422,-0.172l-0.352,-0.205l0.048,-0.085l0.074,-0.062l-0.089,-0.267l-0.196,-0.43l0.021,-0.135l-0.062,-0.186l-0.068,-0.141l0.276,-0.337l0.126,-0.271l0.028,-0.265l-0.074,-0.275l-0.182,-0.499l-0.112,-0.145l-0.208,-0.136l-0.175,-0.222l-0.044,-0.157l0.147,-0.031l0.429,-0.004l0.416,-0.054l0.326,-0.104l0.472,-0.087l0.194,-0.078l0.227,-0.037l0.689,0.083l0.258,-0.064l0.776,-0.012l0.02,-0.033l-0.105,-0.106l0.001,-0.04l0.462,-0.067l0.072,-0.05l0.06,0.168l0.174,0.187l0.189,0.075l0.102,0.103l0.005,0.078l-0.335,0.095l-0.023,0.047l0.022,0.046l0.1,0.023l0.47,0.234l0.268,0.005l0.141,0.071l0.07,0.14l0.224,0.19l0.179,0.184l0.011,0.063l-0.034,0.093l-0.5,0.359l-0.063,0.124l-0.008,0.131l0.219,0.389l0.323,0.424l0.466,0.322l0.643,0.349l0.008,0.216l-0.102,0.256l-0.087,0.174l-0.04,0.118l-0.078,0.049l-0.64,-0.011l-0.096,0.042l-0.042,0.05l-0.003,0.042l0.23,0.078l0.359,0.273l0.207,0.265l0.215,0.116l0.241,0.211l0.193,0.196l0.301,0.254l0.335,-0.083l0.448,0.226l0.019,0.153l-0.028,0.137l-0.282,0.149l-0.035,0.062l0,0.052l0.037,0.073l0.165,0.122l0.195,0.181l0.219,0.27l-0.098,0.081l-0.205,0.012l-0.159,-0.033l-0.056,0.055l0.003,0.088l0.208,0.205l0.041,0.149l-0.009,0.259L606.175,344.646zM602.058,336.91l0.014,-0.099l-0.021,-0.089l-0.075,-0.028l-0.092,0.023l-0.007,0.099l0.028,0.094l0.093,0.042L602.058,336.91zM603.542,338.429l-0.107,0.061l-0.1,-0.027v-0.152l0.072,-0.061l0.083,0.003l0.079,0.055L603.542,338.429z', 1, '2020-09-03 08:36:25', '2020-09-03 08:36:25', '0'),
+(24, 6, 'M512.388,475.605l-0.043,0.045l-0.308,0.124l-0.331,0.116l-0.435,0.472l-0.22,0.204l-0.064,0.051l-0.199,0.113l-0.144,0.097l0.005,0.053l0.096,0.062l0.098,0.102l-0.01,0.771l-0.042,0.76l-0.054,0.064l-0.276,0.025l-0.367,0.053l-0.117,0.034l-0.041,-0.075l-0.123,-0.278l0.069,-0.264l0.074,-0.197l-0.083,-0.401l-0.187,-0.357l-0.198,-0.453l-0.061,-0.087l0.167,-0.146l0.251,-0.32l0.105,-0.166l0.291,-0.037l0.108,-0.116l0.077,-0.186l0.03,-0.108l0.328,-0.088l0.394,-0.157l0.218,-0.172l0.221,-0.11l0.14,-0.004l0.092,0.045l0.253,0.298l0.215,0.188L512.388,475.605zM542.961,493.164l0.062,0.372l0.061,0.517l0.043,0.372l0.044,0.167l0.015,0.089l-0.049,0.096L543.097,495l-0.079,0.198l-0.044,0.138l0.037,0.254l-0.03,0.364l-0.031,0.385l-0.01,0.371l0.105,0.664l-0.015,0.204l-0.131,0.348l-0.099,0.264l-0.064,0.306l-0.012,0.16l0.24,0.452l-0.014,0.09l-0.184,0.028l-0.152,0.008h-0.582h-0.834h-0.834h-0.834h-0.767h-0.734h-0.647l0,0.446v0.92l0,0.921l0,0.922v0.924l0,0.925v0.926l0,0.927l0,0.929v0.671l0.169,0.892l0.31,0.972l0.121,0.09l0.312,0.179l0.433,0.366l0.243,0.277l0.494,0.481l0.657,0.614l0.633,0.551l0.559,0.486l-0.877,0.171l-1.247,0.242l-0.841,0.164l-1.021,0.199l-0.68,0.125l-0.847,0.155l-0.135,-0.003l-0.227,-0.107l-0.49,-0.021l-0.576,0.148l-0.457,0.04l-0.338,-0.068l-0.33,-0.129l-0.322,-0.191l-0.557,-0.07l-0.793,0.052l-0.764,-0.037l-0.736,-0.126l-0.526,-0.05l-0.317,0.027l-0.34,-0.041l-0.363,-0.109l-0.303,-0.185l-0.364,-0.39l-0.285,-0.372l-0.074,-0.053l-0.09,-0.057l-0.089,-0.017l-0.808,-0.01l-0.767,-0.009l-0.439,-0.001l-1.074,-0.001l-1.074,-0.001l-1.074,-0.002l-1.074,-0.001l-1.074,-0.002l-1.074,-0.001l-1.074,-0.002l-1.074,-0.001l-0.57,-0.001l-0.53,0.03l-0.585,0.032l-0.084,-0.014l-0.139,-0.045l-0.095,-0.082l-0.315,-0.211l-0.274,-0.16l-0.373,-0.27l-0.241,-0.295l-0.203,-0.094l-0.359,-0.053l-0.27,-0.052l-0.22,-0.012l-0.387,0.139l-0.292,0.138l-0.208,0.133l-0.361,0.152l-0.304,0.152l-0.53,-0.02l-0.115,0.022l-0.295,-0.01l-0.278,-0.133l-0.282,0.012l-0.313,0.169l-0.448,0.066l0.104,-1.103l0.109,-0.487l0.003,-0.582l-0.064,-1.504l-0.077,-0.207l-0.052,-0.242l0.277,-0.184l0.141,-0.141l0.191,-0.249l0.136,-0.349l0.16,-0.768l0.582,-1.763l0.276,-1.723l0.35,-0.814l0.131,-0.912l0.974,-1.175l0.24,-0.721l0.504,-0.353l0.713,-0.376l0.508,-0.669l0.246,-0.463l0.28,-0.887l-0.003,-0.925l0.178,-1.233l-0.039,-0.354l-0.266,-0.49l-0.049,-0.35l-0.247,-0.344l-0.264,-0.26l-0.124,-0.464l-0.458,-0.731l-0.125,-0.487l-0.219,-0.35l-0.035,-0.431l-0.115,-0.456l-0.224,-0.45L512.18,488v-0.161l0.136,-0.194l0.129,-0.063l-0.043,0.098l-0.086,0.115l0.021,0.089l0.856,-0.902l0.054,-0.176l-0.029,-0.197l-0.004,-0.241l0.034,-0.28l-0.808,-1.661l-0.641,-1.542l-0.109,-0.779l-0.848,-1.023l-0.334,-0.665l-0.19,-0.466l-0.143,-0.176l0.054,-0.089l0.218,-0.023l0.486,-0.108l0.666,-0.118l0.615,-0.27l0.164,-0.12l0.326,-0.024l0.332,0.072l0.123,-0.052l0.07,-0.004l0.779,0l0.324,-0.018l0.601,0.005l0.379,0.022l0.216,0.03l0.583,0.047l0.728,-0.011l0.257,-0.024l0.954,-0.016l0.942,-0.016l0.847,-0.014l0.936,0.003l0.716,0.002l0.326,0.097l0.296,0.184l0.135,0.167l0.064,0.074l0.088,0.176l0.162,0.14l0.058,0.216l-0.047,0.293l0.023,0.353l0.094,0.412l0.197,0.432l0.298,0.454l0.13,0.36l-0.039,0.267l0.092,0.282l0.222,0.297l0.162,0.157l0.094,0.119l0.252,0.456l0.467,0.728l0.35,0.546l0.123,0.065l0.179,-0.023l0.38,-0.054l0.376,-0.011l0.269,0.112l0.108,-0.019l0.405,-0.217l0.402,-0.066l0.42,-0.09l0.219,-0.092l0.255,0l0.687,0.175l0.13,0.009h0.556l0.556,-0.098l0.082,-0.732l0.005,-0.145l0.134,-0.275l0.17,-0.24l0.021,-0.229l-0.01,-0.313l0.123,-0.379l0.373,-0.302l0.603,-0.143l0.343,-0.028l0.541,-0.084l0.82,-0.085l0.303,0.011l0.024,0.043l-0.174,0.524l-0.003,0.171l0.063,0.173l0.139,0.094l0.851,0.01l0.784,0.01l0.899,0.033l0.674,0.024l0.086,0.026l0.068,0.039l0.1,0.26l-0.022,0.508l-0.15,0.742l0.058,0.694l0.267,0.646l0.027,0.993l-0.094,0.593l-0.119,0.748l-0.046,0.849l0.122,0.355l0.258,0.371l0.394,0.389l0.305,0.503l0.216,0.619l0.078,0.39l-0.058,0.161l0.004,0.278l0.067,0.396l-0.075,0.263l-0.216,0.129l-0.072,0.178l0.109,0.342l0.027,0.311l0.085,0.119l0.062,0.086l0.102,0.013l0.219,-0.111l0.262,-0.207l0.21,-0.087l0.296,0.011l0.416,0.059l0.734,0.021l0.226,-0.037l0.683,-0.279l0.179,-0.021l0.27,0.026l0.383,0.083l0.386,0.017l0.188,-0.086l0.017,-0.113l0.06,-0.147L542.961,493.164z', 1, '2020-09-03 08:36:49', '2020-09-03 08:36:49', '0');
+INSERT INTO `maps` (`id`, `country_id`, `path_d`, `status`, `created_at`, `updated_at`, `is_deleted`) VALUES
+(25, 8, 'M310.625,686.092l-0.518,0.231l0.136,-0.273l0.689,-0.716l0.073,-0.218l0.797,-0.417l0.377,0.089l0.805,-0.246l0.362,0.167l0.313,-0.111l0.172,0.124l0.112,0.335l-0.009,0.133l-0.469,-0.052l-0.438,0.393l-0.519,-0.084l-0.069,0.325l0.11,0.168l-0.14,0.146l-0.445,-0.304l-0.351,0.106l-0.114,0.531l-0.153,0.11l-0.09,0.022l-0.14,-0.136l-0.286,-0.044l-0.027,-0.07L310.625,686.092zM309.95,687.155l0.622,-0.273l-0.114,-0.209l-0.234,-0.024l-0.08,-0.088l-0.206,-0.061l-0.389,0.265l0.078,0.112L309.95,687.155zM308.643,687.782l0.382,-0.044l0.1,-0.189l-0.119,-0.276l-0.232,-0.091l-0.511,0.013l0.116,0.246L308.643,687.782zM304.326,689.166l0.191,0.001l0.559,-0.103l0.278,-0.254l0.217,0.078l0.678,-0.104l0.068,0.383l0.09,0.173l0.283,0.231l1.042,-0.797l-0.43,0.021l-0.385,-0.425l-1.225,0.146l-0.137,-0.076l-0.3,-0.419l-0.189,-0.097l-0.108,0.355l-0.385,0.353l-0.499,-0.016l0.007,0.274L304.326,689.166zM305.894,690.936l-0.372,-0.444l-0.192,0.063l-0.097,0.266l0.133,0.29l0.2,0.138l0.163,-0.056l-0.152,-0.138l-0.005,-0.108l0.182,0.052L305.894,690.936zM305.732,695.485l-0.428,-0.171l-0.23,0.302l-0.037,0.762l-0.455,0.079l0.336,0.267l0.21,0.071l0.35,-0.227l-0.005,-0.105l-0.095,-0.268l0.093,-0.311L305.732,695.485zM301.947,697.769l0.07,-0.177l0.247,-0.387l-0.388,0.151l-0.237,0.237l-0.065,0.34l0.257,-0.021L301.947,697.769zM323.472,867.65l0.11,0.298l0.111,0.111l12.319,-1.513l0.201,-0.541l0.201,-0.714l0.615,-0.787l0.625,-0.417l15.884,-7.609l0.108,-0.221l0.1,-0.377l-0.014,-0.524l-0.087,-0.449l-0.753,-1.219l0.045,-0.284l0.108,-0.207l0.29,-0.262l0.293,-0.074l0.641,0.149l0.565,-1.4l0.213,-1.435l0.127,-3.482l-0.058,-1.576l-0.43,-1.939l-0.258,-0.758l-0.159,-2.056L354,839.198l-0.244,-1.402l-0.263,-1.284l-0.233,-0.812l-0.266,-0.4l-0.896,-0.171l-1.474,-0.034l-1.475,0.145l-0.368,-0.052l-0.364,-0.281l0.162,-0.74l0.229,-0.757l0.408,-0.365l3.145,-0.91l0.267,-0.957l0.179,-1.367l0.033,-0.663l-0.022,-0.678l-0.067,-0.69l-0.129,-0.387l-0.672,-1.252l-0.69,-1.017l-0.714,-0.782l-0.723,-0.632l-1.904,-1.435l-1.299,-0.729l-0.743,-0.292l-1.593,-0.26l-0.574,0.07l-1.216,0.379l-0.642,0.279l-3.899,2.786l-0.175,0.63l-0.591,1.758l-1.643,3.329l-0.567,1.331l-0.219,0.688l-0.209,1.294l-0.234,1.215l0.118,0.545l0.263,0.217l-0.157,0.712l-0.23,0.592l-0.345,0.396l-0.031,0.438l0.032,0.616l-0.05,1.222l-0.149,1.011l-0.212,0.908l-0.236,0.751l0.755,0.462l0.125,0.12l0.115,0.256l0.133,0.658l0.102,0.736l-0.125,0.764l-0.175,0.495l-0.737,1.782l-1.458,3.035l-1.48,2.726l-1.644,2.461l-0.115,-0.248l-0.054,-0.787l-0.292,-0.184l-0.297,0.528l-0.675,0.933l-0.691,0.313l-0.345,-0.232l-0.477,-0.76l-0.133,-0.093l-0.248,1.314l-0.544,1.567l-1.035,3.424l-0.238,0.493l-0.611,0.903l-0.068,0.933l0.058,2.371L323.472,867.65zM320.369,680.421l0.14,0.215l0.369,-0.164l0.303,-0.301l0.976,-0.167l0.109,-0.133l-2.009,-0.257l-0.149,0.194l0.199,0.233L320.369,680.421zM317.004,691.745l0.538,0.437l0.267,0.027l0.559,-0.587l0.025,-0.147l-0.021,-0.224l-0.009,-0.035l-0.221,-0.047l-0.977,-0.142l-0.353,0.389l0.039,0.102L317.004,691.745zM323.825,680.985l0.125,-0.055l0.083,-0.255l0.048,-0.698l-0.072,0.039l-0.202,0.348l-0.197,0.26l0.023,0.136L323.825,680.985zM317.229,692.896l0.015,0.115l-0.042,0.102l-0.084,0.101l0.018,0.146l0.102,0.378l0.237,0.121l0.829,-0.343l0.208,-0.257l0.501,-0.27l0.225,-0.011l0.439,0.244l1.226,0.108l0.229,-0.18l-0.088,-0.468l-0.14,-0.277l-0.167,-0.038l-0.704,0.006l-0.173,-0.161l-0.002,-0.104l-0.171,-0.178l-1.27,0.179l-0.962,0.479L317.229,692.896zM318.935,693.669l-0.988,0.186l-0.071,0.2l0.16,0.279l0.622,0.419l0.236,-0.278l0.43,-0.273l-0.12,-0.439L318.935,693.669zM286.137,723.451l0.549,-0.142l0.138,-0.215l0.056,-0.188l0.366,-0.455l-0.072,-0.188l-0.201,-0.19l-0.48,-0.06l-0.39,0.102l-0.523,0.418l0.035,0.135l0.115,0.061l-0.011,0.561L286.137,723.451zM272.666,738.326l0.4,0.268l0.608,-0.337l-0.971,-1.662l-0.374,-0.319l-0.735,-0.31l-0.368,0.16l-0.223,0.285l-0.058,0.482l0.507,0.932L272.666,738.326zM281.778,722.103l0.323,0.569l0.227,0.475l0.233,0.068l0.237,-0.058l0.195,-0.168l0.117,-0.003l0.118,0.076l0.207,-0.19l0.188,-0.375l0.163,-0.742l0.158,-0.169l0.209,0.053l0.211,0.137l0.231,-0.144l0.292,-0.471l0.053,-0.177l-0.105,-0.236l-0.386,-0.259l-0.254,-0.076l0.168,-0.203l0.407,-0.321l0.207,-0.323l0.304,-0.263l0.45,-0.519l-0.206,-0.177l-0.187,-0.295l-0.136,-0.142l-0.204,-0.126l-0.055,-0.091l-0.002,-0.359l0.104,-0.983l0.538,-0.7l0.167,-0.264l-0.084,-0.538l-0.335,-0.062l-0.301,0.23l-1.118,1.03l-0.227,0.365l-0.443,0.996l-0.229,0.56l-0.216,0.625l-0.243,0.553l-0.736,1.233l-0.141,0.361l-0.015,0.458l0.05,0.46L281.778,722.103zM300.542,690.962l0.189,-0.332l0.075,-0.269l-0.588,0.307l-0.314,0.666l-0.046,0.26l0.113,-0.028L300.542,690.962zM269.094,752.565l0.07,0.453l0.595,0.705l-0.132,0.274l-0.146,0.176l-0.186,-0.05l-0.502,-0.497l-0.598,-0.695l-0.292,-0.244l-0.41,-0.241l-0.137,0.047l-0.202,0.102l-0.188,0.133l-0.141,0.369l0.014,0.444l0.113,0.64l0.019,0.343l-0.052,0.18l-0.075,0.045l-0.193,-0.016l-0.418,-0.214l-0.636,-0.657l-0.664,0.106l-0.541,0.528l-0.121,0.27l-0.049,0.308l0.079,0.41l-0.017,0.238l-0.119,0.251l-0.027,0.429l0.083,0.454l0.264,0.32l0.362,0.452l0.297,0.224l0.325,0.406l0.343,0.275l0.344,0.058l0.657,-0.131l0.301,0.156l0.317,0.636l0.157,0.15l0.441,0.102l0.271,-0.16l1.016,-1.186l-0.099,-0.376l-0.332,-0.467l-0.391,-0.534l0.151,-0.191l0.401,-0.126l0.625,0.164l0.683,0.463l0.546,0.173l0.125,-0.018l1.447,-2.328l0.212,-0.268l0.217,0.079l0.598,0.879l0.645,0.738l0.678,0.258l0.308,-0.114l0.308,-0.013l1.499,0.632l-0.066,0.354l-0.13,0.377l-0.402,0.429l-0.203,0.113l-2.22,0.673l0.015,0.293l0.647,0.89l0.699,0.319l0.659,-0.188l0.653,-0.321l0.853,-0.546l0.304,-0.058l0.306,0.041l0.309,0.213l0.304,0.337l-0.623,0.873l-0.683,0.313l-0.565,0.094l-2.056,-0.069l-1.486,-0.255l-0.677,-0.324l-0.68,-0.195l-0.335,0.051l-0.329,0.218l-0.65,0.959l0.082,0.369l0.141,0.34l0.335,0.584l0.301,0.317l0.309,0.144l0.391,-0.059l0.143,0.26l0.131,0.386l0.185,0.107l1.463,-0.286l1.929,-0.116l0.662,-0.131l0.538,0.093l0.527,0.391l1.348,-0.36l2.396,-0.861l0.168,-1.003l1.429,-2.002l0.274,-0.479l0.229,-0.66l0.188,-1.002l0.429,-1.381l0.037,-0.869l-0.069,-3.643l-0.072,-1.884l-0.101,-1.598l-0.062,-0.477l-0.322,-0.326l-0.024,-1.148l-0.264,-0.857l-0.497,-1.456l-1.012,-2.638l-0.4,-1.485l-0.334,-1.971l-0.18,-0.669l-0.816,-2.096l-0.414,-0.352l-0.164,-0.074l-0.466,0.347l0.079,-0.965l-0.004,-0.391l-0.148,-1.412l-0.137,-0.285l-0.442,-0.706l-0.295,-0.336l-2.735,0.658l-1.34,0.525l-0.34,0.232l-0.19,0.236l-0.143,0.462l-0.082,0.429l0.007,0.488l0.059,0.386l0.095,0.33l0.33,0.488l0.364,0.303l0.254,0.446l0.069,0.81l-0.136,1.009l-0.24,1.275l-0.044,0.326l-0.033,0.504l0.072,0.494l0.123,0.293l0.229,0.398l0.091,0.115l1.615,1.063l0.271,0.041l0.274,-0.075l0.58,-0.437l1.1,0.166l0.263,0.172l0.326,0.445l0.659,0.59l0.743,0.774l-0.116,0.119l-0.119,0.021l-0.767,-0.456l-0.323,-0.079l-0.667,0.088l-0.657,0.357l-1.4,1.116l-0.362,1.034l0.049,0.453l0.346,0.417l0.372,0.202l0.72,0.273l1.016,0.156l0.288,0.123l0.287,0.274l0.284,0.124l0.168,-0.144l0.161,-0.037l0.127,0.322l0.022,0.514l-0.001,0.52l-0.035,0.509l-0.097,0.286l-0.131,0.07l-0.986,-1.459l-0.155,-0.117l-0.162,-0.041l-1.012,0.397l-1.271,-0.067l-0.319,0.225l-0.553,0.87l-0.601,0.291l-1.79,-0.609l-0.994,-0.016l-0.982,0.468l0.185,0.517l0.25,0.319l1.334,0.452l0.613,0.525l-1.15,0.468l-0.56,-0.042l-0.558,-0.131l-1.06,-0.416l-0.215,0.032l-0.366,0.227L269.094,752.565zM274.892,744.348l0.318,-0.396l0.273,-0.617l-0.041,-0.164l-0.215,-0.254l-0.606,0.233l-0.133,-0.251l-0.281,0.193l0.037,0.253l0.273,1.031L274.892,744.348zM267.883,769.411l-0.101,0.283l-0.14,0.267l-0.034,0.378l0.304,0.49l0.178,0.103l0.271,-0.188l0.44,-0.593l0.11,-0.693l0.393,-0.98l-0.37,-0.227l-0.443,0.124L267.883,769.411zM346.777,677.01l0.441,-0.193l0.199,0.34l0.873,0.024l0.63,0.477l0.002,-0.196l-0.038,-0.153l-0.069,-0.137l-0.048,-0.048l-0.363,-0.091l-0.081,-0.234l-0.318,-0.206l-0.612,-0.146l-0.327,0.129l-0.282,-0.097l-0.061,0.238l0.004,0.166L346.777,677.01zM295.806,702.166l0.258,0.235l0.569,0.151l0.097,0.111l0.085,0.171l0.26,-0.206l0.248,-0.452l0.282,-0.045l0.289,0.042l0.223,-0.108l0.205,-0.243l0.497,-0.454l0.531,-0.255l-0.257,-0.343l-0.292,0.103l-0.276,0.243l-0.411,0.007l0.271,-0.676l-0.253,-0.578l0.116,-0.368l-0.292,-0.372l-0.427,-0.036l-0.136,0.08l-0.2,0.267l-0.218,0.185l0.042,0.268l-0.017,0.242l-0.678,0.232l0.054,0.194l0.083,0.148l-0.853,0.471l-0.155,0.349l-0.129,0.408l0.248,0.078L295.806,702.166zM286.203,716.987l0.313,0.033l0.131,-0.052l0.296,-0.383l-0.033,-0.184l-0.177,-0.439l-0.264,-0.117l-0.238,0.138l0.032,0.336L286,716.832L286.203,716.987zM297.861,702.557l-0.259,0.028l-0.278,0.723l0.236,0.005l0.444,-0.301l0.167,-0.463l0.224,-0.343l-0.118,-0.059L297.861,702.557zM300.07,700.738l0.201,-0.392l0.148,0.114l0.166,-0.046l0.197,-0.262l0.062,-0.149l0.331,-0.211l0.032,-0.472l0.226,-0.396l0.099,-0.62l-0.59,-0.309l0.003,-0.321l-0.172,-0.169l-0.344,-0.008l-0.263,0.214l-0.114,0.191l-0.07,0.261l0.057,0.15l0.311,0.456l-0.068,0.276l-0.39,0.894l-0.218,0.344l-0.073,0.177l-0.098,0.048l0.154,0.11L300.07,700.738zM288.174,712.86l0.627,-0.78l0.007,-0.153l-0.085,-0.311l0.134,-0.355l-0.157,-0.108l-0.415,0.305l-0.035,0.852l-0.212,0.287l-0.001,0.133l0.049,0.081L288.174,712.86zM290.292,709.872l0.614,-0.264l0.027,-0.195l-0.015,-0.515l0.076,-0.354l0.084,-0.083l0.32,-0.146l0.005,-0.182l0.087,-0.532l-0.552,-0.139l-0.378,0.297l-0.088,0.419l-0.188,0.227l0.048,0.536l-0.292,0.197l-0.079,0.359l0.018,0.275L290.292,709.872zM718.255,716.237l0.323,-0.175l0.31,-0.35l-0.268,-0.089l-0.102,-0.133l-0.386,-0.086l-0.296,0.154l-0.128,0.258l0.294,0.389L718.255,716.237zM752.574,713.845l0.271,0.198l0.265,-0.083l0.292,-0.347l-0.565,-0.358l-0.427,0.094l0.024,0.121L752.574,713.845zM266.619,769.499l0.406,-1.267l0.366,-0.976l-0.146,-0.438l-0.168,-0.31l-0.388,-0.239l-2.534,-0.698l-0.994,0.561l0.083,0.302l0.285,0.397l0.451,0.398l0.549,0.146l-0.09,0.395l-0.396,0.011l-0.141,0.478l-0.107,0.075l-0.754,-0.526l-0.345,0.021l-0.337,0.28l-0.125,0.225l-0.095,0.403l0.017,0.507l0.104,0.504l0.14,0.325l0.288,0.436l3.722,2.749l0.344,-0.457l0.242,-0.999l-0.284,-0.366l-0.234,-0.569l-0.07,-0.405l-0.112,-0.159l-0.147,-0.353l0.408,-0.306L266.619,769.499zM747.743,712.081l0.229,-0.256l0.009,-0.17l-0.037,-0.296l-0.208,-0.266l-0.572,0.018l-0.322,-0.173l-0.316,0.069l-0.284,0.237l-0.257,0.732l0.245,0.271L747.743,712.081zM734.831,709.367l0.386,0.1l0.367,-0.092l0.191,-0.229l-0.014,-0.099l-0.087,-0.203l-0.386,-0.194l-0.547,0.031l-0.149,0.227l0.041,0.137L734.831,709.367zM715.258,716.681l0.726,0.69l0.014,0.104l0.078,0.104l0.483,-0.189l0.324,-0.424l-0.369,-0.852l-0.711,-0.327l-0.597,-0.037l-0.072,0.374L715.258,716.681zM714.633,715.139l0.242,0.045l0.298,-0.224l-0.377,-0.394l-0.083,-0.243l-0.122,-0.021l-0.146,0.459l0.03,0.145L714.633,715.139zM676.997,745.273l0.324,0.615l0.246,0.094l0.206,-0.003l0.213,-0.199l0.054,-0.291l-0.067,-0.423l-0.05,-0.197l-0.156,-0.37l-0.337,-0.43l-0.081,-0.316l-0.036,-0.462l-0.117,-0.398l-0.256,0.166l-0.165,0.433l-0.026,0.896l0.063,0.453L676.997,745.273zM756.722,712.28l0.369,-0.09l0.048,-0.254l0.025,-0.469l-0.326,0.129l-0.275,0.396l0.016,0.102L756.722,712.28zM933.815,716.778l0.138,0.1l0.052,-0.433l-0.009,-0.163l-0.078,-0.219l-0.094,-0.418l-0.229,-0.144l-0.188,0.086l0.209,0.842L933.815,716.778zM937.906,721.789l0.151,0.064l0.245,-0.209l0.075,-0.268l0.164,-0.413l-0.032,-0.211l-0.16,-0.4l-0.07,-0.274l-0.396,-0.483l-0.024,0.214l0.059,0.865l-0.16,0.676L937.906,721.789zM931.2,713.469l0.585,0.845l0.129,0.035l0.152,-0.336l-0.135,-0.314l-0.71,-1.267l-0.023,0.094l-0.014,0.271l0.081,0.306L931.2,713.469zM757.332,708.451l0.454,0.018l0.097,0.176l1.22,-0.162l0.722,-0.768l0.058,-0.249l-0.108,-0.375l-0.397,-0.47l-0.549,-0.165l-0.775,0.123l-0.174,0.085l-0.381,0.382l-0.239,0.373l-0.151,0.56l0.063,0.325L757.332,708.451zM764.921,705.834l0.163,0.179l0.032,0.177l0.04,0.65l0.105,0.133l0.452,0.093l0.169,-0.156l-0.052,-0.127l-0.331,-0.331l-0.21,-0.314l-0.013,-0.153l0.026,-0.473l-0.152,-0.312l-0.685,-0.406l-0.271,0.044l-0.103,0.211l0.082,0.455L764.921,705.834zM487.289,744.165l0.141,0.287l0.521,0.431l0.451,-0.2l0.18,-0.388l0.078,-0.533l-0.088,-0.62l-0.256,-0.356l-0.671,-0.088l-0.405,0.216l-0.118,0.194l0.018,0.292L487.289,744.165zM467.261,747.84l0.089,0.272l0.034,0.489l0.456,0.359l-0.013,0.28l-0.046,0.362l-0.009,0.484l0.117,0.476l0.496,-0.229l0.667,-0.838l0.212,-0.4l0.226,-0.828l0.263,-0.396l0.075,-0.295l-0.458,-0.211l-0.471,0.037l-0.307,-0.279l-0.609,-0.625l-0.814,-0.167l-1.395,0.075l-0.105,0.168l0.24,0.278L467.261,747.84zM466.198,750.351l0.214,0.503l0.303,0.256l0.395,0.056l0.296,-0.199l-0.663,-1.032l-0.061,-0.163l-0.141,-0.21l-0.381,0.09l0.02,0.164l-0.034,0.336L466.198,750.351zM439.528,759.205l0.472,0.462l0.37,0.077l0.224,-0.208l-0.073,-0.305l-0.286,-0.628l-0.427,-0.589l-0.243,-0.053l-0.11,0.127l-0.136,0.453l0.055,0.313L439.528,759.205zM458.353,745.581l0.069,0.22l0.735,-0.5l-0.155,-1.008l-0.062,-0.091l-0.271,-0.141l-0.492,0.344l-0.545,0.058l0.482,0.82L458.353,745.581zM416.296,778.519l0.324,0.447l0.209,0.505l0.368,2.209l0.079,0.178l0.227,0.274l0.696,0.123l0.203,-0.517l0.015,-0.364l-0.033,-0.948l-0.497,-1.246l-0.115,-0.477l-0.036,-0.467l0.131,-2.222l0.243,-0.896v-0.862l-0.167,-0.923l-0.309,0.06l-0.496,0.513l-0.315,1.14l-0.127,0.902l-0.286,0.604l-0.455,0.503l-1.802,0.686l-0.295,0.511l1.194,-0.151L416.296,778.519zM429.524,763.982l0.38,0.47l0.4,0.006l0.197,-0.224l-0.191,-0.744l-0.366,-1.14l-0.149,-0.181l-0.279,0.14l-0.171,0.534l0.019,0.48L429.524,763.982zM483.271,745.902l0.952,-0.221l0.376,-0.367l0.141,-0.292l0.108,-0.591l-0.083,-0.387l-0.106,-0.083l-0.338,-0.093l-1.237,0.995l-0.131,0.287l0.106,0.496L483.271,745.902zM380.139,843.286l0.325,-0.559l-0.037,-0.227l-0.133,-0.405l-1.114,-0.837l-3.208,-1.982l-0.176,0.027l-0.542,0.849l-0.724,0.481l-0.533,0.217l-0.921,0.196l-0.098,1.111l0.335,0.171L380.139,843.286zM466.04,745.159l0.454,-0.014l1.521,-0.225l0.155,-0.377l-0.004,-0.721l-0.082,-0.466l-0.257,-0.265l-0.406,-0.072l-0.627,0.229l-0.321,0.307l-0.587,1.207l0.019,0.165L466.04,745.159zM548.683,743.797l0.989,0.514l0.316,0.113l0.389,-0.297l0.517,0.058l0.18,-0.318l0.049,-0.427l-0.385,-1.195l-0.144,-0.592l-0.229,-0.298l-0.503,-0.146l-0.35,0.098l-0.894,1.052l-0.08,0.51l0.028,0.275L548.683,743.797zM519.52,740.212l0.139,0.132l0.509,0.221l0.882,0.738l0.178,-0.528l0.261,-1.333l0.87,-0.765l-0.146,-0.22l-0.916,-0.147l-0.947,0.189l-0.591,0.363l-0.287,0.445l-0.096,0.282l0.023,0.179L519.52,740.212zM478.479,742.561l0.32,0.663l0.146,0.616l0.155,0.027l0.247,-1.051l0.454,-0.989l-0.137,-0.781l-0.273,-0.147l-0.809,0.222l-0.216,0.364l0.008,0.618L478.479,742.561zM611.266,716.278l0.206,0.067l0.472,-0.164l0.642,-0.042l0.031,-0.076l-0.009,-0.259l-0.088,-0.082l-0.318,-0.132l-0.786,0.02l-0.16,0.146l-0.019,0.184l0.006,0.169L611.266,716.278zM315.034,696.58l0.084,0.046l0.32,-0.22l-0.16,-0.162l-0.56,0.059l-0.039,-0.112l-0.183,-0.101l-0.684,0.136l0.188,0.26l0.765,0.159L315.034,696.58zM281.348,841.069l1.72,-2.928l1.35,-2.082l1.897,-2.717l0.883,-1.605l0.337,-0.783l0.728,-1.297l0.166,-0.53l-0.315,-0.474l-0.555,-0.471l-1.236,0.649l-5.388,4.564l-0.98,1.191l-0.629,0.581l-1.605,1.077l-0.23,0.261l-1.764,2.32l-0.56,1.027l-0.6,1.746l-0.326,3.015l0.017,0.864l0.119,0.586l0.136,0.456l0.452,0.864l0.313,0.259l1.208,0.532l1.21,0.137l0.613,-0.051l0.611,-0.217l1.08,-0.743l0.273,-1.563l-0.146,-1.14l0.819,-2.486L281.348,841.069zM284.405,845.14l2.041,0.349l0.484,-0.745l-0.121,-0.896l0.184,-1.011l0.187,-0.243l0.292,-0.649l-1.139,-0.686l-0.672,-0.134l-0.894,0.197l-0.563,0.87l-0.256,0.201l-0.275,0.529l-0.355,1.586l0.395,0.407L284.405,845.14zM308.199,858.532l0.199,-0.995l0.231,-0.785l0.291,-0.17l0.294,-0.024l-0.242,-0.744l-0.253,-0.588l-0.813,-0.229l0.006,-1.623l0.093,-1.017l0.129,-1.003l-0.469,-1.563l-1.98,-0.567l-1.256,1.074l-0.249,0.847l-0.64,0.393l-0.009,1.023l0.281,0.445l-0.158,0.282l-1.072,0.388l-0.091,0.805l0.063,1.062l0.272,1.175l0.316,0.628l0.816,0.212l-0.333,0.83l-0.899,0.626l-1.68,0.412l-0.806,0.078l-9.714,0.188l-0.38,-0.391l-0.146,-0.252l-0.14,-1.466l-0.22,-0.388l-0.228,-0.206l-0.297,0.035l-0.297,0.233l-0.26,0.363l-0.253,0.555l0.105,0.412l0.399,0.652l1.144,1.42l2.753,2.82l2.623,2.443l0.136,-0.252l0.262,-1.149l0.172,-0.302l0.982,-0.577l1.603,-0.38l0.214,0.562l0.229,1.856l0.128,0.546l0.757,1.199l1.816,0.968l4.043,1.053l0.883,-1.188l0.403,-0.719l0.557,-1.165l0.283,-0.718l0.152,-1.332l-0.007,-1.692l0.112,-3.619L308.199,858.532zM285.646,847.332l1.802,2.22l0.234,0.498l0.088,1.262l0.163,0.579l1.386,1.035l0.122,1.311l0.133,0.338l0.147,0.104l0.262,-0.06l0.517,-0.388l0.254,-0.219l1.107,-1.392l-0.099,-1.878l-0.111,-1.049l-0.817,-0.521l-0.404,-1.775l-0.729,-0.192l-1.436,-0.063l-0.27,-0.399l-0.274,-0.211l-1.289,-0.129l-0.701,-0.494l-0.339,0.271l0.107,0.674L285.646,847.332zM314.1,699.674l0.542,0.185l0.262,-0.077l-0.123,-0.315l-0.212,-0.145l0.243,-0.375l0.295,-0.106l-0.142,-0.354l0.065,-0.444l-0.751,-0.554l0.105,-0.313l-0.317,0.035l-0.329,0.307l-0.087,0.21l-0.091,0.087l-0.098,0.039l-0.105,-0.088l0.054,-0.669l0.13,-0.271l0.003,-0.245l-0.146,-0.41l-0.265,0.015l-0.126,0.182l-0.28,0.081l-0.211,0.191l-0.362,0.247l-0.188,0.498l-0.233,0.47l-0.037,0.293l0.114,0.137l0.128,-0.025l0.285,-0.153l0.291,-0.062l-0.043,0.408l0.069,0.292l0.331,0.231l-0.798,0.468l0.254,0.357l0.125,-0.008l0.415,-0.304l0.142,-0.008l0.142,0.07l-0.089,0.406l0.119,0.104l0.108,-0.059l0.136,-0.642l0.335,-0.057l0.091,0.114l-0.035,0.3L314.1,699.674zM306.05,745.731l-0.01,-0.498l-0.284,-0.298l-0.927,0.073l-0.163,0.125l-0.095,0.563l0.049,0.252l0.173,0.514l0.198,0.178h0.239l0.71,-0.542L306.05,745.731zM63.198,810.967l1.051,-0.553l1.243,-0.158l-0.226,-0.811l-1.746,-0.568l-0.618,0.003l-0.082,0.356l0.04,0.25l0.161,0.536l-0.098,0.783L63.198,810.967zM40.858,852.813l1.157,0.552l0.507,0.414l0.659,0.16l0.515,-0.043l-0.267,-0.738l-1.43,-0.84l-1.76,-1.356l-1.437,-1.351l-0.216,1.016l0.634,0.268l1.349,0.851L40.858,852.813zM315.667,699.686l-0.819,0.539l-0.144,0.022l-0.225,0.137l-0.006,0.187l0.041,0.337l0.3,0.198l0.241,-0.025l0.7,-0.644l0.128,-0.265l-0.018,-0.295l0.16,-0.316L315.667,699.686zM61.521,806.743l-0.026,-0.157l-0.171,-0.473l-0.338,-0.411l-0.365,-0.229l-0.285,0.231l0.131,0.242l0.63,0.683L61.521,806.743zM995.845,948.674l-0.907,0.078l-1.107,0.418l-1.385,0.896l-0.653,-1.024l-0.51,-1.651l-1.955,-0.548l-2.091,-0.119l-0.95,-1.228l-0.899,-0.421l-4.52,0.398v0.002l-1.065,-2.356l-0.61,-1.737l-1.286,-0.688l-1.259,-1.261l-0.402,-0.247l-0.404,0.088l-1.762,-1.501l-4.686,-2.744l-0.857,-0.149l-0.794,-0.732l-0.381,-1.656l-0.494,-1.006l-3.336,-0.755l-0.451,-1.274l-0.742,-0.057l-1.469,-2.194l-1.189,0.057l-1.496,-0.797l-1.066,-1.583l-0.695,-0.647l-0.192,-1.999l-0.52,-0.654l-0.612,-0.312l-1.362,1.059l-1.387,-1.958l-4.85,-0.902l-0.75,-1.106l-0.52,-1.061l0.047,-0.972l0.424,0.274l0.414,0.005l0.75,-0.316l0.225,-0.455l0.248,-1.314l0.205,-0.666l0.353,-1.435l-0.93,-1.805l-0.517,-0.287l-0.742,1.29l-0.633,0.388l-0.554,-1.125l-0.301,-0.298l-0.182,-0.769l0.108,-1.659l-0.436,-1.759l-0.447,-0.819l-0.603,-0.168l-0.831,-0.775l-1.303,-2.036l-2.812,-5.266l-0.653,-0.646l-2.093,0.896L933.91,899l-0.263,1.193l-0.457,0.348l-1.033,-1.15l-3.818,0.181l-0.327,-1.754l3.536,-1.972l3.518,-2.645l-0.218,-1.372l-1.679,-3.075l-0.421,-0.965l-0.093,-1.086l-0.687,-0.676l-0.425,-1.319l-1.204,-2.178l-0.746,-0.821l-0.416,-0.014l-1.893,-4.167l-1.229,-0.927l0.025,-1.31l0.172,-0.524l0.496,-0.774l0.031,-1.582l-0.031,-3.69l-0.308,-0.111l-0.93,-0.962l-0.044,-1.056l0.681,-0.131l0.609,-0.458l0.31,-0.404l-0.02,-0.971l-0.622,-0.647l-0.226,-0.913l0.23,-1.296l0.096,-0.979l-0.268,-0.421l-4.145,0.296l-1.38,-0.321l-0.037,-1.253l0.581,-0.928l3.963,-3.381l0.567,-0.546l0.497,-0.712l-0.002,-1.305l-0.479,-0.802l-0.774,0.207l-0.603,-0.534l-0.069,-1.1l1.103,-0.84l0.229,-0.709l-0.065,-0.875l-0.672,-0.046l-0.302,-0.73l0.259,-0.378l0.396,-0.106l1.227,-1.961l0.067,-1.036l-0.288,-0.858l-0.237,-1.517l1.097,-2.258l0.89,-1.045l0.997,0.534l0.537,0.662l0.356,0.015l0.245,-0.456v-0.908l-0.388,-0.89l-0.875,-3.323l0.024,-1.506l0.445,-0.499l0.248,0.125l0.609,2.124l1.865,2.938l0.718,-0.769l1.707,-1.246l1.118,-0.596l1.119,-1.243l0.938,-0.382l4.159,-0.456l0.477,0.806l0.668,0.958l0.913,-0.216l0.559,0.088l0.229,-1.139l-0.203,-1.24l-0.721,0.044l-0.816,-0.341l-0.847,-0.643l-1.531,-2.033l-0.361,-2.088l-0.029,-1.229l-0.299,-0.29l-0.402,1.174l-0.627,1.335l-1.186,1.235l-0.929,-1.097l-0.897,-0.17l0.365,-1.056l0.903,-1.422l0.174,-1.19l-0.198,-0.945l-0.53,-0.086l-0.549,-0.32l0.024,-1.043l-0.782,-0.986l-0.413,-1.541l-0.032,-2.519l-0.419,-1.516l-0.585,-1.81l-0.457,-1.181l-0.665,-0.109l-0.48,-0.21l-0.642,-0.637l0.11,-1.07l0.337,-0.5l0.43,-1.018l-0.049,-1.076l-0.198,-1.068l0.421,-1.273l-0.272,-2.83l-0.644,-0.208l-0.174,-0.621l0.595,-1.236l0.271,-1.125l0.198,-1.219l-0.173,-0.605l-0.495,-0.403l-0.634,-0.813l-0.316,-0.734l-0.139,-1.739l-0.803,-0.699l-1.898,-0.201l-0.545,0.108l-0.344,-0.68l2.158,-1.291l0.647,0.178l0.498,0.306l0.387,-0.298l0.518,0.034l0.347,-0.775l0.198,-3.727l0.415,-0.93l0.587,-0.852l0.579,-0.572l0.275,-1.846l0.371,-0.461l0.445,0.368l0.502,1.535l0.563,0.038l0.669,-0.464l0.664,0.106l0.781,0.368l0.46,0.105l0.416,-0.165l0.847,0.328l0.297,-0.372l-0.024,-0.834l-0.384,-0.555l-0.635,-1.69l-0.733,-2.414l0.365,-0.26l0.208,-0.783l-0.259,-0.891l-0.388,-2.787l0.178,-1.598l0.538,-0.219l0.351,0.08l0.322,1.859l0.016,2.108l0.272,0.977l0.566,-0.336l0.519,0.208l0.504,-0.442l0.541,-0.881l-0.38,-1.042l-0.311,-0.379l0.396,-0.159l0.444,-0.425l0.757,-0.067l1.592,0.172l0.843,-1.029l0.667,0.071l0.491,-0.521l-0.262,-0.563l-1.096,-0.597l-1.099,-0.5l-1.03,-2.189l-0.039,-0.589l1.206,0.72l0.766,1.312l1.958,-0.24l0.986,0.071l0.496,-0.616l0.995,0.243l0.835,1.056l1.436,-1.448l0.469,-1.661l0.373,-0.782l-0.046,-0.622l-1.569,-1.014l-1.261,-0.646l-0.557,-0.744l-0.543,-0.829l0.415,-0.04l0.4,0.05l0.992,0.782l1.032,0.169l0.939,0.438l0.766,0.626l0.445,-0.331l0.223,-0.823l-0.074,-0.983l-0.371,0.245l-0.487,0.048l0.215,-2.646l0.545,-1.523h0.52l0.747,0.187l0.515,-0.903l-0.223,-1.108l-0.494,-1.26l-0.471,-1.638l-0.446,0.222l-0.073,1.104l-0.248,0.548l-0.521,-0.441l-0.879,-0.615l-2.43,-2.079l-1.165,-0.675l-0.59,-0.123l-0.579,-0.787l-0.247,-0.686l-0.223,-0.759l-0.445,-0.604l-0.198,-0.377l-0.956,-0.332l-1.689,-0.909l-1.389,-0.266l-0.781,0.106l-1.809,-0.63l-1.385,-0.12l-0.878,-0.389l-1.136,1.063l-1.212,0.049l-0.611,-0.181l-0.904,-1.007l-0.987,-1.646l-1.287,0.245l-0.545,0.884l0.05,1.559l0.692,2.933l-0.024,0.456l-0.247,0.152l-0.768,-1.139l-0.816,0.076l-0.563,-0.765l-1.088,-4.297l-0.59,-1.122l-0.491,-0.837l-1.24,-0.867l-0.235,-1.101v-0.858l-0.547,-0.838l-0.413,-0.873l-1.116,-0.429l-2.073,-1.181l-0.603,-0.165l-0.771,-0.717l-0.632,-0.222l-0.44,0.188l-0.826,0.823l-1.221,-1.048l-1.565,0.054l-1.341,-0.828l-1.377,-0.418l-1,-1.015l-0.495,-0.414l-0.341,-0.52l-0.813,-1.082l-1.057,-1.657l-0.472,-0.52l-0.347,-0.201l-0.347,0.201l0.022,1.096l-0.072,1.131l-0.173,0.681l-0.588,0.273l-0.438,0.416l-0.724,0.302l-0.752,-0.691l-0.754,-0.295l-0.786,-0.031l-1.974,-0.246l-0.321,0.545l-0.445,0.41l-0.421,-0.41l-0.05,-1.089l-0.148,-1.822l-0.372,-0.201l-0.74,0.338l-0.926,0.251l-0.776,-0.121l-0.979,-0.017l-1.274,0.104l-1.072,-0.001l-1.191,0.273l-2.491,-0.701l-0.603,0.07l-0.73,-0.119l-0.83,-0.721l0.226,-0.623l0.052,-0.534l-0.124,-0.597l-0.068,-0.57l-1.548,-1.591l-0.846,-0.936l-1.175,-0.245l-1.203,0.258l-0.698,0.701l-1.333,0.543l-0.604,0.785l-0.594,-0.263l-0.1,-0.524l0.595,-1.108l0.297,-1.215l0.718,-1.431l0.297,-1.021l-0.198,-0.762l-0.569,-0.127l-0.646,0.502l-0.58,0.021l-0.136,-1.092l-0.371,-0.441h-0.792l-0.783,0.513l-0.788,0.369l-0.563,0.092l-1.013,-0.462l-0.471,-0.535l-0.522,-0.477l-1.279,-0.091l-0.648,0.27l-1.079,-0.568l-2.811,-0.262l-0.805,-0.548l-1.043,-0.449l-2.428,-0.237l-0.297,0.17l-0.367,-0.145l-0.602,-0.612l-0.482,-0.354l-1.172,-0.42l-1.255,-0.048l-0.42,0.477l-0.522,0.219l-1.009,-1.026l-0.518,-0.177l-1.276,-0.604l-0.568,-0.367l-1.068,1.412l-0.566,0.162l-1.042,0.888l-0.306,-0.023l-0.161,-0.904l-0.148,-0.492l-0.622,-0.506l-0.321,-0.352l-1.118,-0.5l-0.831,0.092l-0.77,0.577l-1.555,-0.088l-1.373,0.489l-1.681,-0.141l-0.787,-0.168l-1.048,0.119l-0.779,0.417l-0.506,0.16l-0.406,0.372l-0.658,0.867l-0.677,2.009l-0.738,2.063l-0.714,0.407l-0.466,-0.129l-0.529,0.193l-0.554,0.086l-1.299,-0.656l-1.197,0.166l-0.494,-0.441l-1.38,-1.644l-0.586,-1.851l-0.677,-0.246l-0.973,-0.47l-0.594,-0.217l-0.736,0.202l-0.576,0.218l-0.313,0.642l-0.537,0.884l-0.768,0.378l-0.628,0.097l-0.638,-0.396l-0.489,-0.363l-0.637,0.052l-0.85,0.486l-1.249,0.483l-1.652,0.425l-1.264,0.39l-0.42,0.302l-1.178,1.113l-0.353,0.242l-1.429,0.324l-1.623,0.726l-3.557,0.979l-0.594,-0.371l1.008,-0.873l1.89,-0.891l1.182,-0.662l-0.24,-0.123l-0.286,-0.003l-1.177,0.182l-1.263,0.57l-0.992,0.533l-0.703,0.193l-0.548,-0.077l-0.542,-0.331l-0.525,-0.235l-0.523,0.021l-0.582,0.312l-1.254,-0.14l-0.466,0.037l-0.584,-0.425l-0.59,-0.06l-0.574,0.438l-0.826,0.251l-0.925,0.428l-1.406,0.263l-0.596,0.505l-0.69,0.354l-0.752,0.229l-0.951,0.129l-0.82,0.26l-0.32,-0.536l0.221,-1.132l0.754,-0.286l0.872,-0.46l1.974,-0.58l0.472,-0.502l0.543,-1.333l-0.912,-1.488l-0.64,-0.479l-0.598,-0.112l-0.704,-0.063l-0.79,-0.756l-1.073,-2.083l-0.688,-0.901l-0.582,-0.297l-0.377,-0.259l-0.754,-0.334l-1.548,0.329l-1.172,0.357l-1.9,0.418l-1.533,0.799l-0.897,1.637l0.099,1.483l-0.52,0.685l-1.722,1.509l-1.013,0.535l-1.551,-0.334l-1.499,-0.685l-0.612,-0.898l-0.466,0.233l-0.58,-0.057l-0.331,-0.591l-0.285,-0.198l-1.107,-0.576l-2.2,-0.419l-3.892,-1.719l-0.936,-0.189l-1.061,-0.676l-0.948,-0.352l-0.527,0.011l-0.35,0.063l-1.325,-0.564l-1.382,-0.354l-0.791,0.463l-0.612,0.148l-1.964,-0.021l-0.262,0.15l-0.169,0.33l0.018,0.549l-1.229,1.791l-0.836,0.471l-1.065,0.342l-1.087,0.526l-1.275,0.703l-1.435,0.159l-0.39,-0.831l-0.328,-0.129l-0.396,-0.255l-0.573,-0.219l-1.509,0.984l-0.93,-0.202l-0.809,-0.558l-0.875,0.359l-1.024,0.347l-1.214,0.152l-1.264,0.068l-0.822,-0.422l-0.46,-0.308l-0.686,-0.184l-0.71,0.297l-0.768,0.731l-0.63,0.295l-0.35,0.006l-0.681,-0.33l-1.021,-0.407l-0.795,-0.102l-0.966,0.377l-0.39,-0.07l-0.298,-0.072l-0.486,-0.322l-0.671,-0.356l-0.832,0.208l-0.648,0.244l-1.472,0.217l-1.331,0.931l-0.714,0.251l-1.668,0.38l-0.974,-0.034l-0.772,-0.135l-0.806,-0.053l-1.334,0.182l-0.937,-0.206l-2.514,1.082l-0.388,0.325l-0.551,0.37l-1.773,0.129l-1.144,0.766l-0.791,-0.002l-0.876,-0.255l-1.034,-0.169l-0.738,0.089l-0.911,0.937l-0.721,0.348l-1.151,1.087l-0.531,1.187l-0.411,0.056l-1.546,0.019l-0.937,0.58l-0.72,-0.013l-2.328,1.046l-2.313,0.862l-3.018,1.292l-0.709,0.423l-0.867,0.773l-0.456,0.881l-0.21,1.775l-0.73,1.006l-0.599,1.055l-0.555,1.384l-0.776,0.829l-0.979,0.25l-1.184,1.06l-1.152,1.2l-0.695,-0.022l-0.619,0.707l-0.198,1.209l-0.52,1.002l-0.594,0.359l-0.775,-0.307l-1.618,0.197l-0.967,-0.646l-0.798,-0.464l-0.747,0.671l-0.986,0.188l-0.795,1.313l-0.615,0.709l-0.219,1.184l0.045,1.304l-0.387,0.639l-0.574,1.065l-0.436,0.492l-1.004,0.423l-0.375,0.805l-0.386,1.267l-0.475,1.773l-0.241,1.348l-0.083,1.801l-0.204,0.977L675.432,755l-0.25,0.582l-0.975,0.768l-0.324,0.179l-0.121,0.802l-0.782,1.129l-0.932,0.707l-0.54,1.106l-0.604,1.116l-0.688,0.318l-0.428,0.092l-2.069,0.897l-0.878,1.271l-0.381,0.942l0.124,1.593l-0.124,1.607l-0.625,0.797l-1.197,1.284l-0.895,-0.622l-0.669,-0.189l-0.549,-0.075l-0.201,-0.811l0.698,-1.21l0.409,-0.489l0.621,-2.917l0.284,-1.681l0.187,-1.583l0.424,-2.631l0.733,-2.4l0.505,-1.398l0.46,-1.667l0.767,-0.916l0.385,-0.305l0.494,-0.611l0.405,-0.787l0.294,-0.479l0.886,-2.829l0.023,-1.01l0.149,-1.296l-0.247,-0.811l-0.396,-0.073l-0.74,0.372l-0.556,0.355l-1.735,0.087l-0.791,-0.809l-1.098,-0.439l0.417,-0.796l0.445,-0.736l0.959,-1.109l0.31,-0.477l0.424,-0.465l0.665,0.528l0.922,0.157l0.496,-0.078l0.455,-0.369l0.223,-0.788l0.074,-0.928l-0.148,-0.619l-0.495,-0.304l-0.223,-0.564l0.074,-0.773l0.445,-0.281l0.861,-0.047l0.498,-0.3l0.225,-0.492l-0.041,-0.614l-0.235,-1.02l0.322,-0.718l-0.277,-0.588l-0.035,-0.929l0.639,-1.066l0.466,-0.484l0.152,-0.544l-0.21,-0.647l-0.333,-0.759l-0.236,-0.896l-0.285,-0.901l0.149,-1.317l-0.271,-0.753l-0.401,-0.149l-0.699,0.607l-0.751,0.276l-1.604,0.204l-0.644,-0.264l-1.673,-0.326l-0.92,-0.313l-1.926,-0.019l-2.191,-0.363l-3.183,-0.709l-1.803,-0.693l-0.652,-0.13l-1.295,0.136l-0.617,0.257l-0.925,0.631l-1.443,-0.53l-2.427,-0.259l-0.833,-0.299l-1.488,-0.836l-1.725,0.132l-0.609,0.404l-1.121,0.193l-1.441,-1.86l-1.178,-0.48l-0.816,-0.431l-0.558,-0.447l-0.563,-0.195l-0.747,0.276l-1.317,0.026l-0.369,0.123l-0.556,0.307l-0.551,0.698l-0.592,0.377l-0.988,-0.473l1.651,-1.624l0.248,-0.819l-0.074,-0.565l-0.453,-0.417l-0.409,-0.673l0.417,-0.16l0.604,0.395l0.881,0.379l0.457,-0.06l0.558,-0.645l-0.52,-0.975l-0.396,-0.36l-1.396,-0.354l-1.088,-1.14l-0.74,-0.897l-0.578,-0.533l-0.601,-0.334l-0.961,-0.261l-3.581,-0.396l-2.012,0.597l-1.619,0.162l-1.386,0.351l-0.553,0.36l-2.106,1.689l-0.979,0.287l-0.718,0.617l-0.247,1.117l0.173,1.062l0.603,0.475l-0.033,0.847l0.272,1.521l-0.148,0.318l-0.73,-0.16l-0.805,0.021l-1.452,-1.039l-0.678,-0.641l-1.17,-0.023l-1.024,0.754l0.374,0.921l0.324,0.331l0.588,-0.125l0.831,0.196l-0.467,0.912l-1.186,1.229l-0.029,0.77l0.079,1.247l-0.272,0.984l-0.495,0.461l-0.148,-0.526v-0.984L611,722.814l-0.706,-0.29l-0.716,0.415l-0.6,0.087l-0.493,-0.466l-0.553,-0.68l0.321,-0.765l0.481,-0.433l-0.144,-0.345l-0.554,-0.033l-0.759,-0.6l-0.91,-0.048l-0.296,0.258l-0.384,0.715l0.007,0.546l0.328,0.416l-0.105,0.619l-0.688,0.29l-0.747,0.021l-0.894,0.565l-1.045,-0.039l-0.583,0.282l-0.813,1.004l-0.917,0.425l-0.548,0.084l-1.75,0.548l-1.075,0.105l-0.589,0.268l-0.397,0.21l-1.153,1.729l-1.639,0.616l-1.314,0.628l-0.627,0.462l-0.886,1.144l-0.935,0.118l-0.752,0.511l-0.488,0.488l-0.499,0.773l-0.285,1.62l-0.161,2.001l-0.612,1.462l-0.774,1.438l-0.541,1.126l-0.447,0.669l0.147,0.755l-0.074,0.611l-1.083,-0.955l-0.997,-1.896l-1.002,-0.8l-0.638,-0.06l-0.52,0.239l-0.729,0.508l-0.727,-0.688l-0.385,-0.592l-0.373,-0.115l-0.715,0.011l-0.879,0.182l-1.264,-0.014l-0.591,0.172l-0.371,-0.356l-0.263,-1.207l-1.071,-2.536l-0.431,-0.575l-1.508,0.126l-0.688,-0.089l-0.117,-0.622l0.316,-0.318l0.532,-0.733l0.407,-0.735l-0.074,-0.683l-0.953,-0.149l-1.089,-0.095l-0.965,0.143l-0.969,0.726l-0.378,0.666l-0.208,1.604l0.478,1.424l0.464,0.983l0.204,1.104l0.038,0.861l-0.218,0.885l-0.286,1.428l-0.529,0.747l-0.462,0.208l-0.833,0.607l-2.191,1.04l-0.887,-0.009l-0.642,0.179l-2.332,0.447l-1.514,0.886l-1.55,1.485l-1.474,0.837l-1.933,0.769l-0.531,0.348l-0.847,0.835l-0.811,0.367l-0.459,0.117l-0.717,0.449l-1.473,0.154l-0.909,-0.402l-1.299,-0.169l-1.208,-0.678l-0.473,-0.613l-0.569,-0.987v-1.416l-0.421,-0.74l-0.594,-0.296l-0.619,-0.073l-0.389,1.431l-0.724,1.255l-0.721,0.621l-0.479,0.12l-1.498,-0.602l-0.47,-0.374l-0.124,-0.448l0.457,-0.687l-0.085,-0.726l-0.422,-0.484l-0.711,-0.976l-0.318,-0.196l-0.404,-0.152l-1.032,1.976l-0.425,1.565l-0.323,1.387l-2.646,0.635l-0.516,-0.064l-0.821,0.09l-0.681,-0.031l-0.405,-0.125l-0.314,-0.697l-0.354,-1.249l0.296,-1.536l0.18,-1.661l-0.525,-0.673l-0.371,-0.089l-0.701,0.565l-0.546,0.17l-0.228,1.047l-0.335,0.862l-0.301,0.186l-2.688,-0.752L522.594,744l-0.349,-1.609l-0.572,-0.485l-0.999,0.399l-0.612,1.084l-0.685,0.057l-1.4,-0.3l-1.605,0.04l-1.878,0.363l-0.814,-0.463l-0.659,-0.481l-0.652,-1.453l-1.233,0.099l-0.087,0.427l0.36,0.217l0.396,0.154l0.182,0.422l-0.695,0.792l-0.618,0.512l-0.429,0.612l-0.676,1.457l-0.657,1.018l-0.372,0.255l-1.397,-0.321l-0.659,-0.349l-2.108,-1.518l-0.932,-0.881l-0.764,-1.115l-1.324,-0.707l-0.91,1.722l-0.827,0.694l-0.607,-0.102l-1.768,-0.881l-0.773,1.156l-1.264,0.343l-1.243,0.432l-2.425,0.422l-1.49,0.163l-4.508,1.605l-2.519,0.477l-1.967,0.89l-1,0.662l-2.013,1.059l-0.832,0.627l-1.079,1.085l-0.951,1.42l-0.399,0.738l-0.607,0.631l-0.608,-0.734l-0.225,-0.805l-0.156,-1.679l-0.482,-0.731l-0.417,0.162l-0.387,0.899l-0.411,0.225l-1.443,0.186l-0.692,-0.671l-0.979,-0.318l-0.566,0.002l-1.2,0.346l-1.329,0.124l-0.79,-0.313l-0.726,-0.005l-0.552,-0.094l-4.209,0.122l-0.47,-0.137l-0.026,-0.528l0.13,-0.971l0.496,-0.885l0.547,-0.721l0.339,-0.957l-0.3,-0.95l-0.678,-0.276l-0.867,0.365l-0.848,0.521l-0.816,0.235l-0.543,-0.08l-1,-0.411l-0.65,0.358l-0.374,0.118l-0.287,0.357l-0.052,0.479l0.328,0.661l0.39,0.901l0.078,0.889l-0.221,0.878l-0.125,1.957l-0.567,0.79l-0.844,0.104l-0.79,0.247l-0.417,-0.019l-0.896,-2.755l-0.743,-1.636l-0.482,-0.49l-0.553,-0.192l-0.81,-0.587l-0.592,-0.869l-0.482,0.08l-0.251,0.401l0.081,0.358l0.586,0.319l0.249,0.603l-0.553,0.612l-0.494,0.429l-0.318,0.395l-0.392,1.292l-0.465,0.979l-0.405,0.06l-0.534,-0.698l-0.472,-0.365l-0.94,-0.953l-0.738,-0.373l-0.414,0.072l-0.376,0.31l-0.403,0.505l0.188,0.928l0.383,1.051l1.267,0.942l1.021,0.593l0.431,-0.077l0.478,-0.17l0.135,0.578l0.008,0.718l-0.458,1.173l-0.631,2.29l-0.422,1.214l-0.787,0.289l-0.891,0.504l-1.831,1.224l-1.295,1.474l-1.106,0.067l-0.943,-0.34l-1.007,-0.22l-0.001,0.488l0.365,0.557l0.472,1.502l-0.462,0.98l-0.438,0.199l-1.925,-0.729l-1.653,0.475l-0.581,0.535l-0.972,1.774l-0.365,0.528l-0.438,0.366l-0.201,1.285l-0.033,0.875l0.368,0.372l0.815,0.277l0.454,0.486l-0.189,0.586l-0.499,0.144l-0.283,0.371l0.173,0.492l1.323,0.303l1.373,-0.574l1.819,-0.375l0.105,0.867l-0.239,0.522l-1.208,1.782l-0.563,1.214l-0.678,0.983l-0.396,0.33l-2.125,-0.868l-0.835,0.039l-0.735,-0.081l-0.87,0.146l-0.384,0.47l-1.367,3.368l-0.408,1.75l-0.429,1.203l-0.83,0.841l-0.281,0.69l-0.371,1.39l0.371,1.108l0.281,0.527l0.286,0.073l0.311,0.389l-0.788,0.349l-0.746,0.085l-1.802,0.781l-2.791,-0.538l-0.83,1.146l-0.578,0.456l-1.248,0.552l-1.443,0.126l-1.452,-0.376l-2.054,0.644l-3.009,0.562l-5.023,2.184l-1.405,1.132l-1.612,1.199l-1.456,0.812l-1.196,0.371l-2.397,1.333l-2.688,2.733l-0.927,0.757l-0.75,1.244l-3.33,3.352l-1.088,1.592l-0.959,-0.298l-0.586,0.058l-2.14,1.786l-0.602,0.377l-1.36,1.465l-0.602,1.247l-0.733,2.706l-0.721,1.22l-0.784,0.22l-1.183,2.74l-1.885,5.89l-0.238,2.078l0.074,2.271l0.98,1.001l1.05,1.304l1.462,0.652l2.238,1.959l3.376,1.771l1.27,-0.1l3.169,-1.151l1.2,-0.257l0.954,-0.057l0.924,0.581l0.387,2.12l-0.093,2.76l0.455,1.546l0.28,0.213l13.164,2.561l1.651,0.19l0.383,-0.264l0.657,0.204l0.594,0.696l1.912,0.703l-0.47,1.695l-1.25,0.712l-0.619,0.858l-14.282,1.802l-0.568,0.16l-0.746,0.685l-1.762,0.933l-1.656,0.474l-0.833,2.384l-0.904,-0.092l-1.744,0.272l-1.264,0.902l-0.985,0.303l-0.376,-0.222l-0.385,0.371l-2.866,1.08l-2.742,0.813l-0.543,1.648l-0.717,1.175l-0.533,1.379l-0.753,0.526l-0.745,0.695l-0.878,0.271l-1.113,1.602l-2.25,-1.967l-2.135,-1.278l-2.78,2.672l-1.904,2.414l-1.33,0.132l-0.593,0.778l-0.864,1.53l-0.779,2.053l-0.939,3.611l-1.455,3.176l-1.729,5.083l-1.372,5.192l-1.108,1.284l-0.639,-0.285l-0.458,1.013l-1.652,1.529l-2.091,1.22l-1.085,0.359l-0.958,-1.225l0.192,-2.434l0.701,-1.44l0.427,-2.33l-0.205,-2.43l-0.39,-1.866l-0.866,0.647l-1.272,0.482l-0.955,0.017l-1.478,-1.583l-1.33,-0.655l-4.683,1.507l-1.75,0.156l-1.562,0.802l-1.462,0.938l-1.92,1.498l-1.078,0.384l-1.516,-0.187l-0.613,0.512l-0.511,0.186l-0.691,0.459l-1.726,2.407l-1.947,3.15l-1.42,0.291l-0.77,1.979l-0.682,1.376l-2.907,4.593l-0.571,1.128l-0.675,1.558l-1.382,3.754l-3.441,8.113l-0.948,-0.395l-1.524,-0.04l-1.646,-0.325l-1.241,-0.78l-0.461,-1.321l0.166,-1.49l0.265,-1.121l0.374,-1.146l0.289,-2.026l-0.05,-2.459l-0.265,-1.206l-1.112,1.624l-0.584,-0.766l-0.594,-3.505l-0.946,-2.321l-0.464,-2.145l-0.294,-2.028l0.513,-0.516l1.287,-0.788l3.584,-4.035l0.813,-1.576l-0.447,-0.233l-0.482,-0.037l-2.926,1.75l-2.087,-0.168l-2.304,0.916l-0.86,-0.055l-1.75,1.478l-1.468,-0.083l-0.703,-1.102l-0.713,-0.793l-0.414,0.293l-0.399,-0.318l-0.559,-1.992l0.355,-2.815l-0.161,-1.056l-0.307,-0.448l-0.507,-0.353l0.257,-0.791l0.354,-0.232l3.396,-0.294l1.597,-0.36l-0.149,-1.471l-1.741,0.154l-1.272,-0.336l-0.625,-0.209l-0.374,-0.895l1.679,-0.639l0.914,-0.855l0.619,0.374l0.682,-0.23l1.302,0.317l0.602,-0.173l1.707,0.325l1.134,-0.11l1.057,-0.814l-0.529,-1.145l-0.383,-0.38l-2.771,-0.068l-3.571,-0.601l-2.311,-1.161l-6.712,-5.795l-0.5,-0.326l-0.396,-1.025l-0.118,-1.258l-0.739,-0.646l-1.661,0.662l-1.27,-0.699l-0.388,-0.078l-0.674,-0.779l-0.636,-1.083l-0.43,-2.125l-0.47,-1.543l-0.359,-0.35l-0.925,-0.125l-0.598,0.478l-0.419,0.614l-2.227,1.422l-1.065,1.566l-1.337,1.137l-0.993,-0.42l-1.556,-1.371l-1.609,0.389l-0.829,0.856l-0.755,-0.469l-0.452,-1.01l-0.303,-1.463l-0.421,-1.757l-0.17,-1.482l-0.432,-2.509l-0.318,-0.746l-0.458,-0.721l-0.769,-2.23l-0.415,-1.066l-0.981,0.594l-1.132,0.355l-2.851,0.229l-2.052,-1.263l-2.114,-1.506l2.717,-0.024l2.78,0.229l1.346,-0.248l0.894,-0.626l0.971,-0.832l0.601,-1.316l0.876,-3.049l-0.207,-2.504l-0.316,-1.192l-0.79,-0.935l-8.298,-0.321l-1.952,-0.549l-0.743,0.399l-0.204,0.4l0.027,1.601l-0.157,1.33l-0.477,0.066l-0.525,-0.236l-0.761,-1.555l-0.166,-1.556l-0.788,-2.027l-0.443,-0.938l-2.605,-2.701l-1.071,-1.446l-0.812,-0.613l-0.94,-2.335l-0.285,-1.045l-0.186,-1.072l0.159,-0.797l0.453,-0.681l0.532,0.729l0.359,-0.084l-0.053,-0.62l-0.736,-1.508l-0.503,-1.372l-0.181,-1.113l-0.076,-1.118l1.03,1.775l0.925,1.809l1.33,2.299l1.906,2.062l3.124,2.785l1.471,0.987l1.476,-0.029l2.96,-0.99l2.364,-0.094l0.91,-1.231l0.26,-1.41l0.056,-1.769l-0.652,-0.463l-0.542,-0.704l-4.635,-2.709l-5.42,-3.633l-0.393,-0.528l1.341,-0.056l0.603,-0.588l0.805,-0.604l1.396,0.59l1.193,0.611l5.436,1.309l3.661,1.4l2.917,1.547l1.646,0.273l2.161,-0.935l1.563,-1.877l0.655,-1.027l1.056,-2.659l0.065,-1.358l-1.757,-0.712l-3.094,-0.746l-2.263,-0.049l-1.014,-0.978l-0.531,-0.821l-0.874,-0.76l-1.614,-3.547l-0.967,-1.977l-0.334,-1.621l0.272,-0.874l2.654,-0.538l0.79,0.081l0.369,0.195h0.483l0.605,-0.26l0.492,-0.064l3.897,1.4l1.145,-0.26l2.104,0.165l2.592,0.779l2.536,-0.165l0.966,-0.26l0.956,-0.536l0.322,-0.237l0.506,-1.604l1.714,-2.048l5.013,-2.841l3.221,-1.122l1.136,-0.715l1.807,-1.57l0.778,-0.316l0.747,-0.563l2.037,-1.796l1.935,-1.438l0.297,-0.59l-0.13,-0.514l-0.48,-0.178l-0.571,-0.092l-0.825,0.016l-0.862,-0.404l1.185,-0.955l0.859,-0.381l0.899,-0.193l0.163,-0.427l-0.459,-0.871l-0.657,-0.049l-0.993,-0.28l0.488,-0.563l0.539,-0.504l0.566,-0.295l0.446,0.331l0.205,-0.64l-0.12,-0.909l-0.029,-0.856l0.297,-0.07l0.52,0.141l0.501,0.492l0.398,1.7l0.545,0.607l0.658,-0.278l0.589,-0.685l0.204,-0.921l-0.11,-0.68l-0.669,-1.726l-0.261,-0.467l-0.027,-0.674l0.411,0.12l0.264,0.241l0.995,0.396l0.757,-0.019l1.009,-0.351l0.483,-1.102l0.376,-0.684l-0.223,-0.685l-0.946,0.683l-0.592,0.226l-1.434,-0.404l0.35,-0.637l0.414,-0.345l0.965,0.137l0.52,-0.884l-0.334,-0.677l-0.445,-0.203l-1.456,-0.04l0.271,-0.364l0.14,-0.734l0.411,-0.283l0.397,0.001l0.563,0.614l0.323,-0.276l0.521,-0.595l0.315,-1.596l-0.249,-0.995l-0.564,-0.728l-0.914,-0.707l-0.65,0.326l-0.283,-1.227l-0.14,-1.178l-0.357,-0.381l-0.263,-0.661l0.792,0.127l0.836,0.298l0.523,0.571l0.451,0.761l0.521,-0.076l0.587,-0.482l0.354,-0.58l0.44,0.28l0.79,0.342l0.297,-0.836l0.167,-1.533l-0.149,-0.888h-0.39l-0.297,0.761l-0.366,-0.096l-0.414,-1.674v-1.501l-0.539,-0.249l-0.603,0.497l-0.974,-0.931l0.018,-1.238l0.652,0.021l0.89,-0.414l0.185,-0.59l-0.074,-0.854l-0.038,-1.154l-0.042,-0.653l-0.32,-0.191l-0.333,-0.012l-0.437,0.375l-0.569,0.194l-0.512,-0.365l-0.38,-0.182l-0.747,0.166l-1.018,-0.485l0.892,-1.032l0.826,-0.368l1.71,-0.385l0.242,-0.653l-0.13,-0.768l-0.242,-0.647l-0.371,-0.218l-0.98,0.989l-0.457,-0.023l-0.655,-0.132l0.138,-0.24l0.337,-0.132l0.768,-1.213l0.412,-0.236l0.371,-0.456l0.25,-0.515l0.408,-0.198l0.115,-0.653l-0.154,-0.677l-0.658,-1.424l-0.171,-1.156l-0.563,-0.141l-0.53,0.048l-0.727,0.376l-0.223,-0.849l0.13,-0.619l0.52,-0.169l0.316,-0.28l0.256,-0.5l0.319,-0.395l-0.037,-0.668l-1.392,0.056l-0.65,-0.61l-0.408,-0.497l0.13,-0.716l0.319,-0.38l0.572,0.38l0.223,-0.659l-0.074,-0.655l-0.677,-0.758l-0.575,-1.641l-0.122,-1.964l-0.383,-0.859l-0.71,-0.841l-0.433,-0.341l-0.281,-0.602l-0.581,-0.885l-0.434,-0.778l-0.063,-0.71l0.378,-1.096l-0.278,-0.358l-0.854,-0.461l-0.074,-0.561l0.186,-0.305l1.01,-0.711l0.653,-0.221l0.379,0.12l0.13,-0.334l-0.346,-0.167l-0.449,-0.014l-1.628,0.389l-0.359,0.213l-0.687,0.65l0.035,0.803l0.22,0.652l-0.983,-0.194l-1.317,-0.563l-0.73,-0.426l-0.234,-0.267l0.285,-0.721l0.24,-0.305l0.163,-0.317l-0.262,-0.285l-0.678,-0.047l-0.338,-0.208l0.244,-0.374l1.317,-0.9l0.187,-0.308l-0.067,-0.334l-0.087,-0.201l-0.208,0.084l-0.728,0.546l-0.476,0.078l-0.445,-0.028l-0.262,-0.121l0.248,-0.618l0.229,-0.292l-0.164,-0.594l-0.203,-0.404l0.03,-0.441l0.043,-0.208l0.438,-0.952l-0.081,-0.364l-0.067,-0.164l-0.093,-0.438l-0.055,-0.612l0.057,-0.492l0.168,-0.372l0.261,-0.11l0.285,0.226l0.474,-0.048l0.73,-0.204l-0.021,-0.277l-0.089,-0.191l-0.474,-0.208l0.214,-0.223l0.314,-0.196l0.149,-0.233l-0.192,-0.137l-0.067,-0.578l0.238,-0.376l0.163,-0.558l0.138,-0.627l0.223,-0.047l0.149,0.372l0.429,0.011l1.006,0.528l0.57,-0.109l0.238,-0.278l-0.04,-0.498l-0.111,-0.3l-0.755,-0.758l0.176,-0.336l0.143,-0.126l0.235,-0.583l0.35,-0.681l0.284,-0.183l-0.093,-0.44l-0.183,-0.294l0.466,-0.251l0.387,0.015l0.536,0.14l0.219,0.619l0.513,0.702l0.819,1.602l0.213,0.185l0.259,0.006l-0.019,-0.608l-0.314,-0.458l0.049,-0.315l0.055,-0.152l0.007,-0.378l-0.098,-0.505l-0.293,-0.374l0.204,-0.507l0.278,-0.138l0.249,0.013l0.71,-0.155l0.35,0.083l0.676,0.606l0.094,0.745l0.241,0.186l0.167,-0.602l0.058,-0.653l0.42,-0.166l0.264,-0.563l0.39,0.138l0.402,0.327l0.043,0.547l0.297,0.323l0.241,-0.507l0.111,-0.507l-0.299,-0.558l0.151,-0.267l0.278,-0.046l0.315,0.274l0.334,-0.503l0.167,-0.364l-0.148,-0.319l-0.546,0.008l-0.28,-0.092l-0.211,0.133l-0.144,0.356l-0.276,-0.022l-0.17,-0.098l-0.191,0.038l-0.261,0.543l-0.605,0.088l-0.141,0.161l-0.602,0.172l-0.466,-0.046l-0.46,-0.563l-0.348,-0.792l-0.033,-0.521l0.232,-0.448l0.202,-0.521l0.446,-0.745l0.661,-0.135l-0.111,-0.313l-0.302,-0.063l-0.422,-0.383l-0.257,-0.842l0.17,-0.394l0.168,-0.272l0.215,-0.27l0.259,0.289l0.54,0.021l0.241,-0.354l-0.445,-1.013l0.093,-0.308l0.28,0.004l0.281,0.079l0.178,0.119l0.302,0.041l0.763,-0.282l0.405,-0.492l0.717,-1.171l0.292,-0.346l0.456,-0.439l0.149,-0.384l0.275,-0.024l0.784,-0.752l0.317,0.016l0.239,0.115l0.086,0.7l0.248,0.161l0.205,-0.345l-0.109,-0.59l0.184,-0.527l0.241,-0.086l0.255,0.376l0.394,0.26l0.501,0.051l0.445,0.56l0.297,-0.086l-0.056,-0.517l-0.251,-0.363l-0.027,-0.237l0.242,-0.086l0.056,-0.3l-0.347,-0.086l-0.152,-0.087l-0.197,-0.202l0.118,-0.255l0.467,-0.053l0.326,-0.702l0.536,-1.036l0.754,-0.967l1.14,-0.674l0.336,-0.254l0.436,-0.441l0.339,-0.207l0.496,-0.145l0.369,-0.072l0.153,0.279l-0.153,0.303l0.093,0.417l0.408,-0.083l0.39,0.041l0.148,-0.375l-0.408,-0.416l-0.262,-0.832l-0.157,-0.688l-0.257,-0.173l-0.622,-0.053l-1.343,0.576l-0.975,0.829l-1.285,0.522l-0.557,0.109l-0.461,0.747l-0.508,0.275l-0.821,0.678l-1.346,0.565l-0.807,0.092l-1.647,0.956l-0.163,0.221l0.099,0.269l-0.548,1.064l-0.257,0.309l-0.624,0.419l-0.208,0.315l-0.085,0.456l-0.368,0.386l-0.35,0.033l-0.354,0.102l-0.722,0.665l-0.291,0.132l-0.266,-0.116l-0.186,-0.563l-0.279,0.087l-0.204,0.65l0.137,0.512l-0.384,0.159l-0.309,-0.104l-0.969,0.665l0.096,0.567l0.149,0.345l-0.074,0.396l-0.334,-0.088l-0.241,-0.353l-0.612,0.078l-0.78,-0.342l-0.427,0.396l-0.353,0.573l-0.093,0.664l0.056,0.934l0.402,0.339l0.309,0.088l-0.057,0.345l-0.124,0.166l-0.572,-0.016l-0.186,0.114l-0.134,0.318l-0.094,0.105l-0.633,0.052l0.062,0.268l0.075,0.194l-0.127,0.408l-0.11,0.087l-0.483,-0.227l-0.074,0.452l0.056,0.362l0.297,0.228l0.093,0.409l-0.279,0.41l-0.303,-0.182l-0.778,-0.32l-0.298,0.08l-0.456,0.251l0.127,0.512l0.14,0.334l-0.405,0.16l-0.417,-0.074l-0.427,0.042l-0.281,0.828l-0.16,0.233l-0.004,0.381l0.273,0.421l-0.111,1.198l-0.136,0.365l-0.228,0.176l-0.298,-0.03l-0.64,-0.375l-0.35,-0.004l-0.18,0.12l-0.373,0.572l-0.065,0.36l0.174,0.958l-0.104,0.464l-0.088,0.281l0.051,0.597l0.068,0.373l0.052,0.929l-0.074,0.336l-0.148,-0.191l-0.164,-0.393l-0.413,0.174l-0.221,0.362l-0.186,-0.192l0.045,-0.55l-0.119,-0.264l-0.074,-1.142l-0.223,-0.284l-0.353,0.047l-0.39,0.854l-0.397,0.144l-0.148,0.159l-0.16,1.132l-0.099,1.207l0.059,0.497l0.057,0.232l0.162,0.09l1.018,-0.454l0.565,0.049l0.612,0.26l0.078,0.243l-0.26,0.243l-0.408,0.731l-0.297,1.029l-0.24,0.734l-0.121,0.706l0.484,0.919l0.517,0.706l-0.281,0.434l-0.414,1.183l-0.213,0.933l0.176,0.743l-0.223,0.767h-0.464l-0.257,0.702l0.569,0.883l0.467,0.425l0.13,1.039l-0.38,0.688l-0.544,0.552l-0.189,0.754l-2.159,-0.516l-0.9,0.29l-0.333,0.228l-0.359,0.156l0.198,0.754l0.471,0.944l0.186,1.338l0.001,1.719l0.779,1.899l0.666,1.432l0.551,2.229l0.263,1.349l0.264,1.832l-0.071,1.97l0.195,2.131l0.743,1.71l0.313,0.836l0.372,0.767l0.348,1.751l-0.707,2.732l-0.638,2.086l-1.011,2.109l-0.936,0.963l-2.303,1.632l-1.294,0.621l-1.926,0.551l-0.994,0.463l-1.949,-0.109l-1.222,0.896l-0.687,-0.016l-0.833,0.257l-1.085,0.582l-0.861,0.137l-0.679,-0.043l-2.994,2.499l-0.565,-0.044l-0.415,-0.115l-0.698,0.313l-0.734,-0.571l-0.528,-0.129l-0.7,-0.063l-0.848,0.723l-0.901,0.252l-1.052,0.692l-1.302,-0.16l-0.372,0.312l-0.453,0.238l-0.242,-0.266l0.286,-0.995l0.753,-1.517l-0.241,-1.046l-0.8,0.349l-0.866,-0.077l-1.127,0.267l-0.837,0.317l-0.74,0.086l-1.062,-0.484l-0.498,-1.91l-1.566,-2.162l-0.804,-0.591l-0.964,-0.27l-0.815,-0.532l-0.408,0.316l-0.074,1.018l0.492,1.37l0.166,0.81l0.122,1.039l-1.931,-1.746l-0.427,0.129l-0.241,0.645l0.074,1.559l0.204,1.572l-0.408,1.057l-0.835,0.576l-1.62,0.616l-1.773,-1.252l-0.636,-0.251l-1.468,-0.013l-0.649,-0.606l-1.173,-0.721l-1.002,-0.158l-1.15,-0.541l-0.784,-0.875l-0.903,-1.509l-0.615,-0.649l-0.503,0.159l-1.744,1.415l-0.53,0.098l-0.693,-0.096l-1.019,-1.578l-0.582,0.025l-0.92,0.451l-0.754,-0.209l-0.602,0.092l-0.397,-1.049l0.643,-1.79l0.385,-0.724l0.001,-0.675l-0.934,-0.805l-0.71,-0.183l-0.974,0.096l-0.287,1.255l-0.314,0.606l-0.508,-0.178l-0.829,-0.078l-0.61,0.931l-0.329,-0.149l-0.401,0.319l0.061,1.354l-0.441,1.208l-1.375,0.74l-0.695,-0.118l-3.01,-1.251l-1.648,-0.134l-2.463,0.488l-0.782,0.698l-0.734,0.257l-0.955,-0.62L209,769.594l-0.581,-0.184l-0.821,0.207l-0.986,0.511l-0.762,0.15l-0.679,-0.078l-0.791,-0.318l-0.786,-0.604l-1.461,-0.776l-0.49,0.176l-0.47,-0.413l-0.544,-0.659l-0.551,-0.105l-4.496,-0.215l-1.257,0.397l-0.855,-0.247l-0.721,-0.33l-1.435,0.137l-0.98,0.331l-0.45,-0.086l-0.526,-0.219l-1.068,-0.103l-0.204,-0.348l0.334,-0.38l0.255,-0.728l-0.255,-0.71l-0.342,-0.231l-1.042,-0.184l-0.714,0.047l-0.299,0.481l-0.444,0.443l0.189,1.205l0.649,2.304l0.47,0.979l0.656,0.349l2.411,-0.095l0.68,0.18l1.079,-0.115l2.113,0.345l1.167,0.485l1.383,0.911l0.919,0.751l0.854,0.398l-0.746,0.296l-0.509,-0.066l-0.555,0.108l-0.323,0.489l-0.351,0.26l-2.629,0.378l-0.751,-0.006l-0.406,-0.225l-0.507,-0.396l-0.776,-0.284l-0.676,-0.112l-0.584,-0.248l-1.05,-0.141l-1.091,0.291l-0.177,1.38l0.271,1.01l0.914,0.424l0.942,0.324l1.094,0.672l0.361,0.742l0.685,2.617l0.256,1.416l0.641,0.202l0.397,0.38l0.985,-0.549l0.822,-0.049l0.335,0.323l0.297,1.554l-0.708,1.714l-0.585,0.53l0.45,0.451l0.418,0.255l0.885,-0.175l0.552,0.292l1.245,1.408l1.35,0.679l0.476,0.537l-0.247,0.961l-0.299,0.442l-0.64,0.114l-1.546,-0.205l-1.548,0.682l-1.068,-0.188l-0.682,0.497l-0.935,0.265l-0.742,-0.624l-0.91,-1.592l-0.226,-1.035l-2.984,-0.113l-0.981,-0.237l-0.853,0.066l-1.337,0.56l-0.725,-0.348l-1.286,0.389l-0.797,-0.45l-1.396,0.903l-3.422,1.615l-0.879,-0.384l-0.939,0.278l-1.51,-0.144l-1.262,-0.763l-1.594,-0.505l-1.262,-0.236l-2.015,0.154l-3.127,-0.091l-0.715,0.319l-0.292,-0.948l1.391,-1.98l1.223,-1.237l0.649,-1.342l0.198,-1.845l-0.217,-1.774l-0.637,-0.809l-0.664,-0.206l-0.7,-0.397l-0.45,-0.438l-0.805,0.131l-0.458,-0.198l-0.495,0.91l0.236,1.214l0.074,1.229l-0.261,0.711l0.141,0.864l0.433,1.035l-0.313,0.441l-0.483,0.098l-0.847,0.332l-2.586,0.639l-1.408,0.561l-0.447,0.091l-0.503,0.321h-0.501l0.037,-0.786l0.315,-0.711l0.228,-2.116l0.338,-0.278l0.521,-0.627l0.742,-1.098l-0.34,-0.626l-0.523,0.126l-0.315,-0.413l0.111,-1.44l0.39,-0.204l0.239,-0.51l-0.054,-0.713l-2.35,-1.668l-0.779,-0.224l-0.47,0.869l-0.562,2.938l-0.32,1.874l-0.33,0.339l-3.397,-0.423l-1.783,0.273l-2.071,-0.734l-1.504,-0.224l-0.88,0.118l-0.413,0.307l-0.616,1.002l-1.122,1.094l-0.715,0.35l-5.24,1.014l-6.583,0.246l-1.187,-0.397l-2.921,-0.225l-2.893,0.297l-1.786,-0.477l-2.366,0.228l-3.023,1.078l-0.835,0.094l-1.551,0.671l-1.136,-0.008l-1.857,-0.694l-2.383,-0.162l-0.962,-0.482l-0.847,0.253l-1.797,0.179l-1.356,0.49l-0.902,0.029l-0.9,-0.267l-0.977,-0.573l-1.054,-0.874l-1.464,-0.039l-1.875,0.797l-0.555,0.758l-0.657,2.156l-0.246,1.13l-0.282,0.243l-1.235,-0.099l-1.482,-0.843l-4.296,0.924l-1.522,0.578l-1.691,2.136l-0.498,0.462l-0.668,0.563l-0.813,0.25l-0.63,0.291l0.979,2.263l-0.378,0.057l-0.353,-0.055l-1.042,-0.633l-1.651,-1.813l-0.661,-0.436l-1.943,0.589l-1.549,0.227l-1.814,1.899l-1.405,1.149l-1.078,0.538l-2.476,0.112l-0.942,1.521l-0.167,0.924l1.467,1.961l0.612,0.699l0.562,0.994l-0.687,0.234l-0.558,-0.054l-1.997,-1.03l-0.617,-0.235l-2.927,-2.204l-1.292,-0.309l-0.389,0.156l-0.485,0.587l-0.417,0.826l-0.321,0.396l-1.095,0.468l-1.037,0.643l0.883,0.64l0.825,0.467l1.249,0.423l3.538,-0.658l1.583,0.823l1.712,1.821l1.167,1.115l0.21,0.584l-0.028,1.082l0.159,0.858l-0.497,0.727l-0.358,0.212l-0.093,0.497l0.289,0.319l0.312,0.114l0.533,0.736l0.133,0.475l-0.333,0.279l-0.487,0.66l0.039,0.725l0.226,0.107l0.18,0.77l0.138,0.733l-0.215,0.424l-1.113,-0.018l-0.89,-0.185l-1.507,-2.728l-0.785,0.332l-0.66,0.444l-0.349,0.059l-0.459,-0.198l-1.308,-1.253l-1.056,-1.34l-0.576,0.249l-0.172,0.978l-0.013,1.033l0.279,0.761l0.52,0.232l0.84,0.658l0.292,0.642l-0.517,1.152l-2.206,1.194l-0.977,0.949l-0.321,0.786l-0.363,0.308l-1.029,-0.351l-0.621,-0.523l-1.827,-2.072l-2.14,-1.913l-0.784,-0.172l-3.027,0.385l-1.077,-0.341l-0.315,-0.68l-0.093,-0.678l-0.299,-0.459l-0.554,-0.6l-2.54,-1.266l-0.805,-0.093l-0.722,0.174l-1.574,-0.443l-0.818,0.095l-0.441,0.366l-0.84,0.989l-1.324,0.369l-0.915,-0.138l-1.057,-1.919l-0.452,0.15l-0.591,0.83l-0.092,2.509l0.046,1.847l-0.34,1.525l-0.418,2.153l0.262,1.456l0.34,0.845l1.229,1.664l1.631,1.718l1.958,-0.187l3.445,0.079l0.856,0.396l0.958,-0.053l1.128,0.579l-0.687,1.382l-0.502,0.547l-3.377,1.574l-0.809,0.681l-0.734,1.088l0.996,1.563l2.539,3.197l1.942,1.202l2.807,1.048l2.291,0.261l1.285,-0.478l0.297,0.196l0.237,1.146l-0.107,0.733l0.527,0.587l0.75,0.561l0.751,1.148l0.898,1.015l1.565,1.323l4.039,1.73l1.779,1.168l0.676,0.702l0.262,1.283l-0.13,0.813l-0.469,-0.019l-0.385,0.369l0.009,0.671l0.254,0.508l0.063,1.106l-0.367,0.318l-0.893,0.287l-2.278,-0.035l-0.751,0.191l-1.054,0.53l-0.603,1.004l-0.393,2.372l0.166,0.937l0.658,1.2l0.418,0.509l1.976,1.295l0.461,0.117l0.141,0.191l0.019,1.141l0.169,0.839l0.457,0.397l1.239,0.324l1.458,1.327l-0.279,1.149l-10.979,2.292l-10.907,1.89l-1.704,0.527l-0.805,1.259l-0.61,1.632l1.516,1.078l4.447,2.515l1.186,1.066l0.71,1.095l0.773,1.489l-0.294,1.272l-0.356,0.887l-0.738,1.127l-0.746,1.458l2.343,4.789l2.449,5.73l-1.091,2.943L44,903.469l-3.727,4.212l-0.868,2.786l-1.621,1.062l-2.754,1.122l-1.413,0.732l-0.442,0.535l0.253,1.366l0.655,0.262l0.92,0.852l-1.125,2.691l-0.76,0.846l-4.897,3.992l-1.345,-1.205l-1.884,-0.128l-4.498,0.73l-1.058,-2.671l-0.948,-1.547l-0.559,-0.436l-1.747,1.065l-0.912,1.261l-1.087,1.057l-0.558,-1.356l-0.761,-2.967l-1.975,-1.78L9.214,915.6l-4.23,0.396l-0.927,0.218l-0.382,-0.315l-0.636,0.367l-0.522,-0.646l-0.523,-0.323l-0.634,-0.888l-1.192,-1.271L0,913.003v7.83l0.933,0.781l1.074,1.967l0.807,2.057l0.421,0.643l0.827,2.518l0.706,1.43l0.697,0.521L8,930.26l2.042,-0.046l1.082,-0.872l1.643,1.277l2.436,3.689l0.201,1.86l-0.316,1.022l-1.063,0.491l-0.282,0.682l-0.23,1.587l0.44,1.008l1.393,2.317l0.591,0.467l0.179,0.422l-0.021,0.53l-0.376,0.809l-3.441,0.629l-0.167,-0.145l-0.156,0.332l0.295,0.824l0.613,0.621l2.253,0.407l0.609,0.727l0.388,0.652l0.206,0.594l0.328,0.459l14.776,7.511l3.697,1.022l1.025,0.89l0.368,1.554l-1.852,0.065l-0.854,0.665l1.307,2.227l0.97,3.146l0.516,3.529l-0.986,0.204l-0.89,-0.218l-10.365,-6.522l-5.929,-2.719l-1.489,-0.01l-9.675,-2.558l-1.631,0.448l-1.562,-3.241l-1.738,-1.37L0,954.061V1224h369.053h641.282V954.061l-6.185,-3.053L995.845,948.674zM63.293,805.438l-0.527,-0.282l-0.402,0.253l-0.215,0.802l0.376,0.633l0.88,0.524l0.331,-0.984l-0.247,-0.846L63.293,805.438zM305.113,748.376l-0.298,0.175l-0.162,0.283l0.113,0.344l0.327,0.291l0.386,0.151l0.28,-0.049l0.046,-0.104l0.055,-0.356l-0.048,-0.318l-0.224,-0.364L305.113,748.376zM932.715,793.917l-0.344,0.344l-0.361,0.813l0.198,0.265l0.354,0.05l0.505,-1.46l-0.144,-0.11L932.715,793.917zM305.009,730.978l0.355,0.129l0.105,-0.213l-0.138,-0.352l-0.305,-0.266l-0.375,-0.055l-0.19,0.225l0.339,0.38L305.009,730.978zM948.095,819.637l0.551,-0.018l0.662,-0.367l1.018,-1.212l0.661,-0.466l-0.217,-0.908l-2.315,-0.882l-2.777,0.104l-1.058,-0.932l0.002,-0.182l0.062,-0.47l-0.335,-1.066l-0.761,-0.313l-0.59,0.349l-0.262,0.795l0.157,0.47l0.388,0.597l0.054,0.527l-0.473,0.862l-0.223,0.65l-0.454,0.396l0.057,0.297l0.83,2.003l0.331,0.972l0.22,1.022l0.831,-1.255l0.714,-0.711l0.317,-0.709l1.474,-0.06L948.095,819.637zM935.238,784.567l-0.013,0.237l0.074,0.736l0.228,0.32h0.369l0.233,-0.855l0.109,-0.221l0.31,-1.319l-0.579,0.225L935.238,784.567zM945.78,823.763l-0.212,0.19l-0.164,0.532l-0.634,1.144L944,826.538l-0.291,0.021l-0.541,-0.683l-1.279,-0.796l-0.276,0.167l-0.001,0.4l0.107,1.123l0.2,0.844l0.457,0.44l0.957,-0.308l0.871,-0.852l1.237,0.365l0.394,-0.453l0.352,-1.022l-0.008,-0.405l-0.129,-1.214L945.78,823.763zM1006.038,909.603l-2.218,-2.168l-0.85,0.338l-0.752,0.693l-0.563,-0.201l-0.726,0.741l-0.616,-0.023l-3.27,-2.761l0.18,1.22l0.298,1.185l7.09,7.044l0.987,1.256l4.736,3.907v-7.83L1006.038,909.603zM951.462,772.761l0.524,0.634l0.377,-0.203l0.043,-0.366l0.285,-0.532l-0.207,-0.548l-0.291,-1.32l-0.12,-0.037l-0.191,0.251l-0.074,0.324l0.039,0.382l-0.505,1.197L951.462,772.761zM388.365,850.13l-1.364,-2.416l-0.212,-0.163l-0.898,1.538l0.495,1.854l0.645,0.608l2.104,0.813l1.185,1.168l1.103,-1.204l0.643,-0.165l0.223,0.063l0.298,-0.325l-0.72,-1.378l-2.215,-1.425l-0.336,-1.344l-0.229,1.23l0.058,0.717l-0.405,0.746L388.365,850.13zM302.305,736.195l-0.091,-0.523l-0.456,-0.603l-0.392,-0.678l-0.339,-0.308l-0.57,-0.235l-0.207,0.068l-0.146,0.203l0.201,0.853l0.786,1.647l0.124,1.138l0.244,0.75l0.246,-0.062l0.077,-0.246l0.175,-0.837l-0.01,-0.436l0.292,-0.15L302.305,736.195zM303.585,739.538l-0.167,0.301l-0.05,0.32l0.072,0.142l0.196,0.229l0.421,-0.018l0.142,-0.168l-0.124,-0.589L303.585,739.538zM671.416,757.249l-0.125,0.419l0.143,0.688l0.137,0.023l0.354,-1.17l-0.065,-0.089l-0.278,-0.125L671.416,757.249zM668.413,758.895l-0.283,0.796l-0.365,0.646l-0.076,0.366l0.147,-0.001l0.584,-0.223l0.414,-0.435l0.065,-0.58l-0.312,-0.697L668.413,758.895zM384.835,846.004l-0.349,0.894l-0.231,1.029l0.192,0.383l0.484,-0.145l0.958,-1.038l0.125,-0.051l0.065,-0.557l-0.608,-0.589L384.835,846.004zM130.404,775.52l0.121,0.065l0.113,0.227l0.917,1.002l-0.24,0.286l-0.479,1.075l0.015,0.433l0.228,0.507l0.083,0.29l-0.354,0.087l-0.184,0.137l0.049,0.639l0.223,0.422l1.607,0.629l3.436,-0.685l0.168,-0.113l-0.006,-0.348l-0.089,-0.141l-0.049,-0.2l0.098,-0.893l0.083,-0.168l2.012,-1.717l-0.112,-0.682l-0.185,-0.668l-0.5,-1.005l-0.466,-0.041l-2.175,-0.19l-1.317,-0.211l-1.316,-0.302l-1.333,-0.019l-0.286,-0.067l-0.28,0.092l-0.384,0.564l-0.12,0.646l-0.153,0.403l0.437,0.063L130.404,775.52zM139.492,777.462l-0.304,0.534l0.05,0.16l0.186,0.23l0.176,0.024l0.588,-0.121l0.282,-0.349l1.094,-0.801l0.193,-0.312l0.315,-0.901l-0.091,-0.441l-0.139,-0.25l-0.721,-0.319l-0.842,-0.028l-0.428,0.346l-0.375,0.055l0.396,1.767l-0.091,0.172L139.492,777.462zM180.87,768.498l0.482,0.722l0.621,0.113l0.342,-0.444l-1.22,-2.168l-0.314,0.238l-0.133,0.244l0.023,0.335L180.87,768.498zM263.067,741.41l0.106,0.091l1.286,0.44l1.178,0.247l0.497,-0.394l0.262,-1.1l0.333,-0.216l0.062,-0.181l-0.077,-0.268l-0.237,-0.456l-0.731,-0.882l-0.497,-0.199l-0.419,0.104l-0.119,-0.044l-0.24,0.114l-0.139,0.548l-0.073,0.19l-0.958,0.338l-0.219,0.28l-0.15,0.556l0.024,0.444L263.067,741.41zM146.694,779.137l1.38,-0.284l0.471,-0.404l0.159,-0.31l-0.056,-0.125l-0.209,-0.149l0.067,-0.134l0.374,-0.387l0.832,-1.088l-0.134,-0.15l-0.501,-0.305l-2.792,2.208l-0.062,0.406l0.099,0.395L146.694,779.137zM118.344,772.819l0.278,0.18l0.003,1.274l0.056,0.109l0.251,0.099l0.325,-0.084l0.294,-0.49l0.178,-0.194l0.357,-0.037l0.36,0.163l0.125,0.102l0.119,0.2l0.085,0.461l-0.017,0.662l0.639,0.794l1.002,0.646l0.573,0.822l0.375,0.278l0.36,0.074l0.93,1.153l0.608,0.267l1.891,0.178l0.608,0.314l0.127,0.001l0.282,-0.314l-0.006,-0.592l0.078,-0.521l0.03,-0.421l-0.143,-0.197l-0.228,-0.499l-0.553,-0.376l-0.063,-0.272l0.144,-0.379l0.164,-0.268l-0.243,-0.469l-1.155,-0.946l-0.217,-0.044l-0.216,0.143l-0.839,0.806l-0.324,-0.038l-0.325,-0.254l-0.288,-0.052l-0.633,0.247l-0.342,0.021l-0.349,-0.203l-0.164,-0.22l-0.008,-0.315l0.088,-0.304l0.295,-0.156l0.311,0.08l0.944,-0.202l0.034,-0.24l-0.175,-0.484l-0.499,-0.549l-0.161,-0.259l-0.184,-0.821l-0.306,-0.468l-0.339,-0.171l-0.334,-0.308l-0.251,-0.411l-0.743,-0.279l-0.749,-0.071l-0.654,0.115l-0.415,0.168l-0.409,-0.133l-0.405,0.095l-0.355,0.766l-0.098,0.635l0.042,0.685L118.344,772.819zM116.271,782.103l0.198,0.118l0.238,0.559l0.275,0.338l0.84,0.696l0.426,-0.189l0.375,-0.468l0.244,-1.032l-0.237,-0.576l-0.72,-0.208l-1.029,-0.764l-0.533,-0.204l-0.254,0.157l0.104,1.448L116.271,782.103zM261.385,750.124l0.26,0.139l0.267,-0.004l3.846,-1.039l0.845,-0.334l0.841,-0.424l1.433,-1.11l0.404,-0.603L268.843,746l-0.485,-0.48l-0.22,-0.146l-0.226,-0.067l-0.209,0.2l-0.005,0.665l-0.31,-0.345l-0.494,-0.327l-0.155,0.091l-0.035,1.186l-0.164,0.365l-0.175,0.19l-0.564,-1.367l-0.303,-0.342l-0.155,-0.002l-0.151,0.157l-0.084,0.353l-0.063,0.467l-0.188,0.393l-0.233,0.177l-2.314,0.54l-0.602,0.237l-0.361,0.261l-0.344,0.406l-0.031,0.424l0.252,0.859L261.385,750.124zM189.375,759.643l0.333,0.05l0.333,-0.116l0.513,-0.019l3.493,0.941l0.455,-0.051l0.256,0.133l0.252,0.234l0.959,0.623l0.668,0.249l0.801,0.606l0.75,0.012l0.676,0.154l0.654,0.54l0.686,0.079l0.94,0.009l0.653,-0.087l0.646,-0.242l0.324,-0.009l0.625,0.495l0.317,0.042l0.311,-0.189l0.312,-0.098l1.799,0.278l0.062,-0.216l0.044,-0.276l-0.179,-0.661l0.708,-0.138l0.702,-0.27l0.125,-1.489l-0.22,-0.678l0,-0.974l-0.213,-0.106l-0.62,0.595l-1.617,0.785l-0.66,0.439l-0.228,0.037l-0.256,-0.115l-0.25,-0.23l0.741,-0.827l1.169,-0.788l0.486,-1.356l-0.725,-0.534l-1.364,0.133l-0.616,0.84l-0.185,0.919l-0.115,0.416l-0.13,0.373l-0.29,0.524l-0.323,-0.008l-0.184,-0.358l-0.158,-0.494l0.305,-0.862l-0.313,-1.065l-0.649,0.328l-0.301,1.796l-0.687,0.06l-0.022,-0.953l0.238,-0.96l-0.275,-0.833l-0.576,-0.347l-0.621,-0.159l-0.98,0.814l-0.33,0.705l-0.483,0.359l-0.867,-0.246l-0.482,0.798l-0.138,0.104l-0.138,0.016l-0.427,-0.967l-0.279,-0.926l-0.376,-0.036l-0.511,0.295l-4.848,1.083l-0.304,0.216l-0.145,0.208l-0.071,0.445l0.137,0.495L189.375,759.643zM221.324,731.055l0.028,0.066l0.013,0.034l0.009,0.015h0.008l0.023,-0.011l0.039,-0.014l0.04,-0.011l0.04,-0.004l0.055,0.001l0.031,-0.004l0.009,-0.004l0.02,-0.019l0.022,-0.091l0.01,-0.093l-0.013,-0.054l-0.006,-0.065l-0.004,-0.055l-0.006,-0.045v-0.035l-0.029,-0.077l-0.037,-0.077l-0.037,-0.026l-0.025,-0.009l-0.053,-0.007l-0.029,-0.006l-0.047,-0.001l-0.025,0.014l-0.01,0.02l0.002,0.038l-0.008,0.065l-0.015,0.063v0.072l-0.001,0.056l-0.03,0.04l-0.011,0.088l0.014,0.067L221.324,731.055zM105.173,782.213l0.204,0.27l0.313,0.297l0.682,0.117l1.176,0.539l0.314,-0.222l0.279,-0.724l0.029,-0.617l-0.068,-0.44l-0.709,-0.006l-0.914,-0.482l-0.097,-0.391l-0.473,-0.062l-0.491,0.263l-0.631,0.8l0.318,0.397L105.173,782.213zM219.237,766.022l0.071,0.396l-0.263,0.559l-0.169,2.193l0.468,0.113l0.515,-0.241l0.455,-0.442l0.296,-0.508l0.33,-0.875l0.069,-0.73l-0.071,-0.597l-0.334,-0.289l0.323,-0.87l0.047,-0.479l-0.123,-0.662l-0.394,-0.509l-1,-0.084l-0.867,0.436l-0.162,0.28l0.333,1.225L219.237,766.022zM211.986,766.521l0.477,-0.005l0.112,-0.115l-0.123,-0.244l-0.574,-0.593l-0.12,0.032l-0.186,0.352l0.098,0.227L211.986,766.521zM209.007,764.103l1.687,-0.494l-0.022,-0.219l-0.224,-0.911l-0.069,-0.148l-0.078,-0.072l-0.524,0.458l-1.298,0.77l-0.161,0.446l0.15,0.216L209.007,764.103zM18.808,907.827l-2.799,-0.501l0.17,0.319l0.088,0.508l0.195,0.521l0.09,0.571l0.001,0.94l0.14,0.44l0.571,0.779l0.298,0.883l0.549,0.865l2.082,1.053l0.873,-0.541l0.465,-1.774l0.542,-0.36l-1.978,-2.391l-0.199,-0.536L18.808,907.827zM30.104,886.888l0.64,1.463l1.098,2.211l0.218,1.093l0.249,-0.144L32.739,890l-1.196,-1.681l-0.241,-0.935l-1.592,-2.387l-0.21,-0.008l0.175,0.772L30.104,886.888zM53.394,815.624l0.218,-0.058l0.115,-0.259l-0.401,-0.179l-1.466,-1.465l-0.551,0.081l-0.824,0.597l0.469,0.292L53.394,815.624zM52.888,808.285l1.186,-0.153l0.415,-0.507l-0.052,-0.198l-0.208,-0.337l-1.853,0.279l-0.101,0.276l0.121,0.304L52.888,808.285zM25.351,881.306l-0.051,-0.431l-0.369,-0.856l-0.901,-1.111l-1.742,-1.259l-2.52,-1.558l-2.088,-0.591l-1.876,0.79l-0.171,0.526l-0.059,0.725l0.033,0.246l0.138,0.368l0.348,0.398l1.439,0.712l7.527,2.201L25.351,881.306zM59.439,808.073l-0.178,-0.334l-0.781,-0.292l-0.745,0.116l-1.138,-0.154l-0.381,0.485l0.647,0.745l0.714,0.338l0.475,-0.056l0.407,-0.476l0.838,-0.088L59.439,808.073zM15.518,843.767l0.725,0.813l1.109,0.964l4.074,3.09l2.971,1.713l1.417,0.516l3.505,-0.589l0.122,-0.427l0.036,-0.715l-0.154,-0.638l-0.189,-0.314l-0.199,-0.582l-0.186,-0.72l-0.31,-0.71l-0.147,-0.573l-0.744,-1.62l-0.784,-1.187l-0.803,-0.799l-1.445,-2.095l-1.457,-1.843l-1.009,-1.553l-1.453,-1.561l-0.644,-0.48l-0.65,-0.265l-0.705,-0.238l-0.706,-0.086l-0.37,0.042l-0.25,0.831l-0.884,1.098l-0.433,1.063l-0.873,0.976l-0.208,0.816l-0.127,1.289l-0.103,1.614l0.157,1.136L15.518,843.767zM53.391,809.978l-0.574,0.276l-0.304,0.413l0.148,0.283l0.769,0.893l1.699,0.298l0.11,0.186l0.248,0.18l1.221,0.104l0.176,-0.203l-0.162,-0.345l-0.359,-0.179l-0.071,-0.371l-0.18,-0.595l-0.665,-0.929l-0.132,-0.468l-0.227,-0.176l-1.467,0.293L53.391,809.978zM67.24,795.348l0.541,0.267l0.31,-0.057l-0.04,-0.323l-0.177,-0.468l-0.286,-0.604l-0.964,-0.833l-0.378,-0.103l-0.506,0.321L65.529,794l0.303,0.433L67.24,795.348zM56.834,814.873l-0.354,-0.447l-0.402,-0.067l-0.403,0.335l0.627,0.892l1.431,0.208l-0.812,-0.648L56.834,814.873zM62.177,800.583l0.545,0.596l0.72,0.749l0.574,-0.173l-0.727,-1.739l-1.155,-0.413l-0.161,0.124l-0.008,0.196l0.037,0.168L62.177,800.583zM59.008,810.868l0.097,-0.257l-0.194,-0.28l-0.548,-0.236l-1.499,-0.438l-0.181,0.192l0.162,0.961l0.646,0.325l1.176,-0.153L59.008,810.868zM104.145,781.723l0.082,-0.333l-0.534,-0.244l-0.784,0.365l-0.072,0.42l0.873,0.385L104.145,781.723z', 1, '2020-09-03 08:37:34', '2020-09-03 08:37:34', '0');
+INSERT INTO `maps` (`id`, `country_id`, `path_d`, `status`, `created_at`, `updated_at`, `is_deleted`) VALUES
+(26, 10, 'M299.87,526.29l0.071,0.083l-0.001,0.087l0.237,0.178l0.474,0.271l0.444,0.523l0.414,0.777l0.389,0.576l0.363,0.372l0.334,0.264l0.305,0.154l0.163,0.125l0.021,0.096l0.285,0.199l0.549,0.303l0.347,0.303l0.146,0.302l0.542,0.313l0.939,0.322l0.683,0.154l0.426,-0.014l0.611,0.257l0.796,0.53l0.486,0.368l0.175,0.205l0.521,0.333l1.3,0.689l0.573,0.173l0.272,0.158l0.161,0.2l0.159,0.062l0.157,-0.078l0.326,0.072l0.496,0.222l0.388,0.269l0.499,0.593l0.159,0.237l0.067,0.212l-0.024,0.187l-0.152,0.2l-0.28,0.212l-0.083,0.093l-0.006,0.089l-0.071,0.179l-0.232,0.382l-0.059,0.178l-0.013,0.132l-0.147,0.144l-0.391,0.266l-0.081,0.129l-0.02,0.139l-0.049,0.083l-0.053,0.035l-0.075,0.139l-0.061,0.231l-0.006,0.296l0.048,0.362l-0.01,0.117l-0.086,0.062l-0.049,0.084l-0.017,0.169l-0.074,0.124l-0.129,0.079l-0.048,0.09l0.034,0.103l-0.095,0.101l-0.224,0.1l-0.137,0.146l-0.051,0.191l-0.125,0.171l-0.199,0.151l-0.065,0.201l0.104,0.372l1.226,-0.129l0.999,0.136l1.182,0.358l0.784,0.125l0.387,-0.108l0.287,0.015l0.187,0.139l0.251,0.028l0.315,-0.082l0.261,0.063l0.206,0.208l0.187,-0.052l0.168,-0.31l0.193,-0.227l0.218,-0.142l0.271,-0.043l0.325,0.057l0.259,0.114l0.194,0.171l0.211,-0.005l0.229,-0.181l0.11,-0.217l-0.01,-0.253l0.091,-0.181l0.191,-0.109l0.129,-0.147l0.067,-0.186l0.227,-0.113l0.387,-0.041l0.203,-0.091l0.018,-0.141l0.114,-0.13l0.211,-0.119l0.145,-0.148l0.078,-0.177l0.127,-0.112l0.178,-0.045l0.198,-0.373l0.217,-0.698l0.129,-0.942l0.045,-1.333l0.219,0.001l0.102,0.099l0.162,0.051l0.17,-0.112l0.145,-0.052l0.229,-0.004l0.124,-0.126l0.145,-0.02l0.099,0.068l0.096,0.083l0.204,0.019l0.162,0.216l0.178,0.066l0.076,0.248l0.115,0.653l0.214,0.386l0.212,0.44l0.008,0.196l-0.119,0.198l-0.02,0.285l-0.074,0.697l-0.025,0.257l0.074,0.175l0.027,0.245l-0.115,0.299l-0.224,0.448l-0.217,0.121l-0.056,0.005l-0.294,0.259l-0.207,0.097l-0.12,-0.065l-0.137,0.112l-0.154,0.291l-0.188,0.13l-0.34,0.072l-0.102,0.034l-0.198,-0.01l-0.17,0.072l-0.142,0.155l-0.151,0.058l-0.161,-0.039l-0.146,0.057l-0.131,0.153l-0.076,0.166l-0.021,0.179l-0.128,0.122l-0.236,0.065l-0.082,0.09l0.015,0.125l-0.106,0.097l-0.399,0.102l-0.289,0.18l-0.178,0.259l-0.188,0.163l-0.296,0.1l-0.402,0.264l-0.058,0.163l0.153,0.15l0.055,0.134l-0.043,0.117l-0.125,0.016l-0.208,-0.085l-0.148,-0.018l-0.088,0.05l-0.042,0.094l0.005,0.138l-0.074,0.094l-0.154,0.05l-0.097,0.114l-0.041,0.179l-0.193,0.226l-0.344,0.272l-0.271,0.367l-0.199,0.462l-0.232,0.304l-0.266,0.146l-0.183,0.208l-0.1,0.27l-0.284,0.418l-0.466,0.568l-0.423,0.39l-0.38,0.212l-0.213,0.24l-0.047,0.267l-0.246,0.305l-0.445,0.342l-0.126,0.154l-0.104,0.126l-0.015,0.22l-0.173,0.289l-0.333,0.359l-0.116,0.311l0.151,0.393l0.022,0.477l-0.066,0.191l-0.146,0.065l-0.033,0.123l0.079,0.182l0.004,0.239l-0.07,0.297l-0.154,0.34l-0.239,0.383l-0.058,0.256l0.124,0.129l0.061,0.137l-0.002,0.146l-0.051,0.211l-0.099,0.277l-0.15,0.206l-0.201,0.134l-0.061,0.17l0.081,0.205l0.011,0.214l-0.058,0.223l0.034,0.217l0.126,0.211l-0.009,0.241l-0.219,0.495l-0.053,0.306l0.137,1.313l-0.083,0.184l-0.139,0.212l-0.165,0.016l-0.188,-0.037l-0.136,0.132l-0.085,0.583l-0.259,1.264l0.046,0.301l0.208,0.489l0.076,0.312l0.058,0.235l0.046,0.446l-0.121,0.201l-0.112,0.035l-0.141,0.113l0.167,0.545l0.133,0.251l0.38,0.516l1.459,0.718l0.605,0.424l0.685,0.579l0.374,0.596l0.033,0.492l-0.547,0.737l-0.061,0.62l0.112,0.437l0.198,0.406l0.53,0.528l0.39,0.194l0.527,-0.021l0.09,0.148l0.054,0.13l0.083,1.075l-0.01,0.405l-0.155,0.372l-1.012,1.714l-0.864,1.052l-0.313,0.583l-0.111,0.625l-0.277,0.298l-1.498,0.948l-2.324,0.849l-1.878,0.442l-0.427,0.149l-3.019,0.487l-0.584,0.068l-0.76,-0.043l-0.617,0.065l-0.688,-0.133l-0.614,-0.153l-0.344,-0.38l-0.408,-0.047l-0.111,0.19l0.199,0.485l-0.097,0.585l0.121,0.334l0.241,0.067l0.232,0.173l0.205,0.232l-0.353,0.024l0.137,0.185l0.151,0.108l-0.017,0.387l-0.137,0.934l-0.344,0.2l-0.092,0.054l-0.104,0.202l-0.219,0.898l-0.07,0.584l0.094,0.377l0.413,0.794l-0.156,0.517l-0.261,0.281l-1.131,0.579l-0.452,0.232l-0.712,0.159l-1.147,0.027l-0.424,-0.036l-0.983,-0.528l-0.73,-0.316l-0.668,-0.251l-0.65,-0.15l0.093,-0.076l0.043,-0.136l-0.183,-0.076l-0.133,-0.017l-0.428,0.273l-0.18,0.279l-0.052,0.245l-0.009,0.588l0.076,0.495l0.308,1.223l0.032,0.667l-0.146,0.844l0.204,0.498l0.248,0.225l0.557,0.223l0.216,0.152l0.238,-0.024l0.073,0.059l-0.035,0.109l-0.14,0.215l0.009,0.227l0.422,0.067l0.438,-0.046l0.459,-0.101l0.108,-0.158l0.003,-0.33l-0.538,-0.058l0.068,-0.123l0.408,-0.134l0.534,-0.219l0.273,-0.041l0.186,0.147l0.125,0.135l0.154,0.355l0.096,0.469l0.004,0.565l-0.064,0.533l-0.076,0.189l-0.135,0.227l-0.96,0.29l-0.269,-0.076l-0.25,-0.403l-0.079,-0.417l-0.214,-0.281l-0.459,-0.223l-0.457,0.068l-0.453,0.387l-0.445,0.125l-0.158,0.353l1.116,0.572l0.527,0.16l0.172,-0.006l0.171,0.075l-0.159,0.213l-0.159,0.132l-0.794,0.292l-0.35,0.204l-0.409,0.402l-0.573,0.879l-0.176,0.192l-0.088,0.224l-0.059,0.609l0.186,1.015l-0.196,0.426l0.121,0.474l-0.068,0.317l-0.2,0.457l-0.804,0.723l-0.143,0.53l0.279,0.313l-0.019,0.274l-0.093,0.249l-0.334,-0.003l-1.214,-0.167l-0.442,0.272l-0.41,0.333l-0.112,0.159l-0.145,0.1l-0.835,0.178l-0.165,0.118l-0.888,1.275l-0.38,0.794l-0.459,0.782l-0.12,0.332l-0.026,0.461l0.064,0.416l0.064,0.307l0.16,0.395l0.336,0.451l1.711,1.847l0.355,0.162l1.83,0.199l0.406,0.259l0.237,0.412l0.087,0.364l-0.105,0.924l-0.109,0.29l-0.202,0.264l-0.433,0.34l-0.518,0.181l0.148,0.129l0.21,-0.019l0.458,-0.11l0.198,0.11l0.15,0.367l-0.287,0.148l-0.087,0.179l-0.207,0.271l-1.056,1.084l-0.569,0.325l-0.523,0.437l-0.702,0.443l-0.275,0.255l-0.372,0.536l-0.569,0.585l-0.614,1.261l-0.024,0.245l0.089,0.164l-0.341,2.231l-0.119,0.264l-0.247,0.282l-0.65,0.466l-0.313,0.058l-0.414,-0.27l-0.233,-0.282l-0.229,-0.482l-0.276,-0.496l-0.014,0.177l0.096,0.302l-0.065,0.316l-0.706,0.144l-0.187,0.148l0.637,-0.066l0.434,0.096l0.184,0.115l0.165,0.241l0.146,0.29l-0.122,0.161l-0.348,0.133l-0.45,0.245l-0.532,0.443l-0.295,0.514l-0.127,0.37l-0.144,0.748l-0.038,0.496l-0.225,0.382l-0.347,0.345l0.02,0.079l0.235,-0.177l0.188,-0.056l0.162,0.46l0.218,0.923l0.101,0.642l-0.016,0.19l-0.065,0.262l-0.448,0.063l-0.4,-0.008l-0.294,0.112l0.158,0.116l0.27,-0.041l0.373,0.276l0.414,-0.118l0.189,0.185l0.136,0.169l0.634,1.354l0.554,0.841l0.28,0.5l-0.139,0.228l-0.05,-0.303l-0.361,-0.079l-0.352,-0.081l-0.587,-0.217l-0.791,-0.328h-0.792l-0.629,-0.277l-0.695,-0.306l-1.467,-0.027l-1.292,-0.019l-1.324,-0.019l-0.847,-0.013l-0.567,-0.008l-0.147,-0.115l0.05,-0.38l-0.21,-0.28l-0.305,-0.338l-0.371,-0.238l-0.184,-0.319l-0.206,-0.358l0.116,-0.317l0.178,-0.769l0.003,-0.338l-0.161,-0.236l-0.049,-0.335l0.049,-0.157l0.145,-0.119l0.087,-0.547l-0.068,-0.535l-0.111,-0.477l-0.147,-0.21l-0.189,-0.1l-0.14,-0.019l-0.31,0.178l-0.514,-0.045l-0.175,0.068l-0.251,0.191l-0.356,0.282l-0.198,-0.098l-0.061,-0.302l-0.132,-0.261l-0.084,-0.23l-0.063,-0.379l-0.105,-0.485l-0.21,-0.573l-0.322,-0.462l-0.018,-0.415l-0.06,-0.52l0.164,-0.505l-0.096,-0.418l-0.201,-0.497l0.062,-0.514l0.198,-0.284l0.062,-0.36l0.916,-0.057l-0.038,-0.483l0.152,-0.39l0.171,-0.353l0.146,-0.16l0.326,-0.14l0.384,-0.203l0.217,-0.232l0.104,-0.208l0.063,-0.268l0.017,-0.285l-0.063,-0.605l0.072,-0.186l0.238,-0.245l0.402,-0.217l0.173,-0.575l-0.099,-0.499l-0.223,-0.395l-0.284,-0.178l-0.025,-0.405l0.128,-0.384l0.167,-0.411l0.199,-0.471l-0.012,-0.329l0.177,-0.192l0.504,-0.428l0.173,-0.418l0.177,-0.113l0.207,-0.05l0.012,-0.236l-0.151,-0.234l-0.024,-0.293l0.018,-0.324l0.046,-0.433l0.235,-0.162l0.348,-0.35l0.093,-0.222l0.012,-0.297l-0.101,-0.612l-0.086,-0.438l-0.044,-0.161l-0.158,-0.296l-0.117,-0.187l0.187,-0.234l0.35,-0.245l0.148,-0.355l-0.136,-0.301l-0.198,-0.159l-0.062,-0.46l0.074,-0.583l0.148,-0.176l0.52,-0.088l0.049,-0.299l0.396,-0.422l-0.012,-0.403l-0.252,-0.247l-0.247,-0.398l-0.182,-0.351l-0.606,-0.192l-0.644,-0.104l-0.087,-0.331l0.025,-0.191l0.299,0.077l0.489,-0.067l0.368,-0.015l0.256,-0.034l0.295,-0.048l0.272,0.139l0.272,-0.087l0.111,-0.521l0.173,-0.277l0.025,-0.26l-0.173,-0.207l-0.317,-0.064l-1.387,-0.164l-0.042,-0.207l0.012,-0.347l0.052,-0.354l0,-0.174l0.126,-0.153l0.144,-0.32l0.101,-0.213l-0.101,-0.276l-0.221,-0.407l0.161,-0.188l0.013,-0.224l-0.05,-0.219l-0.23,-0.243l-0.203,-0.335v-0.356l0.238,-0.095l0.158,-0.109l0.037,-0.22l-0.087,-0.271l-0.329,-0.083l-0.438,-0.166l-0.134,-0.139l-0.124,-0.29l0.092,-0.813l-0.046,-0.489l-0.039,-0.27l0.107,-0.208l0.146,-0.187l-0.069,-0.435l-0.13,-0.228l0.046,-0.175l0.123,-0.176l0.107,-0.217l0.092,-0.051l0.138,0.124l0.233,-0.073l0.281,-0.175l0.03,-0.206l-0.056,-0.294l-0.209,-0.738l-0.188,-0.455l0.039,-0.164l0.074,-0.172l-0.059,-0.624l0.019,-0.376l0.014,-1.105l0.021,-0.376l-0.192,-0.384l0.026,-0.359l0.135,-0.262l0.127,-0.354l0.095,-0.313l0.1,-0.141l0.169,-0.07l0.039,-0.171l-0.077,-0.13l-0.218,-0.203l-0.05,-0.248l0.046,-0.19l0.107,-0.11l0.166,0.001l0.125,-0.271l0.036,-0.334l0.026,-0.155l-0.096,-0.195l-0.069,-0.459l-0.065,-0.26l0.077,-0.109l0.107,-0.04l0.189,0.062l0.133,-0.032l0.023,-0.139l0.015,-0.149l0.051,-0.101l0.119,-0.336l0.127,-0.416l0.03,-0.293l-0.045,-0.793l0.067,-0.182l0.136,-0.166l0.189,-0.156l0.249,-0.129l0.309,-0.186l0.38,-0.068l0.154,-0.206l0.107,-0.274l0.03,-0.225l-0.146,-0.156l-0.192,-0.186l-0.091,-0.467l-0.049,-0.431l-0.028,-0.542l-0.191,-0.465l-0.2,-0.522l-0.054,-0.464l0.067,-0.253l0.079,-0.402l-0.084,-0.183l-0.1,-0.327l0.104,-0.256l0.126,-0.397l-0.015,-0.201l-0.1,-0.479l-0.092,-0.268l0.092,-0.286l0.146,-0.267l0.115,-0.143l-0.019,-0.23l0.05,-0.189l0.218,-0.126l0.204,-0.234l0.146,-0.028h0.176l0.115,-0.066l0.046,-0.18l0.031,-0.199l0.281,-0.247l0.165,-0.227l0.299,-0.047l0.146,-0.246l0.003,-0.315l-0.034,-0.318l0.1,-0.367l-0.111,-0.56l0.011,-0.296l-0.115,-0.244l0.023,-0.263l-0.062,-0.168l-0.174,-0.063l-0.064,-0.209l0.084,-0.103l0.164,-0.079l0.206,-0.16l0.154,-0.768l0.073,-0.228l0.071,-0.273l-0.009,-0.142l0.099,-0.205l0.124,-0.311l0.195,-0.3l0.111,-0.206l0.108,-0.277l0.031,-0.167l0.138,-0.083l0.159,-0.021l0.187,-0.052l0.077,-0.102l-0.014,-0.148l-0.012,-0.327l-0.056,-0.519l-0.036,-0.667l0.033,-0.438l0.123,-0.439l0.115,-0.238l-0.031,-0.183l-0.031,-0.201l-0.215,-0.11l-0.204,0.095l-0.143,-0.026l-0.183,-0.233l-0.054,-0.247l0.031,-0.337l0.143,-0.21l0.056,-0.264l-0.084,-0.082l-0.18,-0.175l-0.17,-0.602l0.021,-0.512l-0.169,-0.136l-0.079,-0.399l-0.174,-0.143l-0.069,-0.298l-0.054,-0.307l0.023,-0.135l0.182,-0.038l0.103,-0.242l-0.077,-0.135l-0.138,-0.117l-0.176,0.009l-0.158,-0.138l-0.211,-0.577l-0.167,-0.318l0.053,-0.463l0.033,-0.361l0.072,-0.309l0.026,-0.243l0.13,-0.116l0.123,0.053l0.115,-0.027l0.106,-0.197l0.116,-0.124l-0.007,-0.098l-0.069,-0.106l-0.033,-0.187l0.081,-0.223l0.14,-0.509l0.212,-0.56l0.091,-0.209l-0.023,-0.177l0.046,-0.08l0.144,0.089l0.409,-0.098l0.138,-0.248l0.054,-0.221l0.123,-0.124l-0.054,-0.176l-0.169,-0.053l-0.102,-0.083l0.041,-0.2l0.06,-0.459l-0.01,-0.337l-0.154,-0.719l-0.124,-0.71l0.087,-0.237l0.268,-0.324l0.203,-0.146l0.037,-0.185l0.201,-0.834l0.023,-0.455l0.132,-0.251l0.087,-0.472l0.364,-0.406l0.107,-0.269l0.146,-0.026l0.077,-0.087l0.193,-0.299l0.251,-0.307l0.216,-0.155l0.054,-0.242l0.103,-0.33l0.214,-0.547l0.12,-0.381l0.161,-0.137l0.188,-0.498l0.081,-0.292l0.215,-0.12l0.168,-0.034l0.161,0.137l0.169,-0.026l0.154,-0.171l0.37,-0.117l0.167,-0.063l0.077,-0.171v-0.3l-0.154,-0.222l-0.313,-0.425l-0.27,-0.475l-0.029,-0.149l-0.002,-0.163l0.046,-0.206l0.129,-0.233l0.324,-0.384l-0.035,-0.274l-0.236,-1.007l-0.087,-0.277l-0.164,-0.513l0.023,-0.203l0.144,-0.566l0.125,-0.228l0.184,-0.042l0.1,-0.076l0.031,-0.101l-0.123,-0.126l-0.054,-0.16l-0.054,-0.228l-0.17,-0.08l-0.098,-0.189v-0.277l0.153,-0.361l0.169,-0.101l0.069,-0.16l0.181,-0.146l0.165,-0.113l0.138,-0.209l0.569,-0.256l0.452,-0.199l0.882,-0.38l0.605,-0.261l0.058,-0.18l0.046,-0.123l0.28,-0.917l0.363,-1.183l0.227,-0.74l-0.522,-0.544l0.092,-0.145l0.299,-0.372l0.062,-0.298l0.119,-0.128l0.536,-0.303l0.092,-0.201l0.047,-0.223l0.109,-0.16l0.204,-0.033l0.371,-0.142l0.398,-0.135l0.12,-0.183l0.113,-0.318l0.097,-0.352l0.077,-0.083l0.128,0.009l0.213,0.088l0.112,0.133l0.557,0.422l0.25,0.241l0.238,0.032l0.47,-0.047l0.095,0.011l1.199,0.014l0.183,0.021l0.419,0.103l0.237,0.083l0.165,0.043l0.265,0.13l0.23,0.431l0.129,0.343l0.09,0.302l0.201,0.531l0.137,0.202l0.049,-0.098l0.117,-0.581l0.161,-0.338l0.217,-0.379l0.437,-0.884l0.153,-0.132l0.17,-0.064l0.119,-0.005l0.121,0.066l0.165,0l0.117,-0.07l1.146,-0.011l1.189,-0.01l0.025,0.005l0.054,0.152l0.198,0.332l0.222,0.176L299.87,526.29zM302.046,581.649l0.028,0.228l-0.146,-0.027l-0.347,-0.218l-0.117,-0.204l-0.027,-0.086l0.354,0.093l0.167,0.085L302.046,581.649zM283.025,646.675l0.016,-1.096l0.022,-1.464l0.004,-1.297l0.004,-1.256l0.004,-1.292l0.004,-1.283l0.005,-1.363l0.005,-1.375l0.165,0.195l0.652,0.95l0.17,0.39l0.107,0.456l-0.261,-0.29l-0.275,0.166l-0.136,0.272l-0.116,0.296l0,0.209l0.09,0.183l0.268,0.159l0.651,0.054l0.048,0.06l0.38,1.151l0.191,0.258l0.222,0.205l0.514,0.592l0.493,0.64l0.585,0.609l0.63,0.469l0.574,0.356l0.547,0.437l0.584,0.612l0.635,0.446l0.682,0.315l0.689,0.264l1.061,-0.103l0.329,0.028l0.205,0.194l-0.206,0.537l-0.263,0.433l-0.351,0.179l-0.371,0.066l-0.335,-0.009l-0.334,-0.08l-0.314,0.045l-0.3,0.183l-0.313,0.091l-0.322,0.012l-0.314,0.154l-0.315,0.111l-0.327,-0.092l-0.85,-0.432l-0.552,-0.103l-1.87,-0.171l-0.6,-0.099l-0.598,-0.149l-0.313,-0.007l-0.447,0.097l-0.358,-0.012L283.025,646.675zM294.543,646.008l0.31,0.112l0.612,-0.085l0.323,-0.001l0.142,0.04l0.063,0.06l0.422,-0.094l0.187,0.011l-0.048,0.208l-0.389,0.207l-0.16,-0.088l-0.827,0.019l-0.366,0.214l-0.156,-0.002l-0.361,0.305l-0.264,-0.193l-0.073,-0.177l0.191,-0.252l0.18,-0.005l0.123,-0.102L294.543,646.008z', 1, '2020-09-03 08:38:17', '2020-09-03 08:38:17', '0'),
+(27, 4, 'M1006.894,503.108L1006.773,503.133L1006.629,502.996L1006.909,502.892L1006.998,502.838L1007.338,502.865L1007.135,502.91z', 1, '2020-09-03 08:38:40', '2020-09-03 08:38:40', '0'),
+(28, 14, 'M523.278,306.992L523.267,307.035L523.251,307.194L523.142,307.395L523.024,307.657L523.032,307.887L523.333,308.681L523.601,309.162L523.651,309.345L523.823,309.486L523.66,309.663L523.628,309.925L523.522,310.042L523.494,310.191L523.539,310.327L523.538,310.497L523.597,310.73L523.335,310.781L523.024,310.773L522.913,310.787L522.809,310.851L522.702,310.819L522.42,310.6L522.262,310.551L522.15,310.564L522.066,310.66L521.921,310.782L521.786,310.868L521.816,310.943L522.399,311.14L522.502,311.442L522.39,311.688L522.352,311.809L522.215,311.903L522.048,311.986L521.846,312.007L521.822,312.14L521.901,312.529L521.837,312.613L521.773,312.734L521.833,313.053L521.958,313.076L521.986,313.148L521.964,313.278L521.942,313.415L521.898,313.56L521.876,313.625L521.793,313.665L521.535,313.644L521.312,313.768L520.864,314.212L520.708,314.288L520.538,314.466L520.548,314.855L520.525,314.891L520.484,314.971L519.949,314.833L519.931,314.836L519.572,314.886L519.327,315.064L519.03,315.167L518.406,315.112L517.799,315.181L517.655,315.233L517.498,315.263L517.35,315.367L517.265,315.513L517.114,315.697L516.899,315.842L516.666,315.954L516.61,316.047L516.534,316.101L516.403,316.031L516.298,316.035L516.169,315.987L515.74,315.935L515.27,315.849L515.045,315.767L514.791,315.701L514.517,315.648L514.272,315.636L514.148,315.611L513.559,315.468L513.17,315.458L512.657,315.398L511.638,315.182L511.341,315.094L511.058,315.067L510.722,314.992L510.467,314.869L510.304,314.635L510.129,314.325L509.81,313.918L509.744,313.715L509.842,313.537L509.942,313.402L509.931,313.345L509.853,313.315L509.292,313.489L508.748,313.709L508.534,313.715L508.327,313.667L508.051,313.663L507.787,313.722L507.257,313.752L506.947,313.914L506.749,314.229L506.642,314.483L506.552,314.565L506.367,314.596L506.091,314.572L505.897,314.499L505.699,314.282L505.392,314.251L505.11,314.246L505.035,314.206L505.04,314.064L504.929,313.798L504.745,313.715L504.269,314.216L504.139,314.261L503.756,314.122L503.421,313.908L503.385,313.751L503.33,313.622L503.049,313.5L502.698,313.417L502.586,313.417L502.63,313.341L502.671,313.212L502.645,313.11L502.563,313.003L502.518,312.89L502.504,312.78L502.479,312.69L502.464,312.605L502.438,312.539L502.667,312.039L502.714,311.728L502.514,311.545L502.429,311.491L502.499,311.45L502.784,311.484L502.965,311.381L503.06,311.278L503.313,311.375L503.685,311.569L503.86,311.701L503.932,311.802L503.973,311.887L503.951,312.033L504.035,312.09L504.21,312.111L504.327,312.156L504.286,312.348L504.278,312.505L504.439,312.483L504.642,312.363L504.8,312.146L504.898,311.935L504.972,311.421L504.998,311.378L505.12,311.418L505.613,311.396L505.846,311.492L506.215,311.508L506.208,311.588L506.273,311.714L506.437,311.895L506.517,312.013L506.688,312.034L506.953,311.969L507.107,311.901L507.166,311.949L507.407,311.902L507.621,311.756L507.674,311.645L507.89,311.566L508.182,311.385L508.583,311.246L509.898,311.096L509.949,310.983L509.93,310.724L509.965,310.686L510.13,310.75L510.396,310.811L510.601,310.902L510.732,311.022L510.855,311.027L511.045,310.943L511.302,310.889L511.542,311.014L511.612,311.148L511.57,311.217L511.574,311.326L511.649,311.417L511.844,311.565L512.094,311.692L512.224,311.682L512.272,311.559L512.318,311.264L512.335,310.948L512.278,310.767L512.143,310.723L511.982,310.708L511.896,310.67L511.927,310.571L512.055,310.313L512.054,309.968L511.763,309.574L511.51,309.193L511.511,309.063L511.663,308.837L511.896,308.657L512.415,308.357L512.578,308.295L512.788,308.245L513.09,308.121L513.235,307.994L513.333,307.856L513.475,307.137L513.508,307.106L513.55,307.064L514.079,307.313L514.126,307.271L514.216,307.231L514.388,307.04L514.426,306.896L514.422,306.621L514.438,306.362L514.471,306.279L514.55,306.31L514.778,306.444L514.959,306.596L515.128,306.977L515.523,307.078L516.022,307.088L516.2,306.918L516.362,306.879L516.545,306.931L516.931,306.99L516.974,306.683L517.196,306.362L517.297,306.25L517.58,306.261L517.649,306.021L517.719,305.356L517.778,305.283L517.984,305.297L518.189,305.418L518.25,305.517L518.357,305.509L518.506,305.441L518.669,305.398L518.928,305.469L519.479,305.771L519.764,305.882L519.944,305.861L520.113,305.865L520.764,306.331L521.219,306.396L521.634,306.398L521.768,306.258L521.944,306.139L522.129,306.155L522.29,306.216L522.604,306.418L522.749,306.47L522.942,306.503L523.083,306.548L523.208,306.898z', 1, '2020-09-03 08:38:57', '2020-09-03 08:38:57', '0'),
+(29, 12, 'M279.528,427.678L279.538,427.761L279.408,427.716L279.234,427.539L279.06,427.406L279.103,427.263L279.147,427.215L279.321,427.348L279.493,427.597z', 1, '2020-09-03 08:39:49', '2020-09-03 08:39:49', '0'),
+(30, 258, 'M531.8,249.859l0.086,0.001l0.039,-0.048l0.15,0.034l0.226,0.219l0.046,0.119l0.155,0.061l0.054,0.123l-0.18,0.382l-0.111,0.007l-0.083,-0.048l-0.147,0.042l-0.086,0.072l-0.029,0.159l0.005,0.332l-0.657,0.066l-0.151,-0.097l-0.207,-0.755l0.042,-0.196l0.139,-0.083l0.119,-0.018l0.018,0.408l0.175,-0.041l0.055,-0.269l0.012,-0.189l-0.047,-0.096l-0.119,-0.074l-0.069,-0.127l0.099,-0.205l0.183,-0.089l0.158,0.274L531.8,249.859zM530.881,250.786l0.015,0.126l-0.107,-0.032l-0.083,0.043l-0.056,0.155l-0.122,-0.056l-0.049,-0.223l0.091,-0.334l0.217,-0.013L530.881,250.786zM533.545,251.609l-0.022,0.133l-0.229,0.029l-0.096,-0.118l-0.214,0.015l-0.037,-0.059l0.089,-0.118l0.17,-0.074l0.222,0.03L533.545,251.609z', 1, '2020-09-03 08:41:44', '2020-09-03 08:41:44', '0'),
+(31, 15, 'M612.019,333.862l0.258,0.217l0.447,0.588l0.637,0.954l0.156,0.27l0.103,0.312l0.089,0.377l0.146,0.333l0.646,0.837l0.279,0.309l0.455,0.398l0.162,0.089l0.212,0.025l0.391,0.001l0.36,0.156l0.178,0.109l0.184,0.158l0.165,0.183l0.166,0.486l-0.625,-0.16l-0.63,0.025l-0.355,0.104l-0.346,0.143l-0.331,0.201l-0.207,0.391l-0.174,0.902l-0.255,0.841l0.009,0.388l0.111,0.373l-0.013,0.176l-0.116,0.075l-0.146,0.158l-0.195,0.766l-0.097,0.153l-0.125,0.095l-0.034,-0.09l0.008,-0.201l-0.275,-0.177l-0.145,0.199l-0.101,0.421l-0.201,0.441l-0.01,0.084l0.05,1.359l-0.08,-0.006l-0.575,0.138l-0.12,-0.044l-0.492,-0.626l-0.102,-0.069l-0.212,-0.028l-0.125,-0.103l-0.101,-0.168l-0.058,-0.125l-0.509,-0.34l-0.075,-0.125l-0.011,-0.11l0.075,-0.099l0.086,-0.083l0.249,-0.085l0.29,-0.073l0.093,-0.053l0.047,-0.091l-0.003,-0.146l-0.047,-0.144l-0.417,-0.261l-0.046,-0.113l-0.013,-0.138l0.023,-0.145l0.065,-0.113l0.34,-0.154l0.182,-0.16l-0.113,-0.178l-0.367,-0.407l-0.436,-0.448l-0.291,-0.004l-0.335,0.132l-0.536,0.382l-0.296,0.163l-0.387,0.27l-0.421,0.3l-0.345,0.318l-0.215,0.263l-0.382,0.114l-0.195,0.22l-0.641,0.658l-0.18,-0.008l-0.011,-0.327l0.009,-0.259l-0.041,-0.149l-0.208,-0.205l-0.003,-0.088l0.056,-0.055l0.159,0.033l0.205,-0.012l0.098,-0.081l-0.219,-0.27l-0.195,-0.181l-0.165,-0.122l-0.037,-0.073l0,-0.052l0.035,-0.062l0.282,-0.149l0.028,-0.137l-0.019,-0.153l-0.448,-0.226l-0.335,0.083l-0.301,-0.254l-0.193,-0.196l-0.241,-0.211l-0.215,-0.116l-0.207,-0.265l-0.359,-0.273l-0.23,-0.078l0.003,-0.042l0.042,-0.05l0.096,-0.042l0.64,0.011l0.078,-0.049l0.04,-0.118l0.087,-0.174l0.102,-0.256l-0.008,-0.216l-0.643,-0.349l-0.466,-0.322l-0.323,-0.424l-0.219,-0.389l0.008,-0.131l0.063,-0.124l0.5,-0.359l0.034,-0.093l-0.011,-0.063l-0.179,-0.184l-0.224,-0.19l-0.07,-0.14l-0.141,-0.071l-0.268,-0.005l-0.47,-0.234l-0.1,-0.023l-0.022,-0.046l0.023,-0.047l0.335,-0.095l-0.005,-0.078l-0.102,-0.103l-0.189,-0.075l-0.174,-0.187l-0.06,-0.168l0.605,-0.492l0.179,-0.099l0.396,0.091l0.823,0.327l-0.056,0.181l0.083,0.102l0.189,0.138l0.363,0.14l0.307,0.072l0.155,-0.062l0.236,-0.052l0.307,0.162l0.283,0.205l0.141,0.083l0.076,0.025l0.215,-0.068l0.258,-0.264l0.102,-0.319l0.028,-0.154l-0.15,-0.212l-0.31,-0.23l-0.347,-0.202l-0.223,-0.179l-0.143,-0.353l-0.144,-0.039l-0.036,-0.046l-0.024,-0.121l0.006,-0.168l0.049,-0.13l0.141,-0.056l0.142,-0.02l0.128,-0.124l0.161,-0.243l0.068,-0.135l0.302,0.077l0.041,0.218l0.054,0.046l0.125,-0.026l0.208,-0.091l0.166,0.07l0.214,0.259l0.295,0.273l0.16,0.184l0.063,0.126l0.151,0.123l0.221,0.144l0.176,0.226l0.157,0.524l0.159,0.121l0.569,0.199l0.2,0.041l0.559,0.07l0.197,-0.05l0.288,-0.451l0.259,-0.465l0.242,-0.097l0.437,-0.225l0.262,-0.213l0.11,-0.23l0.247,-0.434L612.019,333.862zM603.542,338.429l0.028,-0.122l-0.079,-0.055l-0.083,-0.003l-0.072,0.061v0.152l0.1,0.027L603.542,338.429zM602.058,336.91l-0.061,0.042l-0.093,-0.042l-0.028,-0.094l0.007,-0.099l0.092,-0.023l0.075,0.028l0.021,0.089L602.058,336.91zM605.119,344.749l-0.541,-0.108l-0.973,-0.233l-0.268,-0.12l-0.253,-0.323l-0.151,-0.156l-0.223,-0.2l-0.184,-0.076l-0.139,-0.14l-0.079,-0.207l-0.117,-0.186l-0.2,-0.219l-0.455,-0.745l-0.059,-0.078l-0.095,-0.124l-0.042,-0.069l0.277,-0.057l0.461,-0.167l0.126,0.081l0.135,0.169l0.068,0.145l0.012,0.268l0.055,0.043l0.225,-0.09l0.101,0.108l0.173,0.129l0.3,0.128l0.432,-0.201l0.215,-0.052l0.177,0.004l0.096,0.063l0.034,0.208l-0.035,0.257l-0.05,0.141l0.091,0.102l0.354,0.247l0.147,0.137l-0.071,0.237l0.264,0.579l0.089,0.225L605.119,344.749z', 1, '2020-09-03 08:42:03', '2020-09-03 08:42:03', '0'),
+(32, 27, 'M523.182,320.611L523.762,321.027L524.001,321.089L524.136,321.032L524.319,321.058L524.727,321.18L524.82,321.231L524.943,321.222L525.244,321.06L525.347,321.08L525.691,321.398L525.864,321.402L526.072,321.265L526.206,321.146L526.602,321.235L526.828,321.181L527.016,321.176L527.22,321.23L527.406,321.304L527.587,321.368L528.076,321.401L528.31,321.603L528.404,321.798L528.406,321.917L528.429,322.044L528.563,322.169L528.858,322.24L529.043,322.225L529.141,322.216L529.392,322.104L529.688,322.046L529.9,322.113L530.001,322.178L530.024,322.267L529.961,322.574L529.842,322.904L529.649,323.247L529.447,323.57L529.395,323.74L529.38,324.012L529.355,324.225L529.383,324.341L529.449,324.45L529.672,324.536L529.974,324.75L530.23,325.028L530.559,325.343L530.661,325.46L530.661,325.586L530.565,325.679L530.284,325.715L529.992,325.687L529.88,325.655L529.775,325.693L529.71,325.765L529.745,325.85L530.044,326.232L530.393,326.779L530.412,327.014L530.37,327.198L530.289,327.326L530.145,327.304L530.034,327.204L529.867,327.211L529.737,327.239L529.568,327.437L529.484,327.428L529.339,327.458L529.248,327.497L529.103,327.439L528.95,327.401L528.884,327.462L528.855,327.578L528.949,327.787L529.126,328.114L529.098,328.364L528.963,328.391L528.839,328.183L528.73,328.149L528.605,328.157L528.319,328.398L528.108,328.601L528.06,328.742L527.984,328.896L527.961,329.008L527.966,329.379L527.587,329.438L527.508,329.493L527.462,329.605L527.493,330.08L527.524,330.335L527.741,330.727L527.749,330.851L527.718,330.933L527.563,331.088L527.49,331.144L527.441,331.162L527.189,331.06L527.069,331.011L526.564,330.665L526.341,330.472L525.988,330.22L525.771,330.076L525.661,329.858L525.487,329.808L525.283,329.878L525.052,329.72L525.216,329.639L525.256,329.561L525.235,329.459L525.163,329.321L524.539,328.723L524.232,328.313L524.183,328.166L524.178,327.774L524.106,327.68L523.647,327.501L523.135,326.99L522.605,326.487L522.533,326.347L522.261,325.966L521.928,325.619L521.663,325.397L521.446,325.145L521.205,324.791L521.08,324.256L520.969,323.78L520.894,323.595L520.741,323.529L520.267,322.962L519.864,322.632L519.868,322.275L519.934,321.678L520.009,320.999L520.106,320.904L520.29,320.853L520.5,320.872L520.683,320.957L521.045,321.422L521.252,321.603L521.427,321.673L521.628,321.477L521.876,321.066L522.093,320.849L522.823,320.928z', 1, '2020-09-03 08:42:19', '2020-09-03 08:42:19', '0'),
+(33, 19, 'M308.732,425.876L308.652,425.933L308.401,425.819L308.313,425.681L308.302,425.243L308.457,425.201L308.748,425.548L308.917,425.674z', 1, '2020-09-03 08:42:31', '2020-09-03 08:42:31', '0'),
+(34, 18, 'M735.51,399.821l0.022,0.114l0.004,0.996l0.025,0.425l0.09,0.35l0.018,0.133l-0.089,0.108l-0.088,0.021l-0.083,-0.169l-0.188,-0.129l-0.278,-0.138l-0.118,-0.092l-0.143,0.037l-0.201,0.209l-0.08,0.194l0.035,0.272l0.063,0.268l0.14,0.153l0.011,0.169l0.05,0.219l0.072,0.2l0.034,0.217l-0.046,0.004l-0.167,-0.278l-0.15,-0.301l-0.389,-0.57l-0.127,-1.022l-0.008,-0.506l-0.267,-0.596l-0.177,-0.826l-0.071,-0.215l0.093,-0.268l0.016,-0.1l-0.05,0.022l-0.136,0.138l-0.177,-0.33l-0.116,-0.296l-0.458,-0.613l-0.133,-0.271l-0.006,-0.265l-0.198,0.266l-0.269,0.187l-0.274,0.281l-0.182,0.085l-0.577,0.052l-0.334,-0.376l-0.479,-0.921l-0.063,-0.208l0.063,-0.543l-0.114,-0.515l0.002,-0.271l-0.034,-0.182l-0.086,0.04l-0.033,0.125l0.019,0.191l-0.035,0.16l-0.414,-0.031l-0.39,-0.073l0.343,0.271l0.369,0.063l0.19,0.242l0.023,0.189l-0.012,0.213l-0.188,0.149l-0.173,0.094l0.031,0.204l0.21,0.248l-0.254,0.07l-0.069,0.162l-0.006,0.231l0.128,0.204l0.051,0.151l-0.031,0.139l0.124,0.149l0.18,0.313l0.058,0.222l-0.075,0.313l-0.103,0.122l-0.165,0.118l-0.388,0.394l-0.19,0.448l-0.161,0.209l-0.202,0.039l-0.078,-0.092l-0.167,-0.12l-0.004,-0.219l0.051,-0.173l0.341,-0.419l-0.186,0.056l-0.21,0.12l-0.32,0.227l-0.102,-0.281l-0.067,-0.26l-0.001,-0.319l0.257,-0.477l-0.291,0.238l-0.08,0.297l0.036,0.35l-0.038,0.248l-0.113,0.323l-0.155,0.194l-0.25,0.125l-0.11,0.191l-0.168,0.14l-0.005,-0.28l-0.054,-0.37l-0.181,-0.879l-0.039,0.189l0.094,0.545l-0.006,0.354l-0.137,0.28l-0.275,0.3l-0.211,0.042l-0.124,-0.046l-0.188,-0.186l-0.206,-0.266l-0.034,-0.428l-0.085,-0.235l0.013,-0.281l-0.017,-0.266l-0.221,-0.713l-0.143,-0.366l0.018,-0.118l-0.01,-0.05l-0.066,-0.472l-0.092,-0.289l-0.046,-0.308l0.218,-0.443l-0.088,-0.072l-0.251,-0.059l-0.233,-0.077l-0.057,-0.115l0.104,-0.437l-0.121,-0.171l-0.174,-0.173l-0.055,-0.069l-0.058,-0.09l-0.08,-0.22l0.155,-0.463l0.217,-0.538l0.039,-0.205l0.036,-0.356l0.02,-0.137l-0.028,-0.135l-0.229,-0.156l-0.403,-0.063l-0.285,-0.131l-0.166,-0.198l-0.142,-0.079l-0.175,0.059l-0.223,-0.077l-0.187,-0.197l-0.156,-0.239l0.02,-0.112l0.041,-0.149l0.294,-0.62l0.109,-0.019l0.255,0.119h0.095l0.167,-0.245l0.234,-0.699l0.33,0.002l0.291,0.022l0.196,0.036l0.195,-0.022l0.205,-0.056l0.111,-0.088l0.061,-0.112l-0.021,-0.097l-0.251,-0.132l-0.097,-0.099l-0.07,-0.281l-0.073,-0.105l-0.493,-0.015l-0.256,-0.129l-0.141,-0.116l-0.25,-0.383l-0.31,-0.284l-0.296,-0.067l-0.114,-0.092l-0.062,-0.146l0.035,-0.211l0.089,-0.192l0.062,-0.214l0.236,-0.283l0.277,-0.247l0.124,-0.17l0.175,-0.179l0.021,-0.098l-0.03,-0.112l-0.142,-0.107l-0.099,-0.034l-0.016,-0.069l0.068,-0.185l0.135,-0.023l0.281,0.168l0.286,0.271l0.169,0.242l0.007,0.191l0.11,0.031l0.111,0.007l0.186,0.084l0.192,-0.025l0.124,0.047l0.083,-0.017l0.031,-0.11l-0.093,-0.162l-0.068,-0.115l0.078,-0.116l0.089,-0.023l0.099,0.029l0.135,0.104l0.099,0.213l0.019,0.331l0.219,0.299l0.289,0.212l0.226,0.098l0.272,0.07l0.233,-0.067l0.116,-0.208l-0.053,-0.187l0.037,-0.167l0.093,-0.092l0.146,0.006l0.108,0.132l0.317,0.714l-0.065,0.316l0.071,0.866l-0.08,0.57l0.013,0.123l0.037,0.095l0.054,0.039l0.093,-0.001l0.386,0.107l0.325,0.119l0.367,0.108l0.53,0.084l0.325,-0.027l0.162,-0.003l0.329,0.025l0.864,-0.045l0.715,-0.012l0.291,0.082l0.233,0.029l0.796,-0.057l0.804,-0.027l0.435,0.181l0.474,0.295l0.267,0.219l0.048,0.125l-0.029,0.107l-0.089,0.059l-0.164,0.002l-0.375,-0.143l-0.064,0.042l0.007,0.292l-0.012,0.046l-0.08,0.262l-0.226,0.589l-0.044,0.263l-0.048,0.067l-0.059,0.037l-0.177,0.01l-0.139,0.043l-0.058,0.096l-0.09,0.198l-0.063,0.2l-0.086,0.062l-0.207,-0.108l-0.129,0.017l-0.162,0.046l-0.162,0.114l-0.111,0.142l-0.126,0.048l-0.376,-0.028l-0.071,0.02l-0.048,0.101l-0.038,0.127l-0.293,0.3l-0.111,0.481l-0.09,0.312l0.015,0.242l0.247,0.631l0.173,0.818l0.066,0.083l0.058,0.026l0.026,-0.019l-0.006,-0.169l0.011,-0.205l0.081,-0.048l0.104,0.042l0.099,0.178l0.111,0.326l0.119,0.128l0.186,0.036l0.211,-0.077l0.157,-0.147l0.064,-0.16l-0.045,-0.314l-0.01,-0.235l0.101,-0.224l0.362,-0.334l0.052,-0.103l-0.023,-0.285l0.001,-0.268l0.137,-0.018l0.185,0.043l0.232,-0.131l0.071,-0.003l0.098,0.141l0.165,-0.024l0.122,0.582l0.125,0.513L734.833,396l0.021,0.524l0.057,0.427l0.089,0.097l0.104,0.228l0.096,0.265l0.075,0.148l0.051,0.483l0.063,0.348l0.083,1.092L735.51,399.821zM730.085,396.847l0.05,0.13l-0.156,-0.078l-0.117,-0.09l-0.072,-0.12l0.122,-0.063L730.085,396.847zM730.466,399.486l-0.488,0.106l-0.249,-0.033l0.465,-0.791l-0.016,-0.354l-0.072,-0.289l-0.236,-0.232l-0.013,-0.166l-0.106,-0.227l-0.055,-0.266l0.262,-0.085l0.213,0.152l0.03,0.084l0.046,0.217l0.105,0.226l0.368,0.465l-0.007,0.285l-0.101,0.695L730.466,399.486zM732.652,398.604l-0.13,0.089l-0.122,-0.077l-0.156,-0.294l0.077,-0.372l0.049,-0.053l0.078,0.121l0.109,0.259l0.071,0.197L732.652,398.604zM731.513,399.228l-0.297,0.211l0.097,-1.25l0.222,0.466l0.056,0.249L731.513,399.228zM733.542,400.26l-0.102,0.246l-0.05,-0.179l0.043,-0.227l0.044,-0.125l0.029,0.001l0.06,0.129L733.542,400.26zM733.754,401.233l-0.169,0.014l-0.083,-0.089l0.039,-0.125l-0.046,-0.403l0.143,-0.042l0.073,0.002l0.041,0.119l0.038,0.218L733.754,401.233z', 1, '2020-09-04 01:27:18', '2020-09-04 01:27:18', '0'),
+(35, 21, 'M489.216,294.644L489.229,294.737L489.306,294.776L489.575,294.756L489.711,294.587L489.819,294.481L489.899,294.553L489.938,294.761L490.012,295.031L490.333,295.333L490.604,295.419L490.938,295.36L491.07,295.306L491.16,295.351L491.249,295.511L491.44,295.693L491.844,295.823L491.967,295.896L492.053,296.019L492.028,296.193L491.836,296.628L491.811,296.756L491.837,296.799L491.799,296.879L491.549,297.17L491.527,297.272L491.61,297.439L491.679,297.577L491.681,297.55L492.064,297.425L492.237,297.676L492.521,297.685L492.555,297.766L492.874,298L492.972,298.185L493.201,298.364L493.011,298.59L493.04,298.691L493.108,298.794L493.366,298.854L493.495,299.002L493.503,299.229L493.562,299.597L493.03,299.963L492.879,300.371L492.865,300.451L492.847,300.439L492.789,300.304L492.692,300.306L492.472,300.249L492.165,300.617L492.026,300.923L491.944,301.147L491.82,301.328L491.795,301.519L491.811,301.6L491.769,301.703L491.767,301.812L491.943,302.025L491.988,302.141L492.203,302.52L492.136,302.657L492.083,302.806L492.021,302.912L491.948,302.979L491.726,302.975L491.444,303.022L491.254,303.097L491.156,303.097L490.952,302.909L490.724,302.627L490.58,302.492L490.514,302.376L490.335,302.327L490.08,302.188L489.903,302.036L489.751,301.941L489.537,301.894L489.36,301.899L489.309,301.643L489.287,301.351L489.143,301.154L489.341,300.386L489.223,300.311L489.095,300.372L488.909,300.556L488.82,300.774L488.767,300.968L488.455,301.151L487.96,301.218L487.419,301.151L487.345,301.102L487.31,301.046L487.31,300.979L487.347,300.875L487.441,300.748L487.465,300.568L487.368,300.412L487.305,300.351L487.33,300.2L487.401,300.011L487.416,299.902L487.049,299.575L486.784,299.511L486.527,299.499L486.332,299.462L486.218,299.478L486.137,299.573L486.054,299.642L485.992,299.56L485.878,298.978L485.79,298.89L485.458,298.792L485.006,298.757L484.886,298.651L484.82,298.388L484.778,298.072L484.63,297.768L484.554,297.691L484.419,297.557L484.183,297.612L483.9,297.789L483.733,297.837L483.669,297.856L483.444,297.684L483.19,297.415L482.987,297.129L482.938,296.97L483,296.777L482.926,296.629L482.817,296.358L482.786,296.146L484.007,295.394L484.751,295.008L485.102,294.891L485.186,295.279L485.25,295.402L485.333,295.482L485.443,295.498L485.57,295.402L485.748,295.301L486.033,295.348L486.24,295.441L486.313,295.538L486.451,295.63L486.651,295.652L487.038,295.476L487.41,295.208L487.519,295.021L487.56,294.852L487.78,294.964L487.974,294.988L488.06,294.938L488.005,294.667L488.163,294.522L488.338,294.456L488.417,294.573L488.578,294.693L488.705,294.694L489.046,294.382L489.126,294.444L489.2,294.555z', 1, '2020-09-04 01:37:32', '2020-09-04 01:37:32', '0'),
+(36, 34, 'M476.31,420.618L476.271,420.752L476.269,420.989L476.219,421.364L476.159,421.813L476.403,422.103L476.695,422.415L476.773,422.536L476.695,422.843L476.75,423.023L476.904,423.323L477.166,423.704L477.435,424.095L477.621,424.146L477.798,424.178L477.906,424.248L478.063,424.316L478.22,424.36L478.356,424.446L478.443,424.53L478.556,424.771L478.859,424.93L479.071,425.087L478.986,425.167L478.722,425.135L478.474,425.066L478.441,425.182L478.431,425.624L478.47,425.991L478.528,426.04L478.778,426.108L479.373,426.585L479.911,427.037L480.092,427.154L480.389,427.198L480.723,427.217L480.866,427.175L481.189,426.948L481.361,426.923L481.52,426.929L481.606,426.965L481.761,427.151L481.906,427.431L481.947,427.638L481.934,427.749L481.885,427.791L481.62,427.844L481.505,427.886L481.477,427.946L481.518,428.085L481.569,428.175L481.858,428.578L482.276,429.122L482.405,429.261L482.332,429.423L482.119,429.847L481.96,430.024L481.257,430.624L480.913,430.553L480.19,430.674L480.082,430.536L479.913,430.518L479.704,430.542L479.628,430.594L479.605,430.653L479.53,430.736L479.396,430.974L479.293,431.034L479.165,431.071L479.007,431.066L478.915,431.097L478.915,431.215L478.887,431.317L478.78,431.369L478.735,431.483L478.743,431.596L478.681,431.648L478.545,431.62L478.464,431.588L478.388,431.734L478.294,431.833L478.227,431.832L477.504,431.861L477.241,431.939L477.083,431.941L477.077,431.875L477.058,431.836L476.146,431.615L475.507,431.484L474.859,431.339L474.822,431.475L474.729,431.563L474.589,431.569L474.492,431.548L474.427,431.653L474.319,431.792L474.169,431.859L474.022,431.945L473.939,432.02L473.879,432.021L473.731,431.845L473.534,431.827L473.166,431.856L473,431.808L472.774,431.785L472.24,431.821L471.387,431.749L471.247,431.788L471.21,431.82L470.365,431.828L469.436,431.837L468.658,431.845L467.977,431.852L467.976,431.822L467.757,431.818L467.733,431.877L467.54,432.585L467.519,432.97L467.622,433.209L467.737,433.361L467.866,433.424L467.879,433.51L467.775,433.621L467.784,433.734L467.906,433.851L467.936,433.975L467.874,434.104L467.889,434.414L467.979,434.905L467.982,435.223L467.896,435.368L467.937,435.617L468.104,435.968L468.134,436.116L468.074,436.185L467.935,436.276L467.794,436.273L467.63,436.061L467.558,435.966L467.426,435.75L467.313,435.534L467.161,435.439L467.011,435.351L466.829,435.076L466.653,434.945L466.467,434.982L466.196,434.931L465.649,434.863L465.061,434.883L464.817,434.946L464.576,435.046L463.965,435.267L463.724,435.375L463.541,435.651L463.333,435.645L463.126,435.557L462.996,435.432L462.717,435.459L462.448,435.338L462.188,435.099L461.996,435.02L461.751,434.847L461.684,434.517L461.529,434.286L461.387,433.964L461.175,433.82L460.931,433.743L460.594,433.759L460.373,433.63L460.198,433.442L460.244,433.279L460.323,433.047L460.332,432.824L460.384,432.462L460.352,432.009L460.291,431.693L460.477,431.561L460.692,431.443L460.826,431.228L460.965,430.745L461.023,430.328L460.98,430.173L460.909,430.05L460.852,429.87L460.819,429.65L460.858,429.458L461.021,429.28L461.225,429.132L461.37,429.06L461.754,428.986L462.234,428.876L462.511,428.75L462.713,428.625L462.826,428.525L462.941,428.322L463.127,428.164L463.271,428.004L463.291,427.561L463.29,427.308L463.183,427.168L463.125,427.049L463.836,426.701L463.841,426.456L463.742,426.182L463.603,425.961L463.551,425.771L463.748,425.546L463.923,425.377L464.05,425.234L464.33,425.016L464.622,424.959L464.885,425.041L465.664,425.555L465.799,425.588L465.961,425.549L466.167,425.413L466.433,425.307L466.531,424.963L466.522,424.457L466.583,424.225L466.723,424.183L467.171,424.28L467.288,424.285L467.418,424.253L467.513,424.164L467.509,424L467.488,423.855L467.634,423.385L467.901,423.031L468.44,422.589L468.608,422.5L468.803,422.455L469.769,422.759L469.926,422.684L470.162,421.93L470.424,421.858L470.738,421.845L470.942,421.78L471.048,421.728L471.508,421.441L472.318,421.051L472.754,420.883L472.839,420.82L473.151,420.543L473.565,420.225L473.829,420.161L474.194,420.138L474.424,420.19L474.486,420.28L474.562,420.326L475.038,420.191L475.72,420.406z', 1, '2020-09-04 01:37:51', '2020-09-04 01:37:51', '0'),
+(37, 33, 'M555.924,326.629L555.858,327.56L555.587,327.991L555.178,327.847L554.656,327.967L554.38,328.457L554.223,328.602L554.082,328.772L553.991,329.406L553.969,330.44L553.771,330.565L553.59,330.604L552.835,331.51L553.27,331.764L553.462,331.957L553.78,332.494L554.232,333.099L554.322,333.394L553.942,333.328L553.81,333.348L553.725,333.441L553.548,333.422L553.33,333.423L553.102,333.53L552.976,333.575L552.808,333.477L552.493,333.183L552.302,332.978L552.161,332.926L552.018,332.987L551.508,333.057L551.387,333.176L551.151,333.308L550.915,333.371L550.574,333.416L550.395,333.41L550.295,333.473L550.211,333.666L550.154,333.854L550.104,333.93L549.68,334.023L549.586,334.131L549.561,334.236L549.569,334.341L549.231,334.239L548.97,334.308L548.908,334.388L548.854,334.504L548.884,334.627L548.98,334.747L549.071,335.071L549.104,335.394L549.048,335.578L548.854,335.708L548.453,335.853L548.064,335.784L547.894,335.841L547.606,335.859L547.341,335.897L546.934,336.029L546.566,336.107L546.236,335.838L545.844,335.655L545.432,335.546L545.289,335.625L545.227,335.688L544.882,335.45L544.728,335.365L544.653,335.273L544.51,334.955L544.425,334.945L544.141,335.063L543.867,335.058L543.702,335.036L543.212,335.05L543.147,335.267L543.087,335.3L542.981,335.329L542.721,335.315L542.388,335.476L542.031,335.574L541.752,335.576L541.465,335.529L541.293,335.563L540.922,335.58L540.687,335.814L540.321,335.801L540.013,335.762L540.051,335.688L540.113,334.757L540.265,334.34L540.259,334.254L540.226,334.189L540.091,334.122L539.994,333.896L539.791,333.301L539.676,333.181L539.357,333.055L539.078,332.883L538.841,332.655L538.408,332.093L538.627,332.037L538.693,331.922L538.912,331.612L538.937,331.46L538.914,331.374L538.767,331.225L538.667,330.898L538.742,330.593L538.749,330.436L538.675,330.28L538.752,330.086L538.91,329.98L539.009,329.949L539.424,329.928L539.687,329.539L539.847,329.415L540.011,329.194L540.087,329.113L540.159,328.941L540.184,328.765L539.855,328.518L539.743,328.332L539.596,328.126L539.398,327.984L538.999,327.74L538.843,327.492L538.773,327.17L538.667,326.926L538.55,326.767L538.528,326.637L538.479,326.478L538.468,326.165L538.563,325.748L538.624,325.6L538.759,325.559L539.119,325.336L539.136,325.051L539.201,324.873L539.315,324.771L539.421,324.703L539.618,324.869L540.096,325.134L540.329,325.326L540.317,325.445L540.208,325.563L540,325.679L539.879,325.832L539.846,326.021L539.877,326.155L540.021,326.272L540.879,326.119L541.749,326.198L542.917,326.457L543.691,326.547L544.264,326.427L545.323,326.644L546.31,326.846L547.257,326.905L547.787,326.747L548.16,326.534L548.481,326.132L549.274,325.601L550.041,325.302L551.047,325.06L551.719,324.978L551.813,325.06L552.668,325.549L553.049,325.551L553.357,325.638L553.47,325.767L553.547,325.799L553.957,325.678L554.138,325.945L554.421,326.319L554.904,326.511L555.334,326.619L555.47,326.636z', 1, '2020-09-04 01:38:08', '2020-09-04 01:38:08', '0'),
+(38, 17, 'M617.729,387.895L617.638,388.132L617.551,388.049L617.331,387.639L617.397,387.351L617.294,386.939L617.343,386.821L617.607,386.766L617.668,386.784L617.589,386.916L617.735,387.146L617.757,387.525z', 1, '2020-09-04 01:38:37', '2020-09-04 01:38:37', '0'),
+(39, 35, 'M561.448,469.363L561.392,469.436L561.135,469.958L561.085,470.037L561.113,470.085L561.223,470.184L561.158,470.349L561.133,470.393L561.084,470.546L561.111,470.687L561.173,470.739L561.34,470.807L561.59,470.856L561.885,470.974L562.084,470.995L562.131,471.08L562.122,471.231L562.17,471.362L562.171,471.597L562.112,471.804L561.808,471.901L561.651,472.007L561.609,472.061L561.647,472.123L561.667,472.206L561.381,472.413L561.087,472.682L561.017,472.863L560.958,473.078L560.872,473.215L560.648,473.413L560.419,473.811L560.307,474.069L559.746,474.689L559.247,474.999L559.102,475.104L558.219,475.086L558.152,474.668L558.018,474.097L557.714,473.582L557.682,473.366L557.696,472.95L557.697,472.366L557.677,472.052L557.684,471.823L557.722,471.425L557.717,471.187L557.518,470.913L557.27,470.621L557.134,470.478L557.127,470.363L557.128,470.256L557.168,470.101L557.265,469.928L557.374,469.909L557.642,469.978L557.921,470.125L558.069,470.456L558.183,470.503L558.389,470.502L558.916,470.459L559.047,470.464L559.286,470.385L559.524,470.246L559.593,470.102L559.648,469.777L559.698,469.194L559.82,469.188L560.152,469.395L560.224,469.409L560.293,469.402L560.409,469.299L560.55,469.215L560.655,469.217L561.041,469.12L561.248,469.296L561.378,469.351z', 1, '2020-09-04 01:38:57', '2020-09-04 01:38:57', '0'),
+(40, 23, 'M485.79,429.833L485.674,430.016L485.496,430.394L485.488,430.689L485.912,431.311L485.961,431.374L486.07,431.471L486.129,431.587L486.18,431.893L486.209,432.238L486.243,432.47L486.448,432.796L486.461,432.927L486.319,433.414L486.285,433.466L486.248,433.479L486.028,433.437L485.934,433.49L485.814,433.655L485.741,433.82L485.737,433.889L485.932,434.195L485.809,434.636L485.683,434.911L485.457,435.068L485.255,435.105L485.114,435.179L485.032,435.276L485.044,435.591L484.746,435.878L484.581,436.079L484.501,436.2L484.535,436.57L484.429,436.944L484.245,437.239L483.833,437.303L483.487,437.339L483.369,438.09L483.375,438.565L483.343,439.05L483.286,439.248L483.31,439.526L483.284,440.155L483.238,440.65L483.299,440.783L483.334,441.074L483.332,441.375L483.42,441.584L483.516,441.767L483.513,441.861L483.462,441.92L483.419,441.997L483.419,442.705L483.437,442.917L483.411,443.051L483.337,443.163L483.366,443.521L483.426,443.749L483.486,443.917L483.428,444.057L483.377,444.242L483.3,444.714L483.295,444.878L482.118,444.993L480.802,445.182L480.253,445.305L480.221,445.21L480.689,445.087L480.592,444.718L480.3,444.282L480.186,444.202L480.127,443.985L480.198,443.843L480.164,443.747L480.14,443.453L479.996,443.128L480.259,443.115L480.259,442.07L480.259,441.066L480.259,440.21L480.259,439.532L480.208,438.719L480.201,438.122L480.19,437.334L480.095,437.088L479.697,436.671L479.588,436.455L479.569,436.168L479.48,435.873L479.475,435.356L479.468,434.754L479.432,434.657L479,434.37L478.389,433.963L477.923,433.653L477.889,433.63L477.842,433.554L477.91,432.636L478.006,432.516L478.155,432.138L478.227,431.832L478.294,431.833L478.388,431.734L478.464,431.588L478.545,431.62L478.681,431.648L478.743,431.596L478.735,431.483L478.78,431.369L478.887,431.317L478.915,431.215L478.915,431.097L479.007,431.066L479.165,431.071L479.293,431.034L479.396,430.974L479.53,430.736L479.605,430.653L479.628,430.594L479.704,430.542L479.913,430.518L480.082,430.536L480.19,430.674L480.913,430.553L481.257,430.624L481.96,430.024L482.119,429.847L482.332,429.423L482.405,429.261L482.471,428.969L482.332,428.43L482.34,428.334L482.63,428.218L482.992,428.128L483.132,428.121L483.225,428.075L483.357,427.958L483.572,427.873L483.699,427.901L483.777,427.918L484.539,428.631L484.87,428.991L484.958,429.175L485.129,429.308L485.381,429.39L485.611,429.573z', 1, '2020-09-04 01:39:15', '2020-09-04 01:39:15', '0'),
+(41, 259, 'M299.363,411.997L299.32,412L299.287,411.976L299.257,411.932L299.24,411.888L299.244,411.862L299.269,411.874L299.453,411.902L299.433,411.935L299.401,411.97z', 1, '2020-09-04 01:43:13', '2020-09-04 01:43:13', '0'),
+(42, 32, 'M798.521,448.995l-0.229,0.122l-0.226,0.152l-0.226,0.131l-0.105,0.103l0.037,0.144l0.055,0.317l0.03,0.249l0.079,0.099l0.062,0.099l-0.025,0.108l-0.134,0.206l0.076,0.04l-0.097,0.273l-0.144,0.202l-0.199,0.165l-0.128,0.038l-0.103,-0.07l-0.168,-0.181l-0.183,-0.251l-0.085,-0.146l-0.263,-0.02l-0.094,-0.116l-0.006,-0.142l-0.074,-0.166l-0.104,-0.178l-0.154,-0.138l-0.207,-0.107l-0.088,-0.077l0.32,0.005l0.341,-0.045l0.351,-0.149l0.338,-0.18l0.284,-0.206l0.267,-0.232l0.279,-0.183l0.435,-0.213l0.146,0.017l-0.001,0.151L798.521,448.995zM798.521,448.995h0.318l0.079,0.092l0.167,0.325l0.109,0.326l0.035,0.497l0.133,0.211l-0.021,0.043l-0.08,0.036l-0.124,0.015l-0.214,-0.048l-0.178,-0.073l-0.156,-0.538l-0.069,-0.304l0.006,-0.363L798.521,448.995z', 1, '2020-09-04 01:43:35', '2020-09-04 01:43:35', '0');
+INSERT INTO `maps` (`id`, `country_id`, `path_d`, `status`, `created_at`, `updated_at`, `is_deleted`) VALUES
+(43, 26, 'M312.475,520.097L312.531,519.604L312.474,519.177L312.417,519.067L311.592,518.559L310.843,518.097L309.863,517.493L308.599,517.51L307.29,517.527L306.043,517.797L304.816,518.062L304.234,518.188L303.067,518.44L302.38,518.556L302.2,519.042L301.931,519.772L301.664,520.199L301.356,520.648L300.922,521.281L300.921,522.051L300.921,522.784L300.616,523.819L300.356,524.699L300.106,525.551L299.934,526.14L299.87,526.29L299.83,526.242L299.608,526.066L299.41,525.734L299.356,525.583L299.331,525.577L298.141,525.587L296.996,525.598L296.879,525.668L296.714,525.667L296.593,525.602L296.475,525.607L296.304,525.671L296.151,525.804L295.714,526.688L295.498,527.066L295.337,527.405L295.22,527.986L295.171,528.083L295.035,527.882L294.834,527.351L294.744,527.048L294.615,526.705L294.385,526.274L294.12,526.144L293.955,526.101L293.718,526.019L293.299,525.916L293.116,525.895L291.917,525.881L291.822,525.87L291.352,525.917L291.114,525.885L290.864,525.645L290.307,525.223L290.195,525.089L289.981,525.001L289.854,524.992L289.776,525.075L289.68,525.427L289.566,525.745L289.447,525.928L289.049,526.063L288.678,526.204L288.474,526.237L288.365,526.396L288.317,526.619L288.226,526.82L287.69,527.123L287.571,527.25L287.509,527.549L287.21,527.92L287.118,528.065L286.648,528.167L286.037,528.277L285.68,528.27L285.436,528.241L285.362,528.174L285.197,528.069L285.169,527.952L285.167,527.786L285.213,527.487L285.19,527.073L284.998,526.591L285.013,526.436L284.988,526.2L284.891,525.757L284.643,525.534L284.573,525.166L284.544,524.843L284.335,524.439L284.301,523.925L284.306,523.485L283.978,522.974L283.636,522.432L283.36,522.358L283.292,522.293L283.262,522.138L283.256,521.897L283.278,521.751L283.491,521.514L283.499,521.478L283.456,521.428L282.906,521.074L282.767,520.971L282.724,520.845L282.728,520.731L282.859,520.615L282.926,520.529L282.797,520.277L282.81,520.049L282.728,519.951L282.737,519.877L282.817,519.814L283.174,519.741L283.285,519.51L283.289,519.318L283.235,519.182L282.905,518.839L282.898,518.781L283.244,518.304L283.492,517.991L283.56,517.927L283.539,517.859L283.478,517.776L283.321,517.656L283.117,517.524L282.948,517.364L282.728,517.127L282.451,516.924L282.246,516.722L282.141,516.554L282.139,516.382L282.111,516.097L281.977,515.635L281.941,515.323L281.883,514.978L281.825,514.753L281.793,514.536L281.697,514.301L281.644,514.129L281.721,514.008L281.798,513.914L281.789,513.855L281.26,513.604L281.172,513.54L281.047,513.038L280.663,512.592L280.618,512.26L280.618,512.256L280.618,512.126L280.587,511.917L280.47,511.754L280.295,511.641L280.24,511.507L280.298,511.366L280.639,511.087L280.822,511.04L280.87,510.898L280.981,510.786L281.302,510.376L281.491,510.107L281.68,509.945L281.899,509.833L281.994,509.739L281.944,509.45L281.959,509.255L282.035,509.132L282.254,509.002L282.451,508.903L282.493,508.854L282.476,508.781L282.295,508.633L281.922,508.504L281.675,508.517L281.524,508.403L281.441,508.306L280.952,507.11L280.871,506.831L280.877,506.723L281.205,506.133L281.338,505.94L281.568,505.662L281.527,505.552L281.124,505.091L281,504.872L281.003,504.653L281.043,504.388L281.277,504.245L281.344,504.029L281.393,503.816L281.493,503.746L281.595,503.625L281.716,503.451L281.904,503.299L282.015,503.183L282.039,502.86L282.131,502.772L282.388,502.669L282.414,502.586L282.356,502.369L282.228,502.14L282.124,502.028L281.987,501.466L281.844,501.187L281.904,501.075L282.003,500.933L282.099,500.652L282.13,500.325L282.106,499.123L282.112,498.886L282.238,498.721L282.423,498.529L282.58,498.456L282.728,498.335L282.717,498.108L282.815,497.974L282.936,497.806L282.561,497.145L282.231,496.564L281.922,496.019L281.564,495.389L281.329,494.974L281.036,494.459L280.779,494.007L280.428,493.391L280.754,493.38L281.411,493.402L282.047,493.512L282.478,493.56L282.658,493.654L282.698,493.805L282.817,493.875L282.955,493.848L283.111,493.838L283.46,493.684L283.742,493.581L283.985,493.458L284.11,493.338L284.413,492.917L284.657,492.685L284.882,492.604L285.321,492.57L285.46,492.636L285.639,492.628L285.794,492.389L286.03,492.125L286.495,491.796L286.731,491.706L286.878,491.591L287.13,491.574L287.352,491.454L288.423,490.623L288.857,490.409L289.127,490.37L289.351,490.319L289.731,490.2L290.683,490.084L291.294,490.037L291.49,490.152L291.71,490.119L291.897,489.933L292.052,489.873L292.166,489.878L292.33,490.098L292.41,490.332L292.357,490.51L292.367,490.769L292.44,491.107L292.399,491.409L292.168,491.803L292.052,491.964L292.023,492.13L292.043,492.354L292.149,492.718L292.34,493.224L292.369,493.598L292.235,493.841L292.173,494.051L292.184,494.228L292.231,494.352L292.317,494.423L292.364,494.564L292.374,494.776L292.486,494.981L292.699,495.179L292.786,495.367L292.746,495.547L292.757,495.66L292.819,495.704L292.877,495.668L292.955,495.618L293.024,495.636L293.174,495.887L293.193,495.938L293.274,496.146L293.299,496.303L293.518,496.391L293.755,496.46L293.886,496.542L294.148,496.791L294.368,496.955L294.644,497.089L294.735,497.304L294.904,497.628L295.369,497.752L295.911,497.814L296.257,497.885L296.679,497.713L296.958,497.737L297.247,497.854L297.37,497.934L297.585,498.101L297.918,498.315L298.19,498.394L298.384,498.275L298.563,498.233L298.702,498.283L298.775,498.516L298.848,498.673L299.009,498.792L299.354,499.097L299.549,499.222L299.769,499.213L300.223,499.414L300.707,499.609L300.957,499.641L301.203,499.612L301.366,499.688L301.432,499.923L301.853,500.393L302.051,500.578L302.287,500.736L302.888,500.733L303.068,500.78L303.336,500.738L304.142,500.658L304.288,500.633L304.744,500.838L305.283,501.134L305.64,501.366L305.889,501.494L306.019,501.702L306.125,501.919L306.174,502.153L306.109,502.385L306.011,502.479L305.978,502.629L306.019,502.854L306.198,503.055L306.264,503.302L306.362,503.74L306.472,503.878L306.543,505.235L306.182,505.246L305.673,505.262L305.822,505.392L306.243,505.898L306.63,506.365L306.692,507.115L306.73,507.588L306.785,508.256L306.817,508.655L307.784,508.691L308.898,508.732L310.237,508.782L311.414,508.826L311.53,508.821L311.734,508.767L311.87,508.696L311.953,508.698L311.967,508.86L311.939,509.064L311.94,509.299L311.603,509.763L311.582,509.909L311.633,510.521L311.752,511.017L311.812,511.465L311.947,511.605L312.346,511.842L312.949,512.28L313.19,512.337L313.394,512.277L313.516,512.456L313.54,512.745L313.873,513.552L314.084,514.065L314.181,514.244L314.339,514.336L314.309,514.403L314.178,514.43L314.119,514.526L313.936,515.102L313.695,515.861L313.532,516.396L313.679,516.404L313.685,516.552L313.718,516.778L313.537,516.806L313.483,516.887L313.275,517.326L313.003,517.901L312.721,518.497L312.554,518.85L312.839,519.111L313.314,519.547L313.239,519.668L313.035,519.729L312.864,519.771L312.733,519.936L312.66,520.057z', 1, '2020-09-04 01:43:51', '2020-09-04 01:43:51', '0'),
+(44, 24, 'M294.035,367.396L293.783,367.508L293.713,367.499L293.663,367.461L293.92,367.349L294.135,367.087L294.209,367.104z', 1, '2020-09-04 01:44:11', '2020-09-04 01:44:11', '0'),
+(45, 260, 'M284.281,428.555l-0.136,0.321l-0.078,-0.143l-0.014,-0.255l-0.056,-0.1l-0.116,-0.061l-0.063,-0.084l0.005,-0.126l0.42,0.202L284.281,428.555zM299.066,413.111l-0.068,0.061l-0.06,-0.005l-0.04,-0.059l-0.007,-0.098l0.057,0.027l0.021,0.015l0.018,0.02L299.066,413.111zM298.238,412.738l-0.025,0.011l-0.036,-0.027l0.006,-0.048l0.03,-0.02l0.023,0.014l0.018,0.038L298.238,412.738z', 1, '2020-09-04 01:46:10', '2020-09-04 01:46:10', '0');
 
 -- --------------------------------------------------------
 
@@ -386,12 +581,48 @@ INSERT INTO `country` (`id`, `name`, `iso_code_2`, `iso_code_3`, `address_format
 CREATE TABLE `membership_plans` (
   `id` int(11) UNSIGNED NOT NULL,
   `name` varchar(150) NOT NULL,
+  `slug` varchar(255) NOT NULL,
   `description` text DEFAULT NULL,
-  `slug` varchar(150) NOT NULL,
-  `amount` float(18,2) NOT NULL,
+  `price` float(18,2) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `is_deleted` char(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `membership_plans`
+--
+
+INSERT INTO `membership_plans` (`id`, `name`, `slug`, `description`, `price`, `created_at`, `updated_at`, `is_deleted`) VALUES
+(1, '1 Simultaneous Stream', '1-simultaneous-stream', '1 Simultaneous Stream', 499.00, '2020-09-01 05:53:00', '2020-09-08 01:29:24', '0'),
+(2, '2 Simultaneous Stream', '2-simultaneous-stream', '2 Simultaneous Stream', 500.00, '2020-09-01 06:01:37', '2020-09-08 01:29:36', '0'),
+(3, '3 Simultaneous Stream', '3-simultaneous-stream', '3 Simultaneous Stream', 1000.00, '2020-09-01 06:03:45', '2020-09-08 01:29:41', '0');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `membership_plans_subscribers`
+--
+
+CREATE TABLE `membership_plans_subscribers` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) UNSIGNED NOT NULL,
+  `membership_plan_id` int(11) UNSIGNED NOT NULL,
+  `type` varchar(50) NOT NULL,
+  `plan` varchar(150) NOT NULL,
+  `price` float(18,2) UNSIGNED NOT NULL,
+  `beg_date` timestamp NULL DEFAULT NULL,
+  `end_at` timestamp NULL DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `is_deleted` char(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `membership_plans_subscribers`
+--
+
+INSERT INTO `membership_plans_subscribers` (`id`, `user_id`, `membership_plan_id`, `type`, `plan`, `price`, `beg_date`, `end_at`, `created_at`, `is_deleted`) VALUES
+(1, 1, 1, 'YEARLY', '1 Simultaneous Stream', 499.00, NULL, NULL, '2020-09-01 09:49:39', '1');
 
 -- --------------------------------------------------------
 
@@ -402,9 +633,58 @@ CREATE TABLE `membership_plans` (
 CREATE TABLE `products` (
   `id` int(11) UNSIGNED NOT NULL,
   `name` varchar(150) NOT NULL,
+  `quiz_id` int(11) UNSIGNED DEFAULT NULL,
   `slug` varchar(150) NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `type` tinyint(1) NOT NULL COMMENT '0 = Learn To READ,\r\n1 = Quizzes & Videos',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `status` tinyint(1) UNSIGNED NOT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `is_deleted` char(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`id`, `name`, `quiz_id`, `slug`, `type`, `created_at`, `status`, `updated_at`, `is_deleted`) VALUES
+(1, 'The Brave Little Crab', 5, 'the-brave-little-crab', 0, '2020-09-02 06:03:28', 1, '2020-09-02 06:03:28', '0'),
+(2, 'Dolphins', 5, 'dolphins', 0, '2020-09-02 05:37:32', 1, '2020-09-02 05:37:32', '0'),
+(3, 'Great White Sharks', 5, 'great-white-sharks', 0, '2020-09-02 06:11:05', 1, '2020-09-02 06:11:05', '0'),
+(4, 'Whale Sharks', 0, 'whale-sharks', 1, '2020-08-26 11:36:18', 1, '2020-08-26 11:36:18', '1'),
+(5, 'afasgas', 0, 'afasgas', 0, '2020-09-04 13:05:51', 1, '2020-09-04 13:05:51', '1'),
+(6, 'Be One of Kind', 4, 'be-one-of-kind', 0, '2020-09-04 13:05:05', 1, NULL, '0'),
+(7, 'Where the Ocean Meets the Sand', 4, 'where-the-ocean-meets-the-sand', 0, '2020-09-04 13:05:39', 0, NULL, '0'),
+(8, 'Shine', 4, 'shine', 0, '2020-09-04 13:08:58', 0, NULL, '0'),
+(9, 'The Z Wizard!', 4, 'the-z-wizard', 0, '2020-09-04 13:09:48', 0, NULL, '0');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products_description`
+--
+
+CREATE TABLE `products_description` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `product_id` int(11) UNSIGNED NOT NULL,
+  `description` text DEFAULT NULL,
+  `is_deleted` char(1) NOT NULL DEFAULT '0',
+  `meta_title` varchar(255) DEFAULT NULL,
+  `meta_keyword` varchar(255) DEFAULT NULL,
+  `meta_description` text DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `products_description`
+--
+
+INSERT INTO `products_description` (`id`, `product_id`, `description`, `is_deleted`, `meta_title`, `meta_keyword`, `meta_description`) VALUES
+(19, 1, '', '0', 'The Brave Little Crab', '', ''),
+(20, 2, '', '0', 'Dolphins', '', ''),
+(21, 3, '', '0', 'Great White Sharks', '', ''),
+(24, 6, '<div class=\"wpb_text_column wpb_content_element \" style=\"text-size-adjust: none; outline: none; margin: 0px 0px 35px; padding: 0px; border: 0px; vertical-align: baseline; color: rgb(119, 119, 119); font-family: Roboto, Arial, Helvetica, sans-serif; font-size: 14px; font-variant-ligatures: none;\"><div class=\"wpb_wrapper\" style=\"text-size-adjust: none; outline: none; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;\"><p style=\"text-size-adjust: none; outline: none; margin-bottom: 0px; padding: 0px; border: 0px; vertical-align: baseline; text-align: center;\">Every child is wonderfully unique and should be celebrated. Children should realize their own characteristics make them amazing, different, and stand out in a crowd. Equally important is to accept and value the differences they see in others. Be One-of-a-Kind details the importance of being true to one’s own self. Everyone is special, with a uniqueness to share with the world.</p><div><br></div></div></div>', '0', 'Be One of Kind', '', ''),
+(25, 7, '<div class=\"wpb_text_column wpb_content_element \" style=\"text-size-adjust: none; outline: none; margin: 0px 0px 35px; padding: 0px; border: 0px; vertical-align: baseline; color: rgb(119, 119, 119); font-family: Roboto, Arial, Helvetica, sans-serif; font-size: 14px; font-variant-ligatures: none;\"><div class=\"wpb_wrapper\" style=\"text-size-adjust: none; outline: none; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;\"><p style=\"text-size-adjust: none; outline: none; margin-bottom: 0px; padding: 0px; border: 0px; vertical-align: baseline; text-align: center;\"><span data-story-id=\"story_e6b10858b1b48ce5aef043d596bf92fa\" data-room-id=\"room_d03d5e065bb64cee5ed655590dca2191\" data-timestamp=\"1597271006934\" data-text=\"Do you like to walk in the sand along the beach? Dip your toes in the tide? Where The Ocean Meets the Sand details the fun, the creatures, and the excitement found as the waves roll to the shore.\" data-userid=\"443555288632303616\" data-orgid=\"443555288741355520\" style=\"text-size-adjust: none; outline: none; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;\">Do you like to walk in the sand along the beach? Dip your toes in the tide? Where The Ocean Meets the Sand details the fun, the creatures, and the excitement found as the waves roll to the shore.</span></p><div><span data-story-id=\"story_e6b10858b1b48ce5aef043d596bf92fa\" data-room-id=\"room_d03d5e065bb64cee5ed655590dca2191\" data-timestamp=\"1597271006934\" data-text=\"Do you like to walk in the sand along the beach? Dip your toes in the tide? Where The Ocean Meets the Sand details the fun, the creatures, and the excitement found as the waves roll to the shore.\" data-userid=\"443555288632303616\" data-orgid=\"443555288741355520\" style=\"text-size-adjust: none; outline: none; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;\"><br></span></div></div></div>', '0', 'Where the Ocean Meets the Sand', '', ''),
+(26, 8, '<div class=\"wpb_text_column wpb_content_element \" style=\"text-size-adjust: none; outline: none; margin: 0px 0px 35px; padding: 0px; border: 0px; vertical-align: baseline; color: rgb(119, 119, 119); font-family: Roboto, Arial, Helvetica, sans-serif; font-size: 14px; font-variant-ligatures: none;\"><div class=\"wpb_wrapper\" style=\"text-size-adjust: none; outline: none; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;\"><p style=\"text-size-adjust: none; outline: none; margin-bottom: 0px; padding: 0px; border: 0px; vertical-align: baseline;\">Beautiful alpacas grazed along the countryside as Alejandro entered the stable to witness the birth of a beautiful baby. &nbsp;The tiny alpaca’s ear was unusual; it was bent forward. &nbsp;Alejandro knew one day Shine would grow up to be big and strong and one of his prized alpacas. &nbsp;Little did Alejandro know that Shine would one day save the day and his family’s Christmas Eve dinner.</p><div><br></div></div></div>', '0', 'Shine', '', ''),
+(27, 9, '<div class=\"wpb_text_column wpb_content_element \" style=\"text-size-adjust: none; outline: none; margin: 0px 0px 35px; padding: 0px; border: 0px; vertical-align: baseline; color: rgb(119, 119, 119); font-family: Roboto, Arial, Helvetica, sans-serif; font-size: 14px; font-variant-ligatures: none;\"><div class=\"wpb_wrapper\" style=\"text-size-adjust: none; outline: none; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;\"><p style=\"text-size-adjust: none; outline: none; margin-bottom: 0px; padding: 0px; border: 0px; vertical-align: baseline; text-align: center;\"><span data-story-id=\"story_f85867c9ead76e7a02629405d31b45f7\" data-room-id=\"room_d03d5e065bb64cee5ed655590dca2191\" data-timestamp=\"1597271079562\" data-text=\"Zachary has waited twenty five days! He\'s waited twenty-five letters. Finally! At last! It\'s his day. It\'s Z Day! He has more Z\'s in his life than his class could ever imagine! What will he tell them about his name? Will he tell them about his home and family? Will he be amazing? Will he razzle-dazzle his friends? Read the &quot;Z&quot; Wizard to fine out!\" data-userid=\"443555288632303616\" data-orgid=\"443555288741355520\" style=\"text-size-adjust: none; outline: none; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;\">Zachary has waited twenty five days! He’s waited twenty-five letters. Finally! At last! It’s his day. It’s Z Day! He has more Z’s in his life than his class could ever imagine! What will he tell them about his name? Will he tell them about his home and family? Will he be amazing? Will he razzle-dazzle his friends? Read the “Z” Wizard to fine out!</span></p><div><span data-story-id=\"story_f85867c9ead76e7a02629405d31b45f7\" data-room-id=\"room_d03d5e065bb64cee5ed655590dca2191\" data-timestamp=\"1597271079562\" data-text=\"Zachary has waited twenty five days! He\'s waited twenty-five letters. Finally! At last! It\'s his day. It\'s Z Day! He has more Z\'s in his life than his class could ever imagine! What will he tell them about his name? Will he tell them about his home and family? Will he be amazing? Will he razzle-dazzle his friends? Read the &quot;Z&quot; Wizard to fine out!\" data-userid=\"443555288632303616\" data-orgid=\"443555288741355520\" style=\"text-size-adjust: none; outline: none; margin: 0px; padding: 0px; border: 0px; vertical-align: baseline;\"><br></span></div></div></div>', '0', 'The Z Wizard!', '', '');
 
 -- --------------------------------------------------------
 
@@ -415,8 +695,65 @@ CREATE TABLE `products` (
 CREATE TABLE `products_images` (
   `id` int(10) UNSIGNED NOT NULL,
   `product_id` int(11) UNSIGNED NOT NULL COMMENT 'Model ID that have a image',
-  `image` varchar(150) NOT NULL
+  `image` varchar(150) NOT NULL,
+  `is_deleted` char(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `products_images`
+--
+
+INSERT INTO `products_images` (`id`, `product_id`, `image`, `is_deleted`) VALUES
+(2, 2, 'catalog/Cover-300x388.jpg', '1'),
+(4, 4, 'catalog/Cover-medium-300x388.jpg', '1'),
+(9, 5, 'catalog/7sillysharks-160x200.jpg', '1'),
+(13, 1, 'catalog/7sillysharks-160x200.jpg', '1'),
+(14, 3, 'catalog/Cover-1-300x388.jpg', '1'),
+(15, 1, 'catalog/product/Cover-1-300x388.jpg', '1'),
+(16, 1, 'catalog/product/Cover-1-300x388.jpg', '1'),
+(17, 1, 'catalog/product/Cover-1-300x388.jpg', '1'),
+(18, 1, 'catalog/product/Cover-1-300x388.jpg', '1'),
+(19, 1, 'catalog/product/Cover-1-300x388.jpg', '0'),
+(20, 2, 'catalog/product/Cover-300x388.jpg', '0'),
+(21, 3, 'catalog/product/Cover-1-300x388.jpg', '0'),
+(22, 6, 'catalog/product/Be-one-of-kind-web-300x388.jpg', '1'),
+(23, 7, 'catalog/product/where-web-300x388.jpg', '1'),
+(24, 6, 'catalog/product/Be-one-of-kind-web-300x388.jpg', '0'),
+(25, 7, 'catalog/product/where-web-300x388.jpg', '0'),
+(26, 8, 'catalog/product/cover-front-Shine-300x388.jpg', '0'),
+(27, 9, 'catalog/product/The-Z-Wizard-Cover-2020-web-300x388.jpg', '0');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `products_pdf`
+--
+
+CREATE TABLE `products_pdf` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `product_id` int(11) UNSIGNED NOT NULL,
+  `pdf` varchar(255) DEFAULT NULL,
+  `is_deleted` char(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `products_pdf`
+--
+
+INSERT INTO `products_pdf` (`id`, `product_id`, `pdf`, `is_deleted`) VALUES
+(15, 1, '', '1'),
+(16, 1, '', '1'),
+(17, 1, '', '1'),
+(18, 1, '', '1'),
+(19, 1, '', '0'),
+(20, 2, '', '0'),
+(21, 3, '', '0'),
+(22, 6, '', '1'),
+(23, 7, '', '1'),
+(24, 6, '', '0'),
+(25, 7, '', '0'),
+(26, 8, '', '0'),
+(27, 9, '', '0');
 
 -- --------------------------------------------------------
 
@@ -427,8 +764,31 @@ CREATE TABLE `products_images` (
 CREATE TABLE `products_videos` (
   `id` int(11) UNSIGNED NOT NULL,
   `url` text NOT NULL,
-  `product_id` int(11) UNSIGNED NOT NULL
+  `thumb` varchar(255) NOT NULL,
+  `product_id` int(11) UNSIGNED NOT NULL,
+  `is_deleted` char(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `products_videos`
+--
+
+INSERT INTO `products_videos` (`id`, `url`, `thumb`, `product_id`, `is_deleted`) VALUES
+(23, 'https://www.youtube.com/watch?v=xSDvtXRECmI', '', 2, '1'),
+(27, 'https://www.youtube.com/watch?v=HKVIN6alX1w', '', 1, '1'),
+(29, 'https://www.youtube.com/watch?v=HKVIN6alX1w', '', 1, '1'),
+(30, 'https://www.youtube.com/watch?v=HKVIN6alX1w', '', 1, '1'),
+(31, 'https://www.youtube.com/watch?v=HKVIN6alX1w', '', 1, '1'),
+(32, 'https://www.youtube.com/watch?v=HKVIN6alX1w', '', 1, '1'),
+(33, 'https://www.youtube.com/watch?v=HKVIN6alX1w', '', 1, '0'),
+(34, 'https://www.youtube.com/watch?v=xSDvtXRECmI', '', 2, '0'),
+(35, '', '', 3, '0'),
+(36, '', '', 6, '1'),
+(37, '', '', 7, '1'),
+(38, 'https://www.youtube.com/watch?v=5IO9f7delWI', 'http://img.youtube.com/vi/5IO9f7delWI/0.jpg', 6, '0'),
+(39, 'https://www.youtube.com/watch?v=K2REkAyQ2qU', 'http://img.youtube.com/vi/K2REkAyQ2qU/0.jpg', 7, '0'),
+(40, 'https://www.youtube.com/watch?v=K2REkAyQ2qU', 'http://img.youtube.com/vi/K2REkAyQ2qU/0.jpg', 8, '0'),
+(41, 'https://www.youtube.com/watch?v=LgazKWUruMM', 'http://img.youtube.com/vi/LgazKWUruMM/0.jpg', 9, '0');
 
 -- --------------------------------------------------------
 
@@ -438,10 +798,61 @@ CREATE TABLE `products_videos` (
 
 CREATE TABLE `questions` (
   `id` int(11) UNSIGNED NOT NULL,
+  `quiz_id` int(11) UNSIGNED NOT NULL,
   `question` text NOT NULL,
-  `publish` tinyint(1) NOT NULL COMMENT '0= false, 1 = true',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `image` varchar(255) DEFAULT NULL,
+  `status` tinyint(1) NOT NULL COMMENT '0= false, 1 = true',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `is_deleted` char(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `questions`
+--
+
+INSERT INTO `questions` (`id`, `quiz_id`, `question`, `image`, `status`, `created_at`, `updated_at`, `is_deleted`) VALUES
+(12, 4, 'How many sharks you see in the picture below?', 'catalog/1.jpg', 1, '2020-08-31 03:06:21', '2020-08-31 09:51:31', '0'),
+(13, 5, 'With some minor exceptions, all eight bear species have roughly the same appearance? ', 'catalog/2.jpg', 1, '2020-08-31 04:05:59', '2020-08-31 04:19:15', '0'),
+(14, 5, 'Test', '', 1, '2020-08-31 04:22:15', '2020-08-31 07:52:51', '1');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `questions_images`
+--
+
+CREATE TABLE `questions_images` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `question_id` int(11) UNSIGNED NOT NULL,
+  `image` varchar(255) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `is_deleted` char(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `quizzes`
+--
+
+CREATE TABLE `quizzes` (
+  `id` int(11) UNSIGNED NOT NULL,
+  `name` varchar(255) NOT NULL,
+  `slug` varchar(255) NOT NULL,
+  `status` tinyint(1) UNSIGNED NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
+  `is_deleted` char(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `quizzes`
+--
+
+INSERT INTO `quizzes` (`id`, `name`, `slug`, `status`, `created_at`, `updated_at`, `is_deleted`) VALUES
+(4, 'Whale Sharks Quiz', 'whale-sharks-quiz', 1, '2020-08-27 08:06:44', '2020-08-27 08:13:32', '0'),
+(5, 'Bears Quiz', 'bears-quiz', 1, '2020-08-31 04:04:55', '2020-08-31 04:04:55', '0');
 
 -- --------------------------------------------------------
 
@@ -4583,22 +4994,6 @@ INSERT INTO `states` (`id`, `country_id`, `name`, `code`, `status`, `created_at`
 -- --------------------------------------------------------
 
 --
--- Table structure for table `subscriptions`
---
-
-CREATE TABLE `subscriptions` (
-  `id` int(11) NOT NULL,
-  `user_id` int(11) UNSIGNED NOT NULL,
-  `subscription_type` varchar(50) NOT NULL,
-  `subscription_plan` varchar(150) NOT NULL,
-  `quantity` smallint(5) UNSIGNED NOT NULL,
-  `end_at` timestamp NULL DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
--- --------------------------------------------------------
-
---
 -- Table structure for table `users`
 --
 
@@ -4607,7 +5002,7 @@ CREATE TABLE `users` (
   `firstname` varchar(32) NOT NULL,
   `lastname` varchar(32) NOT NULL,
   `email` varchar(96) NOT NULL,
-  `telephone` varchar(32) NOT NULL,
+  `phone` varchar(32) NOT NULL,
   `password` varchar(40) NOT NULL,
   `salt` varchar(9) NOT NULL,
   `cart` text DEFAULT NULL,
@@ -4619,6 +5014,7 @@ CREATE TABLE `users` (
   `token` text NOT NULL,
   `code` varchar(40) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL ON UPDATE current_timestamp(),
   `is_deleted` char(1) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
@@ -4626,9 +5022,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `firstname`, `lastname`, `email`, `telephone`, `password`, `salt`, `cart`, `wishlist`, `address_id`, `ip`, `status`, `safe`, `token`, `code`, `created_at`, `is_deleted`) VALUES
-(1, 'Arnab', 'Nath', 'arnabnath@gmail.com', '9999999999', '', '', NULL, NULL, 0, '', 1, 0, '', '', '2020-08-13 12:23:14', '0'),
-(2, 'Bhaskar', 'Das', 'bhaskardas@gmail.com', '9999999999', '', '', NULL, NULL, 0, '', 0, 0, '', '', '2020-08-13 12:23:14', '0');
+INSERT INTO `users` (`id`, `firstname`, `lastname`, `email`, `phone`, `password`, `salt`, `cart`, `wishlist`, `address_id`, `ip`, `status`, `safe`, `token`, `code`, `created_at`, `updated_at`, `is_deleted`) VALUES
+(1, 'Sourav', 'Mondal', 'sourav@mondal.com', '', '', '', NULL, NULL, 0, '', 0, 0, '', '', '2020-08-31 14:17:09', NULL, '0'),
+(2, 'Rakesh', 'Maity', 'rakeshmaity271@gmail.com', '', '86ef59f47bcfbfd2f53648cebd7065b039c7860a', 'GInERZLHI', NULL, NULL, 1, '116.206.221.211', 1, 0, '', '', '2020-09-01 14:08:37', '2020-09-04 12:34:07', '0');
 
 -- --------------------------------------------------------
 
@@ -4656,15 +5052,23 @@ CREATE TABLE `users_address` (
   `user_id` int(11) NOT NULL,
   `firstname` varchar(32) NOT NULL,
   `lastname` varchar(32) NOT NULL,
-  `company` varchar(40) NOT NULL,
   `address_1` varchar(128) NOT NULL,
   `address_2` varchar(128) NOT NULL,
   `city` varchar(128) NOT NULL,
   `postcode` varchar(10) NOT NULL,
-  `coounty_id` int(11) UNSIGNED NOT NULL DEFAULT 0,
-  `zone_id` int(11) UNSIGNED NOT NULL DEFAULT 0,
-  `custom_field` text NOT NULL
+  `country_id` int(11) UNSIGNED NOT NULL DEFAULT 0,
+  `state_id` int(11) UNSIGNED DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `is_deleted` char(1) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `users_address`
+--
+
+INSERT INTO `users_address` (`id`, `user_id`, `firstname`, `lastname`, `address_1`, `address_2`, `city`, `postcode`, `country_id`, `state_id`, `created_at`, `updated_at`, `is_deleted`) VALUES
+(1, 2, 'Rakesh', 'Maity', '', '', '', '', 0, NULL, '2020-09-01 14:08:37', NULL, '0');
 
 -- --------------------------------------------------------
 
@@ -4689,8 +5093,772 @@ CREATE TABLE `users_ip` (
   `id` int(11) UNSIGNED NOT NULL,
   `user_id` int(11) UNSIGNED NOT NULL,
   `ip` varchar(40) NOT NULL,
-  `created_at` datetime NOT NULL
+  `created_at` datetime NOT NULL,
+  `is_deleted` char(1) NOT NULL DEFAULT '0'
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `users_ip`
+--
+
+INSERT INTO `users_ip` (`id`, `user_id`, `ip`, `created_at`, `is_deleted`) VALUES
+(1, 0, '::1', '2020-09-01 19:38:38', '0'),
+(2, 0, '::1', '2020-09-01 19:38:43', '0'),
+(3, 0, '::1', '2020-09-01 19:38:43', '0'),
+(4, 0, '::1', '2020-09-01 19:38:43', '0'),
+(5, 0, '::1', '2020-09-01 19:38:43', '0'),
+(6, 0, '::1', '2020-09-01 19:38:45', '0'),
+(7, 0, '::1', '2020-09-01 19:38:46', '0'),
+(8, 0, '::1', '2020-09-01 19:38:52', '0'),
+(9, 0, '::1', '2020-09-01 19:38:52', '0'),
+(10, 0, '::1', '2020-09-01 19:38:52', '0'),
+(11, 0, '::1', '2020-09-01 19:38:52', '0'),
+(12, 0, '::1', '2020-09-01 19:38:52', '0'),
+(13, 0, '::1', '2020-09-01 19:38:52', '0'),
+(14, 0, '::1', '2020-09-01 19:38:52', '0'),
+(15, 0, '::1', '2020-09-01 19:39:02', '0'),
+(16, 0, '::1', '2020-09-01 19:39:02', '0'),
+(17, 0, '::1', '2020-09-01 19:39:02', '0'),
+(18, 0, '::1', '2020-09-01 19:39:02', '0'),
+(19, 0, '::1', '2020-09-01 19:39:02', '0'),
+(20, 0, '::1', '2020-09-01 19:39:02', '0'),
+(21, 0, '::1', '2020-09-01 19:39:02', '0'),
+(22, 0, '::1', '2020-09-01 19:39:14', '0'),
+(23, 0, '::1', '2020-09-01 19:39:14', '0'),
+(24, 0, '::1', '2020-09-01 19:39:14', '0'),
+(25, 0, '::1', '2020-09-01 19:39:14', '0'),
+(26, 0, '::1', '2020-09-01 19:39:14', '0'),
+(27, 0, '::1', '2020-09-01 19:39:14', '0'),
+(28, 0, '::1', '2020-09-01 19:39:14', '0'),
+(29, 0, '::1', '2020-09-01 19:39:46', '0'),
+(30, 0, '::1', '2020-09-01 19:39:47', '0'),
+(31, 0, '::1', '2020-09-01 19:39:47', '0'),
+(32, 0, '::1', '2020-09-01 19:39:47', '0'),
+(33, 0, '::1', '2020-09-01 19:39:47', '0'),
+(34, 0, '::1', '2020-09-01 19:39:47', '0'),
+(35, 0, '::1', '2020-09-01 19:39:47', '0'),
+(36, 0, '::1', '2020-09-01 19:40:12', '0'),
+(37, 0, '::1', '2020-09-01 19:40:13', '0'),
+(38, 0, '::1', '2020-09-01 19:40:13', '0'),
+(39, 0, '::1', '2020-09-01 19:40:13', '0'),
+(40, 0, '::1', '2020-09-01 19:40:13', '0'),
+(41, 0, '::1', '2020-09-01 19:40:13', '0'),
+(42, 0, '::1', '2020-09-01 19:40:13', '0'),
+(43, 0, '::1', '2020-09-01 19:40:13', '0'),
+(44, 0, '::1', '2020-09-01 19:40:16', '0'),
+(45, 0, '::1', '2020-09-01 19:40:27', '0'),
+(46, 0, '::1', '2020-09-01 19:40:29', '0'),
+(47, 0, '::1', '2020-09-01 19:40:33', '0'),
+(48, 0, '::1', '2020-09-01 19:40:33', '0'),
+(49, 0, '::1', '2020-09-01 19:40:33', '0'),
+(50, 0, '::1', '2020-09-01 19:40:50', '0'),
+(51, 0, '::1', '2020-09-01 19:48:09', '0'),
+(52, 0, '::1', '2020-09-01 19:48:44', '0'),
+(53, 0, '::1', '2020-09-01 19:49:19', '0'),
+(54, 0, '::1', '2020-09-01 19:49:34', '0'),
+(55, 0, '::1', '2020-09-01 19:49:56', '0'),
+(56, 0, '::1', '2020-09-01 19:49:57', '0'),
+(57, 0, '::1', '2020-09-01 19:49:57', '0'),
+(58, 0, '::1', '2020-09-01 19:49:57', '0'),
+(59, 0, '::1', '2020-09-01 19:49:57', '0'),
+(60, 0, '::1', '2020-09-01 19:49:57', '0'),
+(61, 0, '::1', '2020-09-01 19:49:57', '0'),
+(62, 0, '::1', '2020-09-01 19:50:05', '0'),
+(63, 0, '::1', '2020-09-01 19:51:53', '0'),
+(64, 0, '::1', '2020-09-01 19:51:53', '0'),
+(65, 0, '::1', '2020-09-01 19:51:53', '0'),
+(66, 0, '::1', '2020-09-01 19:51:53', '0'),
+(67, 0, '::1', '2020-09-01 19:51:53', '0'),
+(68, 0, '::1', '2020-09-01 19:51:54', '0'),
+(69, 0, '::1', '2020-09-01 19:51:54', '0'),
+(70, 0, '::1', '2020-09-01 19:52:45', '0'),
+(71, 0, '::1', '2020-09-01 19:52:46', '0'),
+(72, 0, '::1', '2020-09-01 19:52:46', '0'),
+(73, 0, '::1', '2020-09-01 19:52:46', '0'),
+(74, 0, '::1', '2020-09-01 19:52:46', '0'),
+(75, 0, '::1', '2020-09-01 19:52:46', '0'),
+(76, 0, '::1', '2020-09-01 19:52:46', '0'),
+(77, 0, '::1', '2020-09-02 12:19:48', '0'),
+(78, 0, '::1', '2020-09-02 12:19:58', '0'),
+(79, 0, '::1', '2020-09-02 12:20:03', '0'),
+(80, 0, '::1', '2020-09-02 12:20:08', '0'),
+(81, 0, '::1', '2020-09-02 12:32:31', '0'),
+(82, 0, '::1', '2020-09-02 12:32:32', '0'),
+(83, 0, '::1', '2020-09-02 12:32:32', '0'),
+(84, 0, '::1', '2020-09-02 12:32:32', '0'),
+(85, 0, '::1', '2020-09-02 12:32:32', '0'),
+(86, 0, '::1', '2020-09-02 12:32:32', '0'),
+(87, 0, '::1', '2020-09-02 12:32:32', '0'),
+(88, 0, '::1', '2020-09-02 12:32:35', '0'),
+(89, 0, '::1', '2020-09-02 12:32:35', '0'),
+(90, 0, '::1', '2020-09-02 12:32:35', '0'),
+(91, 0, '::1', '2020-09-02 12:32:35', '0'),
+(92, 0, '::1', '2020-09-02 12:32:35', '0'),
+(93, 0, '::1', '2020-09-02 12:32:35', '0'),
+(94, 0, '::1', '2020-09-02 12:32:35', '0'),
+(95, 0, '::1', '2020-09-02 12:33:39', '0'),
+(96, 0, '::1', '2020-09-02 12:33:39', '0'),
+(97, 0, '::1', '2020-09-02 12:33:40', '0'),
+(98, 0, '::1', '2020-09-02 12:33:40', '0'),
+(99, 0, '::1', '2020-09-02 12:33:40', '0'),
+(100, 0, '::1', '2020-09-02 12:33:40', '0'),
+(101, 0, '::1', '2020-09-02 12:33:40', '0'),
+(102, 0, '::1', '2020-09-02 12:33:46', '0'),
+(103, 0, '::1', '2020-09-02 12:33:46', '0'),
+(104, 0, '::1', '2020-09-02 12:33:46', '0'),
+(105, 0, '::1', '2020-09-02 12:34:35', '0'),
+(106, 0, '::1', '2020-09-02 12:34:36', '0'),
+(107, 0, '::1', '2020-09-02 12:34:36', '0'),
+(108, 0, '::1', '2020-09-02 12:34:36', '0'),
+(109, 0, '::1', '2020-09-02 12:34:36', '0'),
+(110, 0, '::1', '2020-09-02 12:34:36', '0'),
+(111, 0, '::1', '2020-09-02 12:34:36', '0'),
+(112, 0, '::1', '2020-09-02 12:35:48', '0'),
+(113, 0, '::1', '2020-09-02 12:35:48', '0'),
+(114, 0, '::1', '2020-09-02 12:35:48', '0'),
+(115, 0, '::1', '2020-09-02 12:35:48', '0'),
+(116, 0, '::1', '2020-09-02 12:35:49', '0'),
+(117, 0, '::1', '2020-09-02 12:35:49', '0'),
+(118, 0, '::1', '2020-09-02 12:35:49', '0'),
+(119, 0, '::1', '2020-09-02 12:35:49', '0'),
+(120, 0, '::1', '2020-09-02 12:35:49', '0'),
+(121, 0, '::1', '2020-09-02 12:35:49', '0'),
+(122, 0, '::1', '2020-09-02 12:36:03', '0'),
+(123, 0, '::1', '2020-09-02 12:36:03', '0'),
+(124, 0, '::1', '2020-09-02 12:36:03', '0'),
+(125, 0, '::1', '2020-09-02 12:36:48', '0'),
+(126, 0, '::1', '2020-09-02 12:36:49', '0'),
+(127, 0, '::1', '2020-09-02 12:36:49', '0'),
+(128, 0, '::1', '2020-09-02 12:36:49', '0'),
+(129, 0, '::1', '2020-09-02 12:36:49', '0'),
+(130, 0, '::1', '2020-09-02 12:36:49', '0'),
+(131, 0, '::1', '2020-09-02 12:36:49', '0'),
+(132, 0, '::1', '2020-09-02 12:37:23', '0'),
+(133, 0, '::1', '2020-09-02 12:37:24', '0'),
+(134, 0, '::1', '2020-09-02 12:37:24', '0'),
+(135, 0, '::1', '2020-09-02 12:37:24', '0'),
+(136, 0, '::1', '2020-09-02 12:37:24', '0'),
+(137, 0, '::1', '2020-09-02 12:37:24', '0'),
+(138, 0, '::1', '2020-09-02 12:37:24', '0'),
+(139, 0, '::1', '2020-09-02 12:37:26', '0'),
+(140, 0, '::1', '2020-09-02 12:37:26', '0'),
+(141, 0, '::1', '2020-09-02 12:37:26', '0'),
+(142, 0, '::1', '2020-09-02 12:37:26', '0'),
+(143, 0, '::1', '2020-09-02 12:37:26', '0'),
+(144, 0, '::1', '2020-09-02 12:37:26', '0'),
+(145, 0, '::1', '2020-09-02 12:37:26', '0'),
+(146, 0, '::1', '2020-09-02 12:37:27', '0'),
+(147, 0, '::1', '2020-09-02 12:37:28', '0'),
+(148, 0, '::1', '2020-09-02 12:37:28', '0'),
+(149, 0, '::1', '2020-09-02 12:37:28', '0'),
+(150, 0, '::1', '2020-09-02 12:37:28', '0'),
+(151, 0, '::1', '2020-09-02 12:37:28', '0'),
+(152, 0, '::1', '2020-09-02 12:37:28', '0'),
+(153, 0, '::1', '2020-09-02 12:37:28', '0'),
+(154, 0, '::1', '2020-09-02 12:37:29', '0'),
+(155, 0, '::1', '2020-09-02 12:37:29', '0'),
+(156, 0, '::1', '2020-09-02 12:39:22', '0'),
+(157, 0, '::1', '2020-09-02 12:39:23', '0'),
+(158, 0, '::1', '2020-09-02 12:39:23', '0'),
+(159, 0, '::1', '2020-09-02 12:39:23', '0'),
+(160, 0, '::1', '2020-09-02 12:39:23', '0'),
+(161, 0, '::1', '2020-09-02 12:39:23', '0'),
+(162, 0, '::1', '2020-09-02 12:39:23', '0'),
+(163, 0, '::1', '2020-09-02 12:39:24', '0'),
+(164, 0, '::1', '2020-09-02 12:39:24', '0'),
+(165, 0, '::1', '2020-09-02 12:39:24', '0'),
+(166, 0, '::1', '2020-09-02 12:39:25', '0'),
+(167, 0, '::1', '2020-09-02 12:39:25', '0'),
+(168, 0, '::1', '2020-09-02 12:41:04', '0'),
+(169, 0, '::1', '2020-09-02 12:41:04', '0'),
+(170, 0, '::1', '2020-09-02 12:41:04', '0'),
+(171, 0, '::1', '2020-09-02 12:41:05', '0'),
+(172, 0, '::1', '2020-09-02 12:41:05', '0'),
+(173, 0, '::1', '2020-09-02 12:41:05', '0'),
+(174, 0, '::1', '2020-09-02 12:41:05', '0'),
+(175, 0, '::1', '2020-09-02 12:41:34', '0'),
+(176, 0, '::1', '2020-09-02 12:41:34', '0'),
+(177, 0, '::1', '2020-09-02 12:41:35', '0'),
+(178, 0, '::1', '2020-09-02 12:41:35', '0'),
+(179, 0, '::1', '2020-09-02 12:41:35', '0'),
+(180, 0, '::1', '2020-09-02 12:41:35', '0'),
+(181, 0, '::1', '2020-09-02 12:41:35', '0'),
+(182, 0, '::1', '2020-09-02 12:41:50', '0'),
+(183, 0, '::1', '2020-09-02 12:41:51', '0'),
+(184, 0, '::1', '2020-09-02 12:41:51', '0'),
+(185, 0, '::1', '2020-09-02 12:41:51', '0'),
+(186, 0, '::1', '2020-09-02 12:41:51', '0'),
+(187, 0, '::1', '2020-09-02 12:41:51', '0'),
+(188, 0, '::1', '2020-09-02 12:41:51', '0'),
+(189, 0, '::1', '2020-09-02 12:42:15', '0'),
+(190, 0, '::1', '2020-09-02 12:42:15', '0'),
+(191, 0, '::1', '2020-09-02 12:42:15', '0'),
+(192, 0, '::1', '2020-09-02 12:42:15', '0'),
+(193, 0, '::1', '2020-09-02 12:42:15', '0'),
+(194, 0, '::1', '2020-09-02 12:42:15', '0'),
+(195, 0, '::1', '2020-09-02 12:42:16', '0'),
+(196, 0, '::1', '2020-09-02 12:43:02', '0'),
+(197, 0, '::1', '2020-09-02 12:43:03', '0'),
+(198, 0, '::1', '2020-09-02 12:43:03', '0'),
+(199, 0, '::1', '2020-09-02 12:43:03', '0'),
+(200, 0, '::1', '2020-09-02 12:43:03', '0'),
+(201, 0, '::1', '2020-09-02 12:43:03', '0'),
+(202, 0, '::1', '2020-09-02 12:43:03', '0'),
+(203, 0, '::1', '2020-09-02 12:44:19', '0'),
+(204, 0, '::1', '2020-09-02 12:44:19', '0'),
+(205, 0, '::1', '2020-09-02 12:44:19', '0'),
+(206, 0, '::1', '2020-09-02 12:44:19', '0'),
+(207, 0, '::1', '2020-09-02 12:44:20', '0'),
+(208, 0, '::1', '2020-09-02 12:44:20', '0'),
+(209, 0, '::1', '2020-09-02 12:44:20', '0'),
+(210, 0, '::1', '2020-09-02 12:45:03', '0'),
+(211, 0, '::1', '2020-09-02 12:45:04', '0'),
+(212, 0, '::1', '2020-09-02 12:45:04', '0'),
+(213, 0, '::1', '2020-09-02 12:45:04', '0'),
+(214, 0, '::1', '2020-09-02 12:45:04', '0'),
+(215, 0, '::1', '2020-09-02 12:45:04', '0'),
+(216, 0, '::1', '2020-09-02 12:45:04', '0'),
+(217, 0, '::1', '2020-09-02 12:45:44', '0'),
+(218, 0, '::1', '2020-09-02 12:45:46', '0'),
+(219, 0, '::1', '2020-09-02 12:45:46', '0'),
+(220, 0, '::1', '2020-09-02 12:45:46', '0'),
+(221, 0, '::1', '2020-09-02 12:45:46', '0'),
+(222, 0, '::1', '2020-09-02 12:45:46', '0'),
+(223, 0, '::1', '2020-09-02 12:45:46', '0'),
+(224, 0, '::1', '2020-09-02 12:45:46', '0'),
+(225, 0, '::1', '2020-09-02 12:45:46', '0'),
+(226, 0, '::1', '2020-09-02 12:45:46', '0'),
+(227, 0, '::1', '2020-09-02 12:45:47', '0'),
+(228, 0, '::1', '2020-09-02 12:45:47', '0'),
+(229, 0, '::1', '2020-09-02 12:45:48', '0'),
+(230, 0, '::1', '2020-09-02 12:45:48', '0'),
+(231, 0, '::1', '2020-09-02 12:45:48', '0'),
+(232, 0, '::1', '2020-09-02 12:45:48', '0'),
+(233, 0, '::1', '2020-09-02 12:46:40', '0'),
+(234, 0, '::1', '2020-09-02 12:46:42', '0'),
+(235, 0, '::1', '2020-09-02 12:46:42', '0'),
+(236, 0, '::1', '2020-09-02 12:46:42', '0'),
+(237, 0, '::1', '2020-09-02 12:46:42', '0'),
+(238, 0, '::1', '2020-09-02 12:46:42', '0'),
+(239, 0, '::1', '2020-09-02 12:46:42', '0'),
+(240, 0, '::1', '2020-09-02 12:46:54', '0'),
+(241, 0, '::1', '2020-09-02 12:46:55', '0'),
+(242, 0, '::1', '2020-09-02 12:46:55', '0'),
+(243, 0, '::1', '2020-09-02 12:46:55', '0'),
+(244, 0, '::1', '2020-09-02 12:46:55', '0'),
+(245, 0, '::1', '2020-09-02 12:46:55', '0'),
+(246, 0, '::1', '2020-09-02 12:46:55', '0'),
+(247, 0, '::1', '2020-09-02 12:46:55', '0'),
+(248, 0, '::1', '2020-09-02 12:46:56', '0'),
+(249, 0, '::1', '2020-09-02 12:46:56', '0'),
+(250, 0, '::1', '2020-09-02 12:46:56', '0'),
+(251, 0, '::1', '2020-09-02 12:46:56', '0'),
+(252, 0, '::1', '2020-09-02 12:46:57', '0'),
+(253, 0, '::1', '2020-09-02 12:46:57', '0'),
+(254, 0, '::1', '2020-09-02 12:46:57', '0'),
+(255, 0, '::1', '2020-09-02 12:46:57', '0'),
+(256, 0, '::1', '2020-09-02 12:51:35', '0'),
+(257, 0, '::1', '2020-09-02 12:51:36', '0'),
+(258, 0, '::1', '2020-09-02 12:51:36', '0'),
+(259, 0, '::1', '2020-09-02 12:51:36', '0'),
+(260, 0, '::1', '2020-09-02 12:51:36', '0'),
+(261, 0, '::1', '2020-09-02 12:51:37', '0'),
+(262, 0, '::1', '2020-09-02 12:51:37', '0'),
+(263, 0, '::1', '2020-09-02 12:51:37', '0'),
+(264, 0, '::1', '2020-09-02 12:51:37', '0'),
+(265, 0, '::1', '2020-09-02 12:51:39', '0'),
+(266, 0, '::1', '2020-09-02 12:51:39', '0'),
+(267, 0, '::1', '2020-09-02 12:51:39', '0'),
+(268, 0, '::1', '2020-09-02 12:51:39', '0'),
+(269, 0, '::1', '2020-09-02 12:51:42', '0'),
+(270, 0, '::1', '2020-09-02 12:51:42', '0'),
+(271, 0, '::1', '2020-09-02 12:51:42', '0'),
+(272, 0, '::1', '2020-09-02 12:51:42', '0'),
+(273, 0, '::1', '2020-09-02 12:51:45', '0'),
+(274, 0, '::1', '2020-09-02 12:51:45', '0'),
+(275, 0, '::1', '2020-09-02 12:51:45', '0'),
+(276, 0, '::1', '2020-09-02 12:51:45', '0'),
+(277, 0, '::1', '2020-09-02 12:51:48', '0'),
+(278, 0, '::1', '2020-09-02 12:51:50', '0'),
+(279, 0, '::1', '2020-09-02 12:51:54', '0'),
+(280, 0, '::1', '2020-09-02 12:51:54', '0'),
+(281, 0, '::1', '2020-09-02 12:51:54', '0'),
+(282, 0, '::1', '2020-09-02 12:52:49', '0'),
+(283, 0, '::1', '2020-09-02 12:52:50', '0'),
+(284, 0, '::1', '2020-09-02 12:52:50', '0'),
+(285, 0, '::1', '2020-09-02 12:52:50', '0'),
+(286, 0, '::1', '2020-09-02 12:52:50', '0'),
+(287, 0, '::1', '2020-09-02 12:52:50', '0'),
+(288, 0, '::1', '2020-09-02 12:52:50', '0'),
+(289, 0, '::1', '2020-09-02 12:52:50', '0'),
+(290, 0, '::1', '2020-09-02 12:52:50', '0'),
+(291, 0, '::1', '2020-09-02 12:52:50', '0'),
+(292, 0, '::1', '2020-09-02 12:53:54', '0'),
+(293, 0, '::1', '2020-09-02 12:53:55', '0'),
+(294, 0, '::1', '2020-09-02 12:53:55', '0'),
+(295, 0, '::1', '2020-09-02 12:53:55', '0'),
+(296, 0, '::1', '2020-09-02 12:53:55', '0'),
+(297, 0, '::1', '2020-09-02 12:53:55', '0'),
+(298, 0, '::1', '2020-09-02 12:53:55', '0'),
+(299, 0, '::1', '2020-09-02 12:54:43', '0'),
+(300, 0, '::1', '2020-09-02 12:54:43', '0'),
+(301, 0, '::1', '2020-09-02 12:54:43', '0'),
+(302, 0, '::1', '2020-09-02 12:56:07', '0'),
+(303, 0, '::1', '2020-09-02 12:56:07', '0'),
+(304, 0, '::1', '2020-09-02 12:56:07', '0'),
+(305, 0, '::1', '2020-09-02 12:56:07', '0'),
+(306, 0, '::1', '2020-09-02 12:56:11', '0'),
+(307, 0, '::1', '2020-09-02 12:56:11', '0'),
+(308, 0, '::1', '2020-09-02 12:56:11', '0'),
+(309, 0, '::1', '2020-09-02 12:56:11', '0'),
+(310, 0, '::1', '2020-09-02 12:56:11', '0'),
+(311, 0, '::1', '2020-09-02 12:56:11', '0'),
+(312, 0, '::1', '2020-09-02 12:56:11', '0'),
+(313, 0, '::1', '2020-09-02 12:56:57', '0'),
+(314, 0, '::1', '2020-09-02 12:56:57', '0'),
+(315, 0, '::1', '2020-09-02 12:56:57', '0'),
+(316, 0, '::1', '2020-09-02 12:58:34', '0'),
+(317, 0, '::1', '2020-09-02 12:58:34', '0'),
+(318, 0, '::1', '2020-09-02 12:58:34', '0'),
+(319, 0, '::1', '2020-09-02 12:58:35', '0'),
+(320, 0, '::1', '2020-09-02 12:58:37', '0'),
+(321, 0, '::1', '2020-09-02 12:58:37', '0'),
+(322, 0, '::1', '2020-09-02 12:58:38', '0'),
+(323, 0, '::1', '2020-09-02 12:59:28', '0'),
+(324, 0, '::1', '2020-09-02 12:59:29', '0'),
+(325, 0, '::1', '2020-09-02 12:59:29', '0'),
+(326, 0, '::1', '2020-09-02 12:59:29', '0'),
+(327, 0, '::1', '2020-09-02 12:59:29', '0'),
+(328, 0, '::1', '2020-09-02 12:59:29', '0'),
+(329, 0, '::1', '2020-09-02 12:59:29', '0'),
+(330, 0, '::1', '2020-09-02 13:00:05', '0'),
+(331, 0, '::1', '2020-09-02 13:00:06', '0'),
+(332, 0, '::1', '2020-09-02 13:00:06', '0'),
+(333, 0, '::1', '2020-09-02 13:00:06', '0'),
+(334, 0, '::1', '2020-09-02 13:00:06', '0'),
+(335, 0, '::1', '2020-09-02 13:00:08', '0'),
+(336, 0, '::1', '2020-09-02 13:00:08', '0'),
+(337, 0, '::1', '2020-09-02 13:00:08', '0'),
+(338, 0, '::1', '2020-09-02 13:00:08', '0'),
+(339, 0, '::1', '2020-09-02 13:00:31', '0'),
+(340, 0, '::1', '2020-09-02 13:00:36', '0'),
+(341, 0, '::1', '2020-09-02 13:00:36', '0'),
+(342, 0, '::1', '2020-09-02 13:00:36', '0'),
+(343, 0, '::1', '2020-09-02 13:00:36', '0'),
+(344, 0, '::1', '2020-09-02 13:00:40', '0'),
+(345, 0, '::1', '2020-09-02 13:00:42', '0'),
+(346, 0, '::1', '2020-09-02 13:00:48', '0'),
+(347, 0, '::1', '2020-09-02 13:00:54', '0'),
+(348, 0, '::1', '2020-09-02 13:00:55', '0'),
+(349, 0, '::1', '2020-09-02 13:04:47', '0'),
+(350, 0, '::1', '2020-09-02 13:04:47', '0'),
+(351, 0, '::1', '2020-09-02 13:04:47', '0'),
+(352, 0, '::1', '2020-09-02 13:04:47', '0'),
+(353, 0, '::1', '2020-09-02 13:04:47', '0'),
+(354, 0, '::1', '2020-09-02 13:04:47', '0'),
+(355, 0, '::1', '2020-09-02 13:04:47', '0'),
+(356, 0, '::1', '2020-09-02 13:04:51', '0'),
+(357, 0, '::1', '2020-09-02 13:04:52', '0'),
+(358, 0, '::1', '2020-09-02 13:04:54', '0'),
+(359, 0, '::1', '2020-09-02 13:04:54', '0'),
+(360, 0, '::1', '2020-09-02 13:04:54', '0'),
+(361, 0, '::1', '2020-09-02 13:04:54', '0'),
+(362, 0, '::1', '2020-09-02 13:04:54', '0'),
+(363, 0, '::1', '2020-09-02 13:04:54', '0'),
+(364, 0, '::1', '2020-09-02 13:04:54', '0'),
+(365, 0, '::1', '2020-09-02 13:05:15', '0'),
+(366, 0, '::1', '2020-09-02 13:05:15', '0'),
+(367, 0, '::1', '2020-09-02 13:05:15', '0'),
+(368, 0, '::1', '2020-09-02 13:05:15', '0'),
+(369, 0, '::1', '2020-09-02 13:05:15', '0'),
+(370, 0, '::1', '2020-09-02 13:05:15', '0'),
+(371, 0, '::1', '2020-09-02 13:05:15', '0'),
+(372, 0, '::1', '2020-09-02 13:05:16', '0'),
+(373, 0, '::1', '2020-09-02 13:05:17', '0'),
+(374, 0, '::1', '2020-09-02 13:05:17', '0'),
+(375, 0, '::1', '2020-09-02 13:05:17', '0'),
+(376, 0, '::1', '2020-09-02 13:05:18', '0'),
+(377, 0, '::1', '2020-09-02 13:05:18', '0'),
+(378, 0, '::1', '2020-09-02 13:05:19', '0'),
+(379, 0, '::1', '2020-09-02 13:05:20', '0'),
+(380, 0, '::1', '2020-09-02 13:05:21', '0'),
+(381, 0, '::1', '2020-09-02 13:05:27', '0'),
+(382, 0, '::1', '2020-09-02 13:17:20', '0'),
+(383, 0, '::1', '2020-09-02 13:17:20', '0'),
+(384, 0, '::1', '2020-09-02 13:17:20', '0'),
+(385, 0, '::1', '2020-09-02 13:17:20', '0'),
+(386, 0, '::1', '2020-09-02 13:17:22', '0'),
+(387, 0, '::1', '2020-09-02 13:17:29', '0'),
+(388, 0, '::1', '2020-09-02 13:17:30', '0'),
+(389, 0, '::1', '2020-09-02 13:17:30', '0'),
+(390, 0, '::1', '2020-09-02 13:17:30', '0'),
+(391, 0, '::1', '2020-09-02 13:17:34', '0'),
+(392, 0, '::1', '2020-09-02 13:17:34', '0'),
+(393, 0, '::1', '2020-09-02 13:17:34', '0'),
+(394, 0, '::1', '2020-09-02 13:17:34', '0'),
+(395, 0, '::1', '2020-09-02 13:17:50', '0'),
+(396, 0, '::1', '2020-09-02 13:18:12', '0'),
+(397, 0, '::1', '2020-09-02 13:29:31', '0'),
+(398, 0, '::1', '2020-09-02 13:29:59', '0'),
+(399, 0, '::1', '2020-09-02 13:30:00', '0'),
+(400, 0, '::1', '2020-09-02 13:30:02', '0'),
+(401, 0, '::1', '2020-09-02 13:30:44', '0'),
+(402, 0, '::1', '2020-09-02 13:31:06', '0'),
+(403, 0, '::1', '2020-09-02 13:31:07', '0'),
+(404, 0, '::1', '2020-09-02 13:31:07', '0'),
+(405, 0, '::1', '2020-09-02 13:31:07', '0'),
+(406, 0, '::1', '2020-09-02 13:31:07', '0'),
+(407, 0, '::1', '2020-09-02 13:31:07', '0'),
+(408, 0, '::1', '2020-09-02 13:31:07', '0'),
+(409, 0, '::1', '2020-09-02 14:19:22', '0'),
+(410, 0, '::1', '2020-09-02 14:19:23', '0'),
+(411, 0, '::1', '2020-09-02 14:19:23', '0'),
+(412, 0, '::1', '2020-09-02 14:19:23', '0'),
+(413, 0, '::1', '2020-09-02 14:19:23', '0'),
+(414, 0, '::1', '2020-09-02 14:19:23', '0'),
+(415, 0, '::1', '2020-09-02 14:19:23', '0'),
+(416, 0, '::1', '2020-09-02 14:22:09', '0'),
+(417, 0, '::1', '2020-09-02 14:22:09', '0'),
+(418, 0, '::1', '2020-09-02 14:22:09', '0'),
+(419, 0, '::1', '2020-09-02 14:22:09', '0'),
+(420, 0, '::1', '2020-09-02 14:22:09', '0'),
+(421, 0, '::1', '2020-09-02 14:22:09', '0'),
+(422, 0, '::1', '2020-09-02 14:22:09', '0'),
+(423, 0, '::1', '2020-09-02 14:23:33', '0'),
+(424, 0, '::1', '2020-09-02 14:23:33', '0'),
+(425, 0, '::1', '2020-09-02 14:23:33', '0'),
+(426, 0, '::1', '2020-09-02 14:23:34', '0'),
+(427, 0, '::1', '2020-09-02 14:23:34', '0'),
+(428, 0, '::1', '2020-09-02 14:23:34', '0'),
+(429, 0, '::1', '2020-09-02 14:23:34', '0'),
+(430, 0, '::1', '2020-09-02 14:24:12', '0'),
+(431, 0, '::1', '2020-09-02 14:24:12', '0'),
+(432, 0, '::1', '2020-09-02 14:24:12', '0'),
+(433, 0, '::1', '2020-09-02 14:24:12', '0'),
+(434, 0, '::1', '2020-09-02 14:24:12', '0'),
+(435, 0, '::1', '2020-09-02 14:24:12', '0'),
+(436, 0, '::1', '2020-09-02 14:24:12', '0'),
+(437, 0, '::1', '2020-09-02 14:24:15', '0'),
+(438, 0, '::1', '2020-09-02 14:24:17', '0'),
+(439, 0, '::1', '2020-09-02 14:24:18', '0'),
+(440, 0, '::1', '2020-09-02 14:24:18', '0'),
+(441, 0, '::1', '2020-09-02 14:24:18', '0'),
+(442, 0, '::1', '2020-09-02 14:30:14', '0'),
+(443, 0, '::1', '2020-09-02 14:30:14', '0'),
+(444, 0, '::1', '2020-09-02 14:30:14', '0'),
+(445, 0, '::1', '2020-09-02 14:30:15', '0'),
+(446, 0, '::1', '2020-09-02 14:30:19', '0'),
+(447, 0, '::1', '2020-09-02 14:30:21', '0'),
+(448, 0, '::1', '2020-09-02 14:33:01', '0'),
+(449, 0, '::1', '2020-09-02 14:33:02', '0'),
+(450, 0, '::1', '2020-09-02 14:33:02', '0'),
+(451, 0, '::1', '2020-09-02 14:33:02', '0'),
+(452, 0, '::1', '2020-09-02 14:33:02', '0'),
+(453, 0, '::1', '2020-09-02 14:33:02', '0'),
+(454, 0, '::1', '2020-09-02 14:33:02', '0'),
+(455, 0, '::1', '2020-09-02 14:33:20', '0'),
+(456, 0, '::1', '2020-09-02 14:33:21', '0'),
+(457, 0, '::1', '2020-09-02 14:33:21', '0'),
+(458, 0, '::1', '2020-09-02 14:33:21', '0'),
+(459, 0, '::1', '2020-09-02 14:33:21', '0'),
+(460, 0, '::1', '2020-09-02 14:33:21', '0'),
+(461, 0, '::1', '2020-09-02 14:33:21', '0'),
+(462, 0, '::1', '2020-09-02 14:33:23', '0'),
+(463, 0, '::1', '2020-09-02 14:35:43', '0'),
+(464, 0, '::1', '2020-09-02 14:35:44', '0'),
+(465, 0, '::1', '2020-09-02 14:35:44', '0'),
+(466, 0, '::1', '2020-09-02 14:35:44', '0'),
+(467, 0, '::1', '2020-09-02 14:35:44', '0'),
+(468, 0, '::1', '2020-09-02 14:35:44', '0'),
+(469, 0, '::1', '2020-09-02 14:35:44', '0'),
+(470, 0, '::1', '2020-09-02 14:35:47', '0'),
+(471, 0, '::1', '2020-09-02 14:35:48', '0'),
+(472, 0, '::1', '2020-09-02 14:35:48', '0'),
+(473, 0, '::1', '2020-09-02 14:35:48', '0'),
+(474, 0, '::1', '2020-09-02 14:35:50', '0'),
+(475, 0, '::1', '2020-09-02 14:35:50', '0'),
+(476, 0, '::1', '2020-09-02 14:35:50', '0'),
+(477, 0, '::1', '2020-09-02 14:35:51', '0'),
+(478, 0, '::1', '2020-09-02 14:36:03', '0'),
+(479, 0, '::1', '2020-09-02 14:36:03', '0'),
+(480, 0, '::1', '2020-09-02 14:36:03', '0'),
+(481, 0, '::1', '2020-09-02 14:36:03', '0'),
+(482, 0, '::1', '2020-09-02 14:36:03', '0'),
+(483, 0, '::1', '2020-09-02 14:36:04', '0'),
+(484, 0, '::1', '2020-09-02 14:36:04', '0'),
+(485, 0, '::1', '2020-09-02 14:36:12', '0'),
+(486, 0, '::1', '2020-09-02 14:36:13', '0'),
+(487, 0, '::1', '2020-09-02 14:36:13', '0'),
+(488, 0, '::1', '2020-09-02 14:36:13', '0'),
+(489, 0, '::1', '2020-09-02 14:36:14', '0'),
+(490, 0, '::1', '2020-09-02 14:36:15', '0'),
+(491, 0, '::1', '2020-09-02 14:36:15', '0'),
+(492, 0, '::1', '2020-09-02 14:36:15', '0'),
+(493, 0, '::1', '2020-09-02 14:36:21', '0'),
+(494, 0, '::1', '2020-09-02 14:36:22', '0'),
+(495, 0, '::1', '2020-09-02 14:36:22', '0'),
+(496, 0, '::1', '2020-09-02 14:36:27', '0'),
+(497, 0, '::1', '2020-09-02 14:36:27', '0'),
+(498, 0, '::1', '2020-09-02 14:36:27', '0'),
+(499, 0, '::1', '2020-09-02 14:36:31', '0'),
+(500, 0, '::1', '2020-09-02 14:36:32', '0'),
+(501, 0, '::1', '2020-09-02 14:36:32', '0'),
+(502, 0, '::1', '2020-09-02 14:36:32', '0'),
+(503, 0, '::1', '2020-09-02 14:37:23', '0'),
+(504, 0, '::1', '2020-09-02 14:37:46', '0'),
+(505, 0, '::1', '2020-09-02 14:38:34', '0'),
+(506, 0, '::1', '2020-09-02 14:39:04', '0'),
+(507, 0, '::1', '2020-09-02 14:39:04', '0'),
+(508, 0, '::1', '2020-09-02 14:39:04', '0'),
+(509, 0, '::1', '2020-09-02 14:39:04', '0'),
+(510, 0, '::1', '2020-09-02 14:39:04', '0'),
+(511, 0, '::1', '2020-09-02 14:39:04', '0'),
+(512, 0, '::1', '2020-09-02 14:39:04', '0'),
+(513, 0, '::1', '2020-09-02 14:39:49', '0'),
+(514, 0, '::1', '2020-09-02 14:39:49', '0'),
+(515, 0, '::1', '2020-09-02 14:39:49', '0'),
+(516, 0, '::1', '2020-09-02 14:39:50', '0'),
+(517, 0, '::1', '2020-09-02 14:39:50', '0'),
+(518, 0, '::1', '2020-09-02 14:39:50', '0'),
+(519, 0, '::1', '2020-09-02 14:39:50', '0'),
+(520, 0, '::1', '2020-09-02 14:39:54', '0'),
+(521, 0, '::1', '2020-09-02 14:39:55', '0'),
+(522, 0, '::1', '2020-09-02 14:39:55', '0'),
+(523, 0, '::1', '2020-09-02 14:39:55', '0'),
+(524, 0, '::1', '2020-09-02 14:41:59', '0'),
+(525, 0, '::1', '2020-09-02 14:42:13', '0'),
+(526, 0, '::1', '2020-09-02 14:43:08', '0'),
+(527, 0, '::1', '2020-09-02 14:43:09', '0'),
+(528, 0, '::1', '2020-09-02 14:43:09', '0'),
+(529, 0, '::1', '2020-09-02 14:43:09', '0'),
+(530, 0, '::1', '2020-09-02 14:44:02', '0'),
+(531, 0, '::1', '2020-09-02 14:44:03', '0'),
+(532, 0, '::1', '2020-09-02 14:44:03', '0'),
+(533, 0, '::1', '2020-09-02 14:44:03', '0'),
+(534, 0, '::1', '2020-09-02 14:44:46', '0'),
+(535, 0, '::1', '2020-09-02 14:45:01', '0'),
+(536, 0, '::1', '2020-09-02 14:45:02', '0'),
+(537, 0, '::1', '2020-09-02 14:45:02', '0'),
+(538, 0, '::1', '2020-09-02 14:45:02', '0'),
+(539, 0, '::1', '2020-09-02 14:45:05', '0'),
+(540, 0, '::1', '2020-09-02 14:45:41', '0'),
+(541, 0, '::1', '2020-09-02 14:45:41', '0'),
+(542, 0, '::1', '2020-09-02 14:45:41', '0'),
+(543, 0, '::1', '2020-09-02 14:45:41', '0'),
+(544, 0, '::1', '2020-09-02 14:45:45', '0'),
+(545, 0, '::1', '2020-09-02 14:45:45', '0'),
+(546, 0, '::1', '2020-09-02 14:45:46', '0'),
+(547, 0, '::1', '2020-09-02 14:45:46', '0'),
+(548, 0, '::1', '2020-09-02 14:45:52', '0'),
+(549, 0, '::1', '2020-09-02 14:46:49', '0'),
+(550, 0, '::1', '2020-09-02 14:47:00', '0'),
+(551, 0, '::1', '2020-09-02 14:47:00', '0'),
+(552, 0, '::1', '2020-09-02 14:47:00', '0'),
+(553, 0, '::1', '2020-09-02 14:47:18', '0'),
+(554, 0, '::1', '2020-09-02 14:47:18', '0'),
+(555, 0, '::1', '2020-09-02 14:47:18', '0'),
+(556, 0, '::1', '2020-09-02 14:47:18', '0'),
+(557, 0, '::1', '2020-09-02 14:47:33', '0'),
+(558, 0, '::1', '2020-09-02 14:47:34', '0'),
+(559, 0, '::1', '2020-09-02 14:47:34', '0'),
+(560, 0, '::1', '2020-09-02 14:47:34', '0'),
+(561, 0, '::1', '2020-09-02 14:47:34', '0'),
+(562, 0, '::1', '2020-09-02 14:47:34', '0'),
+(563, 0, '::1', '2020-09-02 14:47:34', '0'),
+(564, 0, '::1', '2020-09-02 14:47:43', '0'),
+(565, 0, '::1', '2020-09-02 14:47:44', '0'),
+(566, 0, '::1', '2020-09-02 14:47:44', '0'),
+(567, 0, '::1', '2020-09-02 14:47:44', '0'),
+(568, 0, '::1', '2020-09-02 14:47:57', '0'),
+(569, 0, '::1', '2020-09-02 14:47:58', '0'),
+(570, 0, '::1', '2020-09-02 14:47:58', '0'),
+(571, 0, '::1', '2020-09-02 14:47:58', '0'),
+(572, 0, '::1', '2020-09-02 14:48:31', '0'),
+(573, 0, '::1', '2020-09-02 14:48:32', '0'),
+(574, 0, '::1', '2020-09-02 14:48:32', '0'),
+(575, 0, '::1', '2020-09-02 14:48:32', '0'),
+(576, 0, '::1', '2020-09-02 14:48:32', '0'),
+(577, 0, '::1', '2020-09-02 14:48:32', '0'),
+(578, 0, '::1', '2020-09-02 14:48:32', '0'),
+(579, 0, '::1', '2020-09-02 14:48:36', '0'),
+(580, 0, '::1', '2020-09-02 14:51:28', '0'),
+(581, 0, '::1', '2020-09-02 14:52:17', '0'),
+(582, 0, '::1', '2020-09-02 14:52:17', '0'),
+(583, 0, '::1', '2020-09-02 14:52:17', '0'),
+(584, 0, '::1', '2020-09-02 14:52:18', '0'),
+(585, 0, '::1', '2020-09-02 14:52:19', '0'),
+(586, 0, '::1', '2020-09-02 14:52:34', '0'),
+(587, 0, '::1', '2020-09-02 14:52:35', '0'),
+(588, 0, '::1', '2020-09-02 14:52:35', '0'),
+(589, 0, '::1', '2020-09-02 14:53:05', '0'),
+(590, 0, '::1', '2020-09-02 14:54:00', '0'),
+(591, 0, '::1', '2020-09-02 14:54:28', '0'),
+(592, 0, '::1', '2020-09-02 14:54:44', '0'),
+(593, 0, '::1', '2020-09-02 14:54:50', '0'),
+(594, 0, '::1', '2020-09-02 14:55:24', '0'),
+(595, 0, '::1', '2020-09-02 14:55:25', '0'),
+(596, 0, '::1', '2020-09-02 14:55:25', '0'),
+(597, 0, '::1', '2020-09-02 14:56:03', '0'),
+(598, 0, '::1', '2020-09-02 14:56:18', '0'),
+(599, 0, '::1', '2020-09-02 14:56:24', '0'),
+(600, 0, '::1', '2020-09-02 14:56:36', '0'),
+(601, 0, '::1', '2020-09-02 14:57:38', '0'),
+(602, 0, '::1', '2020-09-02 14:57:43', '0'),
+(603, 0, '::1', '2020-09-02 14:57:52', '0'),
+(604, 0, '::1', '2020-09-02 14:58:00', '0'),
+(605, 0, '::1', '2020-09-02 14:58:17', '0'),
+(606, 0, '::1', '2020-09-02 14:58:17', '0'),
+(607, 0, '::1', '2020-09-02 14:58:18', '0'),
+(608, 0, '::1', '2020-09-02 14:58:18', '0'),
+(609, 0, '::1', '2020-09-02 15:04:32', '0'),
+(610, 0, '::1', '2020-09-02 15:04:33', '0'),
+(611, 0, '::1', '2020-09-02 15:04:33', '0'),
+(612, 0, '::1', '2020-09-02 15:04:33', '0'),
+(613, 0, '::1', '2020-09-02 15:06:14', '0'),
+(614, 0, '::1', '2020-09-02 15:06:15', '0'),
+(615, 0, '::1', '2020-09-02 15:06:15', '0'),
+(616, 0, '::1', '2020-09-02 15:06:15', '0'),
+(617, 0, '::1', '2020-09-02 15:10:55', '0'),
+(618, 0, '::1', '2020-09-02 15:10:56', '0'),
+(619, 0, '::1', '2020-09-02 15:10:56', '0'),
+(620, 0, '::1', '2020-09-02 15:10:56', '0'),
+(621, 0, '::1', '2020-09-02 15:11:31', '0'),
+(622, 0, '::1', '2020-09-02 15:11:31', '0'),
+(623, 0, '::1', '2020-09-02 15:11:31', '0'),
+(624, 0, '::1', '2020-09-02 15:11:31', '0'),
+(625, 0, '::1', '2020-09-02 15:11:59', '0'),
+(626, 0, '::1', '2020-09-02 15:11:59', '0'),
+(627, 0, '::1', '2020-09-02 15:11:59', '0'),
+(628, 0, '::1', '2020-09-02 15:11:59', '0'),
+(629, 0, '::1', '2020-09-02 15:12:28', '0'),
+(630, 0, '::1', '2020-09-02 15:12:28', '0'),
+(631, 0, '::1', '2020-09-02 15:12:28', '0'),
+(632, 0, '::1', '2020-09-02 15:12:28', '0'),
+(633, 0, '::1', '2020-09-02 15:12:37', '0'),
+(634, 0, '::1', '2020-09-02 15:12:38', '0'),
+(635, 0, '::1', '2020-09-02 15:12:38', '0'),
+(636, 0, '::1', '2020-09-02 15:12:38', '0'),
+(637, 0, '::1', '2020-09-02 15:13:29', '0'),
+(638, 0, '::1', '2020-09-02 15:13:29', '0'),
+(639, 0, '::1', '2020-09-02 15:13:29', '0'),
+(640, 0, '::1', '2020-09-02 15:13:43', '0'),
+(641, 0, '::1', '2020-09-02 15:13:43', '0'),
+(642, 0, '::1', '2020-09-02 15:13:43', '0'),
+(643, 0, '::1', '2020-09-02 15:13:43', '0'),
+(644, 0, '::1', '2020-09-02 15:13:43', '0'),
+(645, 0, '::1', '2020-09-02 15:13:43', '0'),
+(646, 0, '::1', '2020-09-02 15:13:44', '0'),
+(647, 0, '::1', '2020-09-02 15:15:12', '0'),
+(648, 0, '::1', '2020-09-02 15:15:13', '0'),
+(649, 0, '::1', '2020-09-02 15:15:13', '0'),
+(650, 0, '::1', '2020-09-02 15:15:13', '0'),
+(651, 0, '::1', '2020-09-02 15:15:13', '0'),
+(652, 0, '::1', '2020-09-02 15:15:13', '0'),
+(653, 0, '::1', '2020-09-02 15:15:13', '0'),
+(654, 0, '::1', '2020-09-02 15:16:06', '0'),
+(655, 0, '::1', '2020-09-02 15:16:06', '0'),
+(656, 0, '::1', '2020-09-02 15:16:06', '0'),
+(657, 0, '::1', '2020-09-02 15:16:06', '0'),
+(658, 0, '::1', '2020-09-02 15:16:14', '0'),
+(659, 0, '::1', '2020-09-02 15:16:14', '0'),
+(660, 0, '::1', '2020-09-02 15:16:14', '0'),
+(661, 0, '::1', '2020-09-02 15:16:14', '0'),
+(662, 0, '::1', '2020-09-02 15:16:43', '0'),
+(663, 0, '::1', '2020-09-02 15:16:45', '0'),
+(664, 0, '::1', '2020-09-02 15:16:47', '0'),
+(665, 0, '::1', '2020-09-02 15:16:48', '0'),
+(666, 0, '::1', '2020-09-02 15:16:52', '0'),
+(667, 0, '::1', '2020-09-02 15:16:54', '0'),
+(668, 0, '::1', '2020-09-02 15:17:20', '0'),
+(669, 0, '::1', '2020-09-02 15:17:22', '0'),
+(670, 0, '::1', '2020-09-02 15:17:22', '0'),
+(671, 0, '::1', '2020-09-02 15:17:22', '0'),
+(672, 0, '::1', '2020-09-02 15:17:22', '0'),
+(673, 0, '::1', '2020-09-02 15:17:25', '0'),
+(674, 0, '::1', '2020-09-02 15:17:34', '0'),
+(675, 0, '::1', '2020-09-02 15:17:36', '0'),
+(676, 0, '::1', '2020-09-02 15:17:40', '0'),
+(677, 0, '::1', '2020-09-02 15:18:36', '0'),
+(678, 0, '::1', '2020-09-02 15:20:43', '0'),
+(679, 0, '::1', '2020-09-02 15:21:17', '0'),
+(680, 0, '::1', '2020-09-02 15:22:20', '0'),
+(681, 0, '::1', '2020-09-02 15:22:32', '0'),
+(682, 0, '::1', '2020-09-02 15:29:36', '0'),
+(683, 0, '::1', '2020-09-02 15:29:37', '0'),
+(684, 0, '::1', '2020-09-02 15:29:37', '0'),
+(685, 0, '::1', '2020-09-02 15:29:37', '0'),
+(686, 0, '::1', '2020-09-02 15:29:37', '0'),
+(687, 0, '::1', '2020-09-02 15:29:37', '0'),
+(688, 0, '::1', '2020-09-02 15:29:37', '0'),
+(689, 0, '::1', '2020-09-02 15:30:13', '0'),
+(690, 0, '::1', '2020-09-02 15:30:32', '0'),
+(691, 0, '::1', '2020-09-02 15:32:09', '0'),
+(692, 0, '::1', '2020-09-02 15:37:51', '0'),
+(693, 0, '::1', '2020-09-02 15:38:01', '0'),
+(694, 0, '::1', '2020-09-02 15:38:01', '0'),
+(695, 0, '::1', '2020-09-02 15:38:01', '0'),
+(696, 0, '::1', '2020-09-02 15:38:01', '0'),
+(697, 0, '::1', '2020-09-02 15:38:01', '0'),
+(698, 0, '::1', '2020-09-02 15:38:02', '0'),
+(699, 0, '::1', '2020-09-02 15:38:02', '0'),
+(700, 0, '::1', '2020-09-02 15:38:18', '0'),
+(701, 0, '::1', '2020-09-02 15:38:19', '0'),
+(702, 0, '::1', '2020-09-02 15:38:19', '0'),
+(703, 0, '::1', '2020-09-02 15:38:19', '0'),
+(704, 0, '::1', '2020-09-02 15:38:19', '0'),
+(705, 0, '::1', '2020-09-02 15:38:19', '0'),
+(706, 0, '::1', '2020-09-02 15:38:19', '0'),
+(707, 0, '::1', '2020-09-02 15:38:19', '0'),
+(708, 0, '::1', '2020-09-02 15:38:20', '0'),
+(709, 0, '::1', '2020-09-02 15:38:20', '0'),
+(710, 0, '::1', '2020-09-02 15:38:21', '0'),
+(711, 0, '::1', '2020-09-02 15:38:21', '0'),
+(712, 0, '::1', '2020-09-02 15:38:21', '0'),
+(713, 0, '::1', '2020-09-02 15:38:22', '0'),
+(714, 0, '::1', '2020-09-02 15:38:23', '0'),
+(715, 0, '::1', '2020-09-02 15:38:36', '0'),
+(716, 0, '::1', '2020-09-02 15:48:01', '0'),
+(717, 0, '::1', '2020-09-02 15:48:01', '0'),
+(718, 0, '::1', '2020-09-02 15:48:01', '0'),
+(719, 0, '::1', '2020-09-02 15:48:01', '0'),
+(720, 0, '::1', '2020-09-02 15:48:01', '0'),
+(721, 0, '::1', '2020-09-02 15:48:03', '0'),
+(722, 0, '::1', '2020-09-02 15:48:03', '0'),
+(723, 0, '::1', '2020-09-02 15:48:03', '0'),
+(724, 0, '::1', '2020-09-02 15:48:04', '0'),
+(725, 0, '::1', '2020-09-02 15:48:04', '0'),
+(726, 0, '::1', '2020-09-02 15:48:41', '0'),
+(727, 0, '::1', '2020-09-02 15:48:41', '0'),
+(728, 0, '::1', '2020-09-02 15:48:42', '0'),
+(729, 0, '::1', '2020-09-02 15:48:42', '0'),
+(730, 0, '::1', '2020-09-02 15:48:42', '0'),
+(731, 0, '::1', '2020-09-02 15:53:12', '0'),
+(732, 0, '::1', '2020-09-02 15:53:12', '0'),
+(733, 0, '::1', '2020-09-02 15:53:12', '0'),
+(734, 0, '::1', '2020-09-02 15:53:13', '0'),
+(735, 0, '::1', '2020-09-02 15:53:13', '0'),
+(736, 0, '::1', '2020-09-02 15:53:13', '0'),
+(737, 0, '::1', '2020-09-02 15:53:13', '0'),
+(738, 0, '::1', '2020-09-02 15:53:16', '0'),
+(739, 0, '::1', '2020-09-02 15:53:17', '0'),
+(740, 0, '::1', '2020-09-02 15:53:17', '0'),
+(741, 0, '::1', '2020-09-02 15:53:18', '0'),
+(742, 0, '::1', '2020-09-02 15:53:18', '0'),
+(743, 0, '::1', '2020-09-02 15:53:18', '0'),
+(744, 0, '::1', '2020-09-02 15:53:18', '0'),
+(745, 0, '::1', '2020-09-02 15:53:19', '0'),
+(746, 0, '::1', '2020-09-02 15:53:20', '0'),
+(747, 0, '::1', '2020-09-02 15:53:20', '0'),
+(748, 0, '::1', '2020-09-02 15:53:22', '0'),
+(749, 0, '::1', '2020-09-02 15:53:23', '0'),
+(750, 0, '::1', '2020-09-02 15:53:25', '0'),
+(751, 0, '116.206.221.211', '2020-09-04 18:04:08', '0'),
+(752, 0, '116.206.221.211', '2020-09-04 18:04:13', '0'),
+(753, 0, '116.206.221.211', '2020-09-04 18:04:14', '0'),
+(754, 0, '116.206.221.211', '2020-09-04 18:04:14', '0'),
+(755, 0, '116.206.221.211', '2020-09-04 18:04:14', '0'),
+(756, 0, '116.206.221.211', '2020-09-04 18:04:15', '0'),
+(757, 0, '116.206.221.211', '2020-09-04 18:04:16', '0');
 
 -- --------------------------------------------------------
 
@@ -4731,12 +5899,20 @@ CREATE TABLE `users_passport` (
 
 CREATE TABLE `users_questions_answers` (
   `id` int(11) UNSIGNED NOT NULL,
-  `users_id` int(11) UNSIGNED NOT NULL,
+  `user_id` int(11) UNSIGNED NOT NULL,
   `question_id` int(11) UNSIGNED NOT NULL,
   `answer_id` int(11) UNSIGNED NOT NULL,
-  `is_correct` tinyint(1) NOT NULL COMMENT '1 = true, 0 = false',
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `is_deleted` char(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `users_questions_answers`
+--
+
+INSERT INTO `users_questions_answers` (`id`, `user_id`, `question_id`, `answer_id`, `created_at`, `is_deleted`) VALUES
+(1, 1, 12, 22, '2020-08-31 14:16:29', '1'),
+(2, 1, 13, 23, '2020-08-31 14:16:29', '0');
 
 -- --------------------------------------------------------
 
@@ -4752,139 +5928,6 @@ CREATE TABLE `users_reward` (
   `points` int(8) NOT NULL DEFAULT 0,
   `created_at` datetime NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `zone_to_geo_zone`
---
-
-CREATE TABLE `zone_to_geo_zone` (
-  `id` int(11) NOT NULL,
-  `country_id` int(11) NOT NULL,
-  `id_zone` int(11) NOT NULL DEFAULT 0,
-  `geo_id` int(11) NOT NULL,
-  `date_added` datetime NOT NULL,
-  `date_modified` datetime NOT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_at` timestamp NULL DEFAULT NULL,
-  `is_deleted` char(1) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
---
--- Dumping data for table `zone_to_geo_zone`
---
-
-INSERT INTO `zone_to_geo_zone` (`id`, `country_id`, `id_zone`, `geo_id`, `date_added`, `date_modified`, `created_at`, `updated_at`, `is_deleted`) VALUES
-(1, 222, 0, 4, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(2, 222, 3513, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(3, 222, 3514, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(4, 222, 3515, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(5, 222, 3516, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(6, 222, 3517, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(7, 222, 3518, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(8, 222, 3519, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(9, 222, 3520, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(10, 222, 3521, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(11, 222, 3522, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(12, 222, 3523, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(13, 222, 3524, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(14, 222, 3525, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(15, 222, 3526, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(16, 222, 3527, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(17, 222, 3528, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(18, 222, 3529, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(19, 222, 3530, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(20, 222, 3531, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(21, 222, 3532, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(22, 222, 3533, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(23, 222, 3534, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(24, 222, 3535, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(25, 222, 3536, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(26, 222, 3537, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(27, 222, 3538, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(28, 222, 3539, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(29, 222, 3540, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(30, 222, 3541, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(31, 222, 3542, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(32, 222, 3543, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(33, 222, 3544, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(34, 222, 3545, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(35, 222, 3546, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(36, 222, 3547, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(37, 222, 3548, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(38, 222, 3549, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(39, 222, 3550, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(40, 222, 3551, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(41, 222, 3552, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(42, 222, 3553, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(43, 222, 3554, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(44, 222, 3555, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(45, 222, 3556, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(46, 222, 3557, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(47, 222, 3558, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(48, 222, 3559, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(49, 222, 3560, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(50, 222, 3561, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(51, 222, 3562, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(52, 222, 3563, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(53, 222, 3564, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(54, 222, 3565, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(55, 222, 3566, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(56, 222, 3567, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(57, 222, 3568, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(58, 222, 3569, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(59, 222, 3570, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(60, 222, 3571, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(61, 222, 3572, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(62, 222, 3573, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(63, 222, 3574, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(64, 222, 3575, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(65, 222, 3576, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(66, 222, 3577, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(67, 222, 3578, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(68, 222, 3579, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(69, 222, 3580, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(70, 222, 3581, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(71, 222, 3582, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(72, 222, 3583, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(73, 222, 3584, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(74, 222, 3585, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(75, 222, 3586, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(76, 222, 3587, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(77, 222, 3588, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(78, 222, 3589, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(79, 222, 3590, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(80, 222, 3591, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(81, 222, 3592, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(82, 222, 3593, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(83, 222, 3594, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(84, 222, 3595, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(85, 222, 3596, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(86, 222, 3597, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(87, 222, 3598, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(88, 222, 3599, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(89, 222, 3600, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(90, 222, 3601, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(91, 222, 3602, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(92, 222, 3603, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(93, 222, 3604, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(94, 222, 3605, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(95, 222, 3606, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(96, 222, 3607, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(97, 222, 3608, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(98, 222, 3609, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(99, 222, 3610, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(100, 222, 3611, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(101, 222, 3612, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(102, 222, 3949, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(103, 222, 3950, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(104, 222, 3951, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(105, 222, 3952, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(106, 222, 3953, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(107, 222, 3954, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(108, 222, 3955, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0'),
-(109, 222, 3972, 3, '0000-00-00 00:00:00', '0000-00-00 00:00:00', '2020-04-16 04:12:02', NULL, '0');
 
 --
 -- Indexes for dumped tables
@@ -4930,10 +5973,36 @@ ALTER TABLE `country`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `features_products`
+--
+ALTER TABLE `features_products`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
+-- Indexes for table `informations`
+--
+ALTER TABLE `informations`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `maps`
+--
+ALTER TABLE `maps`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `membership_plans`
 --
 ALTER TABLE `membership_plans`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `membership_plans_subscribers`
+--
+ALTER TABLE `membership_plans_subscribers`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`,`membership_plan_id`);
 
 --
 -- Indexes for table `products`
@@ -4942,11 +6011,25 @@ ALTER TABLE `products`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `products_description`
+--
+ALTER TABLE `products_description`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`);
+
+--
 -- Indexes for table `products_images`
 --
 ALTER TABLE `products_images`
   ADD PRIMARY KEY (`id`),
   ADD KEY `imageable_id` (`product_id`);
+
+--
+-- Indexes for table `products_pdf`
+--
+ALTER TABLE `products_pdf`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `product_id` (`product_id`);
 
 --
 -- Indexes for table `products_videos`
@@ -4959,6 +6042,20 @@ ALTER TABLE `products_videos`
 -- Indexes for table `questions`
 --
 ALTER TABLE `questions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `quiz_id` (`quiz_id`);
+
+--
+-- Indexes for table `questions_images`
+--
+ALTER TABLE `questions_images`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `question_id` (`question_id`);
+
+--
+-- Indexes for table `quizzes`
+--
+ALTER TABLE `quizzes`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -4967,12 +6064,6 @@ ALTER TABLE `questions`
 ALTER TABLE `states`
   ADD PRIMARY KEY (`id`),
   ADD KEY `country_id` (`country_id`);
-
---
--- Indexes for table `subscriptions`
---
-ALTER TABLE `subscriptions`
-  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `users`
@@ -5031,7 +6122,7 @@ ALTER TABLE `users_passport`
 --
 ALTER TABLE `users_questions_answers`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `users_id` (`users_id`,`question_id`,`answer_id`),
+  ADD KEY `users_id` (`user_id`,`question_id`,`answer_id`),
   ADD KEY `question_id` (`question_id`),
   ADD KEY `answer_id` (`answer_id`);
 
@@ -5050,7 +6141,7 @@ ALTER TABLE `users_reward`
 -- AUTO_INCREMENT for table `answers`
 --
 ALTER TABLE `answers`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `bd_admins`
@@ -5062,13 +6153,19 @@ ALTER TABLE `bd_admins`
 -- AUTO_INCREMENT for table `category`
 --
 ALTER TABLE `category`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+
+--
+-- AUTO_INCREMENT for table `category_description`
+--
+ALTER TABLE `category_description`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=87;
 
 --
 -- AUTO_INCREMENT for table `category_to_products`
 --
 ALTER TABLE `category_to_products`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `country`
@@ -5077,46 +6174,88 @@ ALTER TABLE `country`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=258;
 
 --
+-- AUTO_INCREMENT for table `features_products`
+--
+ALTER TABLE `features_products`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+
+--
+-- AUTO_INCREMENT for table `informations`
+--
+ALTER TABLE `informations`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `maps`
+--
+ALTER TABLE `maps`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
+
+--
 -- AUTO_INCREMENT for table `membership_plans`
 --
 ALTER TABLE `membership_plans`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `membership_plans_subscribers`
+--
+ALTER TABLE `membership_plans_subscribers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+
+--
+-- AUTO_INCREMENT for table `products_description`
+--
+ALTER TABLE `products_description`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `products_images`
 --
 ALTER TABLE `products_images`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT for table `products_pdf`
+--
+ALTER TABLE `products_pdf`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT for table `products_videos`
 --
 ALTER TABLE `products_videos`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
 -- AUTO_INCREMENT for table `questions`
 --
 ALTER TABLE `questions`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `questions_images`
+--
+ALTER TABLE `questions_images`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `quizzes`
+--
+ALTER TABLE `quizzes`
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `states`
 --
 ALTER TABLE `states`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4236;
-
---
--- AUTO_INCREMENT for table `subscriptions`
---
-ALTER TABLE `subscriptions`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
@@ -5134,7 +6273,7 @@ ALTER TABLE `users_activity`
 -- AUTO_INCREMENT for table `users_address`
 --
 ALTER TABLE `users_address`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users_download_products`
@@ -5146,7 +6285,7 @@ ALTER TABLE `users_download_products`
 -- AUTO_INCREMENT for table `users_ip`
 --
 ALTER TABLE `users_ip`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=758;
 
 --
 -- AUTO_INCREMENT for table `users_login`
@@ -5164,7 +6303,7 @@ ALTER TABLE `users_passport`
 -- AUTO_INCREMENT for table `users_questions_answers`
 --
 ALTER TABLE `users_questions_answers`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users_reward`
@@ -5183,16 +6322,34 @@ ALTER TABLE `category_to_products`
   ADD CONSTRAINT `category_to_products_ibfk_1` FOREIGN KEY (`category_id`) REFERENCES `category` (`id`);
 
 --
+-- Constraints for table `products_description`
+--
+ALTER TABLE `products_description`
+  ADD CONSTRAINT `products_description_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+
+--
 -- Constraints for table `products_images`
 --
 ALTER TABLE `products_images`
   ADD CONSTRAINT `products_images_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
 
 --
+-- Constraints for table `products_pdf`
+--
+ALTER TABLE `products_pdf`
+  ADD CONSTRAINT `products_pdf_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+
+--
 -- Constraints for table `products_videos`
 --
 ALTER TABLE `products_videos`
   ADD CONSTRAINT `products_videos_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`);
+
+--
+-- Constraints for table `questions_images`
+--
+ALTER TABLE `questions_images`
+  ADD CONSTRAINT `questions_images_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `questions` (`id`);
 
 --
 -- Constraints for table `users_questions_answers`

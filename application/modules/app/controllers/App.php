@@ -21,6 +21,11 @@ class App extends AppController {
     private $products;
     private $var = 'products';
     private $orderBy;
+    /**
+     * @var object
+     */
+    private $plan;
+    private $slug;
 
     public function __construct()
     {
@@ -179,7 +184,7 @@ class App extends AppController {
      * @param $categorySlug
      */
     public function products($categorySlug) {
-        if(!$this->isSubscribed()) redirect('subscribe-now');
+        if(!$this->isSubscribed()) redirect('viewplans');
 
         if($categorySlug)               $this->categorySlug         = $categorySlug;
         if($this->categorySlug)         $this->category             = Category_model::factory()->findOne(['slug' => $this->categorySlug,'status' => 1]);
@@ -217,18 +222,46 @@ class App extends AppController {
             ->set_output(json_encode(array('status' => false)));
     }
     /**
-     * Membership plan subscribe
+     * View Plans
      */
-    public function subscribe() {
-        
-        if($this->isPost()) {
-
-        }
-
+    public function viewPlans() {
         $this->data['plans'] = Membershipplan_model::factory()->findAll();
-        $this->template->content->view('subscribe/index', $this->data);
+        $this->template->content->view('plans/index', $this->data);
         $this->template->publish();
     }
+
+    /**
+     * View Plan
+     * @param $slug
+     */
+    public function account($slug) {
+
+        if($slug) $this->slug = $slug;
+        $this->plan = Membershipplan_model::factory()->findOne(['slug' => $this->slug]);
+        if($this->plan) {
+            $this->data['plan'] = $this->plan;
+        }
+        if ($this->user->isLogged()) {
+            redirect('plan/'.$this->plan->slug.'/billing');
+        }
+        //$this->dd($this->data);
+        $this->template->content->view('plans/account', $this->data);
+        $this->template->publish();
+    }
+    /**
+     * Billing
+     * @param $slug
+     */
+    public function billing($slug) {
+
+        if($slug) $this->slug = $slug;
+        $this->plan = Membershipplan_model::factory()->findOne(['slug' => $this->slug]);
+
+        //$this->dd($this->data);
+        $this->template->content->view('plans/billing', $this->data);
+        $this->template->publish();
+    }
+
     /**
      * Membership plan subscribe
      */
@@ -244,4 +277,6 @@ class App extends AppController {
         $this->template->content->view('information/about');
         $this->template->publish();
     }
+
+
 }
