@@ -1149,6 +1149,23 @@ div#modal-image {
 .city-text {
     padding: 10px 20px 0px 20px;
 }
+.city-text p {
+    font-size: 15px;
+    color: #3c5d6b;
+    font-weight: 400;
+    font-family: 'Poppins', sans-serif;
+    text-align: left;
+    line-height: 25px;
+}
+.city-text h3 {
+    font-size: 25px;
+    line-height: 35px;
+    color: #0f7deb;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    /* text-align: center; */
+    /* text-transform: capitalize; */
+}
 h3.gallery {
     text-align: center;
     font-size: 40px;
@@ -1195,7 +1212,7 @@ p.sub-text {
 .date-price p {
     font-size: 14px;
     color: #1b1e21;
-    font-weight: 300;
+    font-weight: 500;
     font-family: 'Poppins', sans-serif;
     text-align: left;
     line-height: 2px;
