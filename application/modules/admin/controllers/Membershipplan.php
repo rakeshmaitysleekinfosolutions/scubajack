@@ -73,6 +73,14 @@ class Membershipplan extends AdminController implements CrudContract {
         } else {
             $this->data['name'] = '';
         }
+        // Slug
+        if (!empty($this->input->post('name'))) {
+            $this->data['slug'] = url_title($this->input->post('name'),'dash', true);
+        } elseif (!empty($this->plan)) {
+            $this->data['slug'] = ($this->plan->slug) ? $this->plan->slug : url_title($this->input->post('name'),'dash', true);
+        } else {
+            $this->data['slug'] = url_title($this->input->post('name'),'dash', true);
+        }
         // Description
         if (!empty($this->input->post('description'))) {
             $this->data['description'] = $this->input->post('description');
@@ -110,6 +118,7 @@ class Membershipplan extends AdminController implements CrudContract {
 
                 Membershipplan_model::factory()->insert([
                     'name'          => $this->data['name'],
+                    'slug'          => $this->data['slug'],
                     'description'   => $this->data['description'],
                     'price'         => $this->data['price'],
                 ]);
@@ -158,6 +167,7 @@ class Membershipplan extends AdminController implements CrudContract {
             if ($this->isPost() && $this->validateForm()) {
                 Membershipplan_model::factory()->update([
                     'name'          => $this->data['name'],
+                    'slug'          => $this->data['slug'],
                     'description'   => $this->data['description'],
                     'price'         => $this->data['price'],
                 ], $this->id);

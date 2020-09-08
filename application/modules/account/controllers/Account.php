@@ -16,15 +16,15 @@ class Account extends AppController {
 	{
         parent::__construct();
         $this->lang->load('admin/users_lang');
+        $this->template->set_template('layout/app');
 
     }
     public function index() {
         if (!$this->user->isLogged()) {
             $this->redirect($this->url('login'));
         }
-		 $this->template->javascript->add('assets/js/jquery.validate.js');
-         $this->template->javascript->add('assets/js/additional-methods.js');
-         $this->template->javascript->add('assets/js/account/Account.js');
+        //if(!$this->isSubscribed()) redirect('subscribe-now');
+
         if(isLogged()) {
             $this->auser = User_model::factory()->findOne(userId());
         }
@@ -32,7 +32,10 @@ class Account extends AppController {
             $this->data['user'] = $this->auser;
             $this->data['registrationDate'] =Carbon::createFromTimeStamp(strtotime($this->auser->created_at));
         }
-		$this->template->set_template('layout/app');
+
+        $this->template->javascript->add('assets/js/jquery.validate.js');
+        $this->template->javascript->add('assets/js/additional-methods.js');
+        $this->template->javascript->add('assets/js/account/Account.js');
         $this->template->content->view('account/index', $this->data);
         $this->template->publish();
 	}

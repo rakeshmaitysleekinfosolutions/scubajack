@@ -205,12 +205,10 @@ class Product extends AdminController implements ProductContract {
                 $this->data['error_meta_title'] = '';
             }
             // Product ID
-            if (!empty($this->input->post('productId'))) {
-                $this->data['productId'] = $this->input->post('productId');
-            } elseif (!empty($this->product)) {
-                $this->data['productId'] = $this->product->id;
+            if (isset($this->product)) {
+                $this->data['primaryKey'] = $this->product->id;
             } else {
-                $this->data['productId'] = '';
+                $this->data['primaryKey'] = '';
             }
             // Category
             if (!empty($this->input->post('category'))) {
@@ -369,11 +367,6 @@ class Product extends AdminController implements ProductContract {
 		if ((strlen($this->input->post('name')) < 1) || (strlen(trim($this->input->post('name'))) > 255)) {
 			$this->error['name'] = $this->lang->line('error_name');
 		}
-
-//		if ((strlen($this->input->post('slug')) < 1) || (strlen(trim($this->input->post('slug'))) > 255)) {
-//			$this->error['slug'] = $this->lang->line('error_slug');
-//		}
-		// dd($this->input->post('status'));
         if ($this->input->post('status') == '') {
             $this->error['status'] = $this->lang->line('error_status');
         }
@@ -419,15 +412,13 @@ class Product extends AdminController implements ProductContract {
 
     public function store() {
         try {
+            $this->getData();
             if ($this->isPost() && $this->validateForm()) {
-
-                $this->load->model('Product_model');
-
-                $this->getData();
-                $this->Product_model->addProduct($this->data);
+                Product_model::factory()->addProduct($this->data);
                 $this->setMessage('message', $this->lang->line('text_success'));
                 $this->redirect(admin_url('product/create/'));
             }
+
             $this->create();
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
@@ -437,10 +428,7 @@ class Product extends AdminController implements ProductContract {
 
     public function edit($productId) {
         try {
-            if(!$this->isPost()) {
-                $this->load->model('Product_model');
-                $this->product = Product_model::factory()->findOne($productId);
-            }
+            $this->product = Product_model::factory()->findOne($productId);
             if($this->product) {
                 $this->productDescription  = $this->product->productDescription();
                 $this->categoryProducts   = $this->product->categoryProducts();
@@ -465,22 +453,18 @@ class Product extends AdminController implements ProductContract {
         }
     }
 
-    public function update() {
+    public function update($id) {
         try {
+            $this->getData();
             $this->lang->load('admin/product');
             if ($this->isPost() && $this->validateForm()) {
-               // $this->load->model('Product_model');
-                $this->productId = ($this->input->post('productId')) ? $this->input->post('productId') : '';
-
-                $this->getData();
-                //dd($this->data);
-                Product_model::factory()->editProduct($this->productId, $this->data);
+                Product_model::factory()->editProduct($id, $this->data);
                 $this->setMessage('message', $this->lang->line('text_success'));
-
-                $this->redirect(admin_url('product/edit/'.$this->productId));
+                $this->redirect(admin_url('product/edit/'.$id));
             }
+
             $this->getData();
-            $this->edit($this->productId);
+            $this->edit($id);
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
