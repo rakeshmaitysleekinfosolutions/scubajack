@@ -403,7 +403,7 @@ class Plan extends PayPalResourceModel
         $patchRequest = new PatchRequest();
         $patch = new Patch();
         $value = new PayPalModel('{
-            "state":"INACTIVE"
+            "state":"DELETED"
         }');
         $patch->setOp('replace')
             ->setPath('/')

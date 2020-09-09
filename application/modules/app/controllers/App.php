@@ -36,7 +36,7 @@ class App extends AppController {
         parent::__construct();
         $this->template->set_template('layout/app');
         $this->paypal = new Paypal();
-        $this->paypal->setApiContext($this->config->item('CLIENT_ID'),$this->config->item('CLIENT_SECRET'));
+        //$this->paypal->setApiContext($this->config->item('CLIENT_ID'),$this->config->item('CLIENT_SECRET'));
 
     }
 
@@ -375,12 +375,11 @@ class App extends AppController {
                 }
                 if($this->plan) {
                     // Set Plan Id
-//                    $this->paypal->plan->setId($this->plan->paypal_plan_id)
-//                                ->setName($this->plan->name)
-//                                ->setDescription($this->plan->description);
-//
-//                    $this->paypal->setPatchPlan($this->paypal->plan->getId());
-//                    //$this->dd($this->paypal->getPlan());
+                    $this->paypal
+                        ->setPlanId($this->plan->paypal_plan_id)
+                        ->setPlanName($this->plan->name)
+                        ->setPlanDescription($this->plan->name);
+
                     $this->paypal->agreement();
                     $this->json['redirect'] = $this->paypal->agreement->getApprovalLink();
                 }

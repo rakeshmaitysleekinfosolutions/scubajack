@@ -44,7 +44,7 @@ class Membershipplan extends AdminController implements CrudContract {
         $this->lang->load('admin/membership_plan');
         $this->template->set_template('layout/admin');
         $this->paypal = new Paypal();
-        $this->paypal->setApiContext($this->config->item('CLIENT_ID'), $this->config->item('CLIENT_SECRET'));
+       // $this->paypal->setApiContext($this->config->item('CLIENT_ID'), $this->config->item('CLIENT_SECRET'));
     }
 
     private $quizzes;
@@ -191,7 +191,7 @@ class Membershipplan extends AdminController implements CrudContract {
                     ->setChargeModelType('SHIPPING')->setCurrency(array(
                         'value' => $this->data['price'],
                         'currency' => 'USD'
-                    ))->setState('{"state":"'.$this->data['state'].'"}')
+                    ))->setPaymentModel('{"state":"'.$this->data['state'].'"}')
                         ->createOrUpdatePlan();
 
                 Membershipplan_model::factory()->insert([
@@ -260,7 +260,7 @@ class Membershipplan extends AdminController implements CrudContract {
                     ->setChargeModelType('SHIPPING')->setCurrency(array(
                         'value' => $this->data['price'],
                         'currency' => 'USD'
-                    ))->setState('{"state":"'.$this->data['state'].'"}')
+                    ))->setPaymentModel('{"state":"'.$this->data['state'].'"}')
                       ->createOrUpdatePlan();
 
                 Membershipplan_model::factory()->update([
@@ -300,7 +300,7 @@ class Membershipplan extends AdminController implements CrudContract {
                     foreach ($this->selected as $id) {
                         $this->plan = Membershipplan_model::factory()->findOne($id);
                         $this->paypal->plan->setId($this->plan->paypal_plan_id);
-                        $this->paypal->deletePlan($this->paypal->getApiContext());
+                        $this->paypal->deletePlan();
                         Membershipplan_model::factory()->update(['state' => 'INACTIVE'], $id);
                         Membershipplan_model::factory()->delete($id);
 

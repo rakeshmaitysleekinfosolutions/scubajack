@@ -123,19 +123,19 @@ class Paypal {
         $this->chargeModel                  = new ChargeModel();
         $this->merchantPreferences          = new MerchantPreferences();
         $this->patch                        = new Patch();
-        $this->payPalModel                  = new PayPalModel();
+        //$this->payPalModel                  = new PayPalModel();
         $this->patchRequest                 = new PatchRequest();
         $this->payer                        = new Payer();
         $this->shippingAddress              = new ShippingAddress();
         $this->agreement                    = new Agreement();
         $this->apiContext                   = new ApiContext();
         $this->currency                     = new Currency();
-//        $this->apiContext = new ApiContext(
-//            new \PayPal\Auth\OAuthTokenCredential(
-//                $this->config->item('CLIENT_ID'),
-//                $this->config->item('CLIENT_SECRET')
-//            )
-//        );
+        $this->apiContext = new ApiContext(
+            new \PayPal\Auth\OAuthTokenCredential(
+                'AaM4u_1sswOYNwnXKHm1vQ0zyaQun2mn_t9RtJD8zGmI8QAsy65uutrqZ5iJ0j2LwlnJJgXMOqtOuLKf',
+                'EPLctsfvrpGvM9TJHf_2WIj0hvPC8TUn67hYErByzeTY4LSADXQkABW6AwbG9jJ3M0AnPGVIDa9ywJvO'
+            )
+        );
     }
     public static function factory() {
         return new Paypal();
@@ -155,7 +155,7 @@ class Paypal {
         return $this;
     }
     public function setPaymentModel($str) {
-        $this->payPalModel = $str;
+        $this->payPalModel = new PayPalModel($str);
         return $this;
     }
     public function getPlan() {
@@ -456,9 +456,11 @@ class Paypal {
             $this->plan->create($this->getApiContext());
             $this->patch->setOp('replace')
                 ->setPath('/')
-                ->setValue($this->setPaymentModel($this->state));
+                ->setValue($this->getPyPalModel());
+
             $this->patchRequest->addPatch($this->getPatch());
-            $this->plan->update($this->getPatchRequest(), $this->getApiContext());
+            $this->plan->update($this->patchRequest, $this->apiContext);
+
         } catch (PayPal\Exception\PayPalConnectionException $ex) {
             $this->jsonArray['code'] = $ex->getCode();
             $this->jsonArray['data'] = $ex->getData();
@@ -487,21 +489,28 @@ class Paypal {
         return $this;
     }
     public function setPatchPlan($id) {
-        $this->patchedPlan = Plan::get($this->plan->getId(), $this->getApiContext());
+        $this->patchedPlan = Plan::get($id, $this->getApiContext());
         return $this;
     }
+    public function getPatchPlanId() {
+        return $this->patchedPlan->getId();
+    }
     public function agreement() {
-        /*
+
         // Create new agreement
         $this->setStartDate(date('c', time() + 3600));
         $this->agreement
-            ->setName($this->plan->getName())
-            ->setDescription($this->plan->getDescription())
+            ->setName($this->planName)
+            ->setDescription($this->planDescription)
             ->setStartDate($this->date);
         // Get Plan
+        $this->plan = new Plan();
+        $this->plan->setId($this->planId);
+        $this->setPatchPlan($this->getPlanId());
+        $this->plan->setId($this->getPatchPlanId());
 
-        $this->agreement->setPlan($this->getPlan());
-        dd($this->agreement);
+        $this->agreement->setPlan($this->plan);
+
         // Add payer type
         $this->payer->setPaymentMethod('paypal');
 
@@ -515,56 +524,7 @@ class Paypal {
             ->setCountryCode('US');
 
         $this->agreement->setShippingAddress($this->getShippingAddress());
-
-        // Create agreement
-        //dd($this->getApiContext());
         dd($this->agreement->create($this->getApiContext()));
-
-        // Extract approval URL to redirect user
-        */
-        // Create new agreement
-        $startDate = date('c', time() + 3600);
-        $agreement = new Agreement();
-        $agreement->setName('PHP Tutorial Plan Subscription Agreement')
-            ->setDescription('PHP Tutorial Plan Subscription Billing Agreement')
-            ->setStartDate($startDate);
-        $patchedPlan = Plan::get('P-7JX46940CT5823849OIT5III', $this->getApiContext());
-// Set plan id
-        $plan = new Plan();
-        $plan->setId($patchedPlan->getId());
-        $agreement->setPlan($plan);
-
-// Add payer type
-        $payer = new Payer();
-        $payer->setPaymentMethod('paypal');
-        $agreement->setPayer($payer);
-
-// Adding shipping details
-        $shippingAddress = new ShippingAddress();
-        $shippingAddress->setLine1('111 First Street')
-            ->setCity('Saratoga')
-            ->setState('CA')
-            ->setPostalCode('95070')
-            ->setCountryCode('US');
-        $agreement->setShippingAddress($shippingAddress);
-
-        try {
-            // Create agreement
-            $agreement = $agreement->create($this->getApiContext());
-
-            // Extract approval URL to redirect user
-            $approvalUrl = $agreement->getApprovalLink();
-
-            header("Location: " . $approvalUrl);
-            exit();
-        } catch (PayPal\Exception\PayPalConnectionException $ex) {
-            echo $ex->getCode();
-            echo $ex->getData();
-            die($ex);
-        } catch (Exception $ex) {
-            die($ex);
-        }
-
     }
 
     /**
@@ -575,7 +535,10 @@ class Paypal {
         $this->plan = $plan;
     }
     public function getAllPlan() {
-        return Plan::all(array('page_size' => 10), $this->getApiContext())->getPlans();
+        $params = array('page_size' => 10);
+        $planlist =  $this->plan->all($params, $this->getApiContext());
+        dd($planlist);
+        return $planlist;
 
     }
 }
