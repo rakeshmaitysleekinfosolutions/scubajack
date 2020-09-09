@@ -1,27 +1,29 @@
 <section class="loginpage">
-    <div class="formbox">
+    <div class="formbox subpage">
         <div class="container">
             <div class="row">
-                <div class="col-md-8 pr-0">
-                    <div class="left">
-                        <!-- <h3>Subscribe with us</h3>
-                        <p>where The World And Reading Colide Each booklet come with activities,video's and quizzes.</p> -->
+                <div class="col-md-8 pr-0 ">
+                    <div class="plan">
+                     
                         <?php if(isset($plan)) { ?>
-                            <div class="col-md-4">
-                                <div class="price-box">
+                            <!-- <div class="col-md-4"> -->
+                            <div class="price-box-two"> 
+                                    <h4 class="planheading">Yearly plan  </h4>
                                     <h2>$<?php echo $plan->price;?></h2>
                                     <p>QUARTERLY</p>
                                     <h3><?php echo $plan->name;?></h3>
+                                    <h6 class="description">Lorem ipsum, or lipsum as it is sometimes known,
+                                         is dummy text used in laying out print,</h6>
                                     <ul class="list">
-                                        <li><?php echo $plan->description;?></li>
+                                        <!-- <li><?php echo $plan->description;?></li> -->
                                     </ul>
                                 </div>
-                            </div>
+                            <!-- </div> -->
                         <?php } ?>
                     </div>
                 </div>
-                <div class="col-md-4 pl-0" id="my-container">
-                    <div class="right-sides signup-form ">
+                <div class="col-md-4 pl-0 " id="my-container">
+                    <div class="right-sides signup-form plan-details">
                         <h3>Register with us</h3>
                         <p>Already have a SCUBA JACK Account? <a href="<?php echo base_url('login');?>">Sign In</a></p>
                         <form id="frmSignUp" action="<?php echo base_url('register');?>" method="post">
@@ -45,13 +47,7 @@
                                 <input name="password" id="input-payment-password" type="password" class="form-control" placeholder="*******" autocomplete="off" required>
                             </div>
 
-                            <div class="form-group register">
-                                <label for="exampleInputPassword1">Confirm Password</label>
-                                <input name="confirm" id="input-payment-confirm" type="password" class="form-control" placeholder="*******" autocomplete="off" required>
-                                <div class="form-check pt-4">
-                                    <input type="checkbox" class="form-check-input" id="exampleCheck1" name="agree" value="1" required>
-                                    <label class="form-check-label" for="exampleCheck1">I Agree</label>
-                                </div>
+                         
 
                                 <button type="submit" class="btn submits" id="registerButton" data-loading-text="Loading...">Sign Up</button>
                         </form>
