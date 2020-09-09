@@ -1156,9 +1156,27 @@ a.btn.vdo.popup-modal.headerVideoLink {
     font-size: 14px;
     font-weight: 600;
     font-family: "Raleway";
+}
 
 .city-text {
     padding: 10px 20px 0px 20px;
+}
+.city-text p {
+    font-size: 15px;
+    color: #3c5d6b;
+    font-weight: 400;
+    font-family: 'Poppins', sans-serif;
+    text-align: left;
+    line-height: 25px;
+}
+.city-text h3 {
+    font-size: 25px;
+    line-height: 35px;
+    color: #0f7deb;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    /* text-align: center; */
+    /* text-transform: capitalize; */
 }
 h3.gallery {
     text-align: center;
@@ -1206,7 +1224,7 @@ p.sub-text {
 .date-price p {
     font-size: 14px;
     color: #1b1e21;
-    font-weight: 300;
+    font-weight: 500;
     font-family: 'Poppins', sans-serif;
     text-align: left;
     line-height: 2px;
@@ -1221,5 +1239,131 @@ p.sub-text {
     padding: 5px;
     /* transform: rotate( 4deg); */
     box-shadow: 0 3px 12px -1px rgba(7,10,25,.2), 0 22px 27px -20px rgba(7,10,25,.2);
->>>>>>> 38cce6e79baf2fad043c9c396fdcc363bc35797c
+/* >>>>>>> 38cce6e79baf2fad043c9c396fdcc363bc35797c */
+}
+.plan {
+    margin-left: 400px;
+    width: 50%;
+    background: #fff;
+    /* border: 2px solid red; */
+    padding: 45px 30px;
+    text-align: center;
+    min-height: 389px;
+    border: 2px solid #dedede;
+    /* box-shadow: 0 3px 12px -1px rgba(7,10,25,.2), 0 22px 27px -20px rgba(7,10,25,.2); */
+}
+.plan .price-box-two {
+    padding: 15px;
+    /* border-right: 1px solid #3c5d6b; */
+}
+.price-box-two h2 {
+    font-size: 38px;
+    line-height: 40px;
+    color: #02396f;
+    font-weight: 400;
+    font-family: 'Raleway', sans-serif;
+    text-align: center;
+}
+.price-box-two p {
+    font-size: 23px;
+   
+    color: #02396f;
+    font-weight: 500;
+    font-family: 'Raleway', sans-serif;
+  
+}
+.price-box-two h3{
+    font-size: 30px;
+    color: #02396f;
+    font-weight: 400;
+    font-family: 'Poppins', sans-serif;
+  
+}
+h6.description {
+    color: #02396f;
+    font-size: 14px;
+    line-height: 32px;
+    /* color: #ffffff; */
+    font-weight: 400;
+    font-family: 'Poppins', sans-seri;
+}
+h4.planheading {
+    font-size: 50px;
+    line-height: 50px;
+    color: #02396f;
+    font-weight: 500;
+    font-family: 'Raleway', sans-serif;
+    text-align: center;
+    /* font-size: 50px; */
+}
+.right-sides.signup-form.plan-details {
+    background: #02396f;
+    min-height: 472px;
+    padding: 34px 26px 36px 25px;
+    /* height: auto; */
+}
+.formbox.subpage {
+    margin-left: -400px;
+}
+.plan-billing {
+    background: #fff;
+    /* border: 2px solid red; */
+    padding: 118px 30px;
+    text-align: center;
+    min-height: 500px;
+    border: 2px solid #dedede;
+}
+h2.bill-price {
+    font-size: 38px;
+    line-height: 50px;
+    color: #02396f;
+    font-weight: 400;
+    font-family: 'Raleway', sans-serif;
+    text-align: center;
+}
+p.bill-term {
+    font-size: 23px;
+    color: #02396f;
+    font-weight: 500;
+    font-family: 'Raleway', sans-seri;
+}
+h3.bill-duration {
+    font-size: 30px;
+    color: #02396f;
+    font-weight: 400;
+    font-family: 'Poppins', sans-serif;
+}
+.billingcard {
+    /* border: 1px solid; */
+    margin-top: 10px;
+    padding: 10px 20px;
+}
+.tabs-card {
+    border: 1px solid #fff;
+    padding: 5px 0px;
+}
+.tabs-card li {
+    padding: 10px 0px;
+    list-style: none;
+    /* border:1px solid #fff; */
+     border-bottom: 1px solid #fff; 
+    line-height: 24px;
+    text-align: center;
+    color: #fff;
+    background: #02396fd1;
+}
+.tabs-card li a {
+    color: #f8f9fa;
+}
+
+.tabs-card li:last-child {
+    border-bottom: none;
+}
+a.btn.sub-button {
+    background: #02396f;
+    border-radius: 20px 20px;
+    font-size: 16px;
+    color: #fff;
+    line-height: 24px;
+    font-family: 'Poppins', sans-serif;
 }

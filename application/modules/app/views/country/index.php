@@ -9,7 +9,7 @@
             <div class="col-md-7">
                 <div class="city-text">
                     <h3>There are many variations of coffees are available auctor ut aliquam et,
-                         suscipit mollis enim. Nulla finibus nulla tellus, non dapibus sapien varius nec</h3>
+                         suscipit mollis enim.</h3>
                     <p>Lorem ipsum, or lipsum as it is sometimes known, is dummy text used in laying out print, 
                         graphic or web designs. The passage is attributed to an unknown typesetter in the 15th
                          century who is thought to have scrambled parts of Cicero's De Finibus Bonorum et Malorum
@@ -30,7 +30,7 @@
 <!-- 1st part end -->
 <section class="gallery-box">
     <div class="container">
-        <h3 class="gallery">Gallery</h3>
+        <h3 class="gallery">Explore</h3>
         <p class="sub-text">Adventuring with purpose. We believe there's nothing more rewarding than completing a journey together,
         as you work as a team towards a shared goal - both big challenges and microexpeditions</p>
         <div class="row">
@@ -43,7 +43,7 @@
                             landscapes surrounded by the highest mountains in the world.
                         And you only need to take 9 days off work</p>
                         <div class="date-price">
-                            <h6>1st - 8th May 2021</h6>
+                            <!-- <h6>1st - 8th May 2021</h6> -->
                             <p>From £240 - 3 spaces remaining</p>
                         </div>
                         
@@ -59,7 +59,7 @@
                             landscapes surrounded by the highest mountains in the world.
                         And you only need to take 9 days off work</p>
                         <div class="date-price">
-                            <h6>1st - 8th May 2021</h6>
+                            <!-- <h6>1st - 8th May 2021</h6> -->
                             <p>From £240 - 3 spaces remaining</p>
                         </div>
                         
@@ -75,7 +75,7 @@
                             landscapes surrounded by the highest mountains in the world.
                         And you only need to take 9 days off work</p>
                         <div class="date-price">
-                            <h6>1st - 8th May 2021</h6>
+                            <!-- <h6>1st - 8th May 2021</h6> -->
                             <p>From £240 - 3 spaces remaining</p>
                         </div>
                         
@@ -91,7 +91,7 @@
                             landscapes surrounded by the highest mountains in the world.
                         And you only need to take 9 days off work</p>
                         <div class="date-price">
-                            <h6>1st - 8th May 2021</h6>
+                            <!-- <h6>1st - 8th May 2021</h6> -->
                             <p>From £240 - 3 spaces remaining</p>
                         </div>
                         
@@ -107,7 +107,7 @@
                             landscapes surrounded by the highest mountains in the world.
                         And you only need to take 9 days off work</p>
                         <div class="date-price">
-                            <h6>1st - 8th May 2021</h6>
+                            <!-- <h6>1st - 8th May 2021</h6> -->
                             <p>From £240 - 3 spaces remaining</p>
                         </div>
                         
@@ -123,7 +123,7 @@
                             landscapes surrounded by the highest mountains in the world.
                         And you only need to take 9 days off work</p>
                         <div class="date-price">
-                            <h6>1st - 8th May 2021</h6>
+                            <!-- <h6>1st - 8th May 2021</h6> -->
                             <p>From £240 - 3 spaces remaining</p>
                         </div>
                         

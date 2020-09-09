@@ -1,29 +1,31 @@
 <section class="loginpage">
-    <div class="formbox">
+    <div class="formbox subpage">
         <div class="container">
             <div class="row">
-                <div class="col-md-8 pr-0">
-                    <div class="left">
-                        <!-- <h3>Subscribe with us</h3>
-                        <p>where The World And Reading Colide Each booklet come with activities,video's and quizzes.</p> -->
+                <div class="col-md-8 pr-0 ">
+                    <div class="plan">
+                     
                         <?php if(isset($plan)) { ?>
-                            <div class="col-md-4">
-                                <div class="price-box">
+                            <!-- <div class="col-md-4"> -->
+                            <div class="price-box-two"> 
+                                    <h4 class="planheading">Yearly plan  </h4>
                                     <h2>$<?php echo $plan->price;?></h2>
                                     <p>QUARTERLY</p>
                                     <h3><?php echo $plan->name;?></h3>
+                                    <h6 class="description">Lorem ipsum, or lipsum as it is sometimes known,
+                                         is dummy text used in laying out print,</h6>
                                     <ul class="list">
-                                        <li><?php echo $plan->description;?></li>
+                                        <!-- <li><?php echo $plan->description;?></li> -->
                                     </ul>
                                 </div>
-                            </div>
+                            <!-- </div> -->
                         <?php } ?>
                     </div>
                 </div>
+
                 <div class="col-md-4 pl-0" id="my-container">
                     <div class="right-sides createAccountFrm ">
                         <h3>Create an account</h3>
-
                         <form id="frm" action="<?php echo base_url('createAccount');?>" method="post">
                             <input type="hidden" name="<?php echo __token();?>" value="<?php echo csrf_token();?>">
                             <input type="hidden" name="slug" value="<?php echo $plan->slug;?>">
