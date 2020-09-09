@@ -7,11 +7,9 @@
                     <div class="col-md-4">
                       <div class="price-box">
                         <h2>$<?php echo $plan->price;?></h2>
-                        <p>QUARTERLY</p>
+                          <p><?php echo $plan->frequency;?></p>
                         <h3><?php echo $plan->name;?></h3>
-                       <ul class="list">
-                          <li><?php echo $plan->description;?></li>
-                        </ul>
+                          <h6 class="description"><?php echo $plan->description;?></h6>
                         <a href="<?php echo base_url('plan/'.$plan->slug);?>" class="btn sub-button">Subscribe</a>
                       </div>
                     </div>

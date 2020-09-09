@@ -262,6 +262,7 @@ class Membershipplan extends AdminController implements CrudContract {
                         'currency' => 'USD'
                     ))->setState('{"state":"'.$this->data['state'].'"}')
                       ->createOrUpdatePlan();
+
                 Membershipplan_model::factory()->update([
                     'name' => $this->data['name'],
                     'type' => $this->data['type'],
@@ -274,6 +275,7 @@ class Membershipplan extends AdminController implements CrudContract {
                     'state' => $this->data['state'],
                     'paypal_plan_id' => $this->paypal->getPlanId()
                 ], $this->id);
+
                 $this->setMessage('message', $this->lang->line('text_success'));
                 $this->redirect(admin_url('membershipplan/edit/'.$this->id));
             }

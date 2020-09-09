@@ -4,21 +4,13 @@
             <div class="row">
                 <div class="col-md-8 pr-0 ">
                     <div class="plan">
-                     
                         <?php if(isset($plan)) { ?>
-                            <!-- <div class="col-md-4"> -->
-                            <div class="price-box-two"> 
-                                    <h4 class="planheading">Yearly plan  </h4>
-                                    <h2>$<?php echo $plan->price;?></h2>
-                                    <p>QUARTERLY</p>
-                                    <h3><?php echo $plan->name;?></h3>
-                                    <h6 class="description">Lorem ipsum, or lipsum as it is sometimes known,
-                                         is dummy text used in laying out print,</h6>
-                                    <ul class="list">
-                                        <!-- <li><?php echo $plan->description;?></li> -->
-                                    </ul>
-                                </div>
-                            <!-- </div> -->
+                            <div class="price-box-two">
+                                <h4 class="planheading"><?php echo $plan->name;?></h4>
+                                <h2>$<?php echo $plan->price;?></h2>
+                                <p><?php echo $plan->frequency;?></p>
+                                <h6 class="description"><?php echo $plan->description;?></h6>
+                            </div>
                         <?php } ?>
                     </div>
                 </div>

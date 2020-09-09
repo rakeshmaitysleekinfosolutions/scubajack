@@ -111,6 +111,11 @@ class Paypal {
      * @var string
      */
     private $planId;
+    /**
+     * @var Plan
+     */
+    private $patchedPlan;
+    private $date;
 
     public function __construct() {
         $this->plan                         = new Plan();
@@ -122,7 +127,7 @@ class Paypal {
         $this->patchRequest                 = new PatchRequest();
         $this->payer                        = new Payer();
         $this->shippingAddress              = new ShippingAddress();
-
+        $this->agreement                    = new Agreement();
         $this->apiContext                   = new ApiContext();
         $this->currency                     = new Currency();
 //        $this->apiContext = new ApiContext(
@@ -209,6 +214,17 @@ class Paypal {
      */
     public function setPlanDescription($planDescription) {
         $this->planDescription = $planDescription;
+        return $this;
+    }
+    /**
+     * Name of the billing plan. 128 characters max.
+     *
+     * @param string $name
+     *
+     * @return $this
+     */
+    public function setPlanId($planId) {
+        $this->planId = $planId;
         return $this;
     }
     /**
@@ -465,6 +481,102 @@ class Paypal {
         } catch (Exception $ex) {
             die($ex);
         }
+    }
+    public function setStartDate($date) {
+        $this->date = $date;
+        return $this;
+    }
+    public function setPatchPlan($id) {
+        $this->patchedPlan = Plan::get($this->plan->getId(), $this->getApiContext());
+        return $this;
+    }
+    public function agreement() {
+        /*
+        // Create new agreement
+        $this->setStartDate(date('c', time() + 3600));
+        $this->agreement
+            ->setName($this->plan->getName())
+            ->setDescription($this->plan->getDescription())
+            ->setStartDate($this->date);
+        // Get Plan
+
+        $this->agreement->setPlan($this->getPlan());
+        dd($this->agreement);
+        // Add payer type
+        $this->payer->setPaymentMethod('paypal');
+
+        $this->agreement->setPayer($this->getPayer());
+
+        // Adding shipping details
+        $this->shippingAddress->setLine1('111 First Street')
+            ->setCity('Saratoga')
+            ->setState('CA')
+            ->setPostalCode('95070')
+            ->setCountryCode('US');
+
+        $this->agreement->setShippingAddress($this->getShippingAddress());
+
+        // Create agreement
+        //dd($this->getApiContext());
+        dd($this->agreement->create($this->getApiContext()));
+
+        // Extract approval URL to redirect user
+        */
+        // Create new agreement
+        $startDate = date('c', time() + 3600);
+        $agreement = new Agreement();
+        $agreement->setName('PHP Tutorial Plan Subscription Agreement')
+            ->setDescription('PHP Tutorial Plan Subscription Billing Agreement')
+            ->setStartDate($startDate);
+        $patchedPlan = Plan::get('P-7JX46940CT5823849OIT5III', $this->getApiContext());
+// Set plan id
+        $plan = new Plan();
+        $plan->setId($patchedPlan->getId());
+        $agreement->setPlan($plan);
+
+// Add payer type
+        $payer = new Payer();
+        $payer->setPaymentMethod('paypal');
+        $agreement->setPayer($payer);
+
+// Adding shipping details
+        $shippingAddress = new ShippingAddress();
+        $shippingAddress->setLine1('111 First Street')
+            ->setCity('Saratoga')
+            ->setState('CA')
+            ->setPostalCode('95070')
+            ->setCountryCode('US');
+        $agreement->setShippingAddress($shippingAddress);
+
+        try {
+            // Create agreement
+            $agreement = $agreement->create($this->getApiContext());
+
+            // Extract approval URL to redirect user
+            $approvalUrl = $agreement->getApprovalLink();
+
+            header("Location: " . $approvalUrl);
+            exit();
+        } catch (PayPal\Exception\PayPalConnectionException $ex) {
+            echo $ex->getCode();
+            echo $ex->getData();
+            die($ex);
+        } catch (Exception $ex) {
+            die($ex);
+        }
+
+    }
+
+    /**
+     * @param Plan $plan
+     */
+    public function setPlan($plan)
+    {
+        $this->plan = $plan;
+    }
+    public function getAllPlan() {
+        return Plan::all(array('page_size' => 10), $this->getApiContext())->getPlans();
+
     }
 }
 

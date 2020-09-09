@@ -35,6 +35,8 @@ class App extends AppController {
     {
         parent::__construct();
         $this->template->set_template('layout/app');
+        $this->paypal = new Paypal();
+        $this->paypal->setApiContext($this->config->item('CLIENT_ID'),$this->config->item('CLIENT_SECRET'));
 
     }
 
@@ -348,9 +350,13 @@ class App extends AppController {
     public function billing($slug) {
 
         if($slug) $this->slug = $slug;
+
         $this->plan = Membershipplan_model::factory()->findOne(['slug' => $this->slug]);
 
-        //$this->dd($this->data);
+        if($this->plan) {
+            $this->data['plan'] = $this->plan;
+        }
+        $this->template->javascript->add('assets/js/plans/PayPal.js');
         $this->template->content->view('plans/billing', $this->data);
         $this->template->publish();
     }
@@ -360,93 +366,24 @@ class App extends AppController {
         if($this->plan) return $this->plan;
     }
 
-    private function createSubscriptionPlan() {
-
-
-    }
-    public function subscribe() {
-        if($this->isPost()) {
-            $this->setSubscriptionPlan();
-            $this->paypal = new Paypal();
-            $this->paypal->plan->setName($this->plan->name)
-                ->setDescription($this->plan->description)
-                ->settype('FIXED');
-
-            $this->paypal->paymentDefinition->setName('Regular Payments')
-                ->setType('QUARTERLY')
-                ->setFrequency('MONTH')
-                ->setFrequencyInterval('1')
-                ->setCycles('3')
-                ->setAmount($this->paypal->setCurrency(array(
-                    'value' => 1,
-                    'currency' => 'USD'
-                )));
-            $this->paypal->chargeModel->setType('SHIPPING')->setAmount($this->paypal->setCurrency(array(
-                'value' => 1,
-                'currency' => 'USD'
-            )));
-            $this->paypal->paymentDefinition->setChargeModels(array(
-                $this->paypal->getChargeModel()
-            ));
-            $this->paypal->merchantPreferences->setReturnUrl(base_url('subscribe/return/success'))
-                ->setCancelUrl(base_url('subscribe/return/cancel'))
-                ->setAutoBillAmount('yes')
-                ->setInitialFailAmountAction('CONTINUE')
-                ->setMaxFailAttempts('0')
-                ->setSetupFee($this->paypal->setCurrency(array(
-                    'value' => 1,
-                    'currency' => 'USD'
-                )));
-
-            $this->paypal->plan->setPaymentDefinitions(array($this->paypal->getPaymentDefinition()))
-                ->setMerchantPreferences($this->paypal->getMerchantPreferences());
-
+    public function processToPayPal() {
+        if($this->isPost() && $this->isAjaxRequest()) {
             try {
-
-                $this->paypal->setApiContext($this->config->item('CLIENT_ID'),$this->config->item('CLIENT_SECRET'));
-
-                $createdPlan = $this->paypal->plan->create($this->paypal->getApiContext());
-                echo 1;
-                exit;
-                $this->paypal->patch->setOp('replace')
-                    ->setPath('/')
-                    ->setValue($this->paypal->setPaymentModel('{"state":"ACTIVE"}'));
-
-                $this->paypal->patchRequest->addPatch($this->paypal->getPatch());
-
-                $createdPlan->update($this->paypal->getPatchRequest(), $this->paypal->getApiContext());
-
-                $patchedPlan = $this->paypal->plan->get($createdPlan->getId(), $this->paypal->getApiContext());
-
-                // Create new agreement
-                $startDate = date('c', time() + 3600);
-                $this->paypal->agreement->setName($this->plan->name)
-                    ->setDescription($this->plan->description)
-                    ->setStartDate($startDate);
-
-                // Set plan id
-                $this->paypal->plan->setId($patchedPlan->getId());
-                $this->paypal->agreement->setPlan($this->paypal->getPlan());
-                // Add payer type
-                $this->paypal->payer->setPaymentMethod('paypal');
-                $this->paypal->agreement->setPayer($this->paypal->getPayer());
-                // Adding shipping details
-                $this->paypal->shippingAddress->setLine1('111 First Street')
-                    ->setCity('Saratoga')
-                    ->setState('CA')
-                    ->setPostalCode('95070')
-                    ->setCountryCode('US');
-                $this->paypal->agreement->setShippingAddress($this->paypal->getShippingAddress());
-
-
-                // Create agreement
-                $agreement = $this->paypal->agreement->create($this->paypal->getApiContext());
-                // Extract approval URL to redirect user
-                $approvalUrl = $agreement->getApprovalLink();
-                echo $approvalUrl;
-                exit;
-                header("Location: " . $approvalUrl);
-                exit();
+                $planId     = ($this->input->post('planId')) ? $this->input->post('planId') : '';
+                if($planId) {
+                    $this->plan = Membershipplan_model::factory()->findOne(['paypal_plan_id' => $planId]);
+                }
+                if($this->plan) {
+                    // Set Plan Id
+//                    $this->paypal->plan->setId($this->plan->paypal_plan_id)
+//                                ->setName($this->plan->name)
+//                                ->setDescription($this->plan->description);
+//
+//                    $this->paypal->setPatchPlan($this->paypal->plan->getId());
+//                    //$this->dd($this->paypal->getPlan());
+                    $this->paypal->agreement();
+                    $this->json['redirect'] = $this->paypal->agreement->getApprovalLink();
+                }
             } catch (PayPal\Exception\PayPalConnectionException $ex) {
                 $this->json['code'] = $ex->getCode();
                 $this->json['data'] = $ex->getData();
@@ -493,6 +430,12 @@ class App extends AppController {
 
         $this->template->content->view('information/about');
         $this->template->publish();
+    }
+    public function getPlans() {
+        return $this->output
+            ->set_content_type('application/json')
+            ->set_status_header(200)
+            ->set_output(json_encode($this->paypal->getAllPlan()));
     }
 
 

@@ -209,6 +209,18 @@ if(!function_exists('userId')) {
         return (int)$ci->session->userdata('user_id');
     }
 }
+if(!function_exists('userName')) {
+    function userName() {
+        $ci = get_instance();
+        return $ci->session->userdata('user')['firstname']." ".$ci->session->userdata('user')['lastname'];
+    }
+}
+if(!function_exists('userEmail')) {
+    function userEmail() {
+        $ci = get_instance();
+        return $ci->session->userdata('user')['email'];
+    }
+}
     if ( ! function_exists('url')) {
 	/**
 	 * Site URL

@@ -72,7 +72,8 @@ $route['createAccount']       = 'app/createAccount';
 $route['plan/billing/(:any)']       = 'app/billing/$1';
 $route['subscribe']       = 'app/subscribe';
 $route['subscribe/return/(:any)']       = 'app/subscribeReturnUrl/$1';
-
+$route['paypal']       = 'app/processToPayPal';
+$route['plans']       = 'app/getPlans';
 
 $route['admin'] = 'adminDashboard';
 $route['admin-login'] = 'adminDashboard/login';
