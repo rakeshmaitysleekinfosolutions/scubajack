@@ -12,8 +12,7 @@
                         </div>
                     <?php } ?>
                 </div>
-            </div>
-        </div>
+          
                 <div class="col-md-7 pl-0" id="my-container">
                     <div class="right-sides signup-form ">
                         <h3>Billing</h3>
@@ -58,13 +57,15 @@
                             <div class="tab-pane " id="Stripe">
                                      <img src="https://adventuresofscubajack.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg" class="stripe-visa-icon stripe-icon" alt="Visa"><img src="https://adventuresofscubajack.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg" class="stripe-amex-icon stripe-icon" alt="American Express"><img src="https://adventuresofscubajack.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg" class="stripe-mastercard-icon stripe-icon" alt="Mastercard"><img src="https://adventuresofscubajack.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/discover.svg" class="stripe-discover-icon stripe-icon" alt="Discover"><img src="https://adventuresofscubajack.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/jcb.svg" class="stripe-jcb-icon stripe-icon" alt="JCB"><img src="https://adventuresofscubajack.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/diners.svg" class="stripe-diners-icon stripe-icon" alt="Diners">
                             </div>
+                        </div>
                     </div>
-
                 </div>
             </div>
-                    </div>
         </div>
     </div>
+</div>
+</div>
+</div>
 </section>
 <script>
     var myLabel = myLabel || {};

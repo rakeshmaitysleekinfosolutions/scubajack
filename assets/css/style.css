@@ -1367,3 +1367,30 @@ a.btn.sub-button {
     line-height: 24px;
     font-family: 'Poppins', sans-serif;
 }
+
+#Paypal img {
+    margin-left: 10px !important;
+}
+a.about_paypal {
+   
+    color: #fff !important;
+    padding-left: 40px !important;
+}
+#Stripe img {
+    width: 14%;
+    padding: 0px 3px;
+}
+.account-rightside.createAccountFrm {
+    background: #02396f;
+    min-height: 415px;
+    padding: 10px 25px 10px 25px;
+    height: auto;
+}
+.accounts{
+    font-size: 30px;
+    line-height: 40px;
+    color: #f8f9fa;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    text-transform: capitalize;
+}

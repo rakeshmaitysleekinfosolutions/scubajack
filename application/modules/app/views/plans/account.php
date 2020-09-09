@@ -16,8 +16,8 @@
                 </div>
 
                 <div class="col-md-4 pl-0" id="my-container">
-                    <div class="right-sides createAccountFrm ">
-                        <h3>Create an account</h3>
+                    <div class="account-rightside  createAccountFrm ">
+                        <h3 class="accounts">Create an account</h3>
                         <form id="frm" action="<?php echo base_url('createAccount');?>" method="post">
                             <input type="hidden" name="<?php echo __token();?>" value="<?php echo csrf_token();?>">
                             <input type="hidden" name="slug" value="<?php echo $plan->slug;?>">
