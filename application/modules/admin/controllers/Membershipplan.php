@@ -2,6 +2,14 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 use Carbon\Carbon;
 use Application\Contracts\CrudContract;
+use PayPal\Api\ChargeModel;
+use PayPal\Api\Currency;
+use PayPal\Api\MerchantPreferences;
+use PayPal\Api\PaymentDefinition;
+use PayPal\Api\Plan;
+use PayPal\Api\Patch;
+use PayPal\Api\PatchRequest;
+use PayPal\Common\PayPalModel;
 
 class Membershipplan extends AdminController implements CrudContract {
 
@@ -25,12 +33,18 @@ class Membershipplan extends AdminController implements CrudContract {
      * @var object
      */
     private $plan;
+    /**
+     * @var Paypal
+     */
+    private $paypal;
 
 
     public function __construct() {
         parent::__construct();
         $this->lang->load('admin/membership_plan');
         $this->template->set_template('layout/admin');
+        $this->paypal = new Paypal();
+        $this->paypal->setApiContext($this->config->item('CLIENT_ID'), $this->config->item('CLIENT_SECRET'));
     }
 
     private $quizzes;
@@ -59,7 +73,7 @@ class Membershipplan extends AdminController implements CrudContract {
             $this->data['error_name'] = '';
         }
 
-        // Answer ID
+        // primaryKey
         if (isset($this->plan)) {
             $this->data['primaryKey'] = $this->plan->id;
         } else {
@@ -89,13 +103,61 @@ class Membershipplan extends AdminController implements CrudContract {
         } else {
             $this->data['description'] = '';
         }
-        // Price
+        // Type of the payment definition. Allowed values: `TRIAL`, `REGULAR`.
+        if (!empty($this->input->post('type'))) {
+            $this->data['type'] = $this->input->post('type');
+        } elseif (!empty($this->plan)) {
+            $this->data['type'] = $this->plan->price;
+        } else {
+            $this->data['type'] = '';
+        }
+        // 	Frequency of the payment definition offered. Allowed values: `WEEK`, `DAY`, `YEAR`, `MONTH`.
+        if (!empty($this->input->post('frequency'))) {
+            $this->data['frequency'] = $this->input->post('frequency');
+        } elseif (!empty($this->plan)) {
+            $this->data['frequency'] = $this->plan->frequency;
+        } else {
+            $this->data['frequency'] = '';
+        }
+        // 	How frequently the customer should be charged.
+        if (!empty($this->input->post('frequency_interval'))) {
+            $this->data['frequency_interval'] = $this->input->post('frequency_interval');
+        } elseif (!empty($this->plan)) {
+            $this->data['frequency_interval'] = $this->plan->frequency_interval;
+        } else {
+            $this->data['frequency_interval'] = '';
+        }
+        // 	Number of cycles in this payment definition.
+        if (!empty($this->input->post('cycles'))) {
+            $this->data['cycles'] = $this->input->post('cycles');
+        } elseif (!empty($this->plan)) {
+            $this->data['cycles'] = $this->plan->cycles;
+        } else {
+            $this->data['frequency_interval'] = '';
+        }
+        // Type of the payment definition. Allowed values: `TRIAL`, `REGULAR`.
+        if (!empty($this->input->post('cycles'))) {
+            $this->data['cycles'] = $this->input->post('cycles');
+        } elseif (!empty($this->plan)) {
+            $this->data['cycles'] = $this->plan->cycles;
+        } else {
+            $this->data['cycles'] = '';
+        }
+        // Amount that will be charged at the end of each cycle for this payment definition.
         if (!empty($this->input->post('price'))) {
             $this->data['price'] = $this->input->post('price');
         } elseif (!empty($this->plan)) {
             $this->data['price'] = $this->plan->price;
         } else {
             $this->data['price'] = '';
+        }
+        // State
+        if (!empty($this->input->post('state'))) {
+            $this->data['state'] = $this->input->post('state');
+        } elseif (!empty($this->plan)) {
+            $this->data['state'] = $this->plan->state;
+        } else {
+            $this->data['state'] = '';
         }
         //dd($this->data);
         $this->data['back']         = admin_url('membershipplan');
@@ -112,24 +174,43 @@ class Membershipplan extends AdminController implements CrudContract {
     }
 
     public function store() {
-        try {
+
             $this->setData();
             if ($this->isPost() && $this->validateForm()) {
+                $this->paypal->setPlanName($this->data['name'])
+                    ->setPlanDescription($this->data['description'])
+                    ->setPaymentDefinitionName('Regular Payments')
+                    ->setPaymentDefinitionType($this->data['type'])
+                    ->setFrequency($this->data['frequency'])
+                    ->setFrequencyInterval($this->data['frequency_interval'])
+                    ->setCycles($this->data['cycles'])
+                    ->setCurrency(array(
+                        'value' => $this->data['price'],
+                        'currency' => 'USD'
+                    ))
+                    ->setChargeModelType('SHIPPING')->setCurrency(array(
+                        'value' => $this->data['price'],
+                        'currency' => 'USD'
+                    ))->setState('{"state":"'.$this->data['state'].'"}')
+                        ->createOrUpdatePlan();
 
                 Membershipplan_model::factory()->insert([
-                    'name'          => $this->data['name'],
-                    'slug'          => $this->data['slug'],
-                    'description'   => $this->data['description'],
-                    'price'         => $this->data['price'],
+                    'name' => $this->data['name'],
+                    'type' => $this->data['type'],
+                    'frequency' => $this->data['frequency'],
+                    'frequency_interval' => $this->data['frequency_interval'],
+                    'cycles' => $this->data['cycles'],
+                    'slug' => $this->data['slug'],
+                    'description' => $this->data['description'],
+                    'price' => $this->data['price'],
+                    'state' => $this->data['state'],
+                    'paypal_plan_id' => $this->paypal->getPlanId()
                 ]);
+
+
                 $this->setMessage('message', $this->lang->line('text_success'));
                 $this->redirect(admin_url('membershipplan/create/'));
             }
-            $this->create();
-        } catch (Exception $e) {
-            echo 'Caught exception: ',  $e->getMessage(), "\n";
-        }
-
     }
 
     public function edit($id) {
@@ -165,11 +246,33 @@ class Membershipplan extends AdminController implements CrudContract {
                 $this->redirect(admin_url('membershipplan'));
             }
             if ($this->isPost() && $this->validateForm()) {
+                $this->paypal->setPlanName($this->data['name'])
+                    ->setPlanDescription($this->data['description'])
+                    ->setPaymentDefinitionName('Regular Payments')
+                    ->setPaymentDefinitionType($this->data['type'])
+                    ->setFrequency($this->data['frequency'])
+                    ->setFrequencyInterval($this->data['frequency_interval'])
+                    ->setCycles($this->data['cycles'])
+                    ->setCurrency(array(
+                        'value' => $this->data['price'],
+                        'currency' => 'USD'
+                    ))
+                    ->setChargeModelType('SHIPPING')->setCurrency(array(
+                        'value' => $this->data['price'],
+                        'currency' => 'USD'
+                    ))->setState('{"state":"'.$this->data['state'].'"}')
+                      ->createOrUpdatePlan();
                 Membershipplan_model::factory()->update([
-                    'name'          => $this->data['name'],
-                    'slug'          => $this->data['slug'],
-                    'description'   => $this->data['description'],
-                    'price'         => $this->data['price'],
+                    'name' => $this->data['name'],
+                    'type' => $this->data['type'],
+                    'frequency' => $this->data['frequency'],
+                    'frequency_interval' => $this->data['frequency_interval'],
+                    'cycles' => $this->data['cycles'],
+                    'slug' => $this->data['slug'],
+                    'description' => $this->data['description'],
+                    'price' => $this->data['price'],
+                    'state' => $this->data['state'],
+                    'paypal_plan_id' => $this->paypal->getPlanId()
                 ], $this->id);
                 $this->setMessage('message', $this->lang->line('text_success'));
                 $this->redirect(admin_url('membershipplan/edit/'.$this->id));
@@ -193,7 +296,12 @@ class Membershipplan extends AdminController implements CrudContract {
                 }
                 if($this->selected) {
                     foreach ($this->selected as $id) {
+                        $this->plan = Membershipplan_model::factory()->findOne($id);
+                        $this->paypal->plan->setId($this->plan->paypal_plan_id);
+                        $this->paypal->deletePlan($this->paypal->getApiContext());
+                        Membershipplan_model::factory()->update(['state' => 'INACTIVE'], $id);
                         Membershipplan_model::factory()->delete($id);
+
                     }
                     return $this->output
                         ->set_content_type('application/json')
@@ -218,7 +326,11 @@ class Membershipplan extends AdminController implements CrudContract {
             foreach($this->results as $result) {
                 $this->rows[] = array(
                     'id'			=> $result->id,
+                    'paypalPlanId'			=> $result->paypal_plan_id,
                     'name'		    => $result->name,
+                    'frequency'		=> $result->frequency,
+                    'frequencyInterval'		=> $result->frequency_interval,
+                    'cycles'		=> $result->cycles,
                     'price'		    => $result->price,
                     'created_at'    => Carbon::createFromTimeStamp(strtotime($result->created_at))->diffForHumans(),
                     'updated_at'    => ($result->updated_at) ? Carbon::createFromTimeStamp(strtotime($result->updated_at))->diffForHumans() : ''
@@ -234,6 +346,10 @@ class Membershipplan extends AdminController implements CrudContract {
 											</label>
 										</td>';
                 $this->data[$i][] = '<td>'.$row['name'].'</td>';
+                $this->data[$i][] = '<td>'.$row['paypalPlanId'].'</td>';
+                $this->data[$i][] = '<td>'.$row['frequency'].'</td>';
+                $this->data[$i][] = '<td>'.$row['frequencyInterval'].'</td>';
+                $this->data[$i][] = '<td>'.$row['cycles'].'</td>';
                 $this->data[$i][] = '<td>'.$row['price'].'</td>';
                 $this->data[$i][] = '<td>'.$row['created_at'].'</td>';
                 $this->data[$i][] = '<td>'.$row['updated_at'].'</td>';
@@ -289,7 +405,7 @@ class Membershipplan extends AdminController implements CrudContract {
     public function validateForm()
     {
         // TODO: Implement validateForm() method.
-        if ((strlen($this->input->post('name')) < 1) || (strlen(trim($this->input->post('name'))) > 255)) {
+        if ((strlen($this->input->post('name')) < 1) || (strlen(trim($this->input->post('name'))) > 128)) {
             $this->error['name'] = "Required";
         }
         if ($this->error && !isset($this->error['warning'])) {

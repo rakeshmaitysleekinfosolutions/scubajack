@@ -10,6 +10,11 @@
             rules:{
                 name: {
                     required: true,
+                    maxWords: 128
+                },
+                description: {
+                    required: true,
+                    maxWords: 127
                 },
                 price: {
                     required: true,

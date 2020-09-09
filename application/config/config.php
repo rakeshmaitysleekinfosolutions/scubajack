@@ -530,6 +530,6 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
-
-
+$config['CLIENT_ID'] = 'AaM4u_1sswOYNwnXKHm1vQ0zyaQun2mn_t9RtJD8zGmI8QAsy65uutrqZ5iJ0j2LwlnJJgXMOqtOuLKf';
+$config['CLIENT_SECRET'] = 'EPLctsfvrpGvM9TJHf_2WIj0hvPC8TUn67hYErByzeTY4LSADXQkABW6AwbG9jJ3M0AnPGVIDa9ywJvO';
 require_once FCPATH.'autoload.php';

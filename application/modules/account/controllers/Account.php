@@ -23,7 +23,7 @@ class Account extends AppController {
         if (!$this->user->isLogged()) {
             $this->redirect($this->url('login'));
         }
-        //if(!$this->isSubscribed()) redirect('subscribe-now');
+        if(!$this->isSubscribed()) redirect('viewplans');
 
         if(isLogged()) {
             $this->auser = User_model::factory()->findOne(userId());
@@ -88,5 +88,6 @@ class Account extends AppController {
 			$this->user->logout();
 			$this->redirect($this->url(''));
 		}
+        $this->redirect($this->url('login'));
     }
 }

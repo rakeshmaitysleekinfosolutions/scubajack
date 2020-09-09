@@ -42,8 +42,49 @@
                                 </div>
 
                                 <div class="form-group">
+                                    <label class="control-label">Type <span class="text-danger"></span></label>
+                                    <select name="type" class="select floating" id="input-type" >
+                                        <option value="REGULAR" <?php echo ($type == 'REGULAR') ? "selected" : "";?>>REGULAR</option>
+                                        <option value="TRIAL" <?php echo ($type == 'TRIAL') ? "selected" : "";?>>TRIAL</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Frequency <span class="text-danger"></span></label>
+                                    <select name="frequency" class="select floating" id="input-frequency" >
+                                        <!--                                        <option value="WEEK">WEEK</option>-->
+                                        <!--                                        <option value="DAY">DAY</option>-->
+                                        <option value="YEAR" <?php echo ($type == 'YEAR') ? "selected" : "";?>>YEAR</option>
+                                        <option value="MONTH" <?php echo ($type == 'MONTH') ? "selected" : "";?>>MONTH</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Frequency Interval <span class="text-danger"></span></label>
+                                    <select name="frequency_interval" class="select floating" id="input-frequency_interval" >
+                                        <?php
+                                        for ($i = 1; $i <= 12; $i++) {?>
+                                            <option value="<?php echo $i;?>" <?php echo ($frequency_interval == $i) ? "selected" : "";?>><?php echo $i;?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">Cycles <span class="text-danger"></span></label>
+                                    <select name="cycles" class="select floating" id="input-cycles" >
+                                        <?php
+                                        for ($i = 1; $i <= 3; $i++) {?>
+                                            <option value="<?php echo $i;?>" <?php echo ($cycles == $i) ? "selected" : "";?>><?php echo $i;?></option>
+                                        <?php } ?>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="control-label">State <span class="text-danger"></span></label>
+                                    <select name="state" class="select floating" id="input-state" >
+                                        <option value="ACTIVE" <?php echo ($state == 'ACTIVE') ? "selected" : "";?>>ACTIVE</option>
+                                        <option value="INACTIVE" <?php echo ($state == 'INACTIVE') ? "selected" : "";?>>INACTIVE</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <label class="control-label">Price <span class="text-danger">*</span></label>
-                                    <input  class="form-control" type="text" name="price" id="input-price" autocomplete="off" value="<?php echo $price;?>" required></input>
+                                    <input class="form-control" type="text" name="price" id="input-price" autocomplete="off" value="<?php echo $price;?>" required>
                                 </div>
                             </div>
                         </div>

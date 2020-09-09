@@ -26,11 +26,16 @@ class App extends AppController {
      */
     private $plan;
     private $slug;
+    /**
+     * @var Paypal
+     */
+    private $paypal;
 
     public function __construct()
     {
         parent::__construct();
         $this->template->set_template('layout/app');
+
     }
 
     /**
@@ -237,17 +242,105 @@ class App extends AppController {
     public function account($slug) {
 
         if($slug) $this->slug = $slug;
+
         $this->plan = Membershipplan_model::factory()->findOne(['slug' => $this->slug]);
+
+        if(!$this->plan) {
+            redirect('viewplans');
+        }
         if($this->plan) {
             $this->data['plan'] = $this->plan;
         }
         if ($this->user->isLogged()) {
+            redirect('plan/billing/'.$this->plan->slug);
+        }
+        if($this->isPost()) {
+            $this->planId     = ($this->input->post('planId')) ? $this->input->post('planId') : '';
+
+            User_model::factory()->addUser($this->input->post());
+            // Clear any previous login attempts for unregistered accounts.
+            User_model::factory()->deleteLoginAttempts($this->input->post('email'));
+            // Login
+            User_model::factory()->login($this->input->post('email'), $this->input->post('password'));
             redirect('plan/'.$this->plan->slug.'/billing');
         }
         //$this->dd($this->data);
+        $this->template->javascript->add('assets/js/jquery.validate.js');
+        $this->template->javascript->add('assets/js/additional-methods.js');
+        $this->template->javascript->add('assets/js/plans/Account.js');
         $this->template->content->view('plans/account', $this->data);
         $this->template->publish();
     }
+    /**
+     * View Plan
+     * @param $slug
+     */
+    public function createAccount() {
+
+        $this->slug     = ($this->input->post('slug')) ? $this->input->post('slug') : '';
+
+        $this->plan = Membershipplan_model::factory()->findOne(['slug' => $this->slug]);
+
+        if(!$this->plan) {
+            $this->json['redirect'] 		= url('viewplans');;
+        }
+        if($this->plan) {
+            $this->data['plan'] = $this->plan;
+        }
+
+        $this->lang->load('app/emails/register_lang');
+        $this->lang->load('app/register_lang');
+
+        if (User_model::factory()->getTotalUsersByEmail($this->input->post('email'))) {
+            $this->json['error']['warning'] = $this->lang->line('error_exists');
+        }
+        if($this->isPost() ) {
+            User_model::factory()->addUser($this->input->post());
+            // Clear any previous login attempts for unregistered accounts.
+            User_model::factory()->deleteLoginAttempts($this->input->post('email'));
+            // Login
+            $this->user->login($this->input->post('email'), $this->input->post('password'));
+            /*
+            $subject 						= sprintf($this->lang->line('text_subject'), "SCUBA JACK");
+
+            $this->data['text_welcome'] 	= sprintf($this->lang->line('text_welcome'), "SCUBA JACK");
+
+            $this->data['text_email'] 		= sprintf($this->lang->line('text_email'), $this->input->post('email'));
+            $this->data['text_password'] 	= sprintf($this->lang->line('text_password'), $this->input->post('password'));
+
+            $this->data['text_app_name'] 	= "SCUBA JACK";
+            $this->data['text_service'] 	= $this->lang->line('text_service');
+            $this->data['text_thanks'] 		= $this->lang->line('text_thanks');
+
+            $mail 							= new Mail($this->config->item('config_mail_engine'));
+            $mail->parameter 				= $this->config->item('config_mail_parameter');
+            $mail->smtp_hostname 			= $this->config->item('config_mail_smtp_hostname');
+            $mail->smtp_username 			= $this->config->item('config_mail_smtp_username');
+            $mail->smtp_password 			= html_entity_decode($this->config->item('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
+            $mail->smtp_port 				= $this->config->item('config_mail_smtp_port');
+            $mail->smtp_timeout 			= $this->config->item('config_mail_smtp_timeout');
+
+            $mail->setTo($this->input->post('email'));
+            $mail->setFrom($this->config->item('config_email'));
+            $mail->setSender($this->config->item('config_sender_name'));
+            $mail->setSubject($subject);
+            $mail->setText($this->template->content->view('emails/registration', $this->data));
+            $mail->send();
+            */
+            $this->json['success']          = $this->lang->line('text_success');
+            $this->json['redirect'] 		= url('plan/'.$this->plan->slug.'/billing');;
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode($this->json));
+        } else {
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode($this->json));
+        }
+    }
+
     /**
      * Billing
      * @param $slug
@@ -261,7 +354,131 @@ class App extends AppController {
         $this->template->content->view('plans/billing', $this->data);
         $this->template->publish();
     }
+    public function setSubscriptionPlan() {
+        $this->slug     = ($this->input->post('slug')) ? $this->input->post('slug') : '';
+        $this->plan     = Membershipplan_model::factory()->findOne(['slug' => $this->slug]);
+        if($this->plan) return $this->plan;
+    }
 
+    private function createSubscriptionPlan() {
+
+
+    }
+    public function subscribe() {
+        if($this->isPost()) {
+            $this->setSubscriptionPlan();
+            $this->paypal = new Paypal();
+            $this->paypal->plan->setName($this->plan->name)
+                ->setDescription($this->plan->description)
+                ->settype('FIXED');
+
+            $this->paypal->paymentDefinition->setName('Regular Payments')
+                ->setType('QUARTERLY')
+                ->setFrequency('MONTH')
+                ->setFrequencyInterval('1')
+                ->setCycles('3')
+                ->setAmount($this->paypal->setCurrency(array(
+                    'value' => 1,
+                    'currency' => 'USD'
+                )));
+            $this->paypal->chargeModel->setType('SHIPPING')->setAmount($this->paypal->setCurrency(array(
+                'value' => 1,
+                'currency' => 'USD'
+            )));
+            $this->paypal->paymentDefinition->setChargeModels(array(
+                $this->paypal->getChargeModel()
+            ));
+            $this->paypal->merchantPreferences->setReturnUrl(base_url('subscribe/return/success'))
+                ->setCancelUrl(base_url('subscribe/return/cancel'))
+                ->setAutoBillAmount('yes')
+                ->setInitialFailAmountAction('CONTINUE')
+                ->setMaxFailAttempts('0')
+                ->setSetupFee($this->paypal->setCurrency(array(
+                    'value' => 1,
+                    'currency' => 'USD'
+                )));
+
+            $this->paypal->plan->setPaymentDefinitions(array($this->paypal->getPaymentDefinition()))
+                ->setMerchantPreferences($this->paypal->getMerchantPreferences());
+
+            try {
+
+                $this->paypal->setApiContext($this->config->item('CLIENT_ID'),$this->config->item('CLIENT_SECRET'));
+
+                $createdPlan = $this->paypal->plan->create($this->paypal->getApiContext());
+                echo 1;
+                exit;
+                $this->paypal->patch->setOp('replace')
+                    ->setPath('/')
+                    ->setValue($this->paypal->setPaymentModel('{"state":"ACTIVE"}'));
+
+                $this->paypal->patchRequest->addPatch($this->paypal->getPatch());
+
+                $createdPlan->update($this->paypal->getPatchRequest(), $this->paypal->getApiContext());
+
+                $patchedPlan = $this->paypal->plan->get($createdPlan->getId(), $this->paypal->getApiContext());
+
+                // Create new agreement
+                $startDate = date('c', time() + 3600);
+                $this->paypal->agreement->setName($this->plan->name)
+                    ->setDescription($this->plan->description)
+                    ->setStartDate($startDate);
+
+                // Set plan id
+                $this->paypal->plan->setId($patchedPlan->getId());
+                $this->paypal->agreement->setPlan($this->paypal->getPlan());
+                // Add payer type
+                $this->paypal->payer->setPaymentMethod('paypal');
+                $this->paypal->agreement->setPayer($this->paypal->getPayer());
+                // Adding shipping details
+                $this->paypal->shippingAddress->setLine1('111 First Street')
+                    ->setCity('Saratoga')
+                    ->setState('CA')
+                    ->setPostalCode('95070')
+                    ->setCountryCode('US');
+                $this->paypal->agreement->setShippingAddress($this->paypal->getShippingAddress());
+
+
+                // Create agreement
+                $agreement = $this->paypal->agreement->create($this->paypal->getApiContext());
+                // Extract approval URL to redirect user
+                $approvalUrl = $agreement->getApprovalLink();
+                echo $approvalUrl;
+                exit;
+                header("Location: " . $approvalUrl);
+                exit();
+            } catch (PayPal\Exception\PayPalConnectionException $ex) {
+                $this->json['code'] = $ex->getCode();
+                $this->json['data'] = $ex->getData();
+                return $this->output
+                    ->set_content_type('application/json')
+                    ->set_status_header(200)
+                    ->set_output(json_encode($this->json));
+            } catch (Exception $ex) {
+                die($ex);
+            }
+        }
+    }
+    public function subscribeReturnUrl() {
+        if (!empty($this->input->get('status'))) {
+            if($this->input->get('status') == "success") {
+                $token = $this->input->get('token');
+                try {
+                    // Execute agreement
+                    $this->paypal->agreement->execute($token, $this->paypal->getApiContext());
+                } catch (PayPal\Exception\PayPalConnectionException $ex) {
+                    echo $ex->getCode();
+                    echo $ex->getData();
+                    die($ex);
+                } catch (Exception $ex) {
+                    die($ex);
+                }
+            } else {
+                echo "user canceled agreement";
+            }
+            exit;
+        }
+    }
     /**
      * Membership plan subscribe
      */

@@ -25,7 +25,11 @@
                                 <span class="css-control-indicator"></span>
                             </label>
                         </th>
+                        <th>Paypal Plan ID</th>
                         <th>Name</th>
+                        <th>Frequency</th>
+                        <th>FrequencyInterval</th>
+                        <th>Cycles</th>
                         <th>Price</th>
                         <th>Created At</th>
                         <th>Updated At</th>
