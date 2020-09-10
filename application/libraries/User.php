@@ -47,6 +47,18 @@ class User {
 		}
 
 		if ($customer_query->num_rows()) {
+            $user = Subscriber_model::factory()->findOne(['user_id' => $customer_query->row_array()['id']]);
+		    if($user) {
+                $today = time();
+                if (strtotime($user->end_at) <= strtotime($today)) {
+                    setSession('subscribe', true);
+                    Subscriber_model::factory()->update(['expired' => false], ['user_id' => $customer_query->row_array()['id']]);
+                } else {
+                    setSession('subscribe', false);
+                    Subscriber_model::factory()->update(['expired' => true], ['user_id' => $customer_query->row_array()['id']]);
+                }
+            }
+
 			$this->ci->session->set_userdata('user',$customer_query->row_array());
 			$this->ci->session->set_userdata('is_logged',1);
 			$this->ci->session->set_userdata('user_id',$customer_query->row_array()['id']);
@@ -74,6 +86,7 @@ class User {
 		$this->ci->session->unset_userdata('user');
 		$this->ci->session->unset_userdata('is_logged');
 		$this->ci->session->unset_userdata('user_id');
+        //$this->ci->session->unset_userdata('subscribe');
 		return true;
 	}
 	public function isLogged() {

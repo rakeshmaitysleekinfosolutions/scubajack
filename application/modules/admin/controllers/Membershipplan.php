@@ -151,6 +151,14 @@ class Membershipplan extends AdminController implements CrudContract {
         } else {
             $this->data['price'] = '';
         }
+        // 	Duration
+        if (!empty($this->input->post('duration'))) {
+            $this->data['duration'] = $this->input->post('duration');
+        } elseif (!empty($this->plan)) {
+            $this->data['duration'] = $this->plan->duration;
+        } else {
+            $this->data['duration'] = '';
+        }
         // State
         if (!empty($this->input->post('state'))) {
             $this->data['state'] = $this->input->post('state');
@@ -199,6 +207,7 @@ class Membershipplan extends AdminController implements CrudContract {
                     'type' => $this->data['type'],
                     'frequency' => $this->data['frequency'],
                     'frequency_interval' => $this->data['frequency_interval'],
+                    'duration' => $this->data['duration'],
                     'cycles' => $this->data['cycles'],
                     'slug' => $this->data['slug'],
                     'description' => $this->data['description'],
@@ -268,6 +277,7 @@ class Membershipplan extends AdminController implements CrudContract {
                     'type' => $this->data['type'],
                     'frequency' => $this->data['frequency'],
                     'frequency_interval' => $this->data['frequency_interval'],
+                    'duration' => $this->data['duration'],
                     'cycles' => $this->data['cycles'],
                     'slug' => $this->data['slug'],
                     'description' => $this->data['description'],
@@ -332,6 +342,7 @@ class Membershipplan extends AdminController implements CrudContract {
                     'name'		    => $result->name,
                     'frequency'		=> $result->frequency,
                     'frequencyInterval'		=> $result->frequency_interval,
+                    'duration'		    => $result->duration,
                     'cycles'		=> $result->cycles,
                     'price'		    => $result->price,
                     'created_at'    => Carbon::createFromTimeStamp(strtotime($result->created_at))->diffForHumans(),
@@ -351,6 +362,7 @@ class Membershipplan extends AdminController implements CrudContract {
                 $this->data[$i][] = '<td>'.$row['paypalPlanId'].'</td>';
                 $this->data[$i][] = '<td>'.$row['frequency'].'</td>';
                 $this->data[$i][] = '<td>'.$row['frequencyInterval'].'</td>';
+                $this->data[$i][] = '<td>'.$row['duration'].'</td>';
                 $this->data[$i][] = '<td>'.$row['cycles'].'</td>';
                 $this->data[$i][] = '<td>'.$row['price'].'</td>';
                 $this->data[$i][] = '<td>'.$row['created_at'].'</td>';

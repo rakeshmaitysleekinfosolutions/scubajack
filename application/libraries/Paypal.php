@@ -443,8 +443,8 @@ class Paypal {
             $this->getChargeModel()
         ));
 
-        $this->merchantPreferences->setReturnUrl(base_url('subscribe/return/success'))
-            ->setCancelUrl(base_url('subscribe/return/cancel'))
+        $this->merchantPreferences->setReturnUrl(base_url('pl?payment='.encodeUrl(true)))
+            ->setCancelUrl(base_url('pl?payment='.decodeUrl(false)))
             ->setAutoBillAmount('yes')
             ->setInitialFailAmountAction('CONTINUE')
             ->setMaxFailAttempts('0')
@@ -524,7 +524,14 @@ class Paypal {
             ->setCountryCode('US');
 
         $this->agreement->setShippingAddress($this->getShippingAddress());
-        dd($this->agreement->create($this->getApiContext()));
+        // Create agreement
+        $this->agreement->create($this->apiContext);
+
+        // Extract approval URL to redirect user
+        //$approvalUrl = $agreement->getApprovalLink();
+    }
+    public function getApprovalLink() {
+        return $this->agreement->getApprovalLink();
     }
 
     /**

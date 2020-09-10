@@ -1,6 +1,6 @@
 <div class="content container-fluid">
     <form id="frm" action="<?php echo admin_url('membershipplan/store');?>" method="post">
-
+        <input type="hidden" name="duration" id="input-duration">
         <div class="row">
             <?php if($error_warning) { ?>
                 <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i><?php echo $error_warning;?>
@@ -62,7 +62,7 @@
                                     <select name="frequency" class="select floating" id="input-frequency" >
 <!--                                        <option value="WEEK">WEEK</option>-->
 <!--                                        <option value="DAY">DAY</option>-->
-                                        <option value="YEAR">YEAR</option>
+<!--                                        <option value="YEAR">YEAR</option>-->
                                         <option value="MONTH" selected>MONTH</option>
                                     </select>
                                 </div>

@@ -29,6 +29,7 @@
                         <th>Name</th>
                         <th>Frequency</th>
                         <th>FrequencyInterval</th>
+                        <th>Duration(Days)</th>
                         <th>Cycles</th>
                         <th>Price</th>
                         <th>Created At</th>

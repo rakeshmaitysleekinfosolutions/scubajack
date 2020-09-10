@@ -143,6 +143,15 @@
         $('#answers tbody').append(html);
         myLabel.increment++;
     });
+    $(document).ready(function(){
+        $('#input-frequency_interval').trigger('change');
+    });
 
+    $(document).on('change', '#input-frequency_interval', function (e) {
+        var frequency_interval = $(this).val();
+        var days = frequency_interval * 30;
+        console.log(days);
+        $('#input-duration').val(days);
+    });
 }(window.jQuery);
 

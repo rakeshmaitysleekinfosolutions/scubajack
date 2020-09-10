@@ -30,6 +30,19 @@ class App extends AppController {
      * @var Paypal
      */
     private $paypal;
+    /**
+     * @var object
+     */
+    private $subscriber;
+    private $expiration;
+    /**
+     * @var float|int
+     */
+    private $expirationDate;
+    /**
+     * @var string
+     */
+    private $signUpTimestamp;
 
     public function __construct()
     {
@@ -232,8 +245,37 @@ class App extends AppController {
      * View Plans
      */
     public function viewPlans() {
+        if($this->isSubscribed()) redirect('subscribed');
+
         $this->data['plans'] = Membershipplan_model::factory()->findAll();
         $this->template->content->view('plans/index', $this->data);
+        $this->template->publish();
+    }
+    /**
+     * View Plans
+     */
+    public function subscribed() {
+
+        if(!$this->isSubscribed()) redirect('viewplans');
+        $this->subscriber = Subscriber_model::factory()->findOne(['user_id' => userId()]);
+        $this->data['plan'] = array();
+        $this->data['subscriber'] = array();
+        if($this->subscriber) {
+            $today = time();
+            $daysLeft = floor((strtotime($this->subscriber->end_at)-$today)/(60*60*24));
+            $this->data['plan'] = array(
+                'name' => $this->subscriber->plan,
+                'price' => $this->subscriber->price,
+                'end_at' => $this->subscriber->end_at,
+                'daysLeft' => $daysLeft,
+            );
+            $this->data['subscriber '] = array(
+                'name' => $this->subscriber->user->firstname. " " .$this->subscriber->user->lastname,
+                'email' => $this->subscriber->user->email,
+            );
+        }
+
+        $this->template->content->view('plans/subscribed', $this->data);
         $this->template->publish();
     }
 
@@ -360,12 +402,19 @@ class App extends AppController {
         $this->template->content->view('plans/billing', $this->data);
         $this->template->publish();
     }
+
+    /**
+     * @return object
+     */
     public function setSubscriptionPlan() {
         $this->slug     = ($this->input->post('slug')) ? $this->input->post('slug') : '';
         $this->plan     = Membershipplan_model::factory()->findOne(['slug' => $this->slug]);
         if($this->plan) return $this->plan;
     }
 
+    /**
+     * @return mixed
+     */
     public function processToPayPal() {
         if($this->isPost() && $this->isAjaxRequest()) {
             try {
@@ -381,7 +430,13 @@ class App extends AppController {
                         ->setPlanDescription($this->plan->name);
 
                     $this->paypal->agreement();
-                    $this->json['redirect'] = $this->paypal->agreement->getApprovalLink();
+                    $this->setSession('membership_plan_id', $this->plan->id);
+                    $this->json['success'] = true;
+                    $this->json['redirect'] = $this->paypal->getApprovalLink();
+                    return $this->output
+                        ->set_content_type('application/json')
+                        ->set_status_header(200)
+                        ->set_output(json_encode($this->json));
                 }
             } catch (PayPal\Exception\PayPalConnectionException $ex) {
                 $this->json['code'] = $ex->getCode();
@@ -395,13 +450,50 @@ class App extends AppController {
             }
         }
     }
+
+    /**
+     *
+     */
     public function subscribeReturnUrl() {
-        if (!empty($this->input->get('status'))) {
-            if($this->input->get('status') == "success") {
+        if (!empty($this->input->get('payment'))) {
+            $decodePayment = urlDecode($this->input->get('payment'));
+            if($decodePayment) {
                 $token = $this->input->get('token');
                 try {
                     // Execute agreement
+                    if($this->getSession('membership_plan_id')) {
+                        $this->plan = Membershipplan_model::factory()->findOne($this->getSession('membership_plan_id'));
+                    }
+                    //$this->dd($this->plan);
+                    if($this->plan) {
+                        $this->expiration       = $this->plan->duration;
+                        $this->signUpTimestamp  = ($this->getSession('user')) ? strtotime($this->getSession('user')['created_at']) : '';
+                        $this->expirationDate   = $this->signUpTimestamp + ($this->expiration*24*60*60);
+
+                    }
                     $this->paypal->agreement->execute($token, $this->paypal->getApiContext());
+                    Subscriber_model::factory()->insert([
+                        'user_id'        => userId(),
+                        'membership_plan_id'        => $this->getSession('membership_plan_id'),
+                        'type'      => $this->paypal->agreement->getPlan()->getPaymentDefinitions()[0]->getFrequency(),
+                        'plan'           => $this->paypal->agreement->getDescription(),
+                        'price'          => $this->paypal->agreement->getPlan()->getPaymentDefinitions()[0]->getAmount()->getValue(),
+                        'beg_date'     => $this->paypal->agreement->getStartDate(),
+                        'end_at'       => date('Y-m-d H:i:s', $this->expirationDate),
+                    ]);
+                    Agreement_model::factory()->insert([
+                        'membership_plans_subscribers_id' => Subscriber_model::factory()->getLastInsertID(),
+                        'agreement_id'        => $this->paypal->getAgreement()->getId(),
+                        'description'       => $this->paypal->getAgreement()->getDescription(),
+                        'state'           => $this->paypal->getAgreement()->getState(),
+                        'start_date'          => $this->paypal->getAgreement()->getStartDate(),
+                        'payment_method'     => $this->paypal->agreement->getPayer()->getPaymentMethod(),
+                        'status'       => $this->paypal->agreement->getPayer()->getStatus(),
+                    ]);
+                    $this->unsetSession('membership_plan_id');
+                    $this->setSession('subscribe', true);
+                    redirect('success');
+
                 } catch (PayPal\Exception\PayPalConnectionException $ex) {
                     echo $ex->getCode();
                     echo $ex->getData();
@@ -410,10 +502,15 @@ class App extends AppController {
                     die($ex);
                 }
             } else {
-                echo "user canceled agreement";
+                $this->setSession('subscribe', false);
+                redirect('failure');
             }
             exit;
         }
+    }
+    public function success() {
+        $this->template->content->view('plans/success');
+        $this->template->publish();
     }
     /**
      * Membership plan subscribe
@@ -430,12 +527,7 @@ class App extends AppController {
         $this->template->content->view('information/about');
         $this->template->publish();
     }
-    public function getPlans() {
-        return $this->output
-            ->set_content_type('application/json')
-            ->set_status_header(200)
-            ->set_output(json_encode($this->paypal->getAllPlan()));
-    }
+
 
 
 }

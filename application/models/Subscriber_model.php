@@ -20,8 +20,8 @@ class Subscriber_model extends BaseModel {
     public function user() {
         return $this->hasOne(User_model::class, 'id', 'user_id');
     }
-//    public function plan() {
-//        return $this->hasOne(Membershipplan_model::class, 'id', 'membership_plan_id');
-//    }
+    public function plan() {
+        return $this->hasOne(Membershipplan_model::class, 'id', 'membership_plan_id');
+    }
 
 }

@@ -70,5 +70,5 @@
 <script>
     var myLabel = myLabel || {};
     myLabel.baseUrl = '<?php echo base_url();?>';
-    myLabel.paypal = '<?php echo base_url('paypal');?>';
+    myLabel.paypal = '<?php echo base_url('processToPayPal');?>';
 </script> 

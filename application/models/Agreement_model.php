@@ -1,10 +1,10 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
-class Membershipplan_model extends BaseModel {
+class Agreement_model extends BaseModel {
 
 
-    protected $table = "membership_plans";
+    protected $table = "agreements";
 
     protected $primaryKey = 'id';
 
@@ -14,10 +14,9 @@ class Membershipplan_model extends BaseModel {
     const SOFT_DELETED = 'is_deleted';
 
     public static function factory($attr = array()) {
-        return new Membershipplan_model($attr);
+        return new Agreement_model($attr);
     }
-//    public function user() {
-//        return $this->hasOne(User_model::class, 'id', 'user_id');
-//    }
+
+
 
 }

@@ -11,6 +11,10 @@ class Account extends AppController {
      * @var object
      */
     private $auser;
+    /**
+     * @var object
+     */
+    private $subscriber;
 
     public function __construct()
 	{
@@ -31,6 +35,24 @@ class Account extends AppController {
         if($this->auser) {
             $this->data['user'] = $this->auser;
             $this->data['registrationDate'] =Carbon::createFromTimeStamp(strtotime($this->auser->created_at));
+        }
+
+        $this->subscriber = Subscriber_model::factory()->findOne(['user_id' => userId()]);
+        $this->data['plan'] = array();
+        $this->data['subscriber'] = array();
+        if($this->subscriber) {
+            $today = time();
+            $daysLeft = floor((strtotime($this->subscriber->end_at)-$today)/(60*60*24));
+            $this->data['plan'] = array(
+                'name' => $this->subscriber->plan,
+                'price' => $this->subscriber->price,
+                'end_at' => $this->subscriber->end_at,
+                'daysLeft' => $daysLeft,
+            );
+            $this->data['subscriber'] = array(
+                'name' => $this->subscriber->user->firstname. " " .$this->subscriber->user->lastname,
+                'email' => $this->subscriber->user->email,
+            );
         }
 
         $this->template->javascript->add('assets/js/jquery.validate.js');

@@ -70,9 +70,11 @@ $route['plan/(:any)']       = 'app/account/$1';
 $route['createAccount']       = 'app/createAccount';
 
 $route['plan/billing/(:any)']       = 'app/billing/$1';
-$route['subscribe']       = 'app/subscribe';
-$route['subscribe/return/(:any)']       = 'app/subscribeReturnUrl/$1';
-$route['paypal']       = 'app/processToPayPal';
+$route['subscribed']       = 'app/subscribed';
+$route['pl']       = 'app/subscribeReturnUrl';
+$route['success']       = 'app/success';
+$route['failure']       = 'app/failure';
+$route['processToPayPal']       = 'app/processToPayPal';
 $route['plans']       = 'app/getPlans';
 
 $route['admin'] = 'adminDashboard';

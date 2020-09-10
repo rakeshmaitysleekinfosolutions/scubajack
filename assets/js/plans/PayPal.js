@@ -10,8 +10,13 @@
                 planId: planId
             },
             cache: false,
-            success: function (res) {
-               console.log(res);
+            success: function (json) {
+                console.log(json);
+                if (json['success']) {
+                    setTimeout(function() {
+                        location.href = json['redirect'];
+                    },1000);
+                }
             }
         });
     });

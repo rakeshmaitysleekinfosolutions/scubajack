@@ -18,8 +18,14 @@
             <div class="tab-content">
               <div class="tab-pane " id="home">
                 <p>Hello <span>user</span> (not you? <a href="#">Log out</a>)</p>
-                <p> From your account dashboard you can view your<a href="#"> recent orders,</a> manage your <a href="#">shipping and billing addresses</a>, and edit your<a href="#"> password and account 
-                    </a>details. </p>
+                  <h2>You have already subscribed <?php echo (isset($plan['name'])) ? $plan['name'] : '';?> plan</h2>
+                  <p>Price: $<?php echo (isset($plan['price'])) ? $plan['price'] : '';?></p>
+                  <h3>Expire Date: <?php echo (isset($plan['end_at'])) ? $plan['end_at'] : '';?></h3>
+                  <h3>Day Left: <?php echo (isset($plan['daysLeft'])) ? $plan['daysLeft'] : '';?></h3>
+                  <h6 class="description"><?php echo (isset($plan['description'])) ? $plan['description'] : '';?></h6>
+
+                  <p>Subscriber Name: <?php echo (isset($subscriber['name'])) ? $subscriber['name'] : '';?></p>
+                  <h3>Subscriber Email: <?php echo (isset($subscriber['email'])) ? $subscriber['email'] : '';?></h3>
               </div>
               <div class="tab-pane" id="Orders">
                 <div class="order-box border-left-blue"> <i class="far fa-check-circle"></i>
