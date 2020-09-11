@@ -16,6 +16,10 @@ class Filemanager extends AdminController {
      * @var string
      */
     private $ext;
+    /**
+     * @var string[]
+     */
+    private $filesExt2;
 
     public function index() {
 		$this->lang->load('admin/filemanager');
@@ -108,23 +112,38 @@ class Filemanager extends AdminController {
                 $this->filesExt = array(
                     'pdf'
                 );
+                $this->filesExt2 = array(
+                    'jpg',
+                    'jpeg',
+                    'gif',
+                    'png',
+                );
                 $this->ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
                 if (in_array($this->ext, $this->filesExt)) {
                     $this->data['images'][] = array(
                         'thumb' => $this->resize('pdf-placeholder.png', 100, 100),
                         'name'  => implode(' ', $name),
-                        'type'  => 'pdf',
+                        'type'  => 'craft',
+                        'originalFileType' => 'pdf',
                         'path'  => substr($image, strlen(DIR_IMAGE)),
                         'href'  => $server . 'image/' . substr($image, strlen(DIR_IMAGE))
                     );
-
-
+                } else if (in_array($this->ext, $this->filesExt2)) {
+                    $this->data['images'][] = array(
+                        'thumb' => $this->resize(substr($image, strlen(DIR_IMAGE)), 100, 100),
+                        'name'  => implode(' ', $name),
+                        'type'  => 'image',
+                        'originalFileType' => 'image',
+                        'path'  => substr($image, strlen(DIR_IMAGE)),
+                        'href'  => $server . 'image/' . substr($image, strlen(DIR_IMAGE))
+                    );
                 } else {
                     $this->data['images'][] = array(
                         'thumb' => $this->resize(substr($image, strlen(DIR_IMAGE)), 100, 100),
                         'name'  => implode(' ', $name),
                         'type'  => 'image',
+                        'originalFileType' => 'image',
                         'path'  => substr($image, strlen(DIR_IMAGE)),
                         'href'  => $server . 'image/' . substr($image, strlen(DIR_IMAGE))
                     );

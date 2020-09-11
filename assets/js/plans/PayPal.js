@@ -9,13 +9,15 @@
             data: {
                 planId: planId
             },
+            beforeSend: function() {
+                $.LoadingOverlay("show");
+            },
             cache: false,
             success: function (json) {
-                console.log(json);
                 if (json['success']) {
                     setTimeout(function() {
                         location.href = json['redirect'];
-                    },1000);
+                    },3000);
                 }
             }
         });

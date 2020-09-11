@@ -45,15 +45,16 @@
                         url: $(form).attr('action'),
                         dataType: "json",
                         data: $(form).serialize(),
-                        beforeSend: function(){
-                            $btn.button('loading');
+                        beforeSend: function() {
+                            $.LoadingOverlay("show");
                         },
                         success: function (json) {
                            
                             if (json['error']) {
                                 //$('#button-register').button('reset');
-            
+                                $.LoadingOverlay("hide");
                                 if (json['error']['warning']) {
+
                                     $('#my-container .signup-form').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error']['warning'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
                                 }
                                 //var i;
@@ -72,11 +73,10 @@
                                 $('.text-danger').parent().addClass('has-error');
                             }
                             if (json['success']) {
-                                $('#my-container > .signup-form').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i>  ' + json['success'] + '</div>');
-                                $btn.button('reset');
                                 setTimeout(function() {
+                                    $('#my-container > .signup-form').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i>  ' + json['success'] + '</div>');
                                     location.href = json['redirect'];
-                                },1000);
+                                },3000);
                             }
                         }
                     });

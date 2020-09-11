@@ -43,6 +43,10 @@ class App extends AppController {
      * @var string
      */
     private $signUpTimestamp;
+    /**
+     * @var string
+     */
+    private $subscriberId;
 
     public function __construct()
     {
@@ -204,7 +208,7 @@ class App extends AppController {
      * @param $categorySlug
      */
     public function products($categorySlug) {
-        if(!$this->isSubscribed()) redirect('viewplans');
+       // if(!$this->isSubscribed()) redirect('viewplans');
 
         if($categorySlug)               $this->categorySlug         = $categorySlug;
         if($this->categorySlug)         $this->category             = Category_model::factory()->findOne(['slug' => $this->categorySlug,'status' => 1]);
@@ -269,7 +273,7 @@ class App extends AppController {
                 'end_at' => $this->subscriber->end_at,
                 'daysLeft' => $daysLeft,
             );
-            $this->data['subscriber '] = array(
+            $this->data['subscriber'] = array(
                 'name' => $this->subscriber->user->firstname. " " .$this->subscriber->user->lastname,
                 'email' => $this->subscriber->user->email,
             );
@@ -339,40 +343,43 @@ class App extends AppController {
             $this->json['error']['warning'] = $this->lang->line('error_exists');
         }
         if($this->isPost() ) {
-            User_model::factory()->addUser($this->input->post());
-            // Clear any previous login attempts for unregistered accounts.
-            User_model::factory()->deleteLoginAttempts($this->input->post('email'));
-            // Login
-            $this->user->login($this->input->post('email'), $this->input->post('password'));
-            /*
-            $subject 						= sprintf($this->lang->line('text_subject'), "SCUBA JACK");
+            if (!$this->json) {
+                User_model::factory()->addUser($this->input->post());
+                // Clear any previous login attempts for unregistered accounts.
+                User_model::factory()->deleteLoginAttempts($this->input->post('email'));
+                // Login
+                $this->user->login($this->input->post('email'), $this->input->post('password'));
+                /*
+                $subject 						= sprintf($this->lang->line('text_subject'), "SCUBA JACK");
 
-            $this->data['text_welcome'] 	= sprintf($this->lang->line('text_welcome'), "SCUBA JACK");
+                $this->data['text_welcome'] 	= sprintf($this->lang->line('text_welcome'), "SCUBA JACK");
 
-            $this->data['text_email'] 		= sprintf($this->lang->line('text_email'), $this->input->post('email'));
-            $this->data['text_password'] 	= sprintf($this->lang->line('text_password'), $this->input->post('password'));
+                $this->data['text_email'] 		= sprintf($this->lang->line('text_email'), $this->input->post('email'));
+                $this->data['text_password'] 	= sprintf($this->lang->line('text_password'), $this->input->post('password'));
 
-            $this->data['text_app_name'] 	= "SCUBA JACK";
-            $this->data['text_service'] 	= $this->lang->line('text_service');
-            $this->data['text_thanks'] 		= $this->lang->line('text_thanks');
+                $this->data['text_app_name'] 	= "SCUBA JACK";
+                $this->data['text_service'] 	= $this->lang->line('text_service');
+                $this->data['text_thanks'] 		= $this->lang->line('text_thanks');
 
-            $mail 							= new Mail($this->config->item('config_mail_engine'));
-            $mail->parameter 				= $this->config->item('config_mail_parameter');
-            $mail->smtp_hostname 			= $this->config->item('config_mail_smtp_hostname');
-            $mail->smtp_username 			= $this->config->item('config_mail_smtp_username');
-            $mail->smtp_password 			= html_entity_decode($this->config->item('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
-            $mail->smtp_port 				= $this->config->item('config_mail_smtp_port');
-            $mail->smtp_timeout 			= $this->config->item('config_mail_smtp_timeout');
+                $mail 							= new Mail($this->config->item('config_mail_engine'));
+                $mail->parameter 				= $this->config->item('config_mail_parameter');
+                $mail->smtp_hostname 			= $this->config->item('config_mail_smtp_hostname');
+                $mail->smtp_username 			= $this->config->item('config_mail_smtp_username');
+                $mail->smtp_password 			= html_entity_decode($this->config->item('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
+                $mail->smtp_port 				= $this->config->item('config_mail_smtp_port');
+                $mail->smtp_timeout 			= $this->config->item('config_mail_smtp_timeout');
 
-            $mail->setTo($this->input->post('email'));
-            $mail->setFrom($this->config->item('config_email'));
-            $mail->setSender($this->config->item('config_sender_name'));
-            $mail->setSubject($subject);
-            $mail->setText($this->template->content->view('emails/registration', $this->data));
-            $mail->send();
-            */
-            $this->json['success']          = $this->lang->line('text_success');
-            $this->json['redirect'] 		= url('plan/'.$this->plan->slug.'/billing');;
+                $mail->setTo($this->input->post('email'));
+                $mail->setFrom($this->config->item('config_email'));
+                $mail->setSender($this->config->item('config_sender_name'));
+                $mail->setSubject($subject);
+                $mail->setText($this->template->content->view('emails/registration', $this->data));
+                $mail->send();
+                */
+                $this->json['success'] = $this->lang->line('text_success');
+                $this->json['redirect'] = url('plan/billing/' . $this->plan->slug);
+
+            }
             return $this->output
                 ->set_content_type('application/json')
                 ->set_status_header(200)
@@ -428,6 +435,13 @@ class App extends AppController {
                         ->setPlanId($this->plan->paypal_plan_id)
                         ->setPlanName($this->plan->name)
                         ->setPlanDescription($this->plan->name);
+                    // Adding shipping details
+                    $this->paypal->shippingAddress
+                        ->setLine1('111 First Street')
+                        ->setCity('Saratoga')
+                        ->setPostalCode('CA')
+                        ->setState('95070')
+                        ->setCountryCode('US');
 
                     $this->paypal->agreement();
                     $this->setSession('membership_plan_id', $this->plan->id);
@@ -527,7 +541,35 @@ class App extends AppController {
         $this->template->content->view('information/about');
         $this->template->publish();
     }
+    public function checkLogin() {
+        if($this->isAjaxRequest() && $this->isPost()) {
+            $this->subscriberId   = ($this->input->post('subscriberId')) ? $this->input->post('subscriberId') : '';
+            if($this->subscriberId) {
+                $this->subscriber     = Subscriber_model::factory()->findOne(['user_id' => $this->subscriberId]);
+            }
+            if($this->subscriber) {
+                $this->json['success']  = true;
+            } else {
+                $this->json['success']  = false;
+                $this->json['redirect'] = base_url('viewplans');
+            }
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode($this->json));
+        }
 
+    }
 
+    public function stampToPassport() {
+        if($this->isAjaxRequest() && $this->isPost()) {
+            $this->json['success']  = true;
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode($this->json));
+        }
+
+    }
 
 }

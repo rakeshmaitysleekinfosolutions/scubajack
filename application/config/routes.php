@@ -64,6 +64,7 @@ $route['setSplashScreen'] 	= 'app/setSplashScreen';
 $route['index2'] 	= 'app/index2';
 
 
+
 // Membership Plans
 $route['viewplans']         = 'app/viewPlans';
 $route['plan/(:any)']       = 'app/account/$1';
@@ -92,10 +93,12 @@ $route['(:any)/explore']    = 'app/explore';
 $route['(:any)'] 	        = 'app/products/$1';
 //$route['all'] 	            = 'category/index';
 
+$route['auth/check'] = 'app/checkLogin';
+
 // Update Children Account
 $route['account/update'] = 'account/update';
 
-
+$route['passport-to-stamp'] = 'app/stampToPassport';
 
 
 

@@ -50,7 +50,7 @@ class User {
             $user = Subscriber_model::factory()->findOne(['user_id' => $customer_query->row_array()['id']]);
 		    if($user) {
                 $today = time();
-                if (strtotime($user->end_at) <= strtotime($today)) {
+                if (strtotime($user->end_at) >= $today) {
                     setSession('subscribe', true);
                     Subscriber_model::factory()->update(['expired' => false], ['user_id' => $customer_query->row_array()['id']]);
                 } else {
@@ -86,7 +86,7 @@ class User {
 		$this->ci->session->unset_userdata('user');
 		$this->ci->session->unset_userdata('is_logged');
 		$this->ci->session->unset_userdata('user_id');
-        //$this->ci->session->unset_userdata('subscribe');
+        $this->ci->session->unset_userdata('subscribe');
 		return true;
 	}
 	public function isLogged() {

@@ -181,11 +181,11 @@
                 </div>
 
                    <div class="card-box pdf">
-                    <h3 class="card-title">PDF Upload</h3>
+                    <h3 class="card-title">Upload Craft</h3>
                     <div class="skills">
                         <div class="form-group">
                         <div class="profile-img-two">
-                                <a href="avascript:void(0);" id="thumb-pdf" type="pdf" data-toggle="image" class="img-thumbnail"><img src="<?php echo $pdf_thumb;?>" alt="" title="" data-placeholder="<?php echo $pdfPlaceHolder;?>"/></a>
+                                <a href="avascript:void(0);" id="thumb-pdf" type="craft" data-toggle="image" class="img-thumbnail"><img src="<?php echo $pdf_thumb;?>" alt="" title="" data-placeholder="<?php echo $pdfPlaceHolder;?>"/></a>
                                 <input type="hidden" name="pdf" value="<?php echo $pdf;?>" id="input-pdf"/>
                             </div>
 

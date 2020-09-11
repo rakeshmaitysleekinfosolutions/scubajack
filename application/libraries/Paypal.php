@@ -517,11 +517,11 @@ class Paypal {
         $this->agreement->setPayer($this->getPayer());
 
         // Adding shipping details
-        $this->shippingAddress->setLine1('111 First Street')
-            ->setCity('Saratoga')
-            ->setState('CA')
-            ->setPostalCode('95070')
-            ->setCountryCode('US');
+//        $this->shippingAddress->setLine1('111 First Street')
+//            ->setCity('Saratoga')
+//            ->setState('CA')
+//            ->setPostalCode('95070')
+//            ->setCountryCode('US');
 
         $this->agreement->setShippingAddress($this->getShippingAddress());
         // Create agreement

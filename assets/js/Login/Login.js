@@ -21,22 +21,22 @@
                         url: $(form).attr('action'),
                         dataType: "json",
                         data: $(form).serialize(),
-                        beforeSend: function(){
-                            $btn.button('loading');
+                        beforeSend: function() {
+                            $.LoadingOverlay("show");
                         },
                         success: function (json) {
                                 
                                 if (json['error']) {
                                     if (json['error']['warning']) {
+                                        $.LoadingOverlay("hide");
                                         $('#my-container > .signin-form').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error']['warning'] + '</div>');
                                     }
                                 }
                                 if (json['success']) {
-                                    $('#my-container > .signin-form').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i>  ' + json['success'] + '</div>');
-                                    $btn.button('reset');
                                     setTimeout(function() {
+                                        $('#my-container > .signin-form').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i>  ' + json['success'] + '</div>');
                                         location.href = json['redirect'];
-                                    },1000);
+                                    },3000);
                                 }
                             
                         }

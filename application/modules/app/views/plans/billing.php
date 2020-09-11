@@ -7,15 +7,15 @@
                         <div class="plan-billing">
                             <h4 class="planheading"><?php echo $plan->name;?></h4>
                             <h2>$<?php echo $plan->price;?></h2>
-                            <p><?php echo $plan->frequency;?></p>
+                            <p>For <?php echo $plan->frequency_interval;?> <?php echo $plan->frequency;?></p>
                             <h6 class="description"><?php echo $plan->description;?></h6>
                         </div>
                     <?php } ?>
                 </div>
           
                 <div class="col-md-7 pl-0" id="my-container">
-                    <div class="right-sides signup-form ">
-                        <h3>Billing</h3>
+                    <div class="billing-form signup-form">
+                        <h3 class="text-billing">Billing</h3>
                         <form id="frmSignUp" action="<?php echo base_url('register');?>" method="post">
                             <div class="form-group register">
                                 <label for="exampleInputEmail1"></label>
@@ -46,7 +46,7 @@
                                 <img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg" alt="PayPal acceptance mark"><a href="https://www.paypal.com/us/webapps/mpp/paypal-popup" class="about_paypal" onclick="javascript:window.open('https://www.paypal.com/us/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;">What is PayPal?</a>
                                 <form id="frmPaypal" method="post">
                                     <input type="hidden" name="planId" id="planId" value="<?php echo $plan->paypal_plan_id;?>">
-                                    <button type="button" class="btn submits" id="processToPayPal">Process to PayPal</button>
+                                    <button type="button" class="btn processToPayPal" id="processToPayPal">Process to PayPal</button>
                                 </form>
 
                             </div>

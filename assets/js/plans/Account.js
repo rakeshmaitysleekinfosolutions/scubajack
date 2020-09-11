@@ -31,12 +31,12 @@
                     cache: false,
                     data: $(form).serialize(),
                     beforeSend: function(){
-                        $btn.button('loading');
+                        $.LoadingOverlay("show");
                     },
                     success: function (json) {
 
                         if (json['error']) {
-                            $btn.button('reset');
+                            $.LoadingOverlay("hide");
                             if (json['error']['warning']) {
                                 $('#my-container .createAccountFrm').prepend('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error']['warning'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
                             }
@@ -45,10 +45,9 @@
                         }
                         if (json['success']) {
                             $('#my-container > .createAccountFrm').prepend('<div class="alert alert-success"><i class="fa fa-check-circle"></i>  ' + json['success'] + '</div>');
-                            $btn.button('reset');
                             setTimeout(function() {
                                 location.href = json['redirect'];
-                            },1000);
+                            },3000);
                         }
                     }
                 });

@@ -43,7 +43,7 @@
           <?php if(isLogged()) {?> 
             <a href="<?php echo base_url('account');?>">
               <button class="btn my-account" type="submit"><i class="fas fa-user"></i>My Account</button>
-                <a href="javascript:void(0);" onclick="return logout();">Log out</a>
+                <a class="btn logoutBtn" href="javascript:void(0);" onclick="return logout();"><i class="fas fa-sign-out-alt"></i>Log out</a>
             </a>
           <?php } else { ?>
             <a href="<?php echo base_url('login');?>">
@@ -96,7 +96,7 @@
   <script src="<?php echo base_url();?>assets/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.js"></script>
 
-
+  <script type="text/javascript" src="<?php echo base_url();?>assets/js/loadingoverlay.min.js"></script>
 
   <script type="text/javascript" src="<?php echo base_url();?>assets/js/app.js"></script>
 

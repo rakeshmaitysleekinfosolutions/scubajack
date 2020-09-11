@@ -8,7 +8,7 @@
                             <div class="price-box-two">
                                 <h4 class="planheading"><?php echo $plan->name;?></h4>
                                 <h2>$<?php echo $plan->price;?></h2>
-                                <p><?php echo $plan->frequency;?></p>
+                                <p>For <?php echo $plan->frequency_interval;?> <?php echo $plan->frequency;?></p>
                                 <h6 class="description"><?php echo $plan->description;?></h6>
                             </div>
                         <?php } ?>
@@ -18,6 +18,7 @@
                 <div class="col-md-4 pl-0" id="my-container">
                     <div class="account-rightside  createAccountFrm ">
                         <h3 class="accounts">Create an account</h3>
+                        <p>Already have a SCUBA JACK Account? <a href="<?php echo base_url('login');?>">Sign In</a></p>
                         <form id="frm" action="<?php echo base_url('createAccount');?>" method="post">
                             <input type="hidden" name="<?php echo __token();?>" value="<?php echo csrf_token();?>">
                             <input type="hidden" name="slug" value="<?php echo $plan->slug;?>">

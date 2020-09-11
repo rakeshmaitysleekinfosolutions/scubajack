@@ -1308,9 +1308,9 @@ h4.planheading {
 .plan-billing {
     background: #fff;
     /* border: 2px solid red; */
-    padding: 118px 30px;
+    padding: 96px 30px;
     text-align: center;
-    min-height: 500px;
+    min-height: 294px;
     border: 2px solid #dedede;
 }
 h2.bill-price {
@@ -1335,8 +1335,8 @@ h3.bill-duration {
 }
 .billingcard {
     /* border: 1px solid; */
-    margin-top: 10px;
-    padding: 10px 20px;
+    margin-top: 20px;
+    /*padding: 10px 20px;*/
 }
 .tabs-card {
     border: 1px solid #fff;
@@ -1370,6 +1370,7 @@ a.btn.sub-button {
 
 #Paypal img {
     margin-left: 10px !important;
+    width:56%;
 }
 a.about_paypal {
    
@@ -1382,7 +1383,7 @@ a.about_paypal {
 }
 .account-rightside.createAccountFrm {
     background: #02396f;
-    min-height: 415px;
+    min-height: 389px;
     padding: 10px 25px 10px 25px;
     height: auto;
 }
@@ -1393,4 +1394,40 @@ a.about_paypal {
     font-weight: 500;
     font-family: 'Poppins', sans-serif;
     text-transform: capitalize;
+}
+button.btn.processToPayPal {
+    background: #137fea;
+    color: #fff;
+    padding: 10px 36px;
+    border-radius: 0;
+    font-size: 15px;
+    margin-top: 20px;
+    font-family: 'Poppins', sans-serif;
+    float: right;
+}
+.billing-form {
+    background: #02396f;
+    min-height: 378px;
+    padding: 10px 25px 10px 25px;
+    height: auto;
+}
+
+.text-billing {
+    font-size: 30px;
+    line-height: 40px;
+    color: #f8f9fa;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    text-transform: capitalize;
+}
+a.btn.logoutBtn {
+    background: #137fea;
+    color: #fff;
+    height: 36px;
+    margin-left: 12px;
+    /*! margin-right: 20px; */
+}
+
+a.btn.logoutBtn i {
+    padding: 5px;
 }

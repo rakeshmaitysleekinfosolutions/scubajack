@@ -31,11 +31,11 @@
             <label><input type="checkbox" name="path[]" value="<?php echo $img['path'];?>"/>&nbsp;<?php echo $img['name'];?></label>
           <?php } ?>
           
-          <?php if($img['type'] == 'image') { ?>
+          <?php if($img['type'] == 'image' && $img['originalFileType'] == 'image') { ?>
             <a href="<?php echo $img['href'];?>" class="thumbnail" type="<?php echo $img['type'];?>"><img src="<?php echo $img['thumb'];?>" alt="<?php echo $img['name'];?>" title="<?php echo $img['name'];?>" /></a>
             <label><input type="checkbox" name="path[]" fname="<?php echo $img['name'];?>" value="<?php echo $img['path'];?>" /><?php echo $img['name'];?></label>
           <?php } ?>
-            <?php if($img['type'] == 'pdf') { ?>
+            <?php if($img['type'] == 'craft') { ?>
                 <a href="<?php echo $img['href'];?>" class="thumbnail" type="<?php echo $img['type'];?>"><img src="<?php echo $img['thumb'];?>" alt="<?php echo $img['name'];?>" title="<?php echo $img['name'];?>" /></a>
                 <label><input type="checkbox" name="path[]" fname="<?php echo $img['name'];?>" value="<?php echo $img['path'];?>" /><?php echo $img['name'];?></label>
             <?php } ?>
@@ -54,29 +54,25 @@ $('a.thumbnail').on('click', function(e) {
 
 	e.preventDefault();
 
-    var fileType = $(this).attr('type');
-    ///alert('d');
-    var paramFileType = '<?php echo $type;?>';
-    if(paramFileType != fileType) {
-        swal('Please select '+paramFileType+' only');
-    } else {
-        if(paramFileType == 'pdf') {
-
-            <?php if($thumb) {?>
+    var selectedFileType    = $(this).attr('type');
+    var fileType            = '<?php echo $type;?>';
+    if((selectedFileType == 'image' && fileType == 'craft') || (selectedFileType == 'craft' && fileType == 'craft')) {
+        <?php if($thumb) {?>
             $('#<?php echo $thumb;?>').find('img').attr('src', $(this).find('img').attr('src'));
-            <?php } ?>
-            //$('#pdf_text').val($(this).parent().find('span').val());
+        <?php } ?>
             $("#pdf_text").text($(this).parent().find('input').attr('fname'));
+    } else  {
+        if(selectedFileType != fileType) {
+            swal('Please select ' + fileType + ' only');
         } else {
             <?php if($thumb) {?>
-            $('#<?php echo $thumb;?>').find('img').attr('src', $(this).find('img').attr('src'));
+                $('#<?php echo $thumb;?>').find('img').attr('src', $(this).find('img').attr('src'));
             <?php } ?>
         }
-
-        $('#<?php echo $target;?>').val($(this).parent().find('input').val());
-
-        $('#modal-image').modal('hide');
     }
+
+    $('#<?php echo $target;?>').val($(this).parent().find('input').val());
+    $('#modal-image').modal('hide');
 
 
 });

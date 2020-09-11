@@ -197,7 +197,7 @@ class Membershipplan extends AdminController implements CrudContract {
                         'currency' => 'USD'
                     ))
                     ->setChargeModelType('SHIPPING')->setCurrency(array(
-                        'value' => $this->data['price'],
+                        'value' => 0,
                         'currency' => 'USD'
                     ))->setPaymentModel('{"state":"'.$this->data['state'].'"}')
                         ->createOrUpdatePlan();
@@ -267,7 +267,7 @@ class Membershipplan extends AdminController implements CrudContract {
                         'currency' => 'USD'
                     ))
                     ->setChargeModelType('SHIPPING')->setCurrency(array(
-                        'value' => $this->data['price'],
+                        'value' => 0,
                         'currency' => 'USD'
                     ))->setPaymentModel('{"state":"'.$this->data['state'].'"}')
                       ->createOrUpdatePlan();
