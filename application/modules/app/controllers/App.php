@@ -256,7 +256,7 @@ class App extends AppController {
      */
     public function subscribed() {
 
-        if(!$this->isSubscribed()) redirect('viewplans');
+        //if(!$this->isSubscribed()) redirect('viewplans');
         $this->subscriber = Subscriber_model::factory()->findOne(['user_id' => userId()]);
         $this->data['plan'] = array();
         $this->data['subscriber'] = array();
@@ -508,6 +508,10 @@ class App extends AppController {
             exit;
         }
     }
+    public function failure() {
+        $this->template->content->view('plans/failure');
+        $this->template->publish();
+    }
     public function success() {
         $this->template->content->view('plans/success');
         $this->template->publish();
@@ -527,6 +531,15 @@ class App extends AppController {
         $this->template->content->view('information/about');
         $this->template->publish();
     }
+     /**
+     * Contact Page
+     */
+    public function contact() {
+
+        $this->template->content->view('information/contact');
+        $this->template->publish();
+    }
+
 
 
 

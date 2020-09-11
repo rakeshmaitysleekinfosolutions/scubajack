@@ -28,38 +28,19 @@
                             <!-- <button type="submit" class="btn submits" id="registerButton" data-loading-text="Loading...">Sign Up</button> -->
                         </form>
                     <div class="billingcard">
-                        <div class="row">
-                        <div  class="col-md-4">
-                            <div class="tabs-card ">
-                            <ul class="nav flex-column">
-
-                                <li class="active"><a href="#Paypal" data-toggle="tab">Paypal</a></li>
-                                <li><a href="#Embgateway" data-toggle="tab">Embgateway </a></li>
-                                <li><a href="#Stripe" data-toggle="tab">Credit Card (Stripe)</a></li>
-
-                            </ul>
-                            </div>
-                        </div>
-                        <div class="col-md-8">
-                            <div class="tab-content">
-                            <div class="tab-pane active" id="Paypal">
-                                <img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg" alt="PayPal acceptance mark"><a href="https://www.paypal.com/us/webapps/mpp/paypal-popup" class="about_paypal" onclick="javascript:window.open('https://www.paypal.com/us/webapps/mpp/paypal-popup','WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, scrollbars=yes, resizable=yes, width=1060, height=700'); return false;">What is PayPal?</a>
+                        
+                        <img src="https://www.paypalobjects.com/webstatic/mktg/logo/AM_mc_vs_dc_ae.jpg" alt="PayPal acceptance mark">
+                        <!-- <a href="https://www.paypal.com/us/webapps/mpp/paypal-popup" class="about_paypal"
+                         onclick="javascript:window.open('https://www.paypal.com/us/webapps/mpp/paypal-popup',
+                         'WIPaypal','toolbar=no, location=no, directories=no, status=no, menubar=no, 
+                         scrollbars=yes, resizable=yes, width=1060, height=700'); return false;">What is PayPal?</a> -->
                                 <form id="frmPaypal" method="post">
                                     <input type="hidden" name="planId" id="planId" value="<?php echo $plan->paypal_plan_id;?>">
-                                    <button type="button" class="btn submits" id="processToPayPal">Process to PayPal</button>
+                                    <button type="button" class="btn " id="processToPayPal">Process to PayPal</button>
                                 </form>
-
-                            </div>
-                            <div class="tab-pane" id="Embgateway">
-                                <img src="https://adventuresofscubajack.com/wp-content/plugins/embgateway-payment-gateway-for-woocommerce/images/logo.png" alt="Embgateway">
-
-                            </div>
-                            <div class="tab-pane " id="Stripe">
-                                     <img src="https://adventuresofscubajack.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg" class="stripe-visa-icon stripe-icon" alt="Visa"><img src="https://adventuresofscubajack.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg" class="stripe-amex-icon stripe-icon" alt="American Express"><img src="https://adventuresofscubajack.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg" class="stripe-mastercard-icon stripe-icon" alt="Mastercard"><img src="https://adventuresofscubajack.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/discover.svg" class="stripe-discover-icon stripe-icon" alt="Discover"><img src="https://adventuresofscubajack.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/jcb.svg" class="stripe-jcb-icon stripe-icon" alt="JCB"><img src="https://adventuresofscubajack.com/wp-content/plugins/woocommerce-gateway-stripe/assets/images/diners.svg" class="stripe-diners-icon stripe-icon" alt="Diners">
-                            </div>
-                        </div>
+                    
                     </div>
-                </div>
+                
             </div>
         </div>
     </div>
