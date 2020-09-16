@@ -40,6 +40,7 @@ class Account extends AppController {
         $this->subscriber = Subscriber_model::factory()->findOne(['user_id' => userId()]);
         $this->data['plan'] = array();
         $this->data['subscriber'] = array();
+        $this->data['passports'] = array();
         if($this->subscriber) {
             $today = time();
             $daysLeft = floor((strtotime($this->subscriber->end_at)-$today)/(60*60*24));
@@ -53,8 +54,19 @@ class Account extends AppController {
                 'name' => $this->subscriber->user->firstname. " " .$this->subscriber->user->lastname,
                 'email' => $this->subscriber->user->email,
             );
+            $passports = UserPassport_model::factory()->findAll([
+                'user_id'       => $this->subscriber->user_id,
+            ]);
+            if($passports) {
+                foreach ($passports as $key => $passport) {
+                    $this->data['passports'][] = array(
+                      'country' =>   $passport->country->name,
+                        'timestamp' =>   $passport->created_at
+                    );
+                }
+            }
         }
-
+        //$this->dd($this->data['passports']);
         $this->template->javascript->add('assets/js/jquery.validate.js');
         $this->template->javascript->add('assets/js/additional-methods.js');
         $this->template->javascript->add('assets/js/account/Account.js');

@@ -72,36 +72,59 @@ if(NodeList.prototype.forEach == undefined) {
 paths.forEach(function (path) {
     path.addEventListener('click', function (e) {
         e.preventDefault();
-        var iso = $(this).attr('data-iso');
-        console.log($(this).attr('data-subscriberId'));
+        var countryIso             = $(this).attr('data-iso');
+        var subscriberId    = $(this).attr('data-subscriberid');
+
+        var formData = new FormData();
+        formData.append('userId', subscriberId);
+        formData.append('countryIso', countryIso);
+
         $.ajax({
             type: "POST",
             url: $(this).attr('data-url'),
             dataType: "json",
             data: {
-                subscriberId: $(this).attr('data-subscriberId')
+                subscriberId: subscriberId
             },
             beforeSend: function() {
                 $.LoadingOverlay("show");
             },
             cache: false,
             success: function (res) {
-                console.log(res);
-                if (!res['success']) {
-                    setTimeout(function() {
-                        console.log(myLabel.baseUrl + iso + '/explore');
-                        //location.href = data['redirect'];
-                    },3000);
+                if (res['success']) {
+                    stampToPassport({data: formData});
+
                 } else {
                     setTimeout(function() {
-                      //  console.log(myLabel.baseUrl + iso + '/explore');
-                        //window.location.href = myLabel.baseUrl + iso + '/explore';
+                        location.href = myLabel.viewplans;
                     },3000);
                 }
             },error: function (err) {
                 console.log(err);
             }
         });
+
+        function stampToPassport(options) {
+            fetch(myLabel.stampToPassport, {
+                method: 'post',
+                body: options.data
+            }).then(function(response) {
+                return response.json();
+            }).then(function (data) {
+                var success = data.success;
+                if(success) {
+                    console.log(success);
+                    setTimeout(function() {
+                        location.href = data.redirect;
+                    },3000);
+                } else {
+                    setTimeout(function() {
+                        location.href = data.redirect;
+                    },3000);
+                }
+
+            });
+        }
 
     })
 })

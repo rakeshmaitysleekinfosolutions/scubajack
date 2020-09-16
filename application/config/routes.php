@@ -89,16 +89,19 @@ $route['account'] 	        = 'account';
 $route['about'] 	        = 'app/about';
 $route['contact'] 	        = 'app/contact';
 
+$route['stampToPassport'] = 'app/stampToPassport';
+$route['auth/check'] = 'app/checkLogin';
+
 $route['(:any)/explore']    = 'app/explore';
 $route['(:any)'] 	        = 'app/products/$1';
 //$route['all'] 	            = 'category/index';
 
-$route['auth/check'] = 'app/checkLogin';
+
 
 // Update Children Account
 $route['account/update'] = 'account/update';
 
-$route['passport-to-stamp'] = 'app/stampToPassport';
+
 
 
 

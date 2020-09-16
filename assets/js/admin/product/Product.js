@@ -142,7 +142,7 @@
                 swal("You must select one record");
             }
         });
-    // Image Manager
+        // Image Manager
         $(document).on('click', 'a[data-toggle=\'image\']', function(e) {
             var $element = $(this);
             var $popover = $element.data('bs.popover'); // element has bs popover?

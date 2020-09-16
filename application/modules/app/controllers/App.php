@@ -47,6 +47,34 @@ class App extends AppController {
      * @var string
      */
     private $subscriberId;
+    /**
+     * @var object|null
+     */
+    private $country;
+    /**
+     * @var string
+     */
+    private $isoCode;
+    /**
+     * @var string
+     */
+    private $userId;
+    /**
+     * @var string
+     */
+    private $countryIso;
+    /**
+     * @var object
+     */
+    private $mapContinent;
+    /**
+     * @var object
+     */
+    private $passport;
+    /**
+     * @var object
+     */
+    private $countryDescription;
 
     public function __construct()
     {
@@ -534,18 +562,65 @@ class App extends AppController {
      * Membership plan subscribe
      */
     public function explore() {
-        $this->template->content->view('country/index');
+        $this->isoCode = ($this->uri->segment(1)) ? $this->uri->segment(1) : "";
+        if($this->isoCode) {
+            $this->country = Country_model::factory()->getCountryByIsoCode($this->isoCode);
+        }
+        $this->data['country'] = true;
+        $this->data['message'] = '';
+        if(!$this->country) {
+            $this->data['country'] = false;
+            $this->data['message'] = 'Country not exists!';
+        }
+        $this->data['isContent'] = false;
+        if($this->country) {
+            $this->countryDescription = CountryDescription_model::factory()->findOne(['country_id' => $this->country->id]);
+        }
+
+        if($this->countryDescription) {
+            $this->data['isContent'] = true;
+            $this->data['countryDescription'] = $this->countryDescription;
+            $this->getAllBlogOrWithLimit($this->countryDescription->blogs,3);
+        } else {
+            $this->data['countryDescription'] = array();
+        }
+        //$this->dd($this->data);
+        $this->template->content->view('explore/index', $this->data);
         $this->template->publish();
     }
-     /**
-     * Membership plan subscribe
+    public function getAllBlogOrWithLimit($blogs, $limit = 6, $all = false) {
+        if($blogs) {
+            if($all) {
+                foreach ($blogs as $blog) {
+                    $this->data['blogs'][] = array(
+                        'title'         => $blog->title,
+                        'slug'          => base_url($this->uri->segment(1).'/explore/'.$blog->slug),
+                        'description'   => $blog->description,
+                        'smallDescription'   => $blog->small_description,
+                        'image'         => resize($blog->image,497,297),
+                    );
+                }
+            } else {
+                    foreach (array_slice($blogs,0, $limit) as $blog) {
+                        $this->data['blogs'][] = array(
+                            'title'         => $blog->title,
+                            'slug'          => base_url($this->uri->segment(1).'/explore/'.$blog->slug),
+                            'smallDescription'   => $blog->small_description,
+                            'description'   => $blog->description,
+                            'image'         => resize($blog->image,497,297),
+                        );
+                    }
+
+            }
+
+        } else {
+            $this->data['blogs'] = array();
+        }
+    }
+
+    /**
+     * @return mixed
      */
-    public function about() {
-
-        $this->template->content->view('information/about');
-        $this->template->publish();
-    }
-
     public function checkLogin() {
         if($this->isAjaxRequest() && $this->isPost()) {
             $this->subscriberId   = ($this->input->post('subscriberId')) ? $this->input->post('subscriberId') : '';
@@ -556,7 +631,6 @@ class App extends AppController {
                 $this->json['success']  = true;
             } else {
                 $this->json['success']  = false;
-                $this->json['redirect'] = base_url('viewplans');
             }
             return $this->output
                 ->set_content_type('application/json')
@@ -565,7 +639,14 @@ class App extends AppController {
         }
 
     }
+    /**
+     * Membership plan subscribe
+     */
+    public function about() {
 
+        $this->template->content->view('information/about');
+        $this->template->publish();
+    }
      /**
      * Contact Page
      */
@@ -575,17 +656,48 @@ class App extends AppController {
         $this->template->publish();
     }
 
-
-
+    /**
+     * @return mixed
+     */
     public function stampToPassport() {
-        if($this->isAjaxRequest() && $this->isPost()) {
-            $this->json['success']  = true;
+        if($this->isPost()) {
+
+            $this->countryIso   = ($this->input->post('countryIso')) ? strtolower($this->input->post('countryIso')) : "";
+            $this->userId        = ($this->input->post('userId')) ? $this->input->post('userId') : "";
+
+            if($this->countryIso) {
+                $this->country = Country_model::factory()->getCountryByIsoCode($this->countryIso);
+            }
+
+            if($this->country) {
+                $this->passport = UserPassport_model::factory()->findOne([
+                    'user_id'       => $this->userId,
+                    'country_id' => $this->country->id
+                ]);
+                if($this->passport) {
+                    UserPassport_model::factory()->update([
+                        'updated_at'    => date('Y-m-d H:i:s', time())
+                    ],[
+                        'user_id'       => $this->userId,
+                        'country_id'    => $this->country->id
+                    ]);
+                } else {
+                    UserPassport_model::factory()->insert([
+                        'user_id'       => $this->userId,
+                        'country_id'    => $this->country->id,
+                    ]);
+                }
+                $this->json['success']  = true;
+                $this->json['redirect']  = base_url($this->countryIso.'/explore');
+            } else {
+                $this->json['success']  = false;
+                $this->json['redirect']  = base_url($this->countryIso.'/explore');
+            }
             return $this->output
                 ->set_content_type('application/json')
                 ->set_status_header(200)
                 ->set_output(json_encode($this->json));
         }
-
     }
 
 }

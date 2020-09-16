@@ -192,6 +192,12 @@
                                     <li class="categoryplus"><a href="<?php echo admin_url('subscribers');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Subscribers</span></a></li>
                                 </ul>
                             </li>
+                            <li class="submenu">
+                                <a href="#" ><i class="fa fa-tags fw"></i><span> Virtual Trip</span><span class="menu-arrow"></span></a>
+                                <ul class="list-unstyled" style="display: none;">
+                                    <li class="categoryplus"><a href="<?php echo admin_url('countrydescription');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Manage Content</span></a></li>
+                                </ul>
+                            </li>
 							<li>
 								<a href="javascript:void(0);"><i class="fa fa-cog fw"></i> Application Settings</a>
 							</li>

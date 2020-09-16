@@ -13,6 +13,7 @@
   <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/css/style.css">
   <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/css/responsive.css">
   <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/font/font.css">
+    <link rel="stylesheet" href="<?php echo base_url();?>assets/theme/light/js/sweetalert/sweetalert.css">
   <?php echo $this->template->stylesheet; ?>
   <title>Scuba Jack</title>
 </head>
@@ -97,7 +98,7 @@
   <script type="text/javascript" src="<?php echo base_url();?>assets/js/bootstrap.js"></script>
 
   <script type="text/javascript" src="<?php echo base_url();?>assets/js/loadingoverlay.min.js"></script>
-
+<script type="text/javascript" src="<?php echo base_url();?>assets/theme/light/js/sweetalert/sweetalert.js" ></script>
   <script type="text/javascript" src="<?php echo base_url();?>assets/js/app.js"></script>
 
   <?php echo $this->template->javascript; ?>
