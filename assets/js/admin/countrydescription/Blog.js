@@ -191,7 +191,38 @@
             swal("You must select one record");
         }
     });
+    $(document).on('click', '.addImage', function (e) {
+        console.log(myLabel);
+        var html = '';
+        html = '<tr id="image-row' + myLabel.imageRow + '">';
+        html += '  <td class="text-left"><a href="" type="image" id="thumb-image' + myLabel.imageRow + '"data-toggle="image" class="img-thumbnail"><img src="'+myLabel.placeholder+'" alt="" title="" data-placeholder="'+myLabel.placeholder+'" /></a><input type="hidden" name="images[' + myLabel.imageRow + '][image]" value="" id="input-image' + myLabel.imageRow + '" /></td>';
+        html += '  <td class="text-left"><input type="text" name="images[' + myLabel.imageRow + '][video]" value="" class="form-control video" id="input-video' + myLabel.imageRow + '" data-placeholder="Video Url" required></td>';
+        html += '  <td class="text-left"><input type="text" name="images[' + myLabel.imageRow + '][sort_order]" value="" class="form-control" id="input-sort_order' + myLabel.imageRow + '" data-placeholder="Sort Order" required></td>';
+        html += '  <td class="text-left"><button type="button" onclick="$(\'#image-row' + myLabel.imageRow + '\').remove();" data-toggle="tooltip" title="<?php echo $button_remove;?>" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+        html += '</tr>';
 
+        $('#images tbody').append(html);
+        myLabel.imageRow++;
+    });
+    $(document).bind('paste', '.video', function (e) {
+        // access the clipboard using the api
+        var url = e.originalEvent.clipboardData.getData('text');
+        if(!ytVidId(url)) {
+            swal('Not a valid youtube URL');
+        }
+        // alert(pastedData);
+       // var thumb = Youtube.thumb(url);
+        //var iframe           = $('iframe:first');
+        //var youtubeThumb           = $('#youtubeThumb');
+        //console.log(youtubeThumb.val());
+        youtubeThumb.val(thumb);
+        //console.log(youtubeThumb.val());
+        // iframe.attr('src', thumb);
+    });
+    function ytVidId(url) {
+        var p = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+        return (url.match(p)) ? RegExp.$1 : false;
+    }
     $(".alert").fadeTo(2000, 500).slideUp(500, function(){
         $(".alert").slideUp(500);
     });

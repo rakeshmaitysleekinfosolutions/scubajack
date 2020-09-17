@@ -3,13 +3,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class AdminController extends BaseController {
 
-	protected $rows;
-	protected $error = array();
-    private $localeKey;
-    private $foreignKey;
-    private $relatedModels;
-    protected $selected;
-    protected $id;
+	protected   $rows;
+	protected   $error = array();
+    private     $localeKey;
+    private     $foreignKey;
+    private     $relatedModels;
+    protected   $selected;
+    protected   $id;
     public function __constructor() {
          parent::__constructor();
          $this->getTemplate();

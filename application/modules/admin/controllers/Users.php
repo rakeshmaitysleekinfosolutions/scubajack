@@ -12,7 +12,7 @@ class Users extends AdminController implements \Application\Contracts\UserContra
      * @var mixed
      */
 
-    private $selected;
+    //private $selected;
 
     public function __constructor() {
 		parent::__construct();

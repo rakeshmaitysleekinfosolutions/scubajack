@@ -2,10 +2,10 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 class BaseController extends MX_Controller {
-    public $data;
-    public $results;
-    public $json = array();
-    public $request = array();
+    public  $data;
+    public  $results;
+    public  $json = array();
+    public  $request = array();
     private $headers = array();
 	private $level = 0;
     private $output;

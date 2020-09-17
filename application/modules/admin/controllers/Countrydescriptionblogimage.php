@@ -1,17 +1,16 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 use Carbon\Carbon;
-use Application\Contracts\CrudContract;
 
-class Countrydescription extends AdminController implements CrudContract {
+class countryDescriptionBlogImage extends AdminController{
 
 
     private $countryDescription;
     /**
      * @var object
      */
-    private $countryDescriptionBlog;
-    private $countryDescriptionId;
+    private $countryDescriptionBlogImage;
+    private $blogId;
 
     public function __construct() {
         parent::__construct();
@@ -19,92 +18,91 @@ class Countrydescription extends AdminController implements CrudContract {
         $this->template->set_template('layout/admin');
     }
 
-    public function index() {
+
+    public function index($blogId) {
         $this->template->stylesheet->add('assets/theme/light/js/datatables/dataTables.bootstrap4.css');
         $this->template->javascript->add('assets/theme/light/js/datatables/jquery.dataTables.min.js');
         $this->template->javascript->add('assets/theme/light/js/datatables/dataTables.bootstrap4.min.js');
-        $this->template->javascript->add('assets/js/admin/countrydescription/CountryDescription.js');
+        $this->template->javascript->add('assets/js/admin/countrydescriptionblogimage/CountryDescriptionBlogImage.js');
 
-        $this->template->content->view('countrydescription/index');
+        $this->template->content->view('countrydescriptionblogimage/index');
         $this->template->publish();
     }
-    public function setData() {
 
-    }
-    public function setCountryDescription() {
-        // Country Description
-        if (isset($this->countryDescription)) {
-            $this->data['primaryKey'] = $this->countryDescription->id;
+    /**
+     *
+     */
+    public function setData() {
+        // Country Description Blog
+        if (isset($this->countryDescriptionBlogImage)) {
+            $this->data['primaryKey'] = $this->countryDescriptionBlogImage->id;
         } else {
             $this->data['primaryKey'] = '';
         }
-
-        if (!empty($this->input->post('country'))) {
-            $this->data['countryId'] = $this->input->post('country');
-        } elseif (!empty($this->countryDescription)) {
-            $this->data['countryId'] = $this->countryDescription->country_id;
-        }else {
-            $this->data['countryId'] = '';
-        }
         if (!empty($this->input->post('title'))) {
             $this->data['title'] = $this->input->post('title');
-        } elseif (!empty($this->countryDescription)) {
-            $this->data['title'] = $this->countryDescription->title;
+        } elseif(!empty($this->countryDescriptionBlogImage)) {
+            $this->data['title'] = $this->countryDescriptionBlogImage->title;
         } else {
             $this->data['title'] = '';
         }
-
-        if (!empty($this->input->post('description'))) {
-            $this->data['description'] = $this->input->post('description');
-        } elseif (!empty($this->countryDescription)) {
-            $this->data['description'] = $this->countryDescription->description;
+        // Images
+        if (!empty($this->input->post('images'))) {
+            $images = $this->input->post('images');
+        } elseif (!empty($this->questionImages)) {
+            $images = $this->questionImages;
         } else {
-            $this->data['description'] = '';
+            $images = array();
         }
-        if (!empty($this->input->post('image'))) {
-            $this->data['image'] = $this->input->post('image');
-        } elseif (!empty($this->countryDescription)) {
-            $this->data['image'] = $this->countryDescription->image;
-        } else {
-            $this->data['image'] = '';
-        }
-        if (!empty($this->input->post('image')) && is_file(DIR_IMAGE . $this->input->post('image'))) {
-            $this->data['thumb'] = $this->resize($this->input->post('image'), 100, 100);
-        } elseif (!empty($this->countryDescription) && is_file(DIR_IMAGE . $this->countryDescription->image)) {
-            $this->data['thumb'] = $this->resize($this->countryDescription->image, 100, 100);
-        } else {
-            $this->data['thumb'] = $this->resize('no_image.png', 100, 100);
+        $this->data['images'] = array();
+
+        foreach ($images as $image) {
+            if (is_file(DIR_IMAGE . $image->image)) {
+                $image = $image->image;
+                $thumb = $image->image;
+            } else {
+                $image = '';
+                $thumb = 'no_image.png';
+            }
+
+            $this->data['images'][] = array(
+                'image'      => $image,
+                'thumb'      => $this->resize($thumb, 100, 100)
+            );
         }
 
-        $this->data['placeholder']  = $this->resize('no_image.png', 100, 100);
-        $this->data['back']         = admin_url('countrydescription');
-        $this->data['countries']    = Country_model::factory()->findAll();
-
+        $this->data['placeholder'] = $this->resize('no_image.png', 100, 100);
     }
-
-
-    public function create() {
+    /*
+     *
+     */
+    public function create($blogId) {
         $this->template->javascript->add('assets/js/jquery.validate.js');
         $this->template->javascript->add('assets/js/additional-methods.js');
-        $this->template->javascript->add('assets/js/admin/countrydescription/CountryDescription.js');
-        $this->setCountryDescription();
-        $this->template->content->view('countrydescription/create', $this->data);
+        $this->template->javascript->add('assets/js/admin/countrydescriptionblogimage/CountryDescriptionBlogImage.js');
+        $this->setData();
+        $this->data['back'] = admin_url('countrydescriptionblogimage/index/'.$blogId);
+        $this->template->content->view('countrydescriptionblogimage/create', $this->data);
         $this->template->publish();
     }
 
     public function store() {
         try {
             if ($this->isPost()) {
-                $this->setCountryDescription();
-                //dd($this->data);
-                CountryDescription_model::factory()->insert([
-                    'country_id'        => $this->data['countryId'],
+                $this->setData();
+                CountryDescriptionBlogImage_model::factory()->insert([
                     'title'             => $this->data['title'],
-                    'description'       => $this->data['description'],
-                    'image'             => $this->data['image'],
                 ]);
+                $this->setId(Question_model::factory()->getLastInsertID());
+                if(isset($this->data['images'])) {
+                    foreach ($this->data['images'] as $image) {
+                        CountryDescriptionBlogImage_model::factory()->update([
+                            'image' => $image,
+                        ], $this->id);
+                    }
+                }
                 $this->setMessage('message', $this->lang->line('text_success'));
-                $this->redirect(admin_url('countrydescription/create/'));
+                $this->redirect(admin_url('countrydescriptionblogimage/create/'));
             }
             $this->create();
         } catch (Exception $e) {
@@ -115,16 +113,16 @@ class Countrydescription extends AdminController implements CrudContract {
 
     public function edit($id) {
         try {
-            $this->countryDescription = CountryDescription_model::factory()->findOne($id);
-            if(!$this->countryDescription) {
+            $this->countryDescriptionBlogImage = CountryDescriptionBlogImage_model::factory()->findOne($id);
+            if(!$this->countryDescriptionBlogImage) {
                 $this->setMessage('warning', $this->lang->line('text_notfound'));
-                $this->redirect(admin_url('countrydescription'));
+                $this->redirect(admin_url('countrydescriptionblogimage/'.$id));
             }
             $this->template->javascript->add('assets/js/jquery.validate.js');
             $this->template->javascript->add('assets/js/additional-methods.js');
-            $this->template->javascript->add('assets/js/admin/countrydescription/CountryDescription.js');
-            $this->setCountryDescription();
-            $this->template->content->view('countrydescription/edit', $this->data);
+            $this->template->javascript->add('assets/js/admin/countrydescriptionblogimage/CountryDescriptionBlogImage.js');
+            $this->setData();
+            $this->template->content->view('countrydescriptionblogimage/edit', $this->data);
             $this->template->publish();
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
@@ -133,14 +131,15 @@ class Countrydescription extends AdminController implements CrudContract {
 
     public function update($id) {
         try {
-            $this->setCountryDescription();
+            $this->setData();
             if ($this->isPost()) {
-                CountryDescription_model::factory()->update([
+                CountryDescriptionBlogImage_model::factory()->update([
                     'country_id'        => $this->data['countryId'],
                     'title'             => $this->data['title'],
                     'description'       => $this->data['description'],
                     'image'             => $this->data['image'],
                 ], $id);
+
                 $this->setMessage('message', $this->lang->line('text_success'));
                 $this->redirect(admin_url('countrydescription/edit/'.$id));
             }
@@ -163,7 +162,7 @@ class Countrydescription extends AdminController implements CrudContract {
                 }
                 if($this->selected) {
                     foreach ($this->selected as $id) {
-                        CountryDescription_model::factory()->delete($id);
+                        CountryDescriptionBlogImage_model::factory()->delete($id);
                     }
                     return $this->output
                         ->set_content_type('application/json')
@@ -182,7 +181,7 @@ class Countrydescription extends AdminController implements CrudContract {
     }
     public function onLoadDatatableEventHandler() {
 
-        $this->results = CountryDescription_model::factory()->findAll();
+        $this->results = CountryDescriptionBlogImage_model::factory()->findAll();
         if($this->results) {
             foreach($this->results as $result) {
                 if (is_file(DIR_IMAGE . $result->image)) {
@@ -282,7 +281,7 @@ class Countrydescription extends AdminController implements CrudContract {
      * @throws Exception
      */
     public function fetchBlog($id) {
-        $this->results = CountryDescriptionBlog_model::factory()->findAll(['country_descriptions_id' => $id]);
+        $this->results = countryDescriptionBlogImage_model::factory()->findAll(['country_descriptions_id' => $id]);
         if($this->results) {
             foreach($this->results as $result) {
                 if (is_file(DIR_IMAGE . $result->image)) {
@@ -313,11 +312,11 @@ class Countrydescription extends AdminController implements CrudContract {
                 $this->data[$i][] = '<td>'.$row['created_at'].'</td>';
                 $this->data[$i][] = '<td>'.$row['updated_at'].'</td>';
                 $this->data[$i][] = '<td class="text-right">
-
 	                            <div class="dropdown">
 	                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
 	                                <ul class="dropdown-menu pull-right">
 	                                    <li><a class="edit" href="javascript:void(0);" data-id="'.$row['id'].'" data-country_descriptions_id="'.$row['country_descriptions_id'].'" data-toggle="modal" data-target="#edit_client"><i class="fa fa-pencil m-r-5"></i> Edit</a></li>
+	                                    <li><a class="edit" href="'.base_url('countrydescription/blogimages/'.$row['id']).'" ><i class="fa fa-pencil m-r-5"></i> Images</a></li>
 	                                </ul>
 	                            </div>
 	                        </td>
@@ -342,113 +341,27 @@ class Countrydescription extends AdminController implements CrudContract {
      * @param $id
      */
     public function getCountryDescription($id) {
-        $this->countryDescriptionId = $id;
-        $this->countryDescription   = CountryDescription_model::factory()->findOne($this->countryDescriptionId);
+        $this->blogId = $id;
+        $this->countryDescription   = CountryDescriptionBlogImage_model::factory()->findOne($this->blogId);
     }
 
     /**
      *
      */
-    public function setCountryDescriptionBlog() {
-        // Country Description Blog
-        if (isset($this->countryDescriptionBlog)) {
-            $this->data['primaryKey'] = $this->countryDescriptionBlog->id;
-        } else {
-            $this->data['primaryKey'] = '';
-        }
-        if (!empty($this->input->post('title'))) {
-            $this->data['title'] = $this->input->post('title');
-        } elseif(!empty($this->countryDescriptionBlog)) {
-            $this->data['title'] = $this->countryDescriptionBlog->title;
-        } else {
-            $this->data['title'] = '';
-        }
-        if (!empty($this->input->post('title'))) {
-            $this->data['slug'] = url_title($this->input->post('title'),'dash', true);
-        } elseif (!empty($this->countryDescriptionBlog)) {
-            $this->data['slug'] = $this->countryDescriptionBlog->slug;
-        } else {
-            $this->data['slug'] = url_title($this->input->post('title'),'dash', true);
-        }
-        if (!empty($this->input->post('smallDescription'))) {
-            $this->data['smallDescription'] = $this->input->post('smallDescription');
-        } elseif (!empty($this->countryDescriptionBlog)) {
-            $this->data['smallDescription'] = $this->countryDescriptionBlog->small_description;
-        } else {
-            $this->data['smallDescription'] = '';
-        }
-        if (!empty($this->input->post('description'))) {
-            $this->data['description'] = $this->input->post('description');
-        } elseif (!empty($this->countryDescriptionBlog)) {
-            $this->data['description'] = $this->countryDescriptionBlog->description;
-        } else {
-            $this->data['description'] = '';
-        }
-        if (!empty($this->input->post('image'))) {
-            $this->data['image'] = $this->input->post('image');
-        } elseif (!empty($this->countryDescriptionBlog)) {
-            $this->data['image'] = $this->countryDescriptionBlog->image;
-        } else {
-            $this->data['image'] = '';
-        }
-        if (!empty($this->input->post('image')) && is_file(DIR_IMAGE . $this->input->post('image'))) {
-            $this->data['thumb'] = $this->resize($this->input->post('image'), 100, 100);
-        } elseif (!empty($this->countryDescriptionBlog) && is_file(DIR_IMAGE . $this->countryDescriptionBlog->image)) {
-            $this->data['thumb'] = $this->resize($this->countryDescriptionBlog->image, 100, 100);
-        } else {
-            $this->data['thumb'] = $this->resize('no_image.png', 100, 100);
-        }
 
-        // Images
-        if (!empty($this->input->post('images'))) {
-            $blogImages = $this->input->post('images');
-        } elseif (!empty($this->countryDescriptionBlog)) {
-            $blogImages = $this->countryDescriptionBlog->images($this->countryDescriptionBlog->id);
-        } else {
-            $blogImages = array();
-        }
-
-        $this->data['images'] = array();
-
-        foreach ($blogImages as $blogImage) {
-            if (is_file(DIR_IMAGE . $blogImage['image'])) {
-                $image = $blogImage['image'];
-                $thumb = $blogImage['image'];
-            } else {
-                $image = '';
-                $thumb = 'no_image.png';
-            }
-
-            $this->data['images'][] = array(
-                'image'      => $image,
-                'thumb'      => resize($thumb, 100, 100),
-                'video'      => $blogImage['video'],
-                'sort_order' => $blogImage['sort_order'],
-            );
-        }
-        //dd($this->data['images']);
-        $this->data['placeholder'] = resize('no_image.png', 100, 100);
-
-
-        $this->data['countryDescUrl']    = '';
-        $this->data['createUrl']    = '';
-        $this->data['saveUrl']      = '';
-
-
-    }
 
     /**
-     * @param $countryDescriptionId
+     * @param $blogId
      */
-    public function blog($countryDescriptionId) {
-        $this->getCountryDescription($countryDescriptionId);
+    public function blog($blogId) {
+        $this->getCountryDescription($blogId);
         if($this->countryDescription) {
             $this->data['countryDescUrl']       = admin_url('countrydescription');
-            $this->data['fetchBlogUrl']         = admin_url('countrydescription/fetchBlog/'.$this->countryDescriptionId);
+            $this->data['fetchBlogUrl']         = admin_url('countrydescription/fetchBlog/'.$this->blogId);
             $this->data['editBlogUrl']          = admin_url('countrydescription/editblog/');
-            $this->data['createBlogUrl']        = admin_url('countrydescription/createblog/'.$this->countryDescriptionId);
-            $this->data['saveBlogUrl']          = admin_url('countrydescription/storeblog/'.$this->countryDescriptionId);
-            $this->data['backBlogUrl']          = admin_url('countrydescription/blog/'.$this->countryDescriptionId);
+            $this->data['createBlogUrl']        = admin_url('countrydescription/createblog/'.$this->blogId);
+            $this->data['saveBlogUrl']          = admin_url('countrydescription/storeblog/'.$this->blogId);
+            $this->data['backBlogUrl']          = admin_url('countrydescription/blog/'.$this->blogId);
         }
         if(!$this->countryDescription) {
             $this->redirect($this->data['countryDescUrl']);
@@ -463,15 +376,15 @@ class Countrydescription extends AdminController implements CrudContract {
     }
 
     /**
-     * @param $countryDescriptionId
+     * @param $blogId
      */
-    public function createBlog($countryDescriptionId) {
-        $this->getCountryDescription($countryDescriptionId);
+    public function createBlog($blogId) {
+        $this->getCountryDescription($blogId);
         if($this->countryDescription) {
-            $this->data['saveBlogUrl']          = admin_url('countrydescription/storeblog/'.$this->countryDescriptionId);
-            $this->data['backBlogUrl']          = admin_url('countrydescription/blog/'.$this->countryDescriptionId);
+            $this->data['saveBlogUrl']          = admin_url('countrydescription/storeblog/'.$this->blogId);
+            $this->data['backBlogUrl']          = admin_url('countrydescription/blog/'.$this->blogId);
         }
-        $this->setCountryDescriptionBlog();
+        $this->setData();
 
         if(!$this->countryDescription) {
             $this->redirect($this->data['countryDescUrl']);
@@ -479,44 +392,29 @@ class Countrydescription extends AdminController implements CrudContract {
         $this->template->javascript->add('assets/js/jquery.validate.js');
         $this->template->javascript->add('assets/js/additional-methods.js');
         $this->template->javascript->add('assets/js/admin/countrydescription/Blog.js');
-       // dd($this->data);
+
         $this->template->content->view('countrydescription/blog/create', $this->data);
         $this->template->publish();
     }
 
     /**
-     * @param $countryDescriptionId
+     * @param $blogId
      */
-    public function storeBlog($countryDescriptionId) {
+    public function storeBlog($blogId) {
         try {
             if ($this->isPost()) {
-                $this->getCountryDescription($countryDescriptionId);
-                $this->setCountryDescriptionBlog();
-                CountryDescriptionBlog_model::factory()->insert([
-                    'country_descriptions_id '  => $this->countryDescriptionId,
-                    'title'                     => $this->data['title'],
-                    'slug'                      => $this->data['slug'],
-                    'description'               => $this->data['description'],
-                    'small_description'         => $this->data['smallDescription'],
+                $this->getCountryDescription($blogId);
+                $this->setData();
+                countryDescriptionBlogImage_model::factory()->insert([
+                    'country_descriptions_id '        => $this->blogId,
+                    'title'             => $this->data['title'],
+                    'slug'             => $this->data['slug'],
+                    'description'       => $this->data['description'],
+                    'small_description'       => $this->data['smallDescription'],
+                    'image'             => $this->data['image'],
                 ]);
-                $this->setId(CountryDescriptionBlog_model::factory()->getLastInsertID());
-                if(isset($this->data['image'])) {
-                    CountryDescriptionBlog_model::factory()->update([
-                        'image'         => $this->data['image'],
-                    ], $this->id);
-                }
-                if(isset($this->data['images'])) {
-                    foreach ($this->data['images'] as $image) {
-                        CountryDescriptionBlogImage_model::factory()->update([
-                            'country_descriptions_blogs_id' => $this->id,
-                            'image'         => $image['image'],
-                            'video'         => $image['video'],
-                            'sort_order'    => $image['sort_order'],
-                        ], $this->id);
-                    }
-                }
                 $this->setMessage('message', $this->lang->line('text_success'));
-                $this->data['createBlogUrl']        = admin_url('countrydescription/createblog/'.$this->countryDescriptionId);
+                $this->data['createBlogUrl']        = admin_url('countrydescription/createblog/'.$this->blogId);
                 $this->redirect($this->data['createBlogUrl']);
             }
             $this->createBlog($this->countryDescription->id);
@@ -526,17 +424,17 @@ class Countrydescription extends AdminController implements CrudContract {
 
     }
 
-    public function editBlog($id, $countryDescriptionId) {
+    public function editBlog($id, $blogId) {
         try {
-            $this->getCountryDescription($countryDescriptionId);
-            $this->countryDescriptionBlog = CountryDescriptionBlog_model::factory()->findOne($id);
-            $this->setCountryDescriptionBlog();
+            $this->getCountryDescription($blogId);
+            $this->countryDescriptionBlogImage = countryDescriptionBlogImage_model::factory()->findOne($id);
+            $this->setData();
             $this->template->javascript->add('assets/js/jquery.validate.js');
             $this->template->javascript->add('assets/js/additional-methods.js');
             $this->template->javascript->add('assets/js/admin/countrydescription/Blog.js');
 
-            $this->data['backBlogUrl']          = admin_url('countrydescription/blog/'.$this->countryDescriptionId);
-            $this->data['updateBlogUrl']          = admin_url('countrydescription/updateblog/'.$id.'/'.$this->countryDescriptionId);
+            $this->data['backBlogUrl']          = admin_url('countrydescription/blog/'.$this->blogId);
+            $this->data['updateBlogUrl']          = admin_url('countrydescription/updateblog/'.$id.'/'.$this->blogId);
 
             $this->template->content->view('countrydescription/blog/edit', $this->data);
             $this->template->publish();
@@ -545,42 +443,25 @@ class Countrydescription extends AdminController implements CrudContract {
         }
     }
 
-    public function updateBlog($id, $countryDescriptionId) {
+    public function updateBlog($id, $blogId) {
         try {
-            $this->getCountryDescription($countryDescriptionId);
-            $this->data['backBlogUrl'] = admin_url('countrydescription/blog/'.$this->countryDescriptionId);
-            $this->data['editBlogUrl'] = admin_url('countrydescription/editblog/'.$id.'/'.$this->countryDescriptionId);
-            $this->setCountryDescriptionBlog();
+            $this->getCountryDescription($blogId);
+            $this->data['backBlogUrl'] = admin_url('countrydescription/blog/'.$this->blogId);
+            $this->data['editBlogUrl'] = admin_url('countrydescription/editblog/'.$id.'/'.$this->blogId);
+            $this->setData();
             if ($this->isPost()) {
-                CountryDescriptionBlog_model::factory()->update([
-                    'country_descriptions_id '  => $this->countryDescriptionId,
-                    'title'                     => $this->data['title'],
-                    'slug'                      => $this->data['slug'],
-                    'description'               => $this->data['description'],
-                    'small_description'         => $this->data['smallDescription'],
+                countryDescriptionBlogImage_model::factory()->update([
+                    'country_descriptions_id '        => $this->blogId,
+                    'title'             => $this->data['title'],
+                    'slug'             => $this->data['slug'],
+                    'description'       => $this->data['description'],
+                    'small_description'       => $this->data['smallDescription'],
+                    'image'             => $this->data['image'],
                 ], $id);
-
-                if(isset($this->data['image'])) {
-                    CountryDescriptionBlog_model::factory()->update([
-                        'image'         => $this->data['image'],
-                    ], $id);
-                }
-                CountryDescriptionBlogImage_model::factory()->delete(['country_descriptions_blogs_id' => $id], true);
-                if(isset($this->data['images'])) {
-                    //dd($this->data['images']);
-                    foreach ($this->data['images'] as $image) {
-                        CountryDescriptionBlogImage_model::factory()->insert([
-                            'country_descriptions_blogs_id' => $id,
-                            'image'         => $image['image'],
-                            'video'         => $image['video'],
-                            'sort_order'    => $image['sort_order'],
-                        ]);
-                    }
-                }
                 $this->setMessage('message', $this->lang->line('text_success'));
                 $this->redirect($this->data['editBlogUrl']);
             }
-            $this->editBlog($id, $countryDescriptionId);
+            $this->editBlog($id, $blogId);
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
         }
@@ -599,8 +480,7 @@ class Countrydescription extends AdminController implements CrudContract {
                 }
                 if($this->selected) {
                     foreach ($this->selected as $id) {
-                        CountryDescriptionBlog_model::factory()->delete($id);
-                        CountryDescriptionBlogImage_model::factory()->delete(['country_descriptions_blogs_id' => $id]);
+                        countryDescriptionBlogImage_model::factory()->delete($id);
                     }
                     return $this->output
                         ->set_content_type('application/json')

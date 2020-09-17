@@ -1,7 +1,7 @@
 !function ($) {
     "use strict";
     var $frm = $("#frm"),
-        validate = ($.fn.validate !== undefined);
+        validate = ($.fn.validate !== undefined)
     dataTable = ($.fn.dataTable !== undefined);
 
     if ($frm.length > 0 && validate) {
@@ -13,7 +13,6 @@
             }
         });
     }
-
     if ($(".datatable").length > 0 && dataTable) {
         var dataTable = $('.datatable').DataTable( {
             "processing": true,
@@ -46,10 +45,7 @@
         }).on('click', '.edit', function (e) {
             var id = $(this).data('id');
             window.location.href = myLabel.edit + id;
-        }).on('click', '.blog', function (e) {
-            var id = $(this).data('id');
-            window.location.href = myLabel.blog + id;
-        }).on('change', '.checkboxStatus', function (e) {
+        }).on('change', '.onChangeStatus', function (e) {
             var id      = $(this).attr('data-id');
             var status  = $(this).val();
             $.ajax({
@@ -67,13 +63,55 @@
             $('.datatable input[type=checkbox]').prop('checked', this.checked);
         });
     }
-    $(document).ready(function(){
-        $('.summernote').summernote({
-            height: 200,                 // set editor height
-            minHeight: null,             // set minimum height of editor
-            maxHeight: null,             // set maximum height of editor
-            focus: false                 // set focus to editable area after initializing summernote
+    //Delete Records
+    $(document).on('click', '#delete', function (e) {
+        var selected = [];
+        $('.datatable .selectCheckbox').each(function () {
+            if ($(this).is(":checked")) {
+                var id = $(this).data('id');
+
+                if (id != undefined || id != 0 || id != '' || id != null) {
+                    selected.push(id);
+                }
+            }
         });
+
+        if (selected.length > 0) {
+            swal({
+                title: "Confirm Delete",
+                text: "Are you want to delete this record?(Yes/No)",
+                type: "info",
+                showCancelButton: true,
+                closeOnConfirm: false,
+                showLoaderOnConfirm: true
+            }, function () {
+
+                setTimeout(function () {
+                    $.ajax({
+                        type: "POST",
+                        url: myLabel.delete,
+                        data: {selected: selected},
+                        cache: false,
+                        success: function (res) {
+                            if (res.status === true) {
+                                swal(res.message);
+                            } else {
+                                swal(res.message);
+                            }
+
+                            dataTable.ajax.reload();
+                        }
+                    });
+                }, 2000);
+
+            });
+        } else {
+            swal("You must select one record");
+        }
+    });
+
+    $(".alert").fadeTo(2000, 500).slideUp(500, function(){
+        $(".alert").slideUp(500);
     });
     // Image Manager
     $(document).on('click', 'a[data-toggle=\'image\']', function(e) {
@@ -141,56 +179,15 @@
             $element.popover('destroy');
         });
     });
-    //Delete Records
-    $(document).on('click', '#delete', function (e) {
-        var selected = [];
-        $('.datatable .selectCheckbox').each(function () {
-            if ($(this).is(":checked")) {
-                var id = $(this).data('id');
+    function addImage() {
+        html = '<tr id="image-row' + myLabel.imageRow + '">';
+        html += '  <td class="text-left"><a href="" id="thumb-image' + myLabel.imageRow + '"data-toggle="image" class="img-thumbnail"><img src="<?php echo $placeholder;?>" alt="" title="" data-placeholder="<?php echo $placeholder;?>" /></a><input type="hidden" name="images[' + myLabel.imageRow + '][image]" value="" id="input-image' + myLabel.imageRow + '" /></td>';
+        html += '  <td class="text-left"><button type="button" onclick="$(\'#image-row' + myLabel.imageRow + '\').remove();" data-toggle="tooltip" title="<?php echo $button_remove;?>" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+        html += '</tr>';
+        $('#images tbody').append(html);
+        myLabel.imageRow++;
+    }
 
-                if (id != undefined || id != 0 || id != '' || id != null) {
-                    selected.push(id);
-                }
-            }
-        });
-
-        if (selected.length > 0) {
-            swal({
-                title: "Confirm Delete",
-                text: "Are you want to delete this record?(Yes/No)",
-                type: "info",
-                showCancelButton: true,
-                closeOnConfirm: false,
-                showLoaderOnConfirm: true
-            }, function () {
-
-                setTimeout(function () {
-                    $.ajax({
-                        type: "POST",
-                        url: myLabel.delete,
-                        data: {selected: selected},
-                        cache: false,
-                        success: function (res) {
-                            if (res.status === true) {
-                                swal(res.message);
-                            } else {
-                                swal(res.message);
-                            }
-
-                            dataTable.ajax.reload();
-                        }
-                    });
-                }, 2000);
-
-            });
-        } else {
-            swal("You must select one record");
-        }
-    });
-
-    $(".alert").fadeTo(2000, 500).slideUp(500, function(){
-        $(".alert").slideUp(500);
-    });
 
 }(window.jQuery);
 

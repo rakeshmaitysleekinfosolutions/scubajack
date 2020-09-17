@@ -35,13 +35,13 @@ if($isContent) {
             <div class="row">
                 <?php foreach ($blogs as $blog) {?>
                     <div class="col-md-4">
-                    <div class="card blog" >
-                        <img class="img-fluid" src="<?php echo $blog['image'];?>" alt="Card image cap">
-                        <div class="card-body">
-                            <a href="<?php echo $blog['slug'];?>"><h4><?php echo $blog['title'];?></h4></a>
-                            <p><?php echo $blog['smallDescription'];?></p>
+                        <div class="card blog" >
+                            <img class="img-fluid" src="<?php echo $blog['image'];?>" alt="Card image cap">
+                            <div class="card-body">
+                                <a href="<?php echo $blog['slug'];?>"><h4><?php echo $blog['title'];?></h4></a>
+                                <p><?php echo $blog['smallDescription'];?></p>
+                            </div>
                         </div>
-                    </div>
                 </div>
                 <?php  } ?>
             </div>
