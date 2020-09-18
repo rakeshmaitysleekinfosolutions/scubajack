@@ -204,21 +204,21 @@
         $('#images tbody').append(html);
         myLabel.imageRow++;
     });
-    $(document).bind('paste', '.video', function (e) {
+    //$(document).bind('paste', '.video', function (e) {
         // access the clipboard using the api
-        var url = e.originalEvent.clipboardData.getData('text');
-        if(!ytVidId(url)) {
-            swal('Not a valid youtube URL');
-        }
+       // var url = e.originalEvent.clipboardData.getData('text');
+        //if(!ytVidId(url)) {
+            //swal('Not a valid youtube URL');
+        //}
         // alert(pastedData);
        // var thumb = Youtube.thumb(url);
         //var iframe           = $('iframe:first');
         //var youtubeThumb           = $('#youtubeThumb');
         //console.log(youtubeThumb.val());
-        youtubeThumb.val(thumb);
+        //youtubeThumb.val(thumb);
         //console.log(youtubeThumb.val());
         // iframe.attr('src', thumb);
-    });
+    //});
     function ytVidId(url) {
         var p = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
         return (url.match(p)) ? RegExp.$1 : false;

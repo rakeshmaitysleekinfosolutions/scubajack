@@ -11,18 +11,25 @@ if($isContent) {
 <section class="country">
     <div class="container">
         <div class="row">
-            <div class="col-md-5">
+            <!-- <div class="col-md-5">
                 <div class="city-picture">
-                    <img src="<?php echo resize($countryDescription->image,445,450);?>" alt="city-image">
+                    
                 </div>
-            </div>
-            <div class="col-md-7">
+            </div> -->
+            <div class="col-md-12">
                 <div class="city-text">
+                    <img src="<?php echo resize($countryDescription->image,445,450);?>" alt="city-image" 
+                    class="city-picture">
                     <h3><?php echo $countryDescription->title;?></h3>
-                    <p><?php echo $countryDescription->description;?></p>
+                    <p>                       
+                        <?php echo $countryDescription->description;?>                            
+                    </p>
                 </div>
             </div>
         </div>
+        <!-- <div class="">
+            <p><?php echo $countryDescription->description;?></p>
+        </div> -->
     </div>
 </section>
     <?php

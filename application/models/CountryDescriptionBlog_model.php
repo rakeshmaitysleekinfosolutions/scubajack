@@ -19,6 +19,6 @@ class CountryDescriptionBlog_model extends BaseModel {
         return $this->hasOne(CountryDescription_model::class, 'id', 'country_descriptions_id');
     }
     public function images($country_descriptions_blogs_id) {
-        return CountryDescriptionBlogImage_model::factory()->find()->where('country_descriptions_blogs_id', $country_descriptions_blogs_id)->get()->result_array();
+        return CountryDescriptionBlogImage_model::factory()->find()->where('country_descriptions_blogs_id', $country_descriptions_blogs_id)->order_by('sort_order','ASC')->get()->result_array();
     }
 }

@@ -93,6 +93,7 @@ $route['stampToPassport'] = 'app/stampToPassport';
 $route['auth/check'] = 'app/checkLogin';
 
 $route['(:any)/explore']    = 'app/explore';
+$route['(:any)/explore/(:any)']    = 'app/blog/$1/$2';
 $route['(:any)'] 	        = 'app/products/$1';
 //$route['all'] 	            = 'category/index';
 

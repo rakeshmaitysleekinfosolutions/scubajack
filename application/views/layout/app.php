@@ -14,7 +14,9 @@
   <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/css/responsive.css">
   <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/font/font.css">
     <link rel="stylesheet" href="<?php echo base_url();?>assets/theme/light/js/sweetalert/sweetalert.css">
+    <link type="text/css" rel="stylesheet" href="<?php echo base_url();?>assets/js/lightgallery/css/lightgallery.css">
   <?php echo $this->template->stylesheet; ?>
+
   <title>Scuba Jack</title>
 </head>
 
@@ -100,7 +102,9 @@
   <script type="text/javascript" src="<?php echo base_url();?>assets/js/loadingoverlay.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>assets/theme/light/js/sweetalert/sweetalert.js" ></script>
   <script type="text/javascript" src="<?php echo base_url();?>assets/js/app.js"></script>
-
+<script type="text/javascript" src="<?php echo base_url();?>assets/js/lightgallery/js/picturefill.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>assets/js/lightgallery/js/lightgallery-all.min.js"></script>
+<!--<script type="text/javascript" src="--><?php //echo base_url();?><!--assets/js/lightgallery/js/jquery.mousewheel.min.js"></script>-->
   <?php echo $this->template->javascript; ?>
 <script>
     !function ($) {

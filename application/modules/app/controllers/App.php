@@ -75,6 +75,11 @@ class App extends AppController {
      * @var object
      */
     private $countryDescription;
+    /**
+     * @var object
+     */
+    private $blog;
+    private $blogImages;
 
     public function __construct()
     {
@@ -586,6 +591,48 @@ class App extends AppController {
         }
         //$this->dd($this->data);
         $this->template->content->view('explore/index', $this->data);
+        $this->template->publish();
+    }
+    /*
+     *
+     */
+    public function blog($iso, $slug) {
+        if($iso) {
+            $this->country = Country_model::factory()->getCountryByIsoCode($iso);
+        }
+        if(!$this->country) {
+            redirect('/');
+        }
+
+        if($slug) {
+            $this->blog = CountryDescriptionBlog_model::factory()->findOne(['slug' => $slug]);
+        }
+        if(!$this->blog) {
+            $this->redirect($iso.'/explore');
+        }
+        $this->data['blog'] = array();
+
+        if($this->blog) {
+            $this->data['blog'] = array(
+                'title'             => $this->blog->title,
+                'smallDescription'  => $this->blog->small_description,
+                'description'       => $this->blog->description,
+                'image'             => $this->blog->image,
+            );
+            $this->blogImages = $this->blog->images($this->blog->id);
+        }
+
+        $this->data['blogImages'] = array();
+        $this->data['blogVideos'] = array();
+
+        if($this->blogImages) {
+            $this->data['blogImages'] = $this->blogImages;
+            $this->data['blogVideos'] = $this->blogImages;
+        }
+
+        //$this->dd($this->data);
+
+        $this->template->content->view('explore/blog', $this->data);
         $this->template->publish();
     }
     public function getAllBlogOrWithLimit($blogs, $limit = 6, $all = false) {
