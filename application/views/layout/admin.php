@@ -198,9 +198,13 @@
                                     <li class="categoryplus"><a href="<?php echo admin_url('countrydescription');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Manage Content</span></a></li>
                                 </ul>
                             </li>
-							<li>
-								<a href="javascript:void(0);"><i class="fa fa-cog fw"></i> Application Settings</a>
-							</li>
+
+                            <li class="submenu">
+                                <a href="#" ><i class="fa fa-cog fw"></i> <span>Settings</span><span class="menu-arrow"></span></a>
+                                <ul class="list-unstyled" style="display: none;">
+                                    <li class="categoryplus"><a href="<?php echo admin_url('settings');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Application Settings</span></a></li>
+                                </ul>
+                            </li>
 
 							<!-- <li> 
 								<a href="<?php echo base_url('user');?>">Category</a>

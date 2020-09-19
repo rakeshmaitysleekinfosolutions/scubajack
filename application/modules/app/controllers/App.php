@@ -746,5 +746,9 @@ class App extends AppController {
                 ->set_output(json_encode($this->json));
         }
     }
+    public function quiz() {
+        $this->template->content->view('quiz/index');
+        $this->template->publish();
+    }
 
 }
