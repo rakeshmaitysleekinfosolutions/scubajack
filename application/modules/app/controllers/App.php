@@ -837,5 +837,20 @@ class App extends AppController {
         $this->template->content->view('quiz/index');
         $this->template->publish();
     }
+    public function worksheets() {
+        $worksheets = Worksheet_model::factory()->findAll([],null,'sort_order');
+        $this->data['worksheets'] = array();
+        if($worksheets) {
+            foreach ($worksheets as $worksheet) {
+                $this->data['worksheets'][] = array(
+                    'title'     => $worksheet->title,
+                    'sheets'    => $worksheet->worksheets($worksheet->id)
+                );
+            }
+        }
+        //$this->dd($this->data);
+        $this->template->content->view('worksheets/index', $this->data);
+        $this->template->publish();
+    }
 
 }

@@ -77,13 +77,13 @@
                                                 <a href="" type="image" id="thumb-image<?php echo $imageRow;?>" data-toggle="image" class="img-thumbnail">
                                                     <img src="<?php echo $image['thumb'];?>" alt="" title="" data-placeholder="<?php echo $placeholder;?>>"/>
                                                 </a>
-                                                <input type="hidden" name="images[<?php echo $imageRow;?>>][image]" value="<?php echo $image['thumb'];?>" id="input-image<?php echo $imageRow;?>>"/>
+                                                <input type="hidden" name="images[<?php echo $imageRow;?>][image]" value="<?php echo $image['thumb'];?>" id="input-image<?php echo $imageRow;?>>"/>
                                             </td>
                                             <td>
-                                                <input type="text" placeholder="Video Url" name="images[<?php echo $imageRow;?>>][video]" data-placeholder="Video URL">
+                                                <input type="text" placeholder="Video Url" name="images[<?php echo $imageRow;?>][video]" data-placeholder="Video URL">
                                             </td>
                                             <td>
-                                                <input type="text" name="images[<?php echo $imageRow;?>>][sort_order]" data-placeholder="Sort Order">
+                                                <input type="text" name="images[<?php echo $imageRow;?>][sort_order]" data-placeholder="Sort Order">
                                             </td>
                                             <td class="text-left"><button type="button" onclick="$('#image-row<?php echo $imageRow;?>').remove();" data-toggle="tooltip" title="Delete" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
                                         </tr>

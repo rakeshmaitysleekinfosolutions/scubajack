@@ -33,13 +33,14 @@
   <header class="menu-area sticky">
     <div class="container">
       <nav class="navbar navbar-expand-lg ">
-        <a class="navbar-brand" href="<?php echo base_url();?>"> <img src="<?php echo resize(getSession('settings')['logo'],118,66);?>"> </a>
+        <a class="navbar-brand" href="<?php echo base_url();?>"> <img src="<?php echo (getSession('settings')) ? resize(getSession('settings')['logo'],118,66) :  resize(getSession('assets/theme/light/img/scuba-logo.png;',118,66)) ?>"> </a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item active"> <a class="nav-link" href="<?php echo base_url();?>">Home <span class="sr-only">(current)</span></a> </li>
             <li class="nav-item"> <a class="nav-link" href="<?php echo base_url('about');?>">About us</a> </li>
             <li class="nav-item"> <a class="nav-link" href="<?php echo base_url('viewplans');?>">Membership</a> </li>
+            <li class="nav-item"> <a class="nav-link" href="<?php echo base_url('worksheets');?>">Worksheets</a> </li>
             <li class="nav-item"> <a class="nav-link " href="<?php echo base_url('contact');?>">Contact us</a> </li>
           </ul>
           <form class="form-inline searchs "> <i class="fas fa-search"></i> </form>

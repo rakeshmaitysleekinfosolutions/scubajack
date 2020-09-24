@@ -73,7 +73,7 @@ class Filemanager extends AdminController {
 				$files = array();
 			}
 		}
-
+        //$this->dd($files);
 		// Merge directories and files
 		$images = array_merge($directories, $files);
 
@@ -109,7 +109,8 @@ class Filemanager extends AdminController {
 					'href'  => admin_url('filemanager?directory=' . urlencode(substr($image, strlen(DIR_IMAGE . 'catalog/'))) . $url)
 				);
 			} elseif (is_file($image)) {
-			    $fileName = implode(' ', $name);
+			    $fileName = implode('', $name);
+
                 $this->filesExt = array(
                     'pdf'
                 );
@@ -120,11 +121,12 @@ class Filemanager extends AdminController {
                     'png',
                 );
                 $this->ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+                //$this->dd($this->filesExt);
 
                 if (in_array($this->ext, $this->filesExt)) {
                     $this->data['images'][] = array(
-                        'thumb' => $this->resize('pdf-placeholder.png', 100, 100),
-                        'name'  => implode(' ', $name),
+                        'thumb' => $this->resize('pdf-placeholder-original.png', 100, 100),
+                        'name'  => implode('', $name),
                         'type'  => 'craft',
                         'originalFileType' => 'pdf',
                         'path'  => substr($image, strlen(DIR_IMAGE)),
@@ -133,7 +135,7 @@ class Filemanager extends AdminController {
                 } else if (in_array($this->ext, $this->filesExt2)) {
                     $this->data['images'][] = array(
                         'thumb' => $this->resize(substr($image, strlen(DIR_IMAGE)), 100, 100),
-                        'name'  => implode(' ', $name),
+                        'name'  => implode('', $name),
                         'type'  => 'image',
                         'originalFileType' => 'image',
                         'path'  => substr($image, strlen(DIR_IMAGE)),
@@ -142,7 +144,7 @@ class Filemanager extends AdminController {
                 } else {
                     $this->data['images'][] = array(
                         'thumb' => $this->resize(substr($image, strlen(DIR_IMAGE)), 100, 100),
-                        'name'  => implode(' ', $name),
+                        'name'  => implode('', $name),
                         'type'  => 'image',
                         'originalFileType' => 'image',
                         'path'  => substr($image, strlen(DIR_IMAGE)),
@@ -154,7 +156,7 @@ class Filemanager extends AdminController {
 			}
 		}
 
-
+        //$this->dd($this->data['images']);
 //        if (in_array($this->ext, $this->filesExt)) {
 //            $this->data['isImage'] = false;
 //        } else {
@@ -309,7 +311,7 @@ class Filemanager extends AdminController {
 			foreach ($files as $file) {
 				if (is_file($file['tmp_name'])) {
 					// Sanitize the filename
-					$this->filename = basename(html_entity_decode($file['name'], ENT_QUOTES, 'UTF-8'));
+					$this->filename = strtolower(trim(basename(html_entity_decode($file['name'], ENT_QUOTES, 'UTF-8'))));
 
 					// Validate the filename length
 					if ((strlen($this->filename) < 3) || (strlen($this->filename) > 255)) {

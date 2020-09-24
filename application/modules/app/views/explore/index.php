@@ -45,11 +45,14 @@
     <?php } ?>
 
 <?php } else {?>
-    <section class="country">
+    <section class="country text-center nocont-page">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
-                    <h2>Content Not Available In Your Field Trip!</h2>
+                    <div class="404-logo pb-5">
+                        <img src="<?php echo resize(getSession('settings')['logo'],200,200);?>" alt="<?php echo getSession('settings')['company_name'];?>" style="width:100px">
+                    </div>
+                    <h2>Sorry! This content is not available in this country yet.</h2>
                 </div>
             </div>
         </div>

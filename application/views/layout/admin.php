@@ -1,19 +1,11 @@
 <!DOCTYPE html>
 <html>
-    
-<!-- Mirrored from dreamguys.co.in/smarthr/light/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 22 Mar 2018 04:09:23 GMT -->
 <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
         <?php echo $this->template->meta; ?>
         <link rel="shortcut icon" type="image/x-icon" href="assets/img/favicon.png">
         <title>Dashboard - SCUBA JACK Admin</title>
-       
-		<!--[if lt IE 9]>
-			<script src="assets/js/html5shiv.min.js"></script>
-			<script src="assets/js/respond.min.js"></script>
-		<![endif]-->
-		
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:300,400,500,600,700">
 		<link rel="stylesheet" href="<?php echo base_url();?>assets/theme/light/css/bootstrap.min.css">
 		<link rel="stylesheet" href="<?php echo base_url();?>assets/theme/light/css/font-awesome.min.css">
@@ -198,7 +190,12 @@
                                     <li class="categoryplus"><a href="<?php echo admin_url('countrydescription');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Manage Content</span></a></li>
                                 </ul>
                             </li>
-
+                            <li class="submenu">
+                                <a href="#" ><i class="fa fa-tags fw"></i><span> Worksheets</span><span class="menu-arrow"></span></a>
+                                <ul class="list-unstyled" style="display: none;">
+                                    <li class="categoryplus"><a href="<?php echo admin_url('worksheet');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Worksheets</span></a></li>
+                                </ul>
+                            </li>
                             <li class="submenu">
                                 <a href="#" ><i class="fa fa-cog fw"></i> <span>Settings</span><span class="menu-arrow"></span></a>
                                 <ul class="list-unstyled" style="display: none;">

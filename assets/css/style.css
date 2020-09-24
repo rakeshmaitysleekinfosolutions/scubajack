@@ -1870,3 +1870,67 @@ h6.cemail2 {
     border: none;
     padding:0;
 }
+
+ul.continents {
+    column-count: 2;
+}
+
+.nocont-page {
+    margin-top: 200px;
+    margin-bottom: 150px;
+}
+
+
+.panel-title > a{
+    font-size:15px;
+}
+
+.panel-title > a:before {
+    font-family: 'Font Awesome 5 Free';
+    content: "\f0fe";
+    font-weight: 900;
+    font-size: 17px;
+    color: #fff;
+    position: absolute;
+    right: 23px;
+    padding-top: 14px;
+}
+
+.panel-title > a.collapsed:before {
+    float: right !important;
+    content:"\f0fe";
+}
+.panel-title > a:hover, 
+.panel-title > a:active, 
+.panel-title > a:focus  {
+    text-decoration:none;
+}
+
+.work_sht_wrap{
+    padding: 0;
+    color: #fff;
+    border: 1px solid #069dcf;
+    margin: 0 0 25px;
+}
+.work_sht_wrap h3{
+    text-transform: capitalize;
+    /*font: 700 24px \'Open Sans Condensed\';*/
+    color: #fff;
+    margin: 0;
+    padding: 6px 1.5%;
+    background: #069dcf;  
+}
+
+.panel-heading{
+    border: 1px solid #069dcf;
+}
+
+.work_sht_wrap h4{
+    margin-bottom:0;
+}
+
+.accor-cont {
+    padding: 10px 0 0;
+    font-size: 19px;
+    line-height: 30px;
+}
