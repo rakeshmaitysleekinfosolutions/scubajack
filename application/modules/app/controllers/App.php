@@ -80,6 +80,10 @@ class App extends AppController {
      */
     private $blog;
     private $blogImages;
+    /**
+     * @var string
+     */
+    private $settings = array();
 
     public function __construct()
     {
@@ -87,6 +91,11 @@ class App extends AppController {
         $this->template->set_template('layout/app');
         $this->paypal = new Paypal();
         //$this->paypal->setApiContext($this->config->item('CLIENT_ID'),$this->config->item('CLIENT_SECRET'));
+
+        $this->setSession('settings',Settings_model::factory()->find()->get()->row_array());
+        if(getSession('settings')) {
+            $this->settings = getSession('settings');
+        }
 
     }
 
@@ -694,11 +703,69 @@ class App extends AppController {
         $this->template->content->view('information/about');
         $this->template->publish();
     }
-     /**
+
+    /**
      * Contact Page
+     * @throws Exception
      */
     public function contact() {
+        $this->lang->load('app/register_lang');
+        if($this->isAjaxRequest() && $this->isPost()) {
+            $this->request = $this->xss_clean($this->input->post());
+            if ((strlen(trim($this->request['firstname'])) < 1) || (strlen(trim($this->request['firstname'])) > 32)) {
+                $this->json['error']['firstname'] = $this->lang->line('error_firstname');
+            }
 
+            if ((strlen(trim($this->request['lastname'])) < 1) || (strlen(trim($this->request['lastname'])) > 32)) {
+                $this->json['error']['lastname'] = $this->lang->line('error_lastname');
+            }
+
+            if ((strlen($this->request['email']) > 96) || !filter_var($this->request['email'], FILTER_VALIDATE_EMAIL)) {
+                $this->json['error']['email'] = $this->lang->line('error_email');
+            }
+            if ((strlen($this->request['website']) > 96) || !filter_var($this->request['website'], FILTER_VALIDATE_URL)) {
+                $this->json['error']['website'] = $this->lang->line('error_website');
+            }
+
+            if ((strlen(trim($this->request['message'])) < 1) || (strlen(trim($this->request['message'])) > 1000)) {
+                $this->json['error']['message'] = $this->lang->line('error_firstname');
+            }
+
+            if (!$this->json) {
+                // Sent mail to user
+                try {
+                    $subject 						= sprintf('contact page submission');
+
+                    $mail 							= new Mail($this->config->item('config_mail_engine'));
+                    $mail->parameter 				= $this->config->item('config_mail_parameter');
+                    $mail->smtp_hostname 			= $this->config->item('config_mail_smtp_hostname');
+                    $mail->smtp_username 			= $this->config->item('config_mail_smtp_username');
+                    $mail->smtp_password 			= html_entity_decode($this->config->item('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
+                    $mail->smtp_port 				= $this->config->item('config_mail_smtp_port');
+                    $mail->smtp_timeout 			= $this->config->item('config_mail_smtp_timeout');
+
+                    $mail->setTo($this->config->item('config_email'));
+                    $mail->setFrom($this->config->item('config_email'));
+                    $mail->setReplyTo($this->request['email']);
+                    $mail->setSender($this->config->item('config_sender_name'));
+                    $mail->setSubject($subject);
+                    $mail->setHtml($this->template->content->view('emails/contact_form', $this->data));
+                    $mail->send();
+                  
+                    $this->json['success']          = 'Thanks for submitting contact us form';
+                    $this->json['redirect'] 		= url('/');
+                } catch (Exception $e) {
+                    dd($e->getMessage());
+                }
+            }
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode($this->json));
+        }
+        $this->template->javascript->add('assets/js/jquery.validate.js');
+        $this->template->javascript->add('assets/js/additional-methods.js');
+        $this->template->javascript->add('assets/js/contact/Contact.js');
         $this->template->content->view('information/contact');
         $this->template->publish();
     }
@@ -708,7 +775,7 @@ class App extends AppController {
      */
     public function stampToPassport() {
         if($this->isPost()) {
-
+           // dd($this->settings);
             $this->countryIso   = ($this->input->post('countryIso')) ? strtolower($this->input->post('countryIso')) : "";
             $this->userId        = ($this->input->post('userId')) ? $this->input->post('userId') : "";
 
@@ -721,6 +788,11 @@ class App extends AppController {
                     'user_id'       => $this->userId,
                     'country_id' => $this->country->id
                 ]);
+                $pointData = [
+                    'country_id' => $this->country->id,
+                    'user_id'       => $this->userId,
+                    'points'        => $this->settings['point'],
+                ];
                 if($this->passport) {
                     UserPassport_model::factory()->update([
                         'updated_at'    => date('Y-m-d H:i:s', time())
@@ -728,11 +800,14 @@ class App extends AppController {
                         'user_id'       => $this->userId,
                         'country_id'    => $this->country->id
                     ]);
+                    UserPoint_model::factory()->delete(['country_id' => $this->country->id, 'user_id' => $this->userId], true);
+                    $this->postGems($pointData);
                 } else {
                     UserPassport_model::factory()->insert([
                         'user_id'       => $this->userId,
                         'country_id'    => $this->country->id,
                     ]);
+                    $this->postGems($pointData);
                 }
                 $this->json['success']  = true;
                 $this->json['redirect']  = base_url($this->countryIso.'/explore');
@@ -745,6 +820,18 @@ class App extends AppController {
                 ->set_status_header(200)
                 ->set_output(json_encode($this->json));
         }
+    }
+
+    /**
+     * @param array $data
+     */
+    public function postGems($data = array()) {
+        //$this->dd($data);
+        UserPoint_model::factory()->insert([
+            'country_id'    => $data['country_id'],
+            'user_id'       => $data['user_id'],
+            'points'        => $data['points'],
+        ]);
     }
     public function quiz() {
         $this->template->content->view('quiz/index');

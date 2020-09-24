@@ -62,86 +62,11 @@ class User_model extends BaseModel {
     public function addUser($data) {
 
 		$salt = token(9);
-		$this->db->query("INSERT INTO users SET firstname = '" . $this->db->escape_str($data['firstname']) . "', lastname = '" . $this->db->escape_str($data['lastname']) . "', email = '" . $this->db->escape_str($data['email']) . "', salt = '" . $this->db->escape_str($salt) . "', password = '" . $this->db->escape_str(sha1($salt . sha1($salt . sha1($data['password'])))) . "', ip = '" . $this->db->escape_str($this->input->server('REMOTE_ADDR')) . "', status = 1");
-
+		$this->db->query("INSERT INTO users SET firstname = '" . $this->db->escape_str($data['firstname']) . "', lastname = '" . $this->db->escape_str($data['lastname']) . "', email = '" . $this->db->escape_str($data['email']) . "', uuid = '" . $this->db->escape_str(time()) . "', salt = '" . $this->db->escape_str($salt) . "', password = '" . $this->db->escape_str(sha1($salt . sha1($salt . sha1($data['password'])))) . "', ip = '" . $this->db->escape_str($this->input->server('REMOTE_ADDR')) . "', status = 1");
 		$user_id = $this->db->insert_id();
-
 		$this->db->query("INSERT INTO users_address SET user_id = '" . (int)$user_id . "', firstname = '" . $this->db->escape_str($data['firstname']) . "', lastname = '" . $this->db->escape_str($data['lastname']) . "'");
-
 		$address_id = $this->db->insert_id();
-
 		$this->db->query("UPDATE users SET address_id = '" . (int)$address_id . "' WHERE id = '" . (int)$user_id . "'");
-		/*
-		$this->load->language('mail/User');
-
-		$subject = sprintf($this->config->item('text_subject'), html_entity_decode($this->config->item('config_name'), ENT_QUOTES, 'UTF-8'));
-
-		$message = sprintf($this->config->item('text_welcome'), html_entity_decode($this->config->item('config_name'), ENT_QUOTES, 'UTF-8')) . "\n\n";
-
-		if (!$User_group_info['approval']) {
-			$message .= $this->config->item('text_login') . "\n";
-		} else {
-			$message .= $this->config->item('text_approval') . "\n";
-		}
-
-		$message .= $this->url->link('account/login', '', true) . "\n\n";
-		$message .= $this->config->item('text_services') . "\n\n";
-		$message .= $this->config->item('text_thanks') . "\n";
-		$message .= html_entity_decode($this->config->item('config_name'), ENT_QUOTES, 'UTF-8');
-
-		$mail = new Mail();
-		$mail->protocol = $this->config->item('config_mail_protocol');
-		$mail->parameter = $this->config->item('config_mail_parameter');
-		$mail->smtp_hostname = $this->config->item('config_mail_smtp_hostname');
-		$mail->smtp_username = $this->config->item('config_mail_smtp_username');
-		$mail->smtp_password = html_entity_decode($this->config->item('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
-		$mail->smtp_port = $this->config->item('config_mail_smtp_port');
-		$mail->smtp_timeout = $this->config->item('config_mail_smtp_timeout');
-
-		$mail->setTo($data['email']);
-		$mail->setFrom($this->config->item('config_email'));
-		$mail->setSender(html_entity_decode($this->config->item('config_name'), ENT_QUOTES, 'UTF-8'));
-		$mail->setSubject($subject);
-		$mail->setText($message);
-		$mail->send();
-
-		// Send to main admin email if new account email is enabled
-		if (in_array('account', (array)$this->config->item('config_mail_alert'))) {
-			$message  = $this->config->item('text_signup') . "\n\n";
-			$message .= $this->config->item('text_website') . ' ' . html_entity_decode($this->config->item('config_name'), ENT_QUOTES, 'UTF-8') . "\n";
-			$message .= $this->config->item('text_firstname') . ' ' . $data['firstname'] . "\n";
-			$message .= $this->config->item('text_lastname') . ' ' . $data['lastname'] . "\n";
-			$message .= $this->config->item('text_User_group') . ' ' . $User_group_info['name'] . "\n";
-			$message .= $this->config->item('text_email') . ' '  .  $data['email'] . "\n";
-			$message .= $this->config->item('text_telephone') . ' ' . $data['telephone'] . "\n";
-
-			$mail = new Mail();
-			$mail->protocol = $this->config->item('config_mail_protocol');
-			$mail->parameter = $this->config->item('config_mail_parameter');
-			$mail->smtp_hostname = $this->config->item('config_mail_smtp_hostname');
-			$mail->smtp_username = $this->config->item('config_mail_smtp_username');
-			$mail->smtp_password = html_entity_decode($this->config->item('config_mail_smtp_password'), ENT_QUOTES, 'UTF-8');
-			$mail->smtp_port = $this->config->item('config_mail_smtp_port');
-			$mail->smtp_timeout = $this->config->item('config_mail_smtp_timeout');
-
-			$mail->setTo($this->config->item('config_email'));
-			$mail->setFrom($this->config->item('config_email'));
-			$mail->setSender(html_entity_decode($this->config->item('config_name'), ENT_QUOTES, 'UTF-8'));
-			$mail->setSubject(html_entity_decode($this->config->item('text_new_User'), ENT_QUOTES, 'UTF-8'));
-			$mail->setText($message);
-			$mail->send();
-
-			// Send to additional alert emails if new account email is enabled
-			$emails = explode(',', $this->config->item('config_alert_email'));
-
-			foreach ($emails as $email) {
-				if (utf8_strlen($email) > 0 && filter_var($email, FILTER_VALIDATE_EMAIL)) {
-					$mail->setTo($email);
-					$mail->send();
-				}
-			}
-		}
-		*/
 		return $user_id;
 	}
 
@@ -284,7 +209,7 @@ class User_model extends BaseModel {
     }
     public function updateAccount($id, $data) {
 
-        $this->db->query("UPDATE users SET firstname = '" . $this->db->escape_str($data['firstname']) . "', lastname = '" . $this->db->escape_str($data['lastname']) . "', email = '" . $this->db->escape_str($data['email']) . "', phone = '" . $this->db->escape_str($data['phone']) . "' WHERE id = '" . (int)$id . "'");
+        $this->db->query("UPDATE users SET firstname = '" . $this->db->escape_str($data['firstname']) . "', lastname = '" . $this->db->escape_str($data['lastname']) . "', email = '" . $this->db->escape_str($data['email']) . "',image = '" . $this->db->escape_str($data['image']) . "',guardian = '" . $this->db->escape_str($data['guardian']) . "',gender = '" . $this->db->escape_str($data['gender']) . "',phone = '" . $this->db->escape_str($data['phone']) . "' WHERE id = '" . (int)$id . "'");
         if (!empty($data['password'])) {
             $salt = token(9);
             $this->db->query("UPDATE `users` SET salt = '" . $this->db->escape_str($salt) . "', password = '" . $this->db->escape_str(sha1($salt . sha1($salt . sha1($data['password'])))) . "' WHERE id = '" . (int)$id . "'");

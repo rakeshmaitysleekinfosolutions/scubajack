@@ -5,7 +5,7 @@
           <div class="col-md-4">
             <div class="tabs">
               <ul class="nav flex-column">
-                <li ><a href="#home" data-toggle="tab">Dashboard</a></li>
+                <li><a href="#home" data-toggle="tab">Dashboard</a></li>
                   <li><a href="#passport" data-toggle="tab">Passport</a></li>
                 <li><a href="#Orders" data-toggle="tab">Orders</a></li>
                 <li><a href="#download" data-toggle="tab">Downloads</a></li>
@@ -45,36 +45,74 @@
                 <div class="details flup" id="my-container">
                   <h3>Account Details</h3>
                   <form id="frm" class="frm" action="<?php echo base_url('account/update');?>" method="post">
-                    <div class="form-row">
-                      <div class="col account">
-                        <label for="inputAddress">First name</label>
-                        <input value="<?php echo $user->firstname;?>" id="firstname" name="firstname" type="text" class="form-control" placeholder="First name" required>
-                      </div>
-                      <div class="col account">
-                        <label for="inputAddress">Last name</label>
-                        <input value="<?php echo $user->lastname;?>" id="lastname" name="lastname" type="text" class="form-control" placeholder="Last name" required>
-                      </div>
-                    </div>
-                      <div class="form-row">
-                          <div class="col account">
+                       <div class="row">
+                         <div class="col-sm-6">
+                           <div class="form-group account">
+                            <label for="inputAddress">First name</label>
+                            <input value="<?php echo $user->firstname;?>" id="firstname" name="firstname" type="text" class="form-control" placeholder="First name" required>
+                          </div>
+                         </div>
+                         <div class="col-sm-6">
+                           <div class="form-group account">
+                            <label for="inputAddress">Last name</label>
+                            <input value="<?php echo $user->lastname;?>" id="lastname" name="lastname" type="text" class="form-control" placeholder="Last name" required>
+                          </div>
+                         </div>                           
+                       </div>
+                       <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group account">
+                          <label for="input-gender">Gender</label>
+                          <select name="gender" id="input-gender" class="form-control">
+                              <option value="">select gender</option>
+                              <option value="Male" <?php echo ($user->gender == 'Male') ? "selected" : "";?>>Male</option>
+                              <option value="Female" <?php echo ($user->gender == 'Female') ? "selected" : "";?>>Female</option>
+                          </select>
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                           <div class="form-group account">
+                              <label for="Guardian">Guardian</label>
+                              <input type="text" id="input-guardian" name="guardian" class="form-control" value="<?php echo $user->guardian;?>">
+                           </div>
+                        </div>
+                       </div>
+                      
+                       <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group account">
                               <label for="inputAddress">Email Address</label>
                               <input value="<?php echo $user->email;?>" id="email" name="email" type="text" class="form-control"  placeholder="example@mail.com" required readonly>
                           </div>
-                          <div class="col account">
+                        </div>  
+                        <div class="col-sm-6">
+                          <div class="form-group account">
                               <label for="inputAddress">Phone</label>
                               <input value="<?php echo $user->phone;?>" id="phone" name="phone" type="text" class="form-control" placeholder="1234567896" required>
                           </div>
+                        </div>                        
+                       </div>
+                     
+                       <div class="row">
+                        <div class="col-sm-6">
+                          <div class="form-group account">
+                            <label for="inputAddress">New Password</label>
+                            <input type="password" id="password" name="password" class="form-control">
+                          </div>
+                        </div>
+                        <div class="col-sm-6">
+                          <div class="form-group account ">
+                            <label for="inputAddress">Confirm New password</label>
+                            <input type="password" id="confirm" name="confirm" class="form-control">
+                          </div>
+                        </div>
+                        </div>
+                       <div class="form-group account">
+                          <!-- <label for="input-gender">Upload Profile Picture</label> -->
+                          <a href="javascript:void(0);" id="thumb-image" data-toggle="image" class="img-thumbnail" type="image"><img src="<?php echo $thumb;?>" alt="" title="" data-placeholder="<?php echo $placeholder;?>"/></a>
+                          <input type="hidden" name="image" value="<?php echo $image;?>" id="input-image" />
                       </div>
-
-                    <div class="form-group account">
-                      <label for="inputAddress">New Password</label>
-                      <input type="password" id="password" name="password" class="form-control" placeholder="*******">
-                    </div>
-                    <div class="form-group account ">
-                      <label for="inputAddress">Confirm New password</label>
-                      <input type="password" id="confirm" name="confirm" class="form-control"  placeholder="********">
-                    </div>
-                      <button id="btn" type="submit" class="btn savechanges">Update Profile</button>
+                       <button id="btn" type="submit" class="btn savechanges">Update Profile</button>
                   </form>
 
                 </div>
@@ -82,27 +120,56 @@
               <div class="tab-pane" id="passport">
                                         <div class="blue-box">
                                           <div class="row">
-                                            <div class="col-md-7">
-                                              <div class="blue-text">
-                                                  <?php if(isset($passports)) {
-                                                      foreach ($passports as $passport) { ?>
-                                                          <p><b>Country-</b><?php echo $passport['country'];?> <b>DateTimeStamp-</b><?php echo $passport['timestamp'];?></p>
-                                                    <?php } ?>
-                                                  <?php } ?>
+                                            <div class="col-md-6 box_left">
+                                              <h2>The adventures of scuba jack</h2>
+                                              <h3>Virtual Field Trips</h3>
+                                             
+                                              <div class="container">
+                                                <div class="row">
+                                                  <div class="col-md-4 image">
+                                                    <h4>Picture of student:</h4>
+                                                    <img src="<?php echo ($user->image) ? resize($user->image,100,100) : resize('no_image.png',100,100);?>" alt="<?php echo $user->firstname. " ". $user->lastname;?>">
+                                                  </div>
+                                                  <div class="col-md-4 details">
+                                                    <label for="name">Name of student:</label>
+                                                    <p><?php echo $user->firstname." ".$user->lastname;?></p>
+                                                    <label for="id">ID Number:</label>
+                                                    <p><?php echo $user->uuid;?></p>
+                                                  </div>
+                                                  <div class="col-md-4 details">
+                                                    <label for="gender">Gender:</label>
+                                                    <p>Male</p>
+                                                    <label for="guardian">Guardian:</label>
+                                                    <p><?php echo $user->guardian;?></p>
+                                                  </div>
+                                                </div>
                                               </div>
                                             </div>
-                                            <div class="col-md-5">
-                                              <div class="blue-right">
-                                                <img src="<?php echo base_url('assets/images/p-new.jpg');?>">
-                                                <form>
-                                                  <div class="form-group pfile">
-                                                    <input value="<?php echo $user->firstname. ' '. $user->lastname;?>" type="text" class="form-control" id="formGroupExampleInput " placeholder="your name" readonly>
+                                            <div class="col-md-6 box_right">
+                                              <div class="row">
+                                                <div class="col-md-8">
+                                                  <h3>Completed Virtual Field Trips:</h3>
+                                                </div>
+                                              </div>  
+                                              <div class="col-md-8 logo_right">
+                                                  <img src="<?php echo resize(getSession('settings')['logo'],90,50);?>" alt="<?php echo getSession('settings')['company_name'];?>">
+                                                </div>
+                                              
+                                              <div class="container">
+                                                <div class="row">
+                                                  <div class="col-md-12">
+                                                      <?php if($passports) { ?>
+                                                        <ul class="continents">
+                                                            <?php $i = 1; foreach ($passports as $passport) { ?>
+                                                                <li><?php echo $i;?>.&nbsp;<?php echo $passport;?></li>
+                                                            <?php $i++;} ?>
+                                                        </ul>
+                                                      <?php } ?>
                                                   </div>
-                                                  <div class="form-group pfile">
-                                                    <input value="<?php echo $registrationDate;?>" type="text" class="form-control" id="formGroupExampleInput2" placeholder="date of joining" readonly>
-                                                  </div>
-                                                </form>
+                                                </div>
                                               </div>
+                                              <h5>Points Earned</h5>
+                                              <label for="number"><?php echo $points;?></label>
                                             </div>
                                           </div>
                                         </div>
@@ -121,6 +188,7 @@
 <script>
    var myLabel = myLabel || {};
   myLabel.baseUrl = '<?php echo base_url();?>';
+   myLabel.filemanager = '<?php echo site_url('filemanager');?>';
   
   function logout () {
       window.location.href = '<?php echo base_url('account/logout');?>';

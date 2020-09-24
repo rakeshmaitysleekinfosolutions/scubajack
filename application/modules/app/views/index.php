@@ -481,4 +481,5 @@
     myLabel.checkLogin = '<?php echo base_url("auth/check");?>';
     myLabel.viewplans = '<?php echo base_url("viewplans");?>';
     myLabel.stampToPassport = '<?php echo base_url("stampToPassport");?>';
+    myLabel.postGems = '<?php echo base_url("postGems");?>';
 </script>

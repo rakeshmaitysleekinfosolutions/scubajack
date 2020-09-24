@@ -29,7 +29,7 @@ $lang['entry_zone']           = 'Region / State';
 $lang['entry_newsletter']     = 'Subscribe';
 $lang['entry_password']       = 'Password';
 $lang['entry_confirm']        = 'Password Confirm';
-
+$lang['entry_website']        = 'Website';
 // Error
 $lang['error_exists']         = 'Warning: E-Mail Address is already registered!';
 $lang['error_firstname']      = 'First Name must be between 1 and 32 characters!';

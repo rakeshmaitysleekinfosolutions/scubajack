@@ -24,6 +24,7 @@ class Account extends AppController {
 
     }
     public function index() {
+        //dd($_SESSION);
         if (!$this->user->isLogged()) {
             $this->redirect($this->url('login'));
         }
@@ -33,17 +34,19 @@ class Account extends AppController {
             $this->auser = User_model::factory()->findOne(userId());
         }
         if($this->auser) {
-            $this->data['user'] = $this->auser;
+            $this->data['user']             = $this->auser;
             $this->data['registrationDate'] =Carbon::createFromTimeStamp(strtotime($this->auser->created_at));
         }
 
-        $this->subscriber = Subscriber_model::factory()->findOne(['user_id' => userId()]);
-        $this->data['plan'] = array();
-        $this->data['subscriber'] = array();
-        $this->data['passports'] = array();
+        $this->subscriber           = Subscriber_model::factory()->findOne(['user_id' => userId()]);
+        $this->data['plan']         = array();
+        $this->data['subscriber']   = array();
+        $this->data['passports']    = array();
+
         if($this->subscriber) {
-            $today = time();
-            $daysLeft = floor((strtotime($this->subscriber->end_at)-$today)/(60*60*24));
+            $today              = time();
+            $daysLeft           = floor((strtotime($this->subscriber->end_at)-$today)/(60*60*24));
+
             $this->data['plan'] = array(
                 'name' => $this->subscriber->plan,
                 'price' => $this->subscriber->price,
@@ -59,14 +62,50 @@ class Account extends AppController {
             ]);
             if($passports) {
                 foreach ($passports as $key => $passport) {
-                    $this->data['passports'][] = array(
-                      'country' =>   $passport->country->name,
+                    $stampedContinents[] = array(
+                        'country' =>   $passport->country->continent->name,
                         'timestamp' =>   $passport->created_at
                     );
                 }
             }
+            if (isset($stampedContinents)) {
+                $this->data['passports'] = array_unique(getDataPair($stampedContinents, 'timestamp', 'country'));
+            } else {
+                $this->data['passports'] = array();
+            }
+            // Passport close here
+            // Get Points Query start from here
+            $query = $this->db->query("SELECT SUM(points) AS points FROM `users_points` WHERE users_points.user_id = '".$this->subscriber->user_id."'");
+            $points = array();
+            if($query) {
+                $points = $query->row_array();
+            }
+
+            $this->data['points'] = (isset($points['points'])) ? $points['points'] : 0;
+            // Point close here
+
+
+            //dd($this->data);
         }
-        //$this->dd($this->data['passports']);
+
+        // Image
+        if (!empty($this->input->post('image'))) {
+            $this->data['image'] = $this->input->post('image');
+        } elseif (!empty($this->auser)) {
+            $this->data['image'] = $this->auser->image;
+        } else {
+            $this->data['image'] = '';
+        }
+
+        if (!empty($this->input->post('image')) && is_file(DIR_IMAGE . $this->input->post('image'))) {
+            $this->data['thumb'] = $this->resize($this->input->post('image'), 100, 100);
+        } elseif (!empty($this->auser) && is_file(DIR_IMAGE . $this->auser->image)) {
+            $this->data['thumb'] = $this->resize($this->auser->image, 100, 100);
+        } else {
+            $this->data['thumb'] = $this->resize('no_image.png', 100, 100);
+        }
+        $this->data['placeholder']  = $this->resize('no_image.png', 100, 100);
+
         $this->template->javascript->add('assets/js/jquery.validate.js');
         $this->template->javascript->add('assets/js/additional-methods.js');
         $this->template->javascript->add('assets/js/account/Account.js');
@@ -103,6 +142,7 @@ class Account extends AppController {
             //dd($this->json);
             if(!$this->json) {
                 User_model::factory()->updateAccount(userId(), $this->request);
+                $this->setSession('user', User_model::factory()->getUser(userId()));
                 $this->json['success'] = $this->lang->line('text_success');
                 return $this->output
                     ->set_content_type('application/json')

@@ -81,7 +81,7 @@ class Forgotten extends AppController {
 					$mail->setFrom($this->config->item('config_email'));
 					$mail->setSender($this->config->item('config_sender_name'));
 					$mail->setSubject($subject);
-					$mail->setText($this->template->content->view('emails/forgotten', $this->data));
+					$mail->setHtml($this->template->content->view('emails/forgotten', $this->data));
 					$mail->send(); 
 
 					$this->json['redirect'] = url('login');

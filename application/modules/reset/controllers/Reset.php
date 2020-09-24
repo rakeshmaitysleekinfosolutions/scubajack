@@ -65,9 +65,8 @@ class Reset extends AppController {
                         $mail->setFrom($this->config->item('config_email'));
                         $mail->setSender($this->config->item('config_sender_name'));
                         $mail->setSubject($subject);
-                        $mail->setText($this->template->content->view('emails/reset', $this->data));
-                        //$mail->setHtml(true);
-                        
+                        $mail->setHtml($this->template->content->view('emails/reset', $this->data));
+
                         $mail->send(); 
                 
                         $this->session->userdata('success',$this->lang->line('text_success'));

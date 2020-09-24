@@ -65,6 +65,7 @@ class Filemanager extends AdminController {
 				$directories = array();
 			}
 
+
 			// Get files
 			$files = glob($directory . '/' . $filter_name . '*.{jpg,jpeg,png,gif,JPG,JPEG,PNG,GIF,pdf}', GLOB_BRACE);
 

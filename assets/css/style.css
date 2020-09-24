@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,600;1,700;1,800;1,900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Arizonia&display=swap');
 body{
     margin: 0;
     padding: 0;
@@ -680,6 +681,7 @@ section.dashboard-wrapper {
 
 .tabs {
     background: #02396f;
+    margin-top: 29px;
 }
 .tabs li {
     padding: 15px 0px;
@@ -697,7 +699,10 @@ section.dashboard-wrapper {
 }
 .dash-area {
     border: 1px solid #dfd9d9;
-    padding: 10px 15px;
+    /*padding: 10px 15px;*/
+    padding: 0px 15px;
+    width: 114%;
+    margin-left: -85px;
 }
 .tab-content #home p {
     font-size: 14px;
@@ -742,6 +747,7 @@ button.btn.savechanges{
     font-size: 15px;
     margin-top: 20px;
     font-family: 'Poppins', sans-serif;
+    margin-bottom:15px;
 }
 .form-group.account label {
     color: #1b1e21;
@@ -1111,13 +1117,15 @@ div#modal-image {
 /* Passport */
 .blue-box {
     background: #fff;
-    padding: 5px 10px;
+    padding: 5px 5px;
     display: inline-block;
-    border: 1px solid #000;
+    /*border: 1px solid #000;*/
+    border-left: 3px solid #efe654;
+    border-right: 3px solid #efe654;
     height: 388px;
     max-height: 387px;
     width: 100%;
-    box-shadow: 0 3px 12px -1px rgba(7,10,25,.2), 0 22px 27px -20px rgba(7,10,25,.2);
+    /*box-shadow: 0 3px 12px -1px rgba(7,10,25,.2), 0 22px 27px -20px rgba(7,10,25,.2);*/
 }
 .blue-right {
     text-align: center;
@@ -1754,3 +1762,111 @@ h6.cemail2 {
              .demo-gallery {
               padding-bottom: 80px;
             }
+
+            /*-----------------------Sayani Das 21-09-2020---------------------------*/
+            .box_left{
+                border-right: 2px solid #25c0df;
+                height: 388px;
+                margin-top: -6px;
+            }
+            .box_left h2{
+                font-size: 18px;
+                font-weight: 800px;
+                text-align: center;
+                text-transform: uppercase;
+                margin-top: 30px;
+                font-family: 'Poppins', sans-serif;
+                letter-spacing: 2px;
+            }
+            .box_left h3{
+                font-size: 30px;
+                font-weight: 500px;
+                text-align: center;
+                color: #8ec63f;
+                font-family: 'Arizonia', cursive;
+                border-bottom: 1px solid #8ec63f;
+                margin-left: -6px;
+                width: 403px;
+                
+            }
+            .image h4{
+                font-weight: 600;
+                font-size: 11px;
+                width: 200px;
+                text-transform: uppercase;
+                margin-top: 30px;
+            }
+            .image img{
+                width: 130%;
+                height: 75%;
+
+            }
+            .details{
+                margin-top: 40px;
+                padding-left: 20px;
+                padding-top: 18px;
+
+            }
+            .details label{
+                /*width: 120px;*/
+                font-weight: 600;
+                font-size: 16px;
+            }
+            .details p{
+                width: 120px;
+                font-weight: 200;
+                font-size: 14px;
+                text-transform: uppercase;
+            }
+            .box_right h3{
+                font-size: 13px;
+                font-weight: 800px;
+                text-align: center;
+                color: #25c0df;
+                background: #dff6fb;
+                margin-top: 50px;
+                margin-bottom: 50px;
+                height: 35px;
+                width: 205px;
+                padding-top: 8px;
+                margin-left: 77px;
+                font-family: 'Poppins', sans-serif;
+            }
+            .logo_right img{
+                float: right;
+                margin-right: -133px;
+                margin-top: -130px;
+                width: 40%;
+            }
+            .box_right ul{
+                margin-left: -10px;
+            }
+            .box_right ul li{
+                list-style: none;
+                font-size: 18px;
+            }
+            .box_right h5{
+                font-size: 16px;
+                font-weight: 600;
+                text-transform: uppercase;
+                text-align: center;
+                margin-top: 10px;
+            }
+            .box_right label{
+                font-size: 23px;
+                font-weight: 600;
+                text-align: center;
+                background: yellow;
+                width: 60px;
+                height: 35px;
+                border-radius: 30px;
+                margin-left: 160px;
+            }
+
+
+
+
+            a#thumb-image {
+    border: none;
+    padding:0;
+}

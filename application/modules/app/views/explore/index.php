@@ -4,61 +4,54 @@
             <h3 class="gallery"><?php echo $message;?></h3>
         </div>
     </section>
-<?php } else {
+<?php } ?>
 
-if($isContent) {
-    ?>
+<?php if($isContent) { ?>
 <section class="country">
     <div class="container">
         <div class="row">
-            <!-- <div class="col-md-5">
-                <div class="city-picture">
-                    
-                </div>
-            </div> -->
             <div class="col-md-12">
                 <div class="city-text">
                     <img src="<?php echo resize($countryDescription->image,445,450);?>" alt="city-image" 
                     class="city-picture">
                     <h3><?php echo $countryDescription->title;?></h3>
-                    <p>                       
-                        <?php echo $countryDescription->description;?>                            
-                    </p>
+                    <p><?php echo $countryDescription->description;?></p>
                 </div>
             </div>
         </div>
-        <!-- <div class="">
-            <p><?php echo $countryDescription->description;?></p>
-        </div> -->
     </div>
 </section>
-    <?php
-    if($blogs) {?>
-    <section class="gallery-box">
-        <div class="container">
-            <h3 class="gallery">Explore</h3>
-<!--            <p class="sub-text">Adventuring with purpose. We believe there's nothing more rewarding than completing a journey together,-->
-<!--                as you work as a team towards a shared goal - both big challenges and microexpeditions</p>-->
-            <div class="row">
-                <?php foreach ($blogs as $blog) {?>
-                    <div class="col-md-4">
-                        <div class="card blog" >
-                            <img class="img-fluid" src="<?php echo $blog['image'];?>" alt="Card image cap">
-                            <div class="card-body">
-                                <a href="<?php echo $blog['slug'];?>"><h4><?php echo $blog['title'];?></h4></a>
-                                <p><?php echo $blog['smallDescription'];?></p>
+    <?php if($blogs) { ?>
+        <section class="gallery-box">
+            <div class="container">
+                <h3 class="gallery">Explore</h3>
+                <div class="row">
+                    <?php foreach ($blogs as $blog) { ?>
+                        <div class="col-md-4">
+                            <a href="javascript:void(0);" class="c-blog">
+                            <div class="card blog">
+                               <img class="img-fluid" src="<?php echo $blog['image'];?>" alt="Card image cap">
+                                <div class="card-body">
+                                    <a href="<?php echo $blog['slug'];?>"><h4><?php echo $blog['title'];?></h4></a>
+                                    <p><?php echo $blog['smallDescription'];?></p>
+                                </div>
                             </div>
+                            </a>
                         </div>
+                    <?php  } ?>
                 </div>
-                <?php  } ?>
+            </div>
+        </section>
+    <?php } ?>
+
+<?php } else {?>
+    <section class="country">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h2>Content Not Available In Your Field Trip!</h2>
+                </div>
             </div>
         </div>
     </section>
-    <?php } ?>
-    <?php } else {?>
-    <h2>Content not available</h2>
-
-    <?php } ?>
-<!-- 1st part end -->
-
 <?php } ?>

@@ -88,12 +88,15 @@ $route['all'] 	            = 'app/category';
 $route['account'] 	        = 'account';
 $route['about'] 	        = 'app/about';
 $route['contact'] 	        = 'app/contact';
+$route['worksheets'] 	    = 'app/worksheets';
 
 $route['stampToPassport'] = 'app/stampToPassport';
+$route['postGems'] = 'app/postGems';
+
 $route['auth/check'] = 'app/checkLogin';
 
 $route['quiz'] = 'app/quiz';
-
+$route['filemanager'] = 'filemanager';
 $route['(:any)/explore']    = 'app/explore';
 $route['(:any)/explore/(:any)']    = 'app/blog/$1/$2';
 $route['(:any)'] 	        = 'app/products/$1';

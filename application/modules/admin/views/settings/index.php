@@ -31,15 +31,13 @@
                                     <label>Company Name <span class="text-danger">*</span></label>
                                     <input name="company_name" class="form-control" type="text" value="<?php echo $company_name;?>" required>
                                 </div>
+                                
+                            </div>
+                            <div class="col-sm-6">
+                                
                                 <div class="form-group">
                                     <label>Contact Person<span class="text-danger">*</span></label>
                                     <input name="contact_person" class="form-control " value="<?php echo $contact_person;?>" type="text" required>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Each Field Trip Point <span class="text-danger">*</span></label>
-                                    <input name="point" class="form-control" type="number" min="1" value="<?php echo $point;?>" required>
                                 </div>
                             </div>
                         </div>
@@ -50,51 +48,60 @@
                                 <input name="email" class="form-control" value="<?php echo $email;?>" type="email" required>
                             </div>
                         </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Email 2</label>
+                                <input name="email_2" class="form-control" value="<?php echo $email_2;?>" type="email">
+                            </div>
+                        </div>
 
                     </div>
                     <div class="row">
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Phone Number 1 <span class="text-danger">*</span></label>
                                 <input name="phone_1" class="form-control" value="<?php echo $phone_1;?>" type="text" required>
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label>Phone Number 2 </label>
                                 <input name="phone_2" class="form-control" value="<?php echo $phone_2;?>" type="text">
                             </div>
                         </div>
-
+                        <div class="col-sm-4">
+                        <div class="form-group">
+                               <label>Each Field Trip Point <span class="text-danger">*</span></label>
+                                <input name="point" class="form-control" type="number" min="1" value="<?php echo $point;?>" required>      
+                        </div>
+                       </div>
                     </div>
-                        <div class="row">
-                            <div class="col-sm-6">
+                    <div class="row">
+                            <div class="col-sm-4 col-md-4 col-lg-4">
                                 <div class="form-group">
                                     <label>Address 1<span class="text-danger">*</span></label>
                                     <input name="address_1" class="form-control " value="<?php echo $address_1;?>" type="text" required>
                                 </div>
+                                
+                            </div>
+
+                            <div class="col-sm-4 col-md-4 col-lg-4">
                                 <div class="form-group">
                                     <label>Address 2</label>
                                     <input name="address_2" class="form-control " value="<?php echo $address_2;?>" type="text">
                                 </div>
+                                
                             </div>
-
-                            <div class="col-sm-6 col-md-6 col-lg-3">
-                                <div class="form-group">
-                                    <label>Logo<span class="text-danger">*</span></label>
-                                    <a href="javascript:void(0);" id="thumb-image" data-toggle="image" class="img-thumbnail" type="image"><img src="<?php echo $thumb;?>" alt="" title="" data-placeholder="<?php echo $placeholder;?>"/></a>
-                                    <input type="hidden" name="logo" value="<?php echo $logo;?>" id="input-image" />
-                                </div>
-                            </div>
-                            <div class="col-sm-6 col-md-6 col-lg-3">
+                            <div class="col-sm-4 col-md-4 col-lg-4">
                                 <div class="form-group">
                                     <label>Postal Code<span class="text-danger">*</span></label>
                                     <input name="postal_code" class="form-control" value="<?php echo $postal_code;?>" type="text" required>
                                 </div>
                             </div>
 
-                            <div class="col-sm-6 col-md-6 col-lg-3">
-                                <div class="form-group">
+                            <div class="col-sm-4 col-md-4 col-lg-4">
+                                
+                                 <div class="form-group">
                                     <label>Country<span class="text-danger">*</span></label>
                                     <select name="country_id" class="form-control select" required>
                                         <?php if(!empty($countries)) {
@@ -103,9 +110,9 @@
                                             <?php } ?>
                                         <?php } ?>
                                     </select>
-                                </div>
+                                </div> 
                             </div>
-                            <div class="col-sm-6 col-md-6 col-lg-3">
+                            <div class="col-sm-4 col-md-4 col-lg-4">
 
                                 <div class="form-group">
                                     <label>State/Province<span class="text-danger">*</span></label>
@@ -114,17 +121,90 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-sm-6 col-md-6 col-lg-3">
+                            <div class="col-sm-4 col-md-4 col-lg-4">
                                 <div class="form-group">
                                     <label>City<span class="text-danger">*</span></label>
                                     <input name="city" class="form-control" value="<?php echo $city;?>" type="text" required>
                                 </div>
                             </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3 col-lg-3">
+                            <div class="form-group">
+                                    <label>Logo<span class="text-danger">*</span></label>
+                                    <a href="javascript:void(0);" id="thumb-image" data-toggle="image" class="img-thumbnail" type="image"><img src="<?php echo $thumb;?>" alt="" title="" data-placeholder="<?php echo $placeholder;?>"/></a>
+                                    <input type="hidden" name="logo" value="<?php echo $logo;?>" id="input-image" />
+                                </div>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card-box">
+                    <h3 class="page-title">Mail Configuration Settings</h3>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Mail Protocol<span class="text-danger">*</span></label>
+                                <select name="protocol" id="protocol" class="form-control" required>
+                                    <option value="mail" <?php echo ($protocol == 'mail') ? "selected" : "" ;?>>MAIL</option>
+                                    <option value="smtp" <?php echo ($protocol == 'smtp') ? "selected" : "" ;?>>SMTP</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Mail Parameter</label>
+                                <input name="parameter" class="form-control " value="<?php echo $parameter;?>" type="text">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Mail SMTP Host<span class="text-danger">*</span></label>
+                                <input name="smtp_hostname" class="form-control" type="text" value="<?php echo $smtp_hostname;?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Mail SMTP User<span class="text-danger">*</span></label>
+                                <input name="smtp_username" class="form-control " value="<?php echo $smtp_username;?>" type="text" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Mail SMTP Password<span class="text-danger">*</span></label>
+                                <input name="smtp_password" class="form-control" type="text" value="<?php echo $smtp_password;?>" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Mail SMTP Port<span class="text-danger">*</span></label>
+                                <input name="smtp_port" class="form-control " value="<?php echo $smtp_port;?>" type="text" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Mail SMTP Timeout<span class="text-danger">*</span></label>
+                                <select name="smtp_timeout" id="protocol" class="form-control" required>
+                                    <?php for ($i = 1; $i <= 30; $i++) {?>
+                                        <option value="<?php echo $i;?>" <?php echo ($smtp_timeout == $i) ? "selected" : "" ;?>><?php echo $i;?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Sender Email<span class="text-danger">*</span></label>
+                                <input name="sender_email" class="form-control" type="text" value="<?php echo $sender_email;?>" required>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Sender Name<span class="text-danger">*</span></label>
+                                <input name="sender_name" class="form-control" type="text" value="<?php echo $sender_name;?>" required>
+                            </div>
                         </div>
 
-
-
-
+                    </div>
                 </div>
             </div>
         </div>

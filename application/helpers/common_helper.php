@@ -354,4 +354,14 @@ function makeThumbnail($youTubeLink='',$thumbNailQuality='',$fileNameWithExt='',
 //    file_put_contents($fileDownLoadPath.$fileNameWithExt, file_get_contents($imageUrl));
 //    return $fileNameWithExt;
 }
+function getDataPair($data, $key=NULL, $value=NULL)  {
+    $arr = array();
+    foreach ($data as $item)  {
+        if ($key !== NULL)  {
+            $arr[$item[$key]] = !is_null($value) ? $item[$value] : $item;
+        } else {  $arr[] = !is_null($value) ? $item[$value] : $item;
+        }
+    }
+    return $arr;
+}
 ?>

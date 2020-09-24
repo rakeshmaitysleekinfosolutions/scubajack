@@ -289,7 +289,7 @@ class Product extends AdminController implements ProductContract {
             } else {
                 $this->data['meta_keyword'] = '';
             }
-            //dd($this->data);
+
             // Status
             if (!empty($this->input->post('status'))) {
                 $this->data['status'] = $this->input->post('status');

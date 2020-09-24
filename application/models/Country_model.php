@@ -39,6 +39,9 @@ class Country_model extends BaseModel {
         return $this->find()->where('iso_code_2', $isoCode)->get()->row_object();
     }
 
+    public function continent() {
+        return $this->hasOne(Continent_model::class, 'id', 'continent_id');
+    }
     
    
     

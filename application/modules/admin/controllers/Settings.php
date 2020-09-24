@@ -13,6 +13,10 @@ class Settings extends AdminController {
      * @var array|null
      */
     private $settings;
+    /**
+     * @var object|null
+     */
+    private $mail;
 
     public function __construct() {
         parent::__construct();
@@ -92,6 +96,13 @@ class Settings extends AdminController {
         } else {
             $this->data['email'] = '';
         }
+        if (!empty($this->input->post('email_2'))) {
+            $this->data['email_2'] = $this->input->post('email_2');
+        } elseif (!empty($this->settings)) {
+            $this->data['email_2'] = $this->settings->email_2;
+        } else {
+            $this->data['email_2'] = '';
+        }
         if (!empty($this->input->post('phone_1'))) {
             $this->data['phone_1'] = $this->input->post('phone_1');
         } elseif (!empty($this->settings)) {
@@ -129,6 +140,73 @@ class Settings extends AdminController {
             $this->data['thumb'] = $this->resize('no_image.png', 100, 100);
         }
 
+        if (!empty($this->input->post('protocol'))) {
+            $this->data['protocol'] = $this->input->post('protocol');
+        } elseif (!empty($this->mail)) {
+            $this->data['protocol'] = $this->mail->protocol;
+        } else {
+            $this->data['protocol'] = '';
+        }
+        if (!empty($this->input->post('parameter'))) {
+            $this->data['parameter'] = $this->input->post('parameter');
+        } elseif (!empty($this->mail)) {
+            $this->data['parameter'] = $this->mail->parameter;
+        } else {
+            $this->data['parameter'] = '';
+        }
+        if (!empty($this->input->post('smtp_hostname'))) {
+            $this->data['smtp_hostname'] = $this->input->post('smtp_hostname');
+        } elseif (!empty($this->mail)) {
+            $this->data['smtp_hostname'] = $this->mail->smtp_hostname;
+        } else {
+            $this->data['smtp_hostname'] = '';
+        }
+        if (!empty($this->input->post('smtp_username'))) {
+            $this->data['smtp_username'] = $this->input->post('smtp_username');
+        } elseif (!empty($this->mail)) {
+            $this->data['smtp_username'] = $this->mail->smtp_username;
+        } else {
+            $this->data['smtp_username'] = '';
+        }
+        if (!empty($this->input->post('smtp_password'))) {
+            $this->data['smtp_password'] = $this->input->post('smtp_password');
+        } elseif (!empty($this->mail)) {
+            $this->data['smtp_password'] = $this->mail->smtp_password;
+        } else {
+            $this->data['smtp_password'] = '';
+        }
+        if (!empty($this->input->post('smtp_port'))) {
+            $this->data['smtp_port'] = $this->input->post('smtp_port');
+        } elseif (!empty($this->mail)) {
+            $this->data['smtp_port'] = $this->mail->smtp_port;
+        } else {
+            $this->data['smtp_port'] = '';
+        }
+        if (!empty($this->input->post('smtp_timeout'))) {
+            $this->data['smtp_timeout'] = $this->input->post('smtp_timeout');
+        } elseif (!empty($this->mail)) {
+            $this->data['smtp_timeout'] = $this->mail->smtp_timeout;
+        } else {
+            $this->data['smtp_timeout'] = '';
+        }
+        // Sender Email Address
+        if (!empty($this->input->post('sender_email'))) {
+            $this->data['sender_email'] = $this->input->post('sender_email');
+        } elseif (!empty($this->mail)) {
+            $this->data['sender_email'] = $this->mail->sender_email;
+        } else {
+            $this->data['sender_email'] = '';
+        }
+        // Sender Name
+        if (!empty($this->input->post('sender_name'))) {
+            $this->data['sender_name'] = $this->input->post('sender_name');
+        } elseif (!empty($this->mail)) {
+            $this->data['sender_name'] = $this->mail->sender_name;
+        } else {
+            $this->data['sender_name'] = '';
+        }
+
+
         $this->data['placeholder']  = $this->resize('no_image.png', 100, 100);
         $this->data['countries']    = Country_model::factory()->findAll();
 
@@ -142,7 +220,7 @@ class Settings extends AdminController {
                 case 'add':
                     $this->setData();
 
-                    Setting_model::factory()->insert([
+                    Settings_model::factory()->insert([
                         'company_name'      => $this->data['company_name'],
                         'contact_person'    => $this->data['contact_person'],
                         'address_1'         => $this->data['address_1'],
@@ -152,17 +230,47 @@ class Settings extends AdminController {
                         'city'              => $this->data['city'],
                         'postal_code'       => $this->data['postal_code'],
                         'email'             => $this->data['email'],
+                        'email_2'           => $this->data['email_2'],
                         'phone_1'           => $this->data['phone_1'],
                         'phone_2'           => $this->data['phone_2'],
                         'point'             => $this->data['point'],
                         'logo'              => $this->data['logo'],
                     ]);
+                    SettingsMailConfiguration_model::factory()->insert([
+                        'settings_id'   => Settings_model::factory()->getLastInsertID(),
+                        'protocol'      => $this->data['protocol'],
+                        'parameter'     => $this->data['parameter'],
+                        'smtp_hostname' => $this->data['smtp_hostname'],
+                        'smtp_username' => $this->data['smtp_username'],
+                        'smtp_password' => $this->data['smtp_password'],
+                        'smtp_port'     => $this->data['smtp_port'],
+                        'smtp_timeout'  => $this->data['smtp_timeout'],
+                        'sender_email'  => $this->data['sender_email'],
+                        'sender_name'   => $this->data['sender_name'],
+                    ]);
+
+                    $output  = '<?php' . "\n";
+                    $output .= '$config[\'config_mail_engine\']             = "'.$this->data["protocol"].'";'."\n";
+                    $output .= '$config[\'config_mail_parameter\']          = "'.$this->data["parameter"].'";'."\n";
+                    $output .= '$config[\'config_mail_smtp_hostname\']      = "'.$this->data["smtp_hostname"].'";'."\n";
+                    $output .= '$config[\'config_mail_smtp_username\']      = "'.$this->data["smtp_username"].'";'."\n";
+                    $output .= '$config[\'config_mail_smtp_password\']      = "'.$this->data["smtp_password"].'";'."\n";
+                    $output .= '$config[\'config_mail_smtp_port\']          = "'.$this->data["smtp_port"].'";'."\n";
+                    $output .= '$config[\'config_mail_smtp_timeout\']       = "'.$this->data["smtp_timeout"].'";'."\n";
+                    $output .= '$config[\'config_email\']                   = "'.$this->data["sender_email"].'";'."\n";
+                    $output .= '$config[\'config_sender_name\']             = "'.$this->data["sender_name"].'";'."\n";
+
+                    $file = fopen(APPPATH . 'config/mail.php', 'w');
+                    fwrite($file, $output);
+                    fclose($file);
+
+                    $this->setSession('settings', Settings_model::factory()->find()->get()->row_array());
+                    //$this->setSession('settings.mail.config', SettingsMailConfiguration_model::factory()->find()->where('settings_id', $this->id)->get()->row_array());
+
                     $this->setMessage('message', 'Settings has been successfully modified');
-                    redirect(admin_url('settings'));
                 case 'edit':
                     $this->setData();
-                    //dd($this->data);
-                    Setting_model::factory()->update([
+                    Settings_model::factory()->update([
                         'company_name'      => $this->data['company_name'],
                         'contact_person'    => $this->data['contact_person'],
                         'address_1'         => $this->data['address_1'],
@@ -172,17 +280,51 @@ class Settings extends AdminController {
                         'city'              => $this->data['city'],
                         'postal_code'       => $this->data['postal_code'],
                         'email'             => $this->data['email'],
+                        'email_2'           => $this->data['email_2'],
                         'phone_1'           => $this->data['phone_1'],
                         'phone_2'           => $this->data['phone_2'],
                         'point'             => $this->data['point'],
                         'logo'              => $this->data['logo'],
                     ], $this->id);
+                    SettingsMailConfiguration_model::factory()->delete(['settings_id' => $this->id], true);
+                    SettingsMailConfiguration_model::factory()->insert([
+                        'settings_id'   => $this->id,
+                        'protocol'      => $this->data['protocol'],
+                        'parameter'     => $this->data['parameter'],
+                        'smtp_hostname' => $this->data['smtp_hostname'],
+                        'smtp_username' => $this->data['smtp_username'],
+                        'smtp_password' => $this->data['smtp_password'],
+                        'smtp_port'     => $this->data['smtp_port'],
+                        'smtp_timeout'  => $this->data['smtp_timeout'],
+                        'sender_email'  => $this->data['sender_email'],
+                        'sender_name'   => $this->data['sender_name'],
+                    ]);
+
+                    $output  = '<?php' . "\n";
+                    $output .= '$config[\'config_mail_engine\']             = "'.$this->data["protocol"].'";'."\n";
+                    $output .= '$config[\'config_mail_parameter\']          = "'.$this->data["parameter"].'";'."\n";
+                    $output .= '$config[\'config_mail_smtp_hostname\']      = "'.$this->data["smtp_hostname"].'";'."\n";
+                    $output .= '$config[\'config_mail_smtp_username\']      = "'.$this->data["smtp_username"].'";'."\n";
+                    $output .= '$config[\'config_mail_smtp_password\']      = "'.$this->data["smtp_password"].'";'."\n";
+                    $output .= '$config[\'config_mail_smtp_port\']          = "'.$this->data["smtp_port"].'";'."\n";
+                    $output .= '$config[\'config_mail_smtp_timeout\']       = "'.$this->data["smtp_timeout"].'";'."\n";
+                    $output .= '$config[\'config_email\']                   = "'.$this->data["sender_email"].'";'."\n";
+                    $output .= '$config[\'config_sender_name\']             = "'.$this->data["sender_name"].'";'."\n";
+
+                    $file = fopen(APPPATH . 'config/mail.php', 'w');
+                    fwrite($file, $output);
+                    fclose($file);
+
+                    $this->setSession('settings', Settings_model::factory()->find()->get()->row_array());
+                    //$this->setSession('settings.mail.config', SettingsMailConfiguration_model::factory()->find()->where('settings_id', $this->id)->get()->row_array());
+
                     $this->setMessage('message', 'Settings has been successfully modified');
-                    //redirect(admin_url('settings'));
             }
         }
-        $this->settings = Setting_model::factory()->find()->get()->row_object();
-        //dd($this->settings);
+        $this->settings = Settings_model::factory()->find()->get()->row_object();
+        if($this->settings) {
+            $this->mail = SettingsMailConfiguration_model::factory()->find()->get()->row_object();
+        }
         $this->setData();
         $this->template->javascript->add('assets/js/jquery.validate.js');
         $this->template->javascript->add('assets/js/additional-methods.js');

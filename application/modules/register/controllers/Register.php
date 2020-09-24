@@ -91,11 +91,12 @@ class Register extends AppController {
 				$mail->smtp_port 				= $this->config->item('config_mail_smtp_port');
 				$mail->smtp_timeout 			= $this->config->item('config_mail_smtp_timeout');
 		
-				$mail->setTo($userInfo['email']);
+				$mail->setTo($this->config->item('config_email'));
 				$mail->setFrom($this->config->item('config_email'));
+                $mail->setReplyTo($this->request['email']);
 				$mail->setSender($this->config->item('config_sender_name'));
 				$mail->setSubject($subject);
-				$mail->setText($this->template->content->view('emails/registration', $this->data));
+				$mail->setHtml($this->template->content->view('emails/registration', $this->data));
 				$mail->send(); 
 
 				$this->json['success']          = $this->lang->line('text_success');
