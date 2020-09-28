@@ -296,6 +296,54 @@ if(!function_exists('resize')) {
         }
     }
 }
+
+if(!function_exists('resizeAssetImage')) {
+    function resizeAssetImage($filename, $width, $height) {
+        $ci = get_instance();
+
+        if (!is_file(DIR_ASSETS_IMAGE . $filename) || substr(str_replace('\\', '/', realpath(DIR_ASSETS_IMAGE . $filename)), 0, strlen(DIR_ASSETS_IMAGE)) != str_replace('\\', '/', DIR_ASSETS_IMAGE)) {
+            return;
+        }
+        $extension = pathinfo($filename, PATHINFO_EXTENSION);
+        $image_old = $filename;
+        $image_new = 'cache/' . substr($filename, 0, strrpos($filename, '.')) . '-' . $width . 'x' . $height . '.' . $extension;
+
+        if (!is_file(DIR_ASSETS_IMAGE . $image_new) || (filemtime(DIR_ASSETS_IMAGE . $image_old) > filemtime(DIR_ASSETS_IMAGE . $image_new))) {
+            list($width_orig, $height_orig, $image_type) = getimagesize(DIR_ASSETS_IMAGE . $image_old);
+
+            if (!in_array($image_type, array(IMAGETYPE_PNG, IMAGETYPE_JPEG, IMAGETYPE_GIF))) {
+                return DIR_ASSETS_IMAGE . $image_old;
+            }
+
+            $path = '';
+
+            $directories = explode('/', dirname($image_new));
+
+            foreach ($directories as $directory) {
+                $path = $path . '/' . $directory;
+
+                if (!is_dir(DIR_ASSETS_IMAGE . $path)) {
+                    @mkdir(DIR_ASSETS_IMAGE . $path, 0777);
+                }
+            }
+
+            if ($width_orig != $width || $height_orig != $height) {
+
+                $ci->image->setFile(DIR_ASSETS_IMAGE . $image_old);
+                $ci->image->resize($width, $height);
+                $ci->image->save(DIR_ASSETS_IMAGE . $image_new);
+            } else {
+                copy(DIR_ASSETS_IMAGE . $image_old, DIR_ASSETS_IMAGE . $image_new);
+            }
+        }
+
+        if ($ci->input->server('HTTPS')) {
+            return url() . 'assets/images/' . $image_new;
+        } else {
+            return url() . 'assets/images/' . $image_new;
+        }
+    }
+}
 function makeThumbnail($youTubeLink='',$thumbNailQuality='',$fileNameWithExt='',$fileDownLoadPath='') {
     $videoIdExploded = explode('?v=', $youTubeLink);
 
@@ -363,5 +411,10 @@ function getDataPair($data, $key=NULL, $value=NULL)  {
         }
     }
     return $arr;
+}
+if(!function_exists('isSubscribe')) {
+    function isSubscribe() {
+        return getSession('subscribe');
+    }
 }
 ?>

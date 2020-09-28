@@ -122,13 +122,17 @@ class Answer extends AdminController implements AnswerContract {
                     'answer'        => $this->data['answer'],
                     'question_id'   => $this->data['questionId'],
                     'is_correct'    => $this->data['isCorrect'],
+                    'correct_index' => 0
                 ]);
                 if(isset($this->data['answers'])) {
+                    $index = 1;
                     foreach ($this->data['answers'] as $answer) {
                         Answer_model::factory()->insert([
                             'answer'        => $answer['answer'],
                             'question_id'   => $this->data['questionId'],
+                            'correct_index' => $index
                         ]);
+                        $index++;
                     }
                 }
                 $this->setMessage('message', "Success: You have modified answer! ");
@@ -174,8 +178,6 @@ class Answer extends AdminController implements AnswerContract {
                 $this->redirect(admin_url('answer'));
             }
             if ($this->isPost() && $this->validateForm()) {
-
-                //$this->dd($this->data);
                 Answer_model::factory()->update([
                     'answer'        => $this->data['answer'],
                     'question_id'   => $this->data['questionId'],

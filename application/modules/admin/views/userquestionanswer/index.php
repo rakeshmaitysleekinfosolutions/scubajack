@@ -6,7 +6,7 @@
             </div>
         <?php } ?>
         <div class="col-sm-4 col-xs-3">
-            <h4 class="page-title">User Questions Answers</h4>
+            <h4 class="page-title">User Results</h4>
         </div>
         <div class="col-sm-8 col-xs-9 text-right m-b-20">
             <button class="btn btn-primary rounded pull-right " id="delete"><i class="fa fa-trash"></i> Delete</button>
@@ -27,10 +27,8 @@
                         </th>
                         <th>Quiz</th>
                         <th>User</th>
-                        <th>Question</th>
-                        <th>Answer</th>
-                        <th>Created At</th>
-                        <th class="text-right">Action</th>
+                        <th>Date</th>
+                        <th>Result</th>
                     </tr>
                     </thead>
 

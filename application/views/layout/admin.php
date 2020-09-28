@@ -200,7 +200,7 @@
                                 <a href="#" ><i class="fa fa-cog fw"></i> <span>Settings</span><span class="menu-arrow"></span></a>
                                 <ul class="list-unstyled" style="display: none;">
                                     <li class="categoryplus"><a href="<?php echo admin_url('settings');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Application Settings</span></a></li>
-                                    <li class="categoryplus"><a href="<?php echo admin_url('country');?>"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Manage Continents</span></a></li>
+<!--                                    <li class="categoryplus"><a href="--><?php //echo admin_url('country');?><!--"><i class="fa fa-angle-double-right" aria-hidden="true"></i><span>Manage Continents</span></a></li>-->
                                 </ul>
                             </li>
 

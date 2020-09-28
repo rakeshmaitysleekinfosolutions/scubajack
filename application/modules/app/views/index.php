@@ -14,7 +14,7 @@
 <!--        </div>-->
 <!--      <div id="chartdiv"></div>-->
 
-    
+
           <div class="continent" id="map">
               <div class="map__image">
                   <svg xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 597 585" width="100%" height="505">
@@ -360,34 +360,29 @@
           <div class="books"> <img src="<?php echo $product['img'];?>" alt="<?php echo $product['name'];?>">
             <div class="books-details">
               <p><?php echo $product['name'];?></p>
-                <?php if($product['quiz']) {?>
+                <?php if($product['quiz'] && isSubscribe()) {?>
                     <p class="qu"><a href="<?php echo $product['quiz'];?>">quiz</a></p>
+                <?php } else { ?>
+                    <p class="qu"><a href="javascript:void(0);">quiz</a></p>
                 <?php } ?>
             </div>
             <div class="more">
 
-                <?php  /*if($product['video']) {?>
-                    <a href="#headerPopup<?php echo $product['id'];?>" id="" class="btn vdo popup-modal headerVideoLink" data-subscriberId="<?php echo (userId()) ? userId() : ''?>" data-url="<?php echo url('auth/check');?>"><i class="far fa-play-circle"></i>video</a>
+                <?php  if($product['video']) {?>
+                    <a href="#headerPopup<?php echo $product['id'];?>" class="btn  watch btn popup-modal headerVideoLink" data-subscriberId="<?php echo (userId()) ? userId() : ''?>" data-url="<?php echo url('auth/check');?>"><i class="fab fa-youtube"></i>Watch</a>
                     <div id="headerPopup<?php echo $product['id'];?>" class="mfp-hide embed-responsive embed-responsive-21by9">
                         <iframe class="embed-responsive-item" width="854" height="480" src="<?php echo embedUrl($product['video']);?>?rel=0&enablejsapi=1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; frameborder="0"; fullscreen;"></iframe>
                     </div>
-                <?php } */?>
-
-                <?php if($product['video'] && $product['pdf']) { ?>
-                    <a href="#headerPopup<?php echo $product['id'];?>" class="btn  watch btn popup-modal headerVideoLink" data-subscriberId="<?php echo (userId()) ? userId() : ''?>" data-url="<?php echo url('auth/check');?>"><i class="fab fa-youtube"></i>Watch</a>
-                    <a href="#" class="btn  craft"><i class="far fa-arrow-alt-circle-down"></i>Download</a>
-
-                <?php } elseif ($product['video']) {?>
-                    <center>
-                        <a href="#headerPopup<?php echo $product['id'];?>" class="btn watch-only popup-modal headerVideoLink" data-subscriberId="<?php echo (userId()) ? userId() : ''?>" data-url="<?php echo url('auth/check');?>"><i class="fab fa-youtube"></i>Watch</a>
-                    </center>
-
-                <?php } elseif($product['pdf']) {?>
-                    <center>
-                        <a href="#" class="btn  craft-only"><i class="far fa-arrow-alt-circle-down">Download</a>
-                    </center>
+                <?php } else { ?>
+                    <a href="javascript:void(0);" id="" class="btn  watch btn"><i class="fab fa-youtube"></i>Watch</a>
                 <?php } ?>
-<!--              <button type="button" class="btn dwnld"><i class="far fa-arrow-alt-circle-down"></i>Download</button>-->
+                <?php if($product['pdf'] && isSubscribe()) {?>
+                     <a target="_blank" href="<?php echo site_url('image/'.$product['pdf']);?>" class="btn craft download-btn"><i class="far fa-arrow-alt-circle-down"></i></i>Download</a>
+
+                <?php } else {?>
+                    <a href="javascript:void(0);" class="btn craft download-btn"><i class="far fa-arrow-alt-circle-down"></i></i>Download</a>
+                <?php } ?>
+
             </div>
           </div>
         </div>

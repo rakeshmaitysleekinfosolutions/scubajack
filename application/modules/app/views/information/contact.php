@@ -1,27 +1,12 @@
-<section class="loginpage">
+<section class="loginpage pb-0">
         <div class="formbox info" >
             <div class="container">
                 <div class="row">
-                    <div class="col-md-5 pr-0">
-                        <div class="contact-left">
-                            <h4 class="planheading text-left">Contact us  </h4>
-                            
-<!--                            <h2 class="cperson">Beth Costanzo, M Ed</h2>-->
-                            <p class="cdetails"><i class="fas fa-map-marker-alt"></i><?php echo getSession('settings')['address_1'];?></p>
-                            <?php if(getSession('settings')['address_2']) {?>
-                                <p class="cdetails"><i class="fas fa-map-marker-alt"></i><?php echo getSession('settings')['address_2'];?></p>
-                            <?php } ?>
-                            <h3 class="cphone"><i class="fas fa-phone-volume"></i><?php echo getSession('settings')['phone_1'];?></h3>
-                            <?php if(getSession('settings')['phone_2']) {?>
-                                <h3 class="cphone"><i class="fas fa-phone-volume"></i><?php echo getSession('settings')['phone_2'];?></h3>
-                            <?php } ?>
-                            <h6 class="cemail"><i class="fas fa-envelope-open-text"></i><?php echo getSession('settings')['email'];?></h6>
-                            <?php if(getSession('settings')['email_2']) {?>
-                                <h6 class="cemail2"><?php echo getSession('settings')['email_2'];?></h6>
-                            <?php } ?>
-                        </div>
+                    <div class="col-md-4">
+                        <!-- <img src="<?php echo resizeAssetImage('contact-us.png',500,500);?>" alt="" /> -->
+                        
                     </div>
-                    <div class="col-md-7 pl-0" id="my-container">
+                    <div class="col-md-5">
                         <div class="right-sides frm">
                             <h3>Leave a reply</h3>
                           <!--   <p>Already have a SCUBA JACK Account? <a href="http://localhost/scubajack/login">Sign In</a></p> -->
@@ -51,8 +36,30 @@
                                     <button type="submit" class="btn submits" id="registerButton" data-loading-text="Loading...">Submit</button> 
                                 </form>
                       
-                            </div>
+                        </div>                       
+                    </div>
+                     <div class="col-md-3 pl-0">
+                        <div class="contact-left">
+                            <h4 class="planheading text-left">Contact us  </h4>
+                            
+                             <!--  <h2 class="cperson">Beth Costanzo, M Ed</h2>-->
+                            <p class="cdetails"><i class="fas fa-map-marker-alt"></i><?php echo getSession('settings')['address_1'];?></p>
+                            <?php if(getSession('settings')['address_2']) {?>
+                                <p class="cdetails"><i class="fas fa-map-marker-alt"></i><?php echo getSession('settings')['address_2'];?></p>
+                            <?php } ?>
+                            <h3 class="cphone"><i class="fas fa-phone-volume"></i><?php echo getSession('settings')['phone_1'];?></h3>
+                            <?php if(getSession('settings')['phone_2']) {?>
+                                <h3 class="cphone"><i class="fas fa-phone-volume"></i><?php echo getSession('settings')['phone_2'];?></h3>
+                            <?php } ?>
+                            <h6 class="cemail"><i class="fas fa-envelope-open-text"></i><?php echo getSession('settings')['email'];?></h6>
+                            <?php if(getSession('settings')['email_2']) {?>
+                                <h6 class="cemail2"><?php echo getSession('settings')['email_2'];?></h6>
+                            <?php } ?>
                         </div>
+                        <div class="client-img">
+                            <img src="<?php echo base_url('assets/images/about-us.jpg');?>" alt="" />
+                        </div>
+                    </div>
                     </div>
                 </div>
             </div>

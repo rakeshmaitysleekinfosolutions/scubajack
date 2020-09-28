@@ -84,6 +84,10 @@ class App extends AppController {
      * @var string
      */
     private $settings = array();
+    /**
+     * @var object
+     */
+    private $information;
 
     public function __construct()
     {
@@ -252,8 +256,13 @@ class App extends AppController {
     public function products($categorySlug) {
        // if(!$this->isSubscribed()) redirect('viewplans');
 
-        if($categorySlug)               $this->categorySlug         = $categorySlug;
-        if($this->categorySlug)         $this->category             = Category_model::factory()->findOne(['slug' => $this->categorySlug,'status' => 1]);
+        if($categorySlug) $this->categorySlug = $categorySlug;
+        if($this->categorySlug) $this->category = Category_model::factory()->findOne(['slug' => $this->categorySlug,'status' => 1]);
+
+       // dd($this->category);
+        if(!$this->category) {
+            redirect('status/404/');
+        }
         $this->data['category'] = array();
         if($this->category) {
             $this->categoryToProducts   = $this->category->products;
@@ -687,6 +696,7 @@ class App extends AppController {
                 $this->json['success']  = true;
             } else {
                 $this->json['success']  = false;
+                $this->json['redirect']  = site_url('viewplans');
             }
             return $this->output
                 ->set_content_type('application/json')
@@ -699,8 +709,14 @@ class App extends AppController {
      * Membership plan subscribe
      */
     public function about() {
-
-        $this->template->content->view('information/about');
+//        if($slug) {
+//            $this->information = Information_model::factory()->findOne(['slug' => $slug]);
+//        }
+//        if(!$this->information) {
+//            $this->redirect('404');
+//        }
+        $this->data['information'] = Information_model::factory()->findOne(1);
+        $this->template->content->view('information/about', $this->data);
         $this->template->publish();
     }
 
@@ -833,10 +849,89 @@ class App extends AppController {
             'points'        => $data['points'],
         ]);
     }
-    public function quiz() {
-        $this->template->content->view('quiz/index');
+    public function fetchQuizData($id) {
+        $questions = Question_model::factory()->findAll(['quiz_id' => $id],5,'RAND()');
+        foreach ($questions as $question) {
+            if(isset($question)) {
+                $this->json[] = array(
+                    'id' => $question->id,
+                    'q' => $question->question,
+                    'options' => $question->answers(),
+                    'correctIndex' => (Answer_model::factory()->find()->where('is_correct',1)->where('question_id', $question->id)->select('correct_index')->get()->row_array()) ? (int)Answer_model::factory()->find()->where('is_correct',1)->where('question_id', $question->id)->select('correct_index')->get()->row_array()['correct_index'] : null,
+                    'answerId' => (Answer_model::factory()->find()->where('is_correct',1)->where('question_id', $question->id)->select('id')->get()->row_array()) ? (int)Answer_model::factory()->find()->where('is_correct',1)->where('question_id', $question->id)->select('id')->get()->row_array()['id'] : null,
+                    'correctResponse' => 'Good job, that was obvious.',
+                    'incorrectResponse' =>  'Well, if you don\'t include it, your quiz won\'t work'
+                );
+            }
+        }
+       if($this->json) {
+           return $this->output
+               ->set_content_type('application/json')
+               ->set_status_header(200)
+               ->set_output(json_encode($this->json));
+       }
+
+    }
+    /**
+     * @param $quizSlug
+     */
+    public function quiz($quizSlug) {
+        $quiz = Quiz_model::factory()->findOne(['slug' => $quizSlug]);
+        if(!$quiz) {
+            redirect('404');
+        }
+        $this->data['quiz'] = array();
+        $this->data['quiz'] = $quiz;
+        $this->template->content->view('quiz/index', $this->data);
         $this->template->publish();
     }
+    /**
+     * @return mixed
+     */
+    public function userGivenAnswer() {
+        if($this->isPost() && $this->isAjaxRequest()) {
+            $question   = ($this->input->post('question')) ? strtolower($this->input->post('question')) : "";
+            $answer     = ($this->input->post('answer')) ? $this->input->post('answer') : "";
+
+            UserQuestionAnswer_model::factory()->insert([
+                'user_id'       => userId(),
+                'question_id'   => $question,
+                'answer_id'     => $answer,
+            ]);
+            $this->json['success']  = true;
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode($this->json));
+        }
+
+    }
+
+    /**
+     * @return mixed
+     */
+    public function finishCallback() {
+        if($this->isPost() && $this->isAjaxRequest()) {
+            $quiz          = ($this->input->post('quiz')) ? strtolower($this->input->post('quiz')) : "";
+            $score         = ($this->input->post('score')) ? $this->input->post('score') : "";
+            $numQuestions  = ($this->input->post('numQuestions')) ? $this->input->post('numQuestions') : "";
+
+            UserQuizScore_model::factory()->insert([
+                'user_id'           => userId(),
+                'quiz'              => $quiz,
+                'score'             => $score,
+                'num_questions'     => $numQuestions,
+            ]);
+            $this->json['success']  = true;
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode($this->json));
+        }
+
+    }
+
+
     public function worksheets() {
         $worksheets = Worksheet_model::factory()->findAll([],null,'sort_order');
         $this->data['worksheets'] = array();
@@ -852,5 +947,10 @@ class App extends AppController {
         $this->template->content->view('worksheets/index', $this->data);
         $this->template->publish();
     }
+
+    public function quizData() {
+        //Quiz_model::factory()->
+    }
+
 
 }

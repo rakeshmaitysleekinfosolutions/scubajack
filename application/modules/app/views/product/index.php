@@ -10,27 +10,22 @@
                         <div class="book-details"> <img src="<?php echo $product['img'];?>" alt="<?php echo $product['name'];?>"> </div>
                         <div class="card-body">
                             <h5><?php echo $product['name'];?></h5>
-                            <?php if($product['video'] && $product['pdf']) { ?>
-                                <a href="headerPopup<?php echo $product['id'];?>" class="btn  watch btn popup-modal headerVideoLink" data-subscriberId="<?php echo (userId()) ? userId() : ''?>" data-url="<?php echo url('auth/check');?>"><i class="fab fa-youtube"></i>Watch</a>
-                                <a href="#" class="btn  craft"><i class="fas fa-puzzle-piece"></i>Craft</a>
 
-                            <?php } elseif ($product['video']) {?>
-                                <center>
-                                    <a href="#headerPopup<?php echo $product['id'];?>" class="btn watch-only popup-modal headerVideoLink" data-subscriberId="<?php echo (userId()) ? userId() : ''?>" data-url="<?php echo url('auth/check');?>"><i class="fab fa-youtube"></i>Watch</a>
-                                </center>
-
-                            <?php } elseif($product['pdf']) {?>
-                                <center>
-                                    <a href="#" class="btn  craft-only"><i class="fas fa-puzzle-piece"></i>Craft</a>
-                                </center>
+                            <?php  if($product['video']) {?>
+                                <a href="#headerPopup<?php echo $product['id'];?>" class="btn  watch btn popup-modal headerVideoLink" data-subscriberId="<?php echo (userId()) ? userId() : ''?>" data-url="<?php echo url('auth/check');?>"><i class="fab fa-youtube"></i>Watch</a>
+                                <div id="headerPopup<?php echo $product['id'];?>" class="mfp-hide embed-responsive embed-responsive-21by9">
+                                    <iframe class="embed-responsive-item" width="854" height="480" src="<?php echo embedUrl($product['video']);?>?rel=0&enablejsapi=1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; frameborder="0"; fullscreen;"></iframe>
+                                </div>
+                            <?php } else { ?>
+                                <a href="javascript:void(0);" id="" class="btn  watch btn"><i class="fab fa-youtube"></i>Watch</a>
                             <?php } ?>
-                            <div id="headerPopup<?php echo $product['id'];?>" class="mfp-hide embed-responsive embed-responsive-21by9">
-                                <iframe class="embed-responsive-item" width="854" height="480" src="<?php echo embedUrl($product['video']);?>?rel=0&enablejsapi=1" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture; frameborder="0"; fullscreen;"></iframe>
-                            </div>
-                            <div class="only-one">
+<!--                            <a href="#" class="btn  craft"><i class="fas fa-puzzle-piece"></i>Craft</a>-->
+                            <?php if($product['pdf'] && isSubscribe()) {?>
+                                <a target="_blank" href="<?php echo site_url('image/'.$product['pdf']);?>" class="btn craft download-btn"><i class="far fa-arrow-alt-circle-down"></i></i>Download</a>
+                            <?php } else {?>
+                                <a href="javascript:void(0);" class="btn craft download-btn"><i class="far fa-arrow-alt-circle-down"></i></i>Download</a>
+                            <?php } ?>
 
-
-              </div>
                             <!-- <center> <a href="#" class="btn  order"><i class="fas fa-download"></i>Order now</a></center> -->
                         </div>
                     </div>
@@ -38,7 +33,16 @@
             <?php } ?>
 		</div>
         <?php } else { ?>
-            <div class="row">Product no found!</div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="404-logo pb-5">
+                        <img src="<?php echo resize(getSession('settings')['logo'],200,200);?>" alt="<?php echo getSession('settings')['company_name'];?>" style="width:100px">
+                    </div>
+                    <h2>Product Not Found!</h2>
+                </div>
+            </div>
+
         <?php } ?>
 	</div>
 </section>

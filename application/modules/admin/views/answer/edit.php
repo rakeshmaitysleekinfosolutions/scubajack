@@ -35,7 +35,7 @@
                                     <select name="question" class="select floating" id="input-quiz" >
                                         <?php if(isset($questions)) {
                                             foreach ($questions as $question) {?>
-                                                <option value="<?php echo $question->id;?>"><?php echo $question->question;?></option>
+                                                <option <?php echo ($question->id == $questionId) ? "selected" : "";?> value="<?php echo $question->id;?>"><?php echo $question->question;?></option>
                                             <?php } ?>
                                         <?php } ?>
                                     </select>

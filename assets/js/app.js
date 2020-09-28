@@ -41,6 +41,111 @@ $( document ).ready(function() {
         });
     }
 });
+
+var quiz = $('#quiz');
+if (quiz.length !=0 ) {
+    fetch(myLabel.fetchQuizData)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            console.log(data);
+        $('#quiz').quiz({
+            //resultsScreen: '#results-screen',
+            counter: false,
+            //homeButton: '#custom-home',
+            counterFormat: 'Question %current of %total',
+            questions: data,
+            answerCallback: function (currentQuestion, selected, question) {
+                $.ajax({
+                    type: "POST",
+                    url: myLabel.userGivenAnswer,
+                    dataType: "json",
+                    data: {
+                        question: question.id,
+                        answer: question.answerId,
+                    },
+                    cache: false,
+                    success: function (data) {
+
+                    },error: function (err) {
+                        console.log(err);
+                    }
+                });
+            },
+            finishCallback: function (score, numQuestions) {
+                $.ajax({
+                    type: "POST",
+                    url: myLabel.finishCallback,
+                    dataType: "json",
+                    data: {
+                        quiz: myLabel.quizName,
+                        score: score,
+                        numQuestions: numQuestions,
+                    },
+                    cache: false,
+                    success: function (data) {
+
+                    },error: function (err) {
+                        console.log(err);
+                    }
+                });
+            }
+        });
+    })
+}
+
+    //$quiz.quiz({});
+
+
+function download(filename) {
+    if (typeof filename==='undefined') filename = ""; // default
+    value = document.getElementById('textarea_area').value;
+
+    filetype="text/*";
+    extension=filename.substring(filename.lastIndexOf("."));
+    for (var i = 0; i < extToMIME.length; i++) {
+        if (extToMIME[i][0].localeCompare(extension)==0) {
+            filetype=extToMIME[i][1];
+            break;
+        }
+    }
+
+
+    var pom = document.createElement('a');
+    pom.setAttribute('href', 'data: '+filetype+';charset=utf-8,' + '\ufeff' + encodeURIComponent(value)); // Added BOM too
+    pom.setAttribute('download', filename);
+
+
+    if (document.createEvent) {
+        if (navigator.userAgent.indexOf('MSIE') !== -1 || navigator.appVersion.indexOf('Trident/') > 0) { // IE
+            blobObject = new Blob(['\ufeff'+value]);
+            window.navigator.msSaveBlob(blobObject, filename);
+        } else { // FF, Chrome
+            var event = document.createEvent('MouseEvents');
+            event.initEvent('click', true, true);
+            pom.dispatchEvent(event);
+        }
+    } else if( document.createEventObject ) { // Have No Idea
+        var evObj = document.createEventObject();
+        pom.fireEvent( 'onclick' , evObj );
+    } else { // For Any Case
+        pom.click();
+    }
+
+}
+function downloadURL(url) {
+    var hiddenIFrameID = 'hiddenDownloader',
+        iframe = document.getElementById(hiddenIFrameID);
+    if (iframe === null) {
+        iframe = document.createElement('iframe');
+        iframe.id = hiddenIFrameID;
+        iframe.style.display = 'none';
+        document.body.appendChild(iframe);
+    }
+    iframe.src = url;
+};
+
 var map = $('#map');
 var paths = $('.map__image a');
 
@@ -50,7 +155,19 @@ if(map.length != 0) {
             [].forEach().call(this, callback);
         }
     }
+    // $("#map").mapify({
+    //     popOver: {
+    //         content: function(path){
+    //             return "<strong>"+path.attr("xlink:title")+"</strong>";
+    //         },
+    //         delay: 0.7,
+    //         margin: "15px",
+    //         height: "130px",
+    //         width: "260px"
+    //     }
+    // });
     paths.each(function (path) {
+
         $(this).on("click", function(){
             var countryIso      = $(this).attr('data-iso');
             var subscriberId    = $(this).attr('data-subscriberid');

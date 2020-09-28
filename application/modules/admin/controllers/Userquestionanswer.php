@@ -58,16 +58,17 @@ class Userquestionanswer extends AdminController{
     }
     public function onLoadDatatableEventHandler() {
 
-        $this->results = UserQuestionAnswer_model::factory()->findAll();
+        $this->results = UserQuizScore_model::factory()->findAll();
         if($this->results) {
             foreach($this->results as $result) {
                 $this->rows[] = array(
                     'id'			=> $result->id,
-                    'quiz'		    => $result->question->quiz->name,
+                    'quiz'		    => $result->quiz,
                     'user'		    => $result->user->firstname.' ' .$result->user->lastname,
-                    'question'		=> $result->question->question,
-                    'answer'		=> $result->answer->answer,
-                    'created_at'    => Carbon::createFromTimeStamp(strtotime($result->created_at))->diffForHumans(),
+                    'email'		    => $result->user->email,
+                    'score'		    => $result->score,
+                    'numQuestions'  => $result->num_questions,
+                    'created_at'    => $result->created_at,
                 );
             }
             $i = 0;
@@ -80,21 +81,20 @@ class Userquestionanswer extends AdminController{
 											</label>
 										</td>';
                 $this->data[$i][] = '<td>'.$row['quiz'].'</td>';
-                $this->data[$i][] = '<td>'.$row['user'].'</td>';
-                $this->data[$i][] = '<td>'.$row['question'].'</td>';
-                $this->data[$i][] = '<td>'.$row['answer'].'</td>';
+                $this->data[$i][] = '<td>'.$row['user'].'('.$row['email'].')</td>';
                 $this->data[$i][] = '<td>'.$row['created_at'].'</td>';
+                $this->data[$i][] = '<td>'.$row['score'].'/'.$row['numQuestions'].'</td>';
 
-                $this->data[$i][] = '<td class="text-right">
-	                            <div class="dropdown">
-	                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
-	                                <ul class="dropdown-menu pull-right">
-	                                    <li><a class="edit" href="javascript:void(0);" data-id="'.$row['id'].'" data-toggle="modal" data-target="#edit_client"><i class="fa fa-pencil m-r-5"></i> Edit</a></li>
-	                                    
-	                                </ul>
-	                            </div>
-	                        </td>
-                        ';
+//                $this->data[$i][] = '<td class="text-right">
+//	                            <div class="dropdown">
+//	                                <a href="#" class="action-icon dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-ellipsis-v"></i></a>
+//	                                <ul class="dropdown-menu pull-right">
+//	                                    <li><a class="edit" href="javascript:void(0);" data-id="'.$row['id'].'" data-toggle="modal" data-target="#edit_client"><i class="fa fa-pencil m-r-5"></i> Edit</a></li>
+//
+//	                                </ul>
+//	                            </div>
+//	                        </td>
+//                        ';
                 $i++;
             }
 

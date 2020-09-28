@@ -9,7 +9,7 @@
             <h4 class="page-title">Information</h4>
         </div>
         <div class="col-sm-8 col-xs-9 text-right m-b-20">
-            <button class="btn btn-primary rounded pull-right " id="delete"><i class="fa fa-trash"></i> Delete</button>
+<!--            <button class="btn btn-primary rounded pull-right " id="delete"><i class="fa fa-trash"></i> Delete</button>-->
             <a href="<?php echo admin_url('information/create');?>" class="btn btn-primary rounded pull-right"><i class="fa fa-plus"></i> Add</a>
         </div>
     </div>
