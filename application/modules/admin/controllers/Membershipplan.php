@@ -184,22 +184,27 @@ class Membershipplan extends AdminController implements CrudContract {
     public function store() {
 
             $this->setData();
+           // $this->dd($this->data['price']);
             if ($this->isPost() && $this->validateForm()) {
-                $this->paypal->setPlanName($this->data['name'])
-                    ->setPlanDescription($this->data['description'])
-                    ->setPaymentDefinitionName('Regular Payments')
-                    ->setPaymentDefinitionType($this->data['type'])
+                $this->paypal->plan->setName($this->data['name'])
+                    ->setDescription($this->data['description']);
+
+
+                $this->paypal->paymentDefinition->setName('Regular Payments')
+                    ->setType($this->data['type'])
                     ->setFrequency($this->data['frequency'])
                     ->setFrequencyInterval($this->data['frequency_interval'])
                     ->setCycles($this->data['cycles'])
-                    ->setCurrency(array(
+                    ->setAmount(array(
                         'value' => $this->data['price'],
                         'currency' => 'USD'
-                    ))
-                    ->setChargeModelType('SHIPPING')->setCurrency(array(
+                    ));
+
+                $this->paypal->chargeModel->setType('SHIPPING')->setAmount(array(
                         'value' => 0,
                         'currency' => 'USD'
-                    ))->setPaymentModel('{"state":"'.$this->data['state'].'"}')
+                    ));
+                $this->paypal->setPaymentModel('{"state":"'.$this->data['state'].'"}')
                         ->createOrUpdatePlan();
 
                 Membershipplan_model::factory()->insert([
@@ -255,22 +260,26 @@ class Membershipplan extends AdminController implements CrudContract {
                 $this->redirect(admin_url('membershipplan'));
             }
             if ($this->isPost() && $this->validateForm()) {
-                $this->paypal->setPlanName($this->data['name'])
-                    ->setPlanDescription($this->data['description'])
-                    ->setPaymentDefinitionName('Regular Payments')
-                    ->setPaymentDefinitionType($this->data['type'])
+                $this->paypal->plan->setName($this->data['name'])
+                    ->setDescription($this->data['description']);
+
+
+                $this->paypal->paymentDefinition->setName('Regular Payments')
+                    ->setType($this->data['type'])
                     ->setFrequency($this->data['frequency'])
                     ->setFrequencyInterval($this->data['frequency_interval'])
                     ->setCycles($this->data['cycles'])
-                    ->setCurrency(array(
+                    ->setAmount(array(
                         'value' => $this->data['price'],
-                        'currency' => 'USD'
-                    ))
-                    ->setChargeModelType('SHIPPING')->setCurrency(array(
-                        'value' => 0,
-                        'currency' => 'USD'
-                    ))->setPaymentModel('{"state":"'.$this->data['state'].'"}')
-                      ->createOrUpdatePlan();
+                        'currency' => $this->getSession('currency')['code']
+                    ));
+
+                $this->paypal->chargeModel->setType('SHIPPING')->setAmount(array(
+                    'value' => 0,
+                    'currency' => $this->getSession('currency')['code']
+                ));
+                $this->paypal->setPaymentModel('{"state":"'.$this->data['state'].'"}')
+                    ->createOrUpdatePlan();
 
                 Membershipplan_model::factory()->update([
                     'name' => $this->data['name'],

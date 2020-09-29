@@ -3,7 +3,7 @@
             <div class="row">
                 <div class="sub-plan">
                     <h2 class="notice">You have already subscribed <?php echo (isset($plan['name'])) ? $plan['name'] : '';?> plan</h2>
-                    <p class="prange">Price: $<?php echo (isset($plan['price'])) ? $plan['price'] : '';?></p>
+                    <p class="prange">Price: $<?php echo (isset($plan['price'])) ? currencyFormat($plan['price'], getSession('currency')['code']) : '';?></p>
                     <h3 class="exp-date">Expire Date: <?php echo (isset($plan['end_at'])) ? $plan['end_at'] : '';?></h3>
                     <h3 class="day-left">Day Left: <?php echo (isset($plan['daysLeft'])) ? $plan['daysLeft'] : '';?></h3>
                     <h6 class="description"><?php echo (isset($plan['description'])) ? $plan['description'] : '';?></h6>

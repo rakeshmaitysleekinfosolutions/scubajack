@@ -37,7 +37,7 @@ class Answer extends AdminController implements AnswerContract {
         $this->template->stylesheet->add('assets/theme/light/js/datatables/dataTables.bootstrap4.css');
         $this->template->javascript->add('assets/theme/light/js/datatables/jquery.dataTables.min.js');
         $this->template->javascript->add('assets/theme/light/js/datatables/dataTables.bootstrap4.min.js');
-        $this->template->javascript->add('assets/js/admin/answer/answer.js');
+        $this->template->javascript->add('assets/js/admin/answer/Answer.js');
 
         $this->template->content->view('answer/index');
         $this->template->publish();
@@ -227,8 +227,6 @@ class Answer extends AdminController implements AnswerContract {
         $this->results = Answer_model::factory()->findAll();
         if($this->results) {
             foreach($this->results as $result) {
-                //$this->dd($result);
-                //$this->quiz = Quiz_model::factory()->findOne($result->quiz_id);
                 $this->rows[] = array(
                     'id'			=> $result->id,
                     'question'		=> $result->question->question,

@@ -137,7 +137,24 @@
                                 </div>
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="col-sm-4 col-md-4 col-lg-4">
+                            <div class="form-group">
+                                <label>Currency<span class="text-danger">*</span></label>
+                                <select class="form-control" id="currency" name="currency" required>
+                                    <?php
+                                    if(!empty($currencies)) {
+                                        foreach($currencies as $c) {
+                                            ?>
+                                            <option value="<?php echo $c['code'];?>" <?php echo ($c['code'] == $currency) ? "selected" : '';?>><?php echo $c['name'].'('.$c['code'].')';?></option>
+                                            <?php
+                                        }
+                                    }
+                                    ?>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
 
                 </div>

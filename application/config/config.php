@@ -530,6 +530,10 @@ $config['rewrite_short_tags'] = FALSE;
 | Array:		array('10.0.1.200', '192.168.5.0/24')
 */
 $config['proxy_ips'] = '';
-$config['CLIENT_ID'] = 'AaM4u_1sswOYNwnXKHm1vQ0zyaQun2mn_t9RtJD8zGmI8QAsy65uutrqZ5iJ0j2LwlnJJgXMOqtOuLKf';
-$config['CLIENT_SECRET'] = 'EPLctsfvrpGvM9TJHf_2WIj0hvPC8TUn67hYErByzeTY4LSADXQkABW6AwbG9jJ3M0AnPGVIDa9ywJvO';
+$config['CLIENT_ID'] = 'AcAd2GLtMixowVxgyKC9m4k2UJLW7xviVtVtPP2-AsM9XBdfA0cnQyW8JRLkIa5-ZPkSL51IUjk4ARKb';
+$config['CLIENT_SECRET'] = 'EHc_fc822fUDKIZUGiODxT5q4f_L5I1C6inGzBuSPxXVPi4ikQJ7SeQ40qnQQVL3B23ciUJEYlDQjITM';
+
+$config['decimal_point']                 = '.';
+$config['thousand_point']                = ',';
+
 require_once FCPATH.'autoload.php';

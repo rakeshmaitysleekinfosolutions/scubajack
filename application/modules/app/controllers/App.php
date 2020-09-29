@@ -302,7 +302,7 @@ class App extends AppController {
     public function viewPlans() {
         if($this->isSubscribed()) redirect('subscribed');
 
-        $this->data['plans'] = Membershipplan_model::factory()->findAll();
+        $this->data['plans'] = Membershipplan_model::factory()->findAll(['state' => 'ACTIVE']);
         $this->template->content->view('plans/index', $this->data);
         $this->template->publish();
     }
@@ -320,7 +320,7 @@ class App extends AppController {
             $daysLeft = floor((strtotime($this->subscriber->end_at)-$today)/(60*60*24));
             $this->data['plan'] = array(
                 'name' => $this->subscriber->plan,
-                'price' => $this->subscriber->price,
+                'price' => currencyFormat($this->subscriber->price, getSession('currency')['code']),
                 'end_at' => $this->subscriber->end_at,
                 'daysLeft' => $daysLeft,
             );
@@ -498,6 +498,7 @@ class App extends AppController {
                     $this->setSession('membership_plan_id', $this->plan->id);
                     $this->json['success'] = true;
                     $this->json['redirect'] = $this->paypal->getApprovalLink();
+                    
                     return $this->output
                         ->set_content_type('application/json')
                         ->set_status_header(200)
@@ -860,7 +861,7 @@ class App extends AppController {
                     'correctIndex' => (Answer_model::factory()->find()->where('is_correct',1)->where('question_id', $question->id)->select('correct_index')->get()->row_array()) ? (int)Answer_model::factory()->find()->where('is_correct',1)->where('question_id', $question->id)->select('correct_index')->get()->row_array()['correct_index'] : null,
                     'answerId' => (Answer_model::factory()->find()->where('is_correct',1)->where('question_id', $question->id)->select('id')->get()->row_array()) ? (int)Answer_model::factory()->find()->where('is_correct',1)->where('question_id', $question->id)->select('id')->get()->row_array()['id'] : null,
                     'correctResponse' => 'Good job, that was obvious.',
-                    'incorrectResponse' =>  'Well, if you don\'t include it, your quiz won\'t work'
+                    'incorrectResponse' =>  'Well, if you don\'t include it, your quiz won\'t work',
                 );
             }
         }
@@ -878,6 +879,9 @@ class App extends AppController {
     public function quiz($quizSlug) {
         $quiz = Quiz_model::factory()->findOne(['slug' => $quizSlug]);
         if(!$quiz) {
+            redirect('404');
+        }
+        if(!isSubscribe()) {
             redirect('404');
         }
         $this->data['quiz'] = array();

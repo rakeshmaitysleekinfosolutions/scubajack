@@ -417,4 +417,51 @@ if(!function_exists('isSubscribe')) {
         return getSession('subscribe');
     }
 }
+if(!function_exists('currencyFormat')) {
+    function currencyFormat($number, $currency, $value = '', $format = true) {
+
+        $ci = get_instance();
+        $query = $ci->db->query("SELECT * FROM currency");
+        foreach ($query->result_array() as $result) {
+            $currencies[$result['code']] = array(
+                'id'   => $result['id'],
+                'name'         => $result['name'],
+                'code'         => $result['code'],
+                'symbol_left'   => $result['symbol_left'],
+                'symbol_right'  => $result['symbol_right'],
+                'decimal_place' => $result['decimal_place'],
+                'value'         => $result['value']
+            );
+        }
+        $symbol_left = $currencies[$currency]['symbol_left'];
+        $symbol_right = $currencies[$currency]['symbol_right'];
+        $decimal_place = $currencies[$currency]['decimal_place'];
+
+        if (!$value) {
+            $value = $currencies[$currency]['value'];
+        }
+
+        $amount = $value ? (float)$number * $value : (float)$number;
+
+        $amount = round($amount, (int)$decimal_place);
+
+        if (!$format) {
+            return $amount;
+        }
+
+        $string = '';
+
+        if ($symbol_left) {
+            $string .= $symbol_left;
+        }
+
+        $string .= number_format($amount, (int)$decimal_place, $ci->config->item('decimal_point'), $ci->config->item('thousand_point'));
+
+        if ($symbol_right) {
+            $string .= $symbol_right;
+        }
+
+        return $string;
+    }
+}
 ?>

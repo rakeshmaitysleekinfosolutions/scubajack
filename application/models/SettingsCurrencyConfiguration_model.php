@@ -1,9 +1,9 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 
-class Settings_model extends BaseModel {
+class SettingsCurrencyConfiguration_model extends BaseModel {
     
-    protected $table = "settings";
+    protected $table = "settings_currency_configurations";
 
     protected $primaryKey = 'id';
 
@@ -29,10 +29,6 @@ class Settings_model extends BaseModel {
    
 	
     public static function factory($attr = array()) {
-        return new Settings_model($attr);
+        return new SettingsCurrencyConfiguration_model($attr);
     }
-
-
-
-
 }

@@ -49,13 +49,14 @@ if (quiz.length !=0 ) {
             return response.json();
         })
         .then(function (data) {
-            console.log(data);
+           // console.log(data);
         $('#quiz').quiz({
             //resultsScreen: '#results-screen',
             counter: false,
             //homeButton: '#custom-home',
             counterFormat: 'Question %current of %total',
             questions: data,
+            backUrl: myLabel.baseUrl,
             answerCallback: function (currentQuestion, selected, question) {
                 $.ajax({
                     type: "POST",

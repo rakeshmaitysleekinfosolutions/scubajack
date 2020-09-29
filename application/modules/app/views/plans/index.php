@@ -1,4 +1,4 @@
- <section class="pricing">
+<section class="pricing">
     <div class="container">
         <?php if(isset($plans)) { ?>
             <div class="row">
@@ -6,7 +6,7 @@
 
                     <div class="col-md-4">
                       <div class="price-box">
-                        <h2>$<?php echo $plan->price;?></h2>
+                        <h2><?php echo currencyFormat($plan->price, getSession('currency')['code']);?></h2>
                           <p>For <?php echo $plan->frequency_interval;?> <?php echo $plan->frequency;?></p>
                         <h3><?php echo $plan->name;?></h3>
                           <h6 class="description"><?php echo $plan->description;?></h6>

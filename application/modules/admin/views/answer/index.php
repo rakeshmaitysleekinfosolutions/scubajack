@@ -47,4 +47,5 @@
     myLabel.status      = '<?php echo admin_url('answer/onChangeStatusEventHandler');?>';
     myLabel.delete      = '<?php echo admin_url('answer/delete');?>';
     myLabel.edit        = '<?php echo admin_url('answer/edit/');?>';
+    console.log(myLabel);
 </script>

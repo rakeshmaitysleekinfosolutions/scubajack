@@ -17,10 +17,15 @@ class Settings extends AdminController {
      * @var object|null
      */
     private $mail;
+    /**
+     * @var object|null
+     */
+    private $currencyModel;
 
     public function __construct() {
         parent::__construct();
         $this->template->set_template('layout/admin');
+        //dd($_SESSION);
     }
     public function setData() {
         if (isset($this->settings)) {
@@ -206,9 +211,20 @@ class Settings extends AdminController {
             $this->data['sender_name'] = '';
         }
 
+        // currency
+        if (!empty($this->input->post('currency'))) {
+            $this->data['currency'] = $this->input->post('currency');
+        } elseif (!empty($this->currencyModel)) {
+            $this->data['currency'] = $this->currencyModel->currency;
+        } else {
+            $this->data['currency'] = '';
+        }
+
+
 
         $this->data['placeholder']  = $this->resize('no_image.png', 100, 100);
         $this->data['countries']    = Country_model::factory()->findAll();
+        $this->data['currencies']   = Currency_model::factory()->find()->get()->result_array();
 
     }
     public function index() {
@@ -248,6 +264,12 @@ class Settings extends AdminController {
                         'sender_email'  => $this->data['sender_email'],
                         'sender_name'   => $this->data['sender_name'],
                     ]);
+                    //dd($this->data);
+                    Currency_model::factory()->refresh(true, $this->data['currency']);
+                    SettingsCurrencyConfiguration_model::factory()->insert([
+                        'settings_id'   => Settings_model::factory()->getLastInsertID(),
+                        'currency'      => $this->data['currency'],
+                    ]);
 
                     $output  = '<?php' . "\n";
                     $output .= '$config[\'config_mail_engine\']             = "'.$this->data["protocol"].'";'."\n";
@@ -266,7 +288,7 @@ class Settings extends AdminController {
 
                     $this->setSession('settings', Settings_model::factory()->find()->get()->row_array());
                     //$this->setSession('settings.mail.config', SettingsMailConfiguration_model::factory()->find()->where('settings_id', $this->id)->get()->row_array());
-
+                    $this->setSession('currency', $this->currency->getCurrency($this->data['currency']));
                     $this->setMessage('message', 'Settings has been successfully modified');
                 case 'edit':
                     $this->setData();
@@ -300,6 +322,14 @@ class Settings extends AdminController {
                         'sender_name'   => $this->data['sender_name'],
                     ]);
 
+                    SettingsCurrencyConfiguration_model::factory()->delete(['settings_id' => $this->id], true);
+                    //dd($this->data);
+                    Currency_model::factory()->refresh(true, $this->data['currency']);
+                    SettingsCurrencyConfiguration_model::factory()->insert([
+                        'settings_id'   => $this->id,
+                        'currency'      => $this->data['currency'],
+                    ]);
+
                     $output  = '<?php' . "\n";
                     $output .= '$config[\'config_mail_engine\']             = "'.$this->data["protocol"].'";'."\n";
                     $output .= '$config[\'config_mail_parameter\']          = "'.$this->data["parameter"].'";'."\n";
@@ -316,6 +346,8 @@ class Settings extends AdminController {
                     fclose($file);
 
                     $this->setSession('settings', Settings_model::factory()->find()->get()->row_array());
+
+                    $this->setSession('currency', $this->currency->getCurrency($this->data['currency']));
                     //$this->setSession('settings.mail.config', SettingsMailConfiguration_model::factory()->find()->where('settings_id', $this->id)->get()->row_array());
 
                     $this->setMessage('message', 'Settings has been successfully modified');
@@ -324,6 +356,8 @@ class Settings extends AdminController {
         $this->settings = Settings_model::factory()->find()->get()->row_object();
         if($this->settings) {
             $this->mail = SettingsMailConfiguration_model::factory()->find()->get()->row_object();
+            $this->currencyModel = SettingsCurrencyConfiguration_model::factory()->find()->get()->row_object();
+
         }
         $this->setData();
         $this->template->javascript->add('assets/js/jquery.validate.js');

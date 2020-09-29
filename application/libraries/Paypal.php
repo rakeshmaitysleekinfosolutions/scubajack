@@ -77,6 +77,7 @@ class Paypal {
      * @var Currency
      */
     public $currency;
+    public $paypalCurrency;
     /**
      * @var string
      */
@@ -132,8 +133,8 @@ class Paypal {
         $this->currency                     = new Currency();
         $this->apiContext = new ApiContext(
             new \PayPal\Auth\OAuthTokenCredential(
-                'AaM4u_1sswOYNwnXKHm1vQ0zyaQun2mn_t9RtJD8zGmI8QAsy65uutrqZ5iJ0j2LwlnJJgXMOqtOuLKf',
-                'EPLctsfvrpGvM9TJHf_2WIj0hvPC8TUn67hYErByzeTY4LSADXQkABW6AwbG9jJ3M0AnPGVIDa9ywJvO'
+                'AcAd2GLtMixowVxgyKC9m4k2UJLW7xviVtVtPP2-AsM9XBdfA0cnQyW8JRLkIa5-ZPkSL51IUjk4ARKb',
+                'EHc_fc822fUDKIZUGiODxT5q4f_L5I1C6inGzBuSPxXVPi4ikQJ7SeQ40qnQQVL3B23ciUJEYlDQjITM'
             )
         );
     }
@@ -142,7 +143,7 @@ class Paypal {
     }
 
     public function setCurrency($currency) {
-        $this->currency = $currency;
+        $this->paypalCurrency = $currency;
         return $this;
     }
     public function setApiContext($clientId, $clientSecret) {
@@ -192,7 +193,7 @@ class Paypal {
         return $this->apiContext;
     }
     public function getCurrency() {
-        return $this->currency;
+        return $this->currency->getCurrency();
     }
     /**
      * Name of the billing plan. 128 characters max.
@@ -425,19 +426,21 @@ class Paypal {
         return $this;
     }
     public function createOrUpdatePlan() {
-        $this->plan->setName($this->planName)
-            ->setDescription($this->planDescription)
+
+        $this->plan->setName($this->plan->getName())
+            ->setDescription($this->plan->getDescription())
             ->settype('FIXED');
 
-        $this->paymentDefinition->setName($this->paymentDefinitionName)
-            ->setType($this->paymentDefinitionType)
-            ->setFrequency($this->frequency)
-            ->setFrequencyInterval($this->frequencyInterval)
-            ->setCycles($this->cycles)
-            ->setAmount($this->currency);
+        $this->paymentDefinition->setName($this->paymentDefinition->getName())
+            ->setType($this->paymentDefinition->getType())
+            ->setFrequency($this->paymentDefinition->getFrequency())
+            ->setFrequencyInterval($this->paymentDefinition->getFrequencyInterval())
+            ->setCycles($this->paymentDefinition->getCycles())
+            ->setAmount($this->paymentDefinition->getAmount());
 
-        $this->chargeModel->setType($this->chargeModelType)
-             ->setAmount($this->currency);
+        //dd($this->paymentDefinition);
+        $this->chargeModel->setType($this->chargeModel->getType())
+             ->setAmount($this->chargeModel->getAmount());
 
         $this->paymentDefinition->setChargeModels(array(
             $this->getChargeModel()
@@ -448,10 +451,12 @@ class Paypal {
             ->setAutoBillAmount('yes')
             ->setInitialFailAmountAction('CONTINUE')
             ->setMaxFailAttempts('0')
-            ->setSetupFee($this->currency);
+            ->setSetupFee($this->paymentDefinition->getAmount());
 
         $this->plan->setPaymentDefinitions(array($this->getPaymentDefinition()))
             ->setMerchantPreferences($this->getMerchantPreferences());
+
+        //dd($this->paymentDefinition);
         try {
             $this->plan->create($this->getApiContext());
             $this->patch->setOp('replace')
@@ -460,7 +465,6 @@ class Paypal {
 
             $this->patchRequest->addPatch($this->getPatch());
             $this->plan->update($this->patchRequest, $this->apiContext);
-
         } catch (PayPal\Exception\PayPalConnectionException $ex) {
             $this->jsonArray['code'] = $ex->getCode();
             $this->jsonArray['data'] = $ex->getData();

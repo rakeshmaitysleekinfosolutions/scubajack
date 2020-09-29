@@ -7,8 +7,8 @@
               <ul class="nav flex-column">
                 <li><a href="#home" data-toggle="tab">Dashboard</a></li>
                   <li><a href="#passport" data-toggle="tab">Passport</a></li>
-                <li><a href="#Orders" data-toggle="tab">Orders</a></li>
-                <li><a href="#download" data-toggle="tab">Downloads</a></li>
+<!--                <li><a href="#Orders" data-toggle="tab">Orders</a></li>-->
+<!--                <li><a href="#download" data-toggle="tab">Downloads</a></li>-->
                 <li class="active"><a href="#account-details" data-toggle="tab">Account Details</a></li>
                 <li><a href="#log-out" data-toggle="tab" onclick="return logout();">Log out</a></li>
               </ul>
@@ -26,20 +26,20 @@
                   <p>Subscriber Name: <?php echo (isset($subscriber['name'])) ? $subscriber['name'] : '';?></p>
                   <h3>Subscriber Email: <?php echo (isset($subscriber['email'])) ? $subscriber['email'] : '';?></h3>
               </div>
-              <div class="tab-pane" id="Orders">
-                <div class="order-box border-left-blue"> <i class="far fa-check-circle"></i>
-                  <p>No order has been made yet
-                    <button type="button" class="btn browse-products">Browse products</button>
-                  </p>
-                </div>
-              </div>
-              <div class="tab-pane" id="download">
-                <div class="order-box border-left-blue"> <i class="far fa-check-circle"></i>
-                  <p>No download has been made yet
-                    <button type="button" class="btn browse-products">Browse products</button>
-                  </p>
-                </div>
-              </div>
+<!--              <div class="tab-pane" id="Orders">-->
+<!--                <div class="order-box border-left-blue"> <i class="far fa-check-circle"></i>-->
+<!--                  <p>No order has been made yet-->
+<!--                    <button type="button" class="btn browse-products">Browse products</button>-->
+<!--                  </p>-->
+<!--                </div>-->
+<!--              </div>-->
+<!--              <div class="tab-pane" id="download">-->
+<!--                <div class="order-box border-left-blue"> <i class="far fa-check-circle"></i>-->
+<!--                  <p>No download has been made yet-->
+<!--                    <button type="button" class="btn browse-products">Browse products</button>-->
+<!--                  </p>-->
+<!--                </div>-->
+<!--              </div>-->
 
               <div class="tab-pane active" id="account-details">
                 <div class="details flup" id="my-container">

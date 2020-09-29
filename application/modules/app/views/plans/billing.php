@@ -16,7 +16,7 @@
                 <div class="col-md-7 pl-0" id="my-container">
                     <div class="billing-form signup-form">
                         <h3 class="text-billing">Billing</h3>
-                        <form id="frmSignUp" action="<?php echo base_url('register');?>" method="post">
+                        <form  method="post">
                             <div class="form-group register">
                                 <label for="exampleInputEmail1"></label>
                                 <input value="<?php echo userName();?>" type="text" class="form-control" autocomplete="off" readonly>

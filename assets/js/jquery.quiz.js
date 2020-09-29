@@ -23,6 +23,7 @@
             nextButtonText = base.options.nextButtonText,
             finishButtonText = base.options.finishButtonText,
             restartButtonText = base.options.restartButtonText,
+            backUrl = base.options.backUrl,
             currentQuestion = 1,
             score = 0,
             answerLocked = false;
@@ -58,7 +59,7 @@
 
                 $(document).on('click', '#quiz-restart-btn, #quiz-retry-btn', function(e) {
                     e.preventDefault();
-                    base.methods.restart();
+                    base.methods.back();
                 });
             },
             setup: function() {
@@ -70,12 +71,14 @@
 
                 quizHtml += '<div id="questions">';
                 $.each(questions, function(i, question) {
-                    console.log(question);
+                    console.log(i);
                     quizHtml += '<div class="question-container">';
                     quizHtml += '<p class="question">' + question.q + '</p>';
                     quizHtml += '<ul class="answers">';
+                    var sl = 1;
                     $.each(question.options, function(index, answer) {
-                        quizHtml += '<li><a href="javascript:void(0);" data-id="'+question.id+'" data-answer="'+question.answerId+'" data-index="' + index + '">' + answer + '</a></li>';
+                        quizHtml += '<li><a href="javascript:void(0);" data-id="'+question.id+'" data-answer="'+question.answerId+'" data-index="' + index + '">' + sl + '. ' + answer + '</a></li>';
+                        sl++;
                     });
                     quizHtml += '</ul>';
                     quizHtml += '</div>';
@@ -94,7 +97,7 @@
                 quizHtml += '<div id="quiz-buttons">';
                 quizHtml += '<a href="#" id="quiz-next-btn">' + nextButtonText + '</a>';
                 quizHtml += '<a href="#" id="quiz-finish-btn">' + finishButtonText + '</a>';
-                quizHtml += '<a href="#" id="quiz-restart-btn">' + restartButtonText + '</a>';
+                quizHtml += '<a href="'+backUrl+'" id="quiz-restart-btn">' + restartButtonText + '</a>';
                 quizHtml += '</div>';
                 quizHtml += '</div>';
 
@@ -206,7 +209,7 @@
                 $('#quiz-response').hide();
                 $('#quiz-finish-btn').hide();
                 $('#quiz-next-btn').hide();
-                //$('#quiz-restart-btn').show();
+                $('#quiz-restart-btn').show();
                 $(resultsScreen).show();
                 var resultsStr = base.options.resultsFormat.replace('%score', score).replace('%total', numQuestions);
                 $('#quiz-results').html(resultsStr);
@@ -222,6 +225,8 @@
                 $('#quiz-counter').show();
                 $('.question-container:first-child').show().addClass('active-question');
                 base.methods.updateCounter();
+            },back: function() {
+                window.location.href = backUrl;
             },
             reset: function() {
                 answerLocked = false;
@@ -268,7 +273,7 @@
         gameOverScreen: '#quiz-gameover-screen',
         nextButtonText: 'Next',
         finishButtonText: 'Finish',
-        restartButtonText: 'Restart'
+        restartButtonText: 'Back'
     };
 
     $.fn.quiz = function(options) {
