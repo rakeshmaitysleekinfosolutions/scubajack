@@ -97,10 +97,13 @@ class App extends AppController {
         //$this->paypal->setApiContext($this->config->item('CLIENT_ID'),$this->config->item('CLIENT_SECRET'));
 
         $this->setSession('settings',Settings_model::factory()->find()->get()->row_array());
+
         if(getSession('settings')) {
             $this->settings = getSession('settings');
         }
-
+        if($this->settings) {
+            $this->setSession('currency', $this->currency->getCurrency(SettingsCurrencyConfiguration_model::factory()->getCurrency($this->settings['id'])));
+        }
     }
 
     /**
@@ -766,8 +769,16 @@ class App extends AppController {
                     $mail->setReplyTo($this->request['email']);
                     $mail->setSender($this->config->item('config_sender_name'));
                     $mail->setSubject($subject);
-                    $mail->setHtml($this->template->content->view('emails/contact_form', $this->data));
+                    $mail->setHtml($this->template->content->view('emails/contact/contact', $this->request));
                     $mail->send();
+//
+//                    $mail->setTo($this->request['email']);
+//                    $mail->setFrom($this->config->item('config_email'));
+//                    $mail->setReplyTo('noreply@siswork.com', $this->config->item('config_sender_name'));
+//                    $mail->setSender($this->config->item('config_sender_name'));
+//                    $mail->setSubject($subject);
+//                    $mail->setHtml($this->template->content->view('emails/contact/reply', $this->data));
+//                    $mail->send();
                   
                     $this->json['success']          = 'Thanks for submitting contact us form';
                     $this->json['redirect'] 		= url('/');

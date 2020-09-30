@@ -6,7 +6,7 @@
                         <!-- <img src="<?php echo resizeAssetImage('contact-us.png',500,500);?>" alt="" /> -->
                         
                     </div>
-                    <div class="col-md-5">
+                    <div class="col-md-5" id="my-container">
                         <div class="right-sides frm">
                             <h3>Leave a reply</h3>
                           <!--   <p>Already have a SCUBA JACK Account? <a href="http://localhost/scubajack/login">Sign In</a></p> -->

@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Sign Up</title>
+    <title>Contact form</title>
 </head>
 <body>
 <table style="width:600px; margin:0 auto; text-align:left; border:1px solid #d6d6d6;font-size: 15px;border-top: none;font-family: arial, sans-serif;" cellspacing="0" cellpadding="0">
@@ -19,13 +19,13 @@
         <td style="padding:20px;">
             <table style="width:100%;">
                 <tr>
-                    <td style="font-style:italic;padding-bottom: 15px;"><?php echo  $text_welcome; ?></td>
+                    <td style="padding-bottom: 15px;">Thank you for getting in touch!</td>
                 </tr>
                 <tr>
-                    <td style="font-style:italic;padding-bottom: 15px;"><?php echo  $text_email; ?></td>
+                    <td style="font-style:italic;padding-bottom: 15px;">We appreciate you contacting us/ <?php echo getSession('settings')['company_name'];?>. One of our colleagues will get back in touch with you soon!</td>
                 </tr>
                 <tr>
-                    <td style="font-style:italic;padding-bottom: 15px;"><?php echo  $text_password; ?></td>
+                    <td style="padding-bottom: 15px;">Have a great day!</td>
                 </tr>
             </table>
         </td>

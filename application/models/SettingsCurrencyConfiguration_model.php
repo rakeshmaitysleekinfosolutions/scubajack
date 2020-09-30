@@ -31,4 +31,7 @@ class SettingsCurrencyConfiguration_model extends BaseModel {
     public static function factory($attr = array()) {
         return new SettingsCurrencyConfiguration_model($attr);
     }
+    public function getCurrency($settingsId) {
+        return self::factory()->findOne(['settings_id' => $settingsId])->currency;
+    }
 }

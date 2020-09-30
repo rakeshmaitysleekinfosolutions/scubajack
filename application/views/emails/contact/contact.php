@@ -2,7 +2,7 @@
 <html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Sign Up</title>
+    <title>Contact form</title>
 </head>
 <body>
 <table style="width:600px; margin:0 auto; text-align:left; border:1px solid #d6d6d6;font-size: 15px;border-top: none;font-family: arial, sans-serif;" cellspacing="0" cellpadding="0">
@@ -19,13 +19,19 @@
         <td style="padding:20px;">
             <table style="width:100%;">
                 <tr>
-                    <td style="font-style:italic;padding-bottom: 15px;"><?php echo  $text_welcome; ?></td>
+                    <td style="padding-bottom: 15px;">Hello Admin,</td>
                 </tr>
                 <tr>
-                    <td style="font-style:italic;padding-bottom: 15px;"><?php echo  $text_email; ?></td>
+                    <td style="padding-bottom: 15px;">Name - <?php echo $firstname;?>&nbsp;<?php echo $lastname;?></td>
                 </tr>
                 <tr>
-                    <td style="font-style:italic;padding-bottom: 15px;"><?php echo  $text_password; ?></td>
+                    <td style="padding-bottom: 15px;">Email - <?php echo $email;?></td>
+                </tr>
+                <tr>
+                    <td style="padding-bottom: 15px;">Website - <?php echo $website;?></td>
+                </tr>
+                <tr>
+                    <td style="padding-bottom: 15px;">Text - <?php echo $message;?></td>
                 </tr>
             </table>
         </td>
