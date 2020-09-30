@@ -66,14 +66,29 @@
                 var quizHtml = '';
 
                 if (base.options.counter) {
-                    quizHtml += '<div id="quiz-counter"></div>';
+                    quizHtml += '<h2 id="quiz-counter"></h2>';
                 }
 
                 quizHtml += '<div id="questions">';
                 $.each(questions, function(i, question) {
-                    console.log(i);
-                    quizHtml += '<div class="question-container">';
-                    quizHtml += '<p class="question">' + question.q + '</p>';
+                    quizHtml += '<div class="yellow-bg question-container ">';
+                    quizHtml += '<div class="quiz-sec">\n';
+
+
+                   if(question.img) {
+                       quizHtml +=  '<div class="quiz-img py-4">\n' +
+                           '           <img src="'+question.img+'" alt="" />\n' +
+                           '         </div>\n';
+                   }
+
+                    quizHtml +='<div class="quiz-ques">\n' +
+            '                      <p class="question">' + question.q + '</p>\n' +
+            '                    </div>\n' +
+            '                        </div>\n' +
+            '                        <h4>Select Answer Below</h4>\n' +
+            '                        <div class="quiz-answer py-4">\n' +
+            '                            <ul>\n';
+
                     quizHtml += '<ul class="answers">';
                     var sl = 1;
                     $.each(question.options, function(index, answer) {
@@ -81,6 +96,7 @@
                         sl++;
                     });
                     quizHtml += '</ul>';
+                    quizHtml += '</div>';
                     quizHtml += '</div>';
                 });
                 quizHtml += '</div>';
@@ -100,7 +116,7 @@
                 quizHtml += '<a href="'+backUrl+'" id="quiz-restart-btn">' + restartButtonText + '</a>';
                 quizHtml += '</div>';
                 quizHtml += '</div>';
-
+                quizHtml += '</div>';
                 base.$el.append(quizHtml).addClass('quiz-container quiz-start-state');
 
                 $('#quiz-counter').hide();

@@ -855,12 +855,13 @@ class App extends AppController {
         foreach ($questions as $question) {
             if(isset($question)) {
                 $this->json[] = array(
-                    'id' => $question->id,
-                    'q' => $question->question,
-                    'options' => $question->answers(),
-                    'correctIndex' => (Answer_model::factory()->find()->where('is_correct',1)->where('question_id', $question->id)->select('correct_index')->get()->row_array()) ? (int)Answer_model::factory()->find()->where('is_correct',1)->where('question_id', $question->id)->select('correct_index')->get()->row_array()['correct_index'] : null,
-                    'answerId' => (Answer_model::factory()->find()->where('is_correct',1)->where('question_id', $question->id)->select('id')->get()->row_array()) ? (int)Answer_model::factory()->find()->where('is_correct',1)->where('question_id', $question->id)->select('id')->get()->row_array()['id'] : null,
-                    'correctResponse' => 'Good job, that was obvious.',
+                    'id'                => $question->id,
+                    'q'                 => $question->question,
+                    'img'               => (isset($question->image)) ? resize($question->image,200,200) : resize('no_image.png',200,200),
+                    'options'           => $question->answers(),
+                    'correctIndex'      => (Answer_model::factory()->find()->where('is_correct',1)->where('question_id', $question->id)->select('correct_index')->get()->row_array()) ? (int)Answer_model::factory()->find()->where('is_correct',1)->where('question_id', $question->id)->select('correct_index')->get()->row_array()['correct_index'] : null,
+                    'answerId'          => (Answer_model::factory()->find()->where('is_correct',1)->where('question_id', $question->id)->select('id')->get()->row_array()) ? (int)Answer_model::factory()->find()->where('is_correct',1)->where('question_id', $question->id)->select('id')->get()->row_array()['id'] : null,
+                    'correctResponse'   => 'Good job, that was obvious.',
                     'incorrectResponse' =>  'Well, if you don\'t include it, your quiz won\'t work',
                 );
             }

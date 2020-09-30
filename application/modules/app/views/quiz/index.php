@@ -1,17 +1,32 @@
-<section class="country">
+<section class="country mb-0">
     <div class="container">
         <div class="row">
-           <div class="col-md-12">
-               <div id="quiz">
-                   <div id="quiz-header">
-                       <h1><?php echo $quiz->name;?></h1>
-<!--                       <p class="faded">A quiz about the plugin built by the plugin.</p>-->
-                   </div>
-                   <div id="quiz-start-screen">
-                       <p><a href="#" id="quiz-start-btn" class="quiz-button">Start</a></p>
-                   </div>
-               </div>
-           </div>
+            <div class="col-md-12">
+                <!--  <div id="quiz">
+                     <div id="quiz-header">
+                         <h1>Whale Sharks Quiz</h1>
+                      <p class="faded">A quiz about the plugin built by the plugin.</p>
+                     </div>
+                     <div id="quiz-start-screen">
+                         <p><a href="#" id="quiz-start-btn" class="quiz-button">Start</a></p>
+                     </div>
+                 </div> -->
+
+            </div>
+        </div>
+    </div>
+    <div class="cloud-header">
+        <div class="container">
+            <h1><?php echo $quiz->name;?></h1>
+
+            <div id="quiz-start-screen">
+                <p><a href="#" id="quiz-start-btn" class="quiz-button">Start</a></p>
+            </div>
+            <div class="row mt-5">
+                <div class="col-md-8 offset-md-2" id="quiz">
+
+                </div>
+            </div>
         </div>
     </div>
 </section>

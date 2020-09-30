@@ -52,7 +52,7 @@ if (quiz.length !=0 ) {
            // console.log(data);
         $('#quiz').quiz({
             //resultsScreen: '#results-screen',
-            counter: false,
+            counter: true,
             //homeButton: '#custom-home',
             counterFormat: 'Question %current of %total',
             questions: data,
