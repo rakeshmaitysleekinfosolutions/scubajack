@@ -26,8 +26,6 @@
             <h3 class="card-title">Manipulate world map data</h3>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="profile-view">
-                        <div class="col-md-8">
                             <div class="row">
                                 <div class="form-group">
                                     <label class="control-label">Country <span class="text-danger"></span></label>
@@ -49,14 +47,12 @@
                                 <div class="form-group">
                                     <label class="control-label">Status <span class="text-danger"></span></label>
                                     <select name="status" class="select floating" id="input-status" >
-                                        <option value="0" <?php echo ($status == 0) ? 'selected' : '';?>>Inactive</option>
-                                        <option value="1" <?php echo ($status == 1) ? 'selected' : '';?>>Active</option>
+                                        <option value="0">Inactive</option>
+                                        <option value="1" selected>Active</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
             </div>
         </div>
     </form>

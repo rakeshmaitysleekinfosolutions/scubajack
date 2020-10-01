@@ -167,6 +167,30 @@ if(map.length != 0) {
     //         width: "260px"
     //     }
     // });
+    //MAP TOOLTIPS SCRIPT
+    //var tooltipNum = ['#nova-scotia', '#new-brunswick']
+
+    $(paths).qtip({
+        content: function() {
+            return $( this ).data('tooltip'); //store data in data-tooltip
+        },
+        position: {
+            my: 'bottom center',  // Position my top left...
+            at: 'top center', // at the bottom right of...
+            adjust: {
+                y: 10
+            }
+        },
+        style: {
+            tip: {
+                corner: true,
+                corner: 'bottom center',
+                border: 1,
+                width: 15,
+                height: 7
+            }
+        }
+    });
     paths.each(function (path) {
 
         $(this).on("click", function(){
@@ -225,6 +249,10 @@ if(map.length != 0) {
             }
         });
     })
+
+
+
+
 }
 $(document).ready(function(){
     $('#imageGallery').lightGallery();

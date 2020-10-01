@@ -20,4 +20,5 @@ class Map_model extends BaseModel {
     public function country() {
         return $this->hasOne(Country_model::class, 'id', 'country_id');
     }
+
 }

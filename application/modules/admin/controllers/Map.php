@@ -89,7 +89,10 @@ class Map extends AdminController implements AnswerContract {
             $this->setData();
 
             if ($this->isPost() && $this->validateForm()) {
-
+                $map = Map_model::factory()->findOne(['country_id' => $this->data['country_id']]);
+                if($map) {
+                    Map_model::factory()->delete(['country_id' => $this->data['country_id']], true);
+                }
                 Map_model::factory()->insert([
                     'country_id'    => $this->data['country_id'],
                     'path_d'        => $this->data['path_d'],
@@ -190,9 +193,8 @@ class Map extends AdminController implements AnswerContract {
             foreach($this->results as $result) {
                 $this->rows[] = array(
                     'id'			=> $result->id,
-                    'country'		=> $result->country->name,
-                    'isoCode'		=> $result->country->iso_code_2,
-                    'data'		    => $result->path_d,
+                    'country'		=> (isset($result->country->name)) ? $result->country->name : '',
+                    'isoCode'		=> (isset($result->country->iso_code_2)) ? $result->country->iso_code_2 : '',
                     'status'		=> ($result->status) ? 'Active' : 'Inactive',
                     'created_at'    => Carbon::createFromTimeStamp(strtotime($result->created_at))->diffForHumans(),
                 );
@@ -208,7 +210,6 @@ class Map extends AdminController implements AnswerContract {
 										</td>';
                 $this->data[$i][] = '<td>'.$row['country'].'</td>';
                 $this->data[$i][] = '<td>'.$row['isoCode'].'</td>';
-                $this->data[$i][] = '<td>'.$row['data'].'</td>';
                 $this->data[$i][] = '<td>'.$row['created_at'].'</td>';
                 $this->data[$i][] = '<td class="text-right">
 	                            <div class="dropdown">

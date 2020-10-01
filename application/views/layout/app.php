@@ -108,6 +108,7 @@
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/lightgallery/js/lightgallery-all.min.js"></script>
 <!--<script type="text/javascript" src="--><?php //echo base_url();?><!--assets/js/mapify/jquery.mapify.js"></script>-->
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery.quiz.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>assets/js/jquery.qtip.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>assets/js/app.js"></script>
 
 <!--<script type="text/javascript" src="--><?php //echo base_url();?><!--assets/js/lightgallery/js/jquery.mousewheel.min.js"></script>-->

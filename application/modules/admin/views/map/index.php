@@ -28,7 +28,7 @@
                         </th>
                         <th>Country</th>
                         <th>ISO CODE</th>
-                        <th>Data</th>
+<!--                        <th>Data</th>-->
 <!--                        <th>Status</th>-->
                         <th>Created At</th>
                         <th class="text-right">Action</th>

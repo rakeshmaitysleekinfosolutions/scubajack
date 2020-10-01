@@ -204,6 +204,24 @@ class App extends AppController {
         }
     }
 
+    public function getTooltips($countryId) {
+        $description = CountryDescription_model::factory()->findOne(['country_id' => $countryId]);
+        $descriptionBlogs = array();
+        if($description) {
+            $descriptionBlogs = CountryDescriptionBlog_model::factory()->findAll(['country_descriptions_id ' => $description->id]);
+        }
+        $data = array();
+        if($descriptionBlogs) {
+            foreach ($descriptionBlogs as $blog) {
+                $data[] = '<span style=\'color:#2badd9;\'>'.$blog->title.'</span><br>';
+            }
+        }
+
+        if($data) {
+            return $data;
+        }
+        return false;
+    }
     /**
      * Home page features products and activity books
      * @throws Exception
@@ -217,8 +235,20 @@ class App extends AppController {
         // Activity Books
         //$this->formatProductModelInstanceToArray(FeaturesProduct_model::factory()->findAll(),4, 'activityBooks');
         //dd($this->data['activityBooks']);
-        $this->data['maps'] = Map_model::factory()->findAll(['status' => 1]);
-        //dd($this->data['maps']);
+        $maps = Map_model::factory()->findAll(['status' => 1]);
+        $this->data['maps'] = array();
+
+        foreach ($maps as $map) {
+            $this->data['maps'][] = array(
+                'countryId'         => $map->country_id,
+                'd'                 => (isset($map->path_d)) ? $map->path_d : '',
+                'countryName'       => (isset($map->country->name)) ? $map->country->name : '',
+                'countryIsoCode2'   => (isset($map->country->iso_code_2)) ? $map->country->iso_code_2 : '',
+                'tooltip'           => ($this->getTooltips($map->country_id)) ? implode('',$this->getTooltips($map->country_id)): 'learning module not available'
+            );
+        }
+
+        //$this->dd($this->data['maps']);
         $this->template->stylesheet->add('assets/css/magnific-popup.min.css');
         $this->template->javascript->add('assets/js/jquery.magnific-popup.min.js');
 		$this->template->content->view('index', $this->data);

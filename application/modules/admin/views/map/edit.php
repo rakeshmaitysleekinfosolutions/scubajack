@@ -26,8 +26,6 @@
             <h3 class="card-title">Manipulate world map data</h3>
             <div class="row">
                 <div class="col-md-12">
-                    <div class="profile-view">
-                        <div class="col-md-8">
                             <div class="row">
                                 <div class="form-group">
                                     <label class="control-label">Country <span class="text-danger"></span></label>
@@ -52,8 +50,6 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </div>
             </div>
         </div>
     </form>
