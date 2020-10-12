@@ -257,6 +257,7 @@ if(map.length != 0) {
 $(document).ready(function(){
     $('#imageGallery').lightGallery();
     $('#videoGallery').lightGallery();
+    $('#activityBooks').lightGallery();
 });
 
 

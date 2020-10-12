@@ -137,6 +137,15 @@ class Settings extends AdminController {
         } else {
             $this->data['logo'] = '';
         }
+        if (!empty($this->input->post('search_keywords'))) {
+            $this->data['search_keywords'] = $this->input->post('search_keywords');
+        } elseif (!empty($this->settings)) {
+            $this->data['search_keywords'] = $this->settings->search_keywords;
+        } else {
+            $this->data['search_keywords'] = '';
+        }
+
+       /// dd($this->data);
         if (!empty($this->input->post('logo')) && is_file(DIR_IMAGE . $this->input->post('logo'))) {
             $this->data['thumb'] = $this->resize($this->input->post('logo'), 100, 100);
         } elseif (!empty($this->settings) && is_file(DIR_IMAGE . $this->settings->logo)) {
@@ -251,6 +260,7 @@ class Settings extends AdminController {
                         'phone_2'           => $this->data['phone_2'],
                         'point'             => $this->data['point'],
                         'logo'              => $this->data['logo'],
+                        'search_keywords'   => $this->data['search_keywords'],
                     ]);
                     SettingsMailConfiguration_model::factory()->insert([
                         'settings_id'   => Settings_model::factory()->getLastInsertID(),
@@ -292,6 +302,7 @@ class Settings extends AdminController {
                     $this->setMessage('message', 'Settings has been successfully modified');
                 case 'edit':
                     $this->setData();
+                    //$this->dd($this->data['search_keywords']);
                     Settings_model::factory()->update([
                         'company_name'      => $this->data['company_name'],
                         'contact_person'    => $this->data['contact_person'],
@@ -307,6 +318,7 @@ class Settings extends AdminController {
                         'phone_2'           => $this->data['phone_2'],
                         'point'             => $this->data['point'],
                         'logo'              => $this->data['logo'],
+                        'search_keywords'   => $this->data['search_keywords'],
                     ], $this->id);
                     SettingsMailConfiguration_model::factory()->delete(['settings_id' => $this->id], true);
                     SettingsMailConfiguration_model::factory()->insert([
@@ -362,6 +374,10 @@ class Settings extends AdminController {
         $this->setData();
         $this->template->javascript->add('assets/js/jquery.validate.js');
         $this->template->javascript->add('assets/js/additional-methods.js');
+
+
+
+
         $this->template->javascript->add('assets/js/admin/settings/Settings.js');
         $this->template->content->view('settings/index', $this->data);
         $this->template->publish();

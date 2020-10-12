@@ -72,10 +72,10 @@
 </div>
 
 <script>
-    var myLabel = myLabel || {};
-    myLabel.baseUrl = '<?php echo base_url();?>';
-    myLabel.category   = '<?php echo admin_url('category/onLoadDatatableEventHandler');?>';
-    myLabel.updateStatus   = '<?php echo admin_url('category/onClickStatusEventHandler');?>';
-    myLabel.delete   = '<?php echo admin_url('category/delete');?>';
-    myLabel.edit    = '<?php echo admin_url('category/edit/');?>';
+    var myLabel             = myLabel || {};
+    myLabel.baseUrl         = '<?php echo base_url();?>';
+    myLabel.category        = '<?php echo admin_url('category/onLoadDatatableEventHandler');?>';
+    myLabel.updateStatus    = '<?php echo admin_url('category/onClickStatusEventHandler');?>';
+    myLabel.delete          = '<?php echo admin_url('category/delete');?>';
+    myLabel.edit            = '<?php echo admin_url('category/edit/');?>';
 </script>

@@ -57,6 +57,7 @@
                         </th>
                         <th>Image</th>
                         <th>Name</th>
+                        <th>Do you want to show it on home page Activity Book section(YES/NO)</th>
 
                         <th>Created At</th>
                         <th>Updated At</th>
@@ -77,4 +78,5 @@
     myLabel.category   = '<?php echo admin_url('features_product/onLoadDatatableEventHandler');?>';
     myLabel.delete   = '<?php echo admin_url('features_product/delete');?>';
     myLabel.edit    = '<?php echo admin_url('features_product/edit/');?>';
+    myLabel.setToActivityBook    = '<?php echo admin_url('features_product/onChangeSetToActivityBook');?>';
 </script>

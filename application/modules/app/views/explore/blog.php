@@ -42,6 +42,9 @@
                             <li class="col-xs-6 col-sm-4 col-md-3" data-responsive="img/1-375.jpg 375, img/1-480.jpg 480, img/1.jpg 800" data-src="<?php echo $blogVideo['video'];?>">
                                 <a href="javascript:void(0);" >
                                     <img class="img-responsive" src="<?php echo makeThumbnail($blogVideo['video'],'HIGH');?>">
+                                    <div class="demo-gallery-poster">
+                                        <img src="<?php echo base_url('assets/images/play-button-2.png');?>">
+                                    </div>
                                 </a>
                             </li>
                         <?php  } ?>

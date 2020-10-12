@@ -31,13 +31,14 @@ class Features_product extends AdminController implements ProductContract {
 					'id'			=> $featureProduct->id,
                     'img'		    => $image,
 					'name'		    => $this->product->name,
+                    'activity_book' => ($featureProduct->activity_book && $featureProduct->activity_book == 'YES') ? 1 : 0,
                     'created_at'    => Carbon::createFromTimeStamp(strtotime($this->product->created_at))->diffForHumans(),
                     'updated_at'    => ($this->product->updated_at) ? Carbon::createFromTimeStamp(strtotime($this->product->updated_at))->diffForHumans() : ''
 				);
 			}
 			$i = 0;
 			foreach($this->rows as $row) {
-
+                    $this->selected = ($row['activity_book'] == 'YES') ? 'selected' : '';
                     $this->data[$i][] = '<td class="text-center">
 											<label class="css-control css-control-primary css-checkbox">
 												<input data-id="'.$row['id'].'" type="checkbox" class="css-control-input selectCheckbox" id="row_'.$row['id'].'" name="row_'.$row['id'].'">
@@ -46,6 +47,12 @@ class Features_product extends AdminController implements ProductContract {
 										</td>';
                     $this->data[$i][] = '<td><img src="'.$row['img'].'"></td>';
 					$this->data[$i][] = '<td>'.$row['name'].'</td>';
+                    $this->data[$i][] = '<td>
+                                            <select data-id="'.$row['id'].'" name="activity_book" class="select floating checkboxStatus">
+                                                <option value="YES" '.$this->selected.'>YES</option>
+                                                <option value="NO" '.$this->selected.'>NO</option>
+                                            </select>
+                                        </td>';
                     $this->data[$i][] = '<td>'.$row['created_at'].'</td>';
                     $this->data[$i][] = '<td>'.$row['updated_at'].'</td>';
 					$this->data[$i][] = '<td class="text-right">
@@ -78,7 +85,24 @@ class Features_product extends AdminController implements ProductContract {
 	}
 
     public function onClickStatusEventHandler(){}
+    public function onChangeSetToActivityBook() {
+        if($this->isAjaxRequest()) {
+            $this->request  = $this->input->post();
+            $id             = (isset($this->request['id'])) ? $this->request['id'] : '';
+            $activity_book  = (isset($this->request['activity_book'])) ? $this->request['activity_book'] : '';
 
+            FeaturesProduct_model::factory()->update(['activity_book' => $activity_book], $id);
+
+            $this->json['message'] = 'Data has been successfully updated';
+            $this->json['status'] = true;
+
+            return $this->output
+                ->set_content_type('application/json')
+                ->set_status_header(200)
+                ->set_output(json_encode($this->json));
+
+        }
+    }
 
     public function index() {
         $this->template->set_template('layout/admin');

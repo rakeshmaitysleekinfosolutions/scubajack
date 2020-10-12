@@ -52,6 +52,8 @@ $route['api/fetch/quiz/(:num)']       = 'app/fetchQuizData/$1';
 $route['api/quiz/userGivenAnswer']       = 'app/userGivenAnswer';
 $route['api/quiz/finishCallback']       = 'app/finishCallback';
 
+$route['api/search']       = 'app/search';
+
 $route['filemanager']           = 'filemanager';
 $route['(:any)/explore']        = 'app/explore';
 $route['(:any)/explore/(:any)']    = 'app/blog/$1/$2';

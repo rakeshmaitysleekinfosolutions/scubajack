@@ -30,7 +30,7 @@ class Product_model extends BaseModel {
     }
 
     public function addProduct($data = array()) {
-        $this->db->query("INSERT INTO products SET name = '" . $this->db->escape_str($data['name']) . "', slug = '" . $this->db->escape_str($data['slug']) . "', quiz_id = '" . $this->db->escape_str($data['quizId']) . "', status = '" . $this->db->escape_str($data['status'])."'");
+        $this->db->query("INSERT INTO products SET name = '" . $this->db->escape_str($data['name']) . "',search_keywords = '" . $this->db->escape_str($data['search_keywords']) . "', slug = '" . $this->db->escape_str($data['slug']) . "', quiz_id = '" . $this->db->escape_str($data['quizId']) . "', status = '" . $this->db->escape_str($data['status'])."'");
         $productId = $this->db->insert_id();
         if(isset($productId)) {
             $this->updateProductRelatedModels($productId, $data);
@@ -85,7 +85,7 @@ class Product_model extends BaseModel {
     public function editProduct($productId, $data) {
         //dd($data);
         try {
-            $this->db->query("UPDATE products SET name = '" . $this->db->escape_str($data['name']) . "', slug = '" . $this->db->escape_str($data['slug']) . "', quiz_id = '" .(int)$data['quizId'] . "', status = '" . $this->db->escape_str($data['status'])."' WHERE id = '" . (int)$productId . "'");
+            $this->db->query("UPDATE products SET name = '" . $this->db->escape_str($data['name']) . "',search_keywords = '" . $this->db->escape_str($data['search_keywords']) . "', slug = '" . $this->db->escape_str($data['slug']) . "', quiz_id = '" .(int)$data['quizId'] . "', status = '" . $this->db->escape_str($data['status'])."' WHERE id = '" . (int)$productId . "'");
             $this->updateProductRelatedModels($productId, $data);
         } catch (Exception $e) {
             echo 'Caught exception: ',  $e->getMessage(), "\n";
@@ -139,5 +139,58 @@ class Product_model extends BaseModel {
     }
     public function categoryToProduct() {
         return $this->hasOne(CategoryToProduct_model::class, 'product_id', 'id');
+    }
+    public function image() {
+        return $this->hasOne(ProductImages_model::class, 'product_id', 'id');
+    }
+    public function search($data) {
+        $sql    = "SELECT p.* FROM `products` p WHERE  p.is_deleted = '0' AND status = 1 AND CONCAT(',', search_keywords, ',') LIKE '%".$this->db->escape_like_str($data['q'])."%' ";
+        $query  = $this->db->query($sql);
+        $arr    = array();
+        $image  = null;
+        $productDescription = array();
+        if ($query->num_rows()) {
+            foreach ($query->result_array() as $key => $product) {
+                $productDescription = $this->descriptionByProductId($product['id']);
+                if (is_file(DIR_IMAGE . $productDescription['image'])) {
+                    $image = resize($productDescription['image'], 64, 64);
+                } else {
+                    $image = resize('no_image.png', 64, 64);
+                }
+                $arr[] = array(
+                    'id'            => $product['id'],
+                    'name'          => $product['name'],
+                    'slug'          => $product['slug'],
+                    'image'         => $image,
+                    'description'   => strip_tags($productDescription['description']),
+                    'category'      => $this->categoryByProductId($product['id'])
+                );
+            }
+        }
+        if($arr) {
+            return $arr;
+        }
+
+        dd($arr);
+    }
+
+    public function categoryByProductId($productId) {
+        $categoryToProduct = CategoryToProduct_model::factory()->findOne(['product_id' => $productId]);
+        if($categoryToProduct) {
+            return array(
+                'slug'        => $categoryToProduct->product->categoryToProduct->category->slug,
+                'name'        => $categoryToProduct->product->categoryToProduct->category->name,
+                'description' => $categoryToProduct->product->categoryToProduct->category->description->description
+            );
+        }
+    }
+    public function descriptionByProductId($productId) {
+        $categoryToProduct = CategoryToProduct_model::factory()->findOne(['product_id' => $productId]);
+        if($categoryToProduct) {
+            return array(
+                'description'   => $categoryToProduct->product->description->description,
+                'image'         => $categoryToProduct->product->image->image
+            );
+        }
     }
 }

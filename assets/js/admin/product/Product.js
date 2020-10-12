@@ -76,9 +76,8 @@
                     success: function (res) {
                         if (res.status) {
                             dataTable.ajax.reload();
+                            swal(res.message);
                         }
-
-
                     }
                 });
             }).on('click', '#checkAll', function () {
@@ -249,5 +248,9 @@
         var p = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
         return (url.match(p)) ? RegExp.$1 : false;
     }
+    $('select[name="search_keywords"]').val()
+    $('select[name="search_keywords"]').tagsinput({
+        tagClass: 'big'
+    });
 }(window.jQuery);
 

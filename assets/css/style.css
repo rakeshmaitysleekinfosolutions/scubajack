@@ -1028,7 +1028,7 @@ section.pricing{
     text-align: center;
     box-shadow: 0px 1px 10px 1px #0000002b;
    /* border-bottom: 1px solid #6767675c;*/
-    padding: 10px 10px;
+    padding: 20px 10px;
     width: 100%;
     transition: all 0.5s ease-in-out;
      transition-timing-function: cubic-bezier(0, 0, 0.58, 1);
@@ -1058,7 +1058,7 @@ ul.list li {
     margin-right: 46px;
 }
 .price-box:hover{
-     background: linear-gradient(to right, #000046, #1cb5e0);
+     background: linear-gradient(to right, #7979d8, #1cb5e0);
      /*border: 1px  solid  #000; */
      color: #fff;
      border-bottom: 1px solid #fff;
@@ -2453,3 +2453,116 @@ x:-o-prefocus, .qtip .qtip-tip {
     position: absolute !important; }
 
 /** Map Tooltip css implement from https://codepen.io/nailaahmad/pen/bEBaxo this source by rakesh maity - 01-10-2020*/
+
+.search_link {
+    background: rgba(3, 15, 31, 0.5);
+    position: absolute;
+    top: 42px;
+    right: 0;
+    width: 280px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    border-top: 4px solid #137fea;
+    display: none;
+    padding: 10px;
+    z-index: 999;
+}
+.searchsec a {
+    color: #007bff;
+    display: block;
+    font-size: 16px;
+}
+.searchsec {
+    padding: 6px 12px;
+    float: right;
+    position: relative;
+}
+.searchsec:before {
+    position: absolute;
+    content: "";
+    top: 7px;
+    width: 1px;
+    height: 18px;
+    background: #fff;
+    left: -14px;
+}
+.search_link::before {
+    content: "";
+    position: absolute;
+    top: -20px;
+    right: 13px;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid transparent;
+    border-bottom: 8px solid #137fea;
+}
+.search_link input[type="text"] {
+    width: 70%;
+    float: left;
+    border-radius: 25px 0 0 25px;
+    border: none;
+    padding: 5px 5px 5px 11px;
+    color: #000;
+    font-size: 15px;
+    height: 35px;
+}
+.search_link input:focus{
+    border:1px solid transparent; 
+    outline: none;
+}
+.search_link input[type="button"] {
+    float: left;
+    background: #137fea;
+    border-radius: 0 25px 25px 0;
+    color: #fff;
+    border: none;
+    padding: 3px 15px 3px;
+    height: 35px;
+    font-size: 15px;
+}
+
+.price-box:hover h6.description{
+    color: #fff
+}
+
+/**Search css*/
+.js .input-file-trigger {
+    display: block;
+    padding:3px;
+    background: #203248;
+    color: #fff;
+    font-size: 1em;
+    transition: all .4s;
+    cursor: pointer;
+}
+.js .input-file {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    opacity: 0;
+    padding: 14px 0;
+    cursor: pointer;
+}
+.js .input-file:hover + .input-file-trigger,
+.js .input-file:focus + .input-file-trigger,
+.js .input-file-trigger:hover,
+.js .input-file-trigger:focus {
+    background: #34495E;
+    color: #39D2B4;
+}
+
+.file-return {
+    margin: 0;
+}
+.file-return:not(:empty) {
+    margin: 1em 0;
+}
+.js .file-return {
+    font-style: italic;
+    font-size: .9em;
+    font-weight: bold;
+}
+.js .file-return:not(:empty):before {
+    content: "Selected file: ";
+    font-style: normal;
+    font-weight: normal;
+}

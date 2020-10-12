@@ -37,13 +37,8 @@
                 var id = $(this).data('id');
                 window.location.href = myLabel.edit + id;
             }).on('change', '.checkboxStatus', function (e) {
-
                 var id      = $(this).attr('data-id');
                 var status  = $(this).val();
-
-
-
-                
                 $.ajax({
                     type: "POST",
                     url: myLabel.updateStatus,
@@ -52,9 +47,8 @@
                     success: function (res) {
                         if (res.status) {
                             dataTable.ajax.reload();
+                            swal(res.message);
                         }
-
-
                     }
                 });
             }).on('click', '#checkAll', function () {

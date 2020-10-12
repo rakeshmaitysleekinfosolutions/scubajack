@@ -95,7 +95,8 @@ class Category extends AdminController implements CategoryContract {
 
             $this->load->model('Category_model');
             $this->Category_model->updateStatus($this->categoryId, $this->status);
-            $this->json['status'] = 'Status has been successfully updated';
+            $this->json['message'] = 'Data has been successfully updated';
+            $this->json['status'] = true;
 
             return $this->output
                 ->set_content_type('application/json')

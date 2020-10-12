@@ -22,7 +22,6 @@
                   <svg xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 597 585" width="100%" height="505" id="worldMap">
                       <g>
                           <?php
-
                           if(isset($maps)) { ?>
                               <?php foreach ($maps as $map) { ?>
                                   <a data-tooltip="<?php echo $map['tooltip']?>" xlink:href="javascript:void(0);" data-iso="<?php echo $map['countryIsoCode2'];?>" data-url="<?php echo base_url('auth/check');?>" data-subscriberid="<?php echo userId();?>" >
@@ -96,13 +95,13 @@
     <div class="sub-banner"> </div>
   </section>
   <!------------- subscription part end--------->
+<?php if($products) { ?>
   <section class="world_reading">
     <h3>Where<span> the world and Reading</span> Collide!</h3>
     <p>Comes with Quizzes & Videos!</p>
     <div class="container">
       <div class="row">
-          <?php if($products) {
-              foreach ($products as $product) { ?>
+              <?php foreach ($products as $product) { ?>
                 <div class="col-md-3 col-12">
           <div class="books"> <img src="<?php echo $product['img'];?>" alt="<?php echo $product['name'];?>">
             <div class="books-details">
@@ -134,11 +133,12 @@
           </div>
         </div>
         <?php } ?>
-          <?php } ?>
+
       </div>
       <center><a class="btn see-more">See more</a></center>
     </div>
   </section>
+<?php } ?>
   <!------------------- world & reading part end ------->
   <section class="skill">
     <div class="container">
@@ -194,44 +194,35 @@
     </div>
   </section>
   <!----------------------- skill part end----------------->
+
+<?php if($activityBooks) {?>
   <section class="adventure">
     <h3>Learn to READ with<span>The Adventures</span> of Scuba Jack.</h3>
     <div class="container">
       <div class="activity-wrapper">
-        <div class="row">
-          <div class="col-md-3 col-12">
-            <div class="activity-box"> <img src="<?php echo base_url();?>assets/images/a1.jpg">
-              <center>
-                <button type="button" class="btn activity-book"><i class="far fa-arrow-alt-circle-down"></i>activity book</button>
-              </center>
-            </div>
-          </div>
-          <div class="col-md-3 col-12">
-            <div class="activity-box"> <img src="<?php echo base_url();?>assets/images/a2.jpg">
-              <center>
-                <button type="button" class="btn activity-book"><i class="far fa-arrow-alt-circle-down"></i>activity book</button>
-              </center>
-            </div>
-          </div>
-          <div class="col-md-3 col-12">
-            <div class="activity-box"> <img src="<?php echo base_url();?>assets/images/a3.jpg">
-              <center>
-                <button type="button" class="btn activity-book"><i class="far fa-arrow-alt-circle-down"></i>activity book</button>
-              </center>
-            </div>
-          </div>
-          <div class="col-md-3 col-12">
-            <div class="activity-box"> <img src="<?php echo base_url();?>assets/images/a4.jpg">
-              <center>
-                <button type="button" class="btn activity-book"><i class="far fa-arrow-alt-circle-down"></i>activity book</button>
-              </center>
-            </div>
-          </div>
+        <div class="row demo-gallery">
+            <ul id="activityBooks">
+            <?php foreach ($activityBooks as $activityBook) { ?>
+                <li class="col-md-3 col-12" data-poster="<?php echo makeThumbnail($activityBook['video'],'HIGH');?>" data-src="<?php echo $activityBook['video'];?>">
+                    <div class="activity-box">
+                        <a  href="">
+                            <img class="img-responsive" src="<?php echo makeThumbnail($activityBook['video'],'HIGH');?>" />
+                            <div class="demo-gallery-poster">
+                                <img src="<?php echo base_url('assets/images/play-button-2.png');?>">
+                            </div>
+                        </a>
+                        <center>
+                            <button type="button" class="btn activity-book"><i class="far fa-arrow-alt-circle-down"></i>activity book</button>
+                        </center>
+                    </div>
+                </li>
+            <?php } ?>
+            </ul>
         </div>
       </div>
     </div>
   </section>
-
+<?php } ?>
 <script>
     var myLabel = myLabel || {};
     myLabel.baseUrl = '<?php echo base_url();?>';

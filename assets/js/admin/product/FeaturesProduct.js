@@ -66,24 +66,18 @@
                 var id = $(this).data('id');
                 window.location.href = myLabel.edit + id;
             }).on('change', '.checkboxStatus', function (e) {
-
                 var id      = $(this).attr('data-id');
-                var status  = $(this).val();
-
-
-
-                
+                var activity_book  = $(this).val();
                 $.ajax({
                     type: "POST",
-                    url: myLabel.updateStatus,
+                    url: myLabel.setToActivityBook,
                     cache: false,
-                    data: {id: id, status: status},
+                    data: {id: id, activity_book: activity_book},
                     success: function (res) {
                         if (res.status) {
                             dataTable.ajax.reload();
+                            swal(res.message);
                         }
-
-
                     }
                 });
             }).on('click', '#checkAll', function () {

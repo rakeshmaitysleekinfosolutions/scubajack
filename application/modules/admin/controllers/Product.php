@@ -130,9 +130,10 @@ class Product extends AdminController implements ProductContract {
             $this->id       = (isset($this->request['id'])) ? $this->request['id'] : '';
             $this->status   = (isset($this->request['status'])) ? $this->request['status'] : '';
 
-            $this->load->model('Product_model');
-            $this->Product_model->updateStatus($this->id, $this->status);
-            $this->json['status'] = 'Status has been successfully updated';
+            Product_model::factory()->updateStatus($this->id, $this->status);
+
+            $this->json['message'] = 'Data has been successfully updated';
+            $this->json['status'] = true;
 
             return $this->output
                 ->set_content_type('application/json')
@@ -264,7 +265,14 @@ class Product extends AdminController implements ProductContract {
             } else {
                 $this->data['quizId'] = '';
             }
-
+            // keywords
+            if (!empty($this->input->post('search_keywords'))) {
+                $this->data['search_keywords'] = $this->input->post('search_keywords');
+            } elseif (!empty($this->product)) {
+                $this->data['search_keywords'] = $this->product->search_keywords;
+            } else {
+                $this->data['search_keywords'] = '';
+            }
             // Meta Title
             if (!empty($this->input->post('meta_title'))) {
                 $this->data['meta_title'] = $this->input->post('meta_title');
@@ -399,10 +407,9 @@ class Product extends AdminController implements ProductContract {
     public function create() {
         $this->template->javascript->add('assets/js/jquery.validate.js');
         $this->template->javascript->add('assets/js/additional-methods.js');
+        $this->template->stylesheet->add('assets/theme/light/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css');
+        $this->template->javascript->add('assets/theme/light/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js');
         $this->template->javascript->add('assets/js/admin/product/Product.js');
-
-
-
         $this->template->set_template('layout/admin');
         $this->getData();
         //dd($this->data);
@@ -443,6 +450,8 @@ class Product extends AdminController implements ProductContract {
             //$this->dd($this->data);
             $this->template->javascript->add('assets/js/jquery.validate.js');
             $this->template->javascript->add('assets/js/additional-methods.js');
+            $this->template->stylesheet->add('assets/theme/light/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css');
+            $this->template->javascript->add('assets/theme/light/plugins/bootstrap-tagsinput/bootstrap-tagsinput.min.js');
             $this->template->javascript->add('assets/js/admin/product/Product.js');
 
             $this->template->set_template('layout/admin');

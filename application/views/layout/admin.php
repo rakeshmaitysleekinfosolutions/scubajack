@@ -16,6 +16,8 @@
 
 		<!-- <link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/theme/light/css/dataTables.bootstrap.min.css"> -->
 		<link rel="stylesheet" type="text/css" href="<?php echo base_url();?>assets/theme/light/css/select2.min.css">
+
+
 		<link rel="stylesheet" href="<?php echo base_url();?>assets/theme/light/css/style.css">
 
 

@@ -149,7 +149,10 @@
                             <label>Description</label>
                             <textarea name="description" rows="4" cols="5" class="form-control summernote" placeholder="Enter your message here"><?php echo $description;?></textarea>
                         </div>
-
+                        <div class="form-group">
+                            <label>Search Keyword</label>
+                            <input value="<?php echo $search_keywords;?>" type="text" data-role="tagsinput" name="search_keywords" id="search_keywords" class="form-control">
+                        </div>
                     </div>
                 </div>
 
