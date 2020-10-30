@@ -21,6 +21,10 @@ class Settings extends AdminController {
      * @var object|null
      */
     private $currencyModel;
+    /**
+     * @var object|null
+     */
+    private $meta;
 
     public function __construct() {
         parent::__construct();
@@ -245,7 +249,28 @@ class Settings extends AdminController {
         } else {
             $this->data['youtubeThumb'] = '';
         }
-
+        // Meta Data
+        if (!empty($this->input->post('meta_title'))) {
+            $this->data['meta_title'] = $this->input->post('meta_title');
+        } elseif (!empty($this->meta)) {
+            $this->data['meta_title'] = $this->meta->meta_title;
+        } else {
+            $this->data['meta_title'] = '';
+        }
+        if (!empty($this->input->post('meta_keywords'))) {
+            $this->data['meta_keywords'] = $this->input->post('meta_keywords');
+        } elseif (!empty($this->meta)) {
+            $this->data['meta_keywords'] = $this->meta->meta_keywords;
+        } else {
+            $this->data['meta_keywords'] = '';
+        }
+        if (!empty($this->input->post('meta_description'))) {
+            $this->data['meta_description'] = $this->input->post('meta_description');
+        } elseif (!empty($this->meta)) {
+            $this->data['meta_description'] = $this->meta->meta_description;
+        } else {
+            $this->data['meta_description'] = '';
+        }
         $this->data['placeholder']  = $this->resize('no_image.png', 100, 100);
         $this->data['countries']    = Country_model::factory()->findAll();
         $this->data['currencies']   = Currency_model::factory()->find()->get()->result_array();
@@ -291,6 +316,12 @@ class Settings extends AdminController {
                         'sender_email'  => $this->data['sender_email'],
                         'sender_name'   => $this->data['sender_name'],
                     ]);
+                    SettingsMetaData_model::factory()->insert([
+                        'settings_id'       => Settings_model::factory()->getLastInsertID(),
+                        'meta_title'        => $this->data['meta_title'],
+                        'meta_keywords'     => $this->data['meta_keywords'],
+                        'meta_description'  => $this->data['meta_description'],
+                    ]);
                     //dd($this->data);
                     Currency_model::factory()->refresh(true, $this->data['currency']);
                     SettingsCurrencyConfiguration_model::factory()->insert([
@@ -314,6 +345,7 @@ class Settings extends AdminController {
                     fclose($file);
 
                     $this->setSession('settings', Settings_model::factory()->find()->get()->row_array());
+                    $this->setSession('meta', SettingsMetaData_model::factory()->find()->get()->row_array());
                     //$this->setSession('settings.mail.config', SettingsMailConfiguration_model::factory()->find()->where('settings_id', $this->id)->get()->row_array());
                     $this->setSession('currency', $this->currency->getCurrency($this->data['currency']));
                     $this->setMessage('message', 'Settings has been successfully modified');
@@ -352,7 +384,13 @@ class Settings extends AdminController {
                         'sender_email'  => $this->data['sender_email'],
                         'sender_name'   => $this->data['sender_name'],
                     ]);
-
+                    SettingsMetaData_model::factory()->delete(['settings_id' => $this->id], true);
+                    SettingsMetaData_model::factory()->insert([
+                        'settings_id'       => $this->id,
+                        'meta_title'        => $this->data['meta_title'],
+                        'meta_keywords'     => $this->data['meta_keywords'],
+                        'meta_description'  => $this->data['meta_description'],
+                    ]);
                     //SettingsCurrencyConfiguration_model::factory()->delete(['settings_id' => $this->id], true);
                     //dd($this->data);
                     Currency_model::factory()->refresh(true, $this->data['currency']);
@@ -377,6 +415,7 @@ class Settings extends AdminController {
                     fclose($file);
 
                     $this->setSession('settings', Settings_model::factory()->find()->get()->row_array());
+                    $this->setSession('meta', SettingsMetaData_model::factory()->find()->get()->row_array());
 
                     $this->setSession('currency', $this->currency->getCurrency($this->data['currency']));
                     //$this->setSession('settings.mail.config', SettingsMailConfiguration_model::factory()->find()->where('settings_id', $this->id)->get()->row_array());
@@ -387,6 +426,7 @@ class Settings extends AdminController {
         $this->settings = Settings_model::factory()->find()->get()->row_object();
         if($this->settings) {
             $this->mail = SettingsMailConfiguration_model::factory()->find()->get()->row_object();
+            $this->meta = SettingsMetaData_model::factory()->find()->get()->row_object();
             $this->currencyModel = SettingsCurrencyConfiguration_model::factory()->find()->get()->row_object();
 
         }

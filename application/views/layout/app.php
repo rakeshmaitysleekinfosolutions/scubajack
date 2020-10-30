@@ -2,8 +2,10 @@
 <html lang="en">
 <head>
     <!-- Required meta tags -->
+    <title><?php echo $this->template->title->default("Default title"); ?></title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <?php echo $this->template->meta; ?>
     <!-- Bootstrap CSS -->
     <!-- font-awesome Css -->
     <link rel="stylesheet" href="<?php echo base_url();?>assets/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -20,7 +22,7 @@
     <!--    <link type="text/css" rel="stylesheet" href="--><?php //echo base_url();?><!--assets/js/mapify/jquery.mapify.css">-->
     <?php echo $this->template->stylesheet; ?>
 
-    <title>Scuba Jack</title>
+
 </head>
 
 <body>
@@ -47,7 +49,7 @@
                         <li class="nav-item active"> <a class="nav-link" href="<?php echo base_url();?>">Home <span class="sr-only">(current)</span></a> </li>
                         <li class="nav-item"> <a class="nav-link" href="<?php echo base_url('about');?>">About us</a> </li>
                         <li class="nav-item"> <a class="nav-link" href="<?php echo base_url('viewplans');?>">Membership</a> </li>
-                        <li class="nav-item"> <a class="nav-link" href="<?php echo base_url('shop');?>">Shop</a> </li>
+                        <li class="nav-item"> <a class="nav-link" href="javascript:void(0)">Shop</a> </li>
                         <li class="nav-item"> <a class="nav-link" href="<?php echo base_url('worksheets');?>">Worksheets</a> </li>
                         <li class="nav-item"> <a class="nav-link " href="<?php echo base_url('contact');?>">Contact us</a> </li>
                     </ul>

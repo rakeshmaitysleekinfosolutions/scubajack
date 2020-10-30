@@ -238,6 +238,28 @@
                 </div>
             </div>
         </div>
+        <!-- Meta Data-->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card-box">
+                    <h3 class="page-title">Meta Data</h3>
+                    <div class="row">
+                        <div class="form-group">
+                            <label>Meta Title<span class="text-danger">*</span></label>
+                            <input name="meta_title" class="form-control" placeholder="Meta Tag Title" value="<?php echo $meta_title;?>" type="text" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Meta Tag Keywords</div></label>
+                            <textarea name="meta_keywords" rows="5" placeholder="Meta Tag Keywords" class="form-control" ><?php echo $meta_keywords;?></textarea>
+                        <div class="form-group">
+                            <label>Meta Tag Description</label>
+                            <textarea name="meta_description" rows="5" placeholder="Meta Tag Description" class="form-control"><?php echo $meta_description;?></textarea>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </form>
 </div>

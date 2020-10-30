@@ -229,6 +229,7 @@ class App extends AppController {
     public function index() {
 
 
+
         $this->getCategoryArray(4, 'sort_order');
         // Features Product
         $this->formatProductModelInstanceToArray(FeaturesProduct_model::factory()->findAll(),4);
@@ -248,7 +249,13 @@ class App extends AppController {
             );
         }
 
-       // $this->dd($this->data['activityBooks']);
+        // Set the meta
+        //$this->dd(getSession('meta'));
+        $this->template->title->set(getSession('meta')['meta_title']);
+        $this->template->meta->add('title', getSession('meta')['meta_title']);
+        $this->template->meta->add('keywords', getSession('meta')['meta_keywords']);
+        $this->template->meta->add('description', getSession('meta')['meta_description']);
+
         $this->template->stylesheet->add('assets/css/magnific-popup.min.css');
         $this->template->javascript->add('assets/js/jquery.magnific-popup.min.js');
 		$this->template->content->view('index', $this->data);
@@ -306,6 +313,13 @@ class App extends AppController {
         }
 
         $this->formatProductModelInstanceToArray($this->categoryToProducts);
+
+        // Set the meta
+        $this->template->title->set($this->category->description->meta_title);
+        $this->template->meta->add('title', $this->category->description->meta_title);
+        $this->template->meta->add('keywords', $this->category->description->meta_keyword);
+        $this->template->meta->add('description', $this->category->description->meta_description);
+
         $this->template->stylesheet->add('assets/css/magnific-popup.min.css');
         $this->template->javascript->add('assets/js/jquery.magnific-popup.min.js');
         $this->template->content->view('product/index', $this->data);
@@ -687,6 +701,12 @@ class App extends AppController {
         $this->template->content->view('explore/blog', $this->data);
         $this->template->publish();
     }
+
+    /**
+     * @param $blogs
+     * @param int $limit
+     * @param bool $all
+     */
     public function getAllBlogOrWithLimit($blogs, $limit = 6, $all = false) {
         if($blogs) {
             if($all) {
@@ -743,13 +763,17 @@ class App extends AppController {
      * Membership plan subscribe
      */
     public function about() {
-//        if($slug) {
-//            $this->information = Information_model::factory()->findOne(['slug' => $slug]);
-//        }
-//        if(!$this->information) {
-//            $this->redirect('404');
-//        }
-        $this->data['information'] = Information_model::factory()->findOne(1);
+        $this->data['information'] = array();
+        $this->information = Information_model::factory()->findOne(1);
+        if($this->information) {
+            $this->data['information'] = $this->information;
+        }
+        // Set the meta
+        $this->template->title->set($this->information->meta_title);
+        $this->template->meta->add('title', $this->information->meta_title);
+        $this->template->meta->add('keywords', $this->information->meta_keyword);
+        $this->template->meta->add('description', $this->information->meta_description);
+
         $this->template->content->view('information/about', $this->data);
         $this->template->publish();
     }

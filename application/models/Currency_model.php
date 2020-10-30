@@ -33,7 +33,9 @@ class Currency_model extends BaseModel {
 		$data = array();
 
 		if ($force) {
+
 			$query = $this->db->query("SELECT * FROM currency WHERE code != '" . $code . "'");
+
 		} else {
 			$query = $this->db->query("SELECT * FROM currency WHERE code != '" . $code . "' AND updated_at < '" .  $this->db->escape_str(date('Y-m-d H:i:s', strtotime('-1 day'))) . "'");
 		}
