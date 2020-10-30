@@ -250,6 +250,8 @@ class Question extends AdminController implements QuestionContract {
                 if($this->selected) {
                     foreach ($this->selected as $id) {
                         Question_model::factory()->delete($id);
+                        Answer_model::factory()->delete(['question_id ' => $id], true);
+                        UserQuestionAnswer_model::factory()->delete(['question_id ' => $id], true);
                     }
                     return $this->output
                         ->set_content_type('application/json')

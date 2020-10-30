@@ -22,7 +22,7 @@
                     <td style="padding-bottom: 15px;">You told us you forgot password .If your really did,Click here to choose a new one.</td>
                 </tr>
                 <tr>
-                    <td style="font-style:italic;padding-bottom: 15px;"><?php echo $reset; ?></td>
+                    <td style="font-style:italic;padding-bottom: 15px;"><a class="btn submits" href="<?php echo $reset; ?>">Reset Password</a></td>
                 </tr>
                 <tr>
                     <td style="padding-bottom: 15px;">If you did not mean to reset your password,then you can just ignore this email,your password will not change.</td>

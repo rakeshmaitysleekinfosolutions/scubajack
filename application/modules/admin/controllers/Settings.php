@@ -137,13 +137,13 @@ class Settings extends AdminController {
         } else {
             $this->data['logo'] = '';
         }
-        if (!empty($this->input->post('search_keywords'))) {
-            $this->data['search_keywords'] = $this->input->post('search_keywords');
-        } elseif (!empty($this->settings)) {
-            $this->data['search_keywords'] = $this->settings->search_keywords;
-        } else {
-            $this->data['search_keywords'] = '';
-        }
+//        if (!empty($this->input->post('search_keywords'))) {
+//            $this->data['search_keywords'] = $this->input->post('search_keywords');
+//        } elseif (!empty($this->settings)) {
+//            $this->data['search_keywords'] = $this->settings->search_keywords;
+//        } else {
+//            $this->data['search_keywords'] = '';
+//        }
 
        /// dd($this->data);
         if (!empty($this->input->post('logo')) && is_file(DIR_IMAGE . $this->input->post('logo'))) {
@@ -229,7 +229,22 @@ class Settings extends AdminController {
             $this->data['currency'] = '';
         }
 
+        // Youtube URL
+        if (!empty($this->input->post('youtubeUrl'))) {
+            $this->data['youtubeUrl'] = $this->input->post('youtubeUrl');
+        } elseif (!empty($this->settings)) {
+            $this->data['youtubeUrl'] = $this->settings->video;
+        } else {
+            $this->data['youtubeUrl'] = '';
+        }
 
+        if (!empty($this->input->post('youtubeThumb'))) {
+            $this->data['youtubeThumb'] = $this->input->post('youtubeThumb');
+        } elseif (!empty($this->settings)) {
+            $this->data['youtubeThumb'] = $this->settings->thumb;
+        } else {
+            $this->data['youtubeThumb'] = '';
+        }
 
         $this->data['placeholder']  = $this->resize('no_image.png', 100, 100);
         $this->data['countries']    = Country_model::factory()->findAll();
@@ -260,7 +275,9 @@ class Settings extends AdminController {
                         'phone_2'           => $this->data['phone_2'],
                         'point'             => $this->data['point'],
                         'logo'              => $this->data['logo'],
-                        'search_keywords'   => $this->data['search_keywords'],
+                        'video'             => $this->data['youtubeUrl'],
+                        'thumb'             => $this->data['youtubeThumb'],
+                        //'search_keywords'   => $this->data['search_keywords'],
                     ]);
                     SettingsMailConfiguration_model::factory()->insert([
                         'settings_id'   => Settings_model::factory()->getLastInsertID(),
@@ -318,7 +335,9 @@ class Settings extends AdminController {
                         'phone_2'           => $this->data['phone_2'],
                         'point'             => $this->data['point'],
                         'logo'              => $this->data['logo'],
-                        'search_keywords'   => $this->data['search_keywords'],
+                        'video'             => $this->data['youtubeUrl'],
+                        'thumb'             => $this->data['youtubeThumb'],
+                       // 'search_keywords'   => $this->data['search_keywords'],
                     ], $this->id);
                     SettingsMailConfiguration_model::factory()->delete(['settings_id' => $this->id], true);
                     SettingsMailConfiguration_model::factory()->insert([
@@ -334,13 +353,13 @@ class Settings extends AdminController {
                         'sender_name'   => $this->data['sender_name'],
                     ]);
 
-                    SettingsCurrencyConfiguration_model::factory()->delete(['settings_id' => $this->id], true);
+                    //SettingsCurrencyConfiguration_model::factory()->delete(['settings_id' => $this->id], true);
                     //dd($this->data);
                     Currency_model::factory()->refresh(true, $this->data['currency']);
-                    SettingsCurrencyConfiguration_model::factory()->insert([
+                    SettingsCurrencyConfiguration_model::factory()->update([
                         'settings_id'   => $this->id,
                         'currency'      => $this->data['currency'],
-                    ]);
+                    ],['settings_id' => $this->id]);
 
                     $output  = '<?php' . "\n";
                     $output .= '$config[\'config_mail_engine\']             = "'.$this->data["protocol"].'";'."\n";

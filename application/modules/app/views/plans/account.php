@@ -1,8 +1,8 @@
-<section class="loginpage">
+<section class="loginpage sub_page">
     <div class="formbox subpage">
         <div class="container">
             <div class="row">
-                <div class="col-md-8 pr-0 ">
+                <div class="col-lg-8 col-md-6 pr-0 sub_left">
                     <div class="plan">
                         <?php if(isset($plan)) { ?>
                             <div class="price-box-two">
@@ -15,7 +15,7 @@
                     </div>
                 </div>
 
-                <div class="col-md-4 pl-0" id="my-container">
+                <div class="col-lg-4 col-md-6 pl-0 sub_right" id="my-container">
                     <div class="account-rightside  createAccountFrm ">
                         <h3 class="accounts">Create an account</h3>
                         <p>Already have a SCUBA JACK Account? <a href="<?php echo base_url('login');?>">Sign In</a></p>

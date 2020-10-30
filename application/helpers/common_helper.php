@@ -369,19 +369,19 @@ function makeThumbnail($youTubeLink='',$thumbNailQuality='',$fileNameWithExt='',
     switch ($thumbNailQuality)
     {
         case 'LOW':
-            $imageUrl = 'http://img.youtube.com/vi/'.$youTubeVideoId.'/sddefault.jpg';
+            $imageUrl = 'https://img.youtube.com/vi/'.$youTubeVideoId.'/sddefault.jpg';
             break;
 
         case 'MEDIUM':
-            $imageUrl = 'http://img.youtube.com/vi/'.$youTubeVideoId.'/mqdefault.jpg';
+            $imageUrl = 'https://img.youtube.com/vi/'.$youTubeVideoId.'/mqdefault.jpg';
             break;
 
         case 'HIGH':
-            $imageUrl = 'http://img.youtube.com/vi/'.$youTubeVideoId.'/hqdefault.jpg';
+            $imageUrl = 'https://img.youtube.com/vi/'.$youTubeVideoId.'/hqdefault.jpg';
             break;
 
         case 'MAXIMUM':
-            $imageUrl = 'http://img.youtube.com/vi/'.$youTubeVideoId.'/maxresdefault.jpg';
+            $imageUrl = 'https://img.youtube.com/vi/'.$youTubeVideoId.'/maxresdefault.jpg';
             break;
         default:
             return  'Choose The Quality Between [ LOW (or) MEDIUM  (or) HIGH  (or)  MAXIMUM]';

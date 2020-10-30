@@ -1,3 +1,70 @@
-@media only screen and (max-width: 767px) {
-    .splash-screen img{height:100%;}
+/************RESPONSIVE**********/
+@media (min-width:1260px) {
+
+}
+@media (max-width: 1199.98px){
+	.menu-area .navbar-expand-lg .navbar-nav .nav-link{
+		padding: 0 !important;
+		margin-right: 25px;
+	}
+	.country .city-text img.city-picture{
+		padding-right: 10px;
+	}
+	.tagline .yellowbg::after{
+		width: 330px;
+		right: 2%;
+	}
+	.continent .map__image svg{
+		height: 450px;
+	}
+	.tagline{
+		margin-top: 10px;
+	}
+	.tagline .darkbluebg{
+		width: 65%;
+	}
+	.tagline .yellowbg{
+		width: 35%;
+	}
+	.tagline .darkbluebg p{
+		font-size: 21px;
+	}
+	.tagline .darkbluebg h4{
+		font-size: 30px;
+    	line-height: 18px;
+	}
+	.pre-school h3{
+		font-size: 28px;
+	}
+	.world_reading .more a.btn.watch{
+		padding: 5px 8px;
+	}
+	.world_reading .more a.btn.craft{
+		padding: 5px 8px;
+	}
+	.world_reading p.qu::before{
+		right: 18%;
+	}
+	.world_reading .books p.qu{
+		width: 15%;
+		font-size: 13px;
+	}
+	.world_reading .books-details{
+		min-height: 70px;
+	}
+}
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+
+}
+@media (max-width: 991.98px){
+
+}
+@media (max-width: 767.98px){
+	.splash-screen img{height:100%;}
+}
+@media (max-width: 575.98px){
+
+}
+@media (max-width: 360px){
+
 }

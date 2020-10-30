@@ -2,11 +2,11 @@
         <div class="formbox info" >
             <div class="container">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-lg-2 col-md-1">
                         <!-- <img src="<?php echo resizeAssetImage('contact-us.png',500,500);?>" alt="" /> -->
                         
                     </div>
-                    <div class="col-md-5" id="my-container">
+                    <div class="col-lg-5 col-md-6" id="my-container">
                         <div class="right-sides frm">
                             <h3>Leave a reply</h3>
                           <!--   <p>Already have a SCUBA JACK Account? <a href="http://localhost/scubajack/login">Sign In</a></p> -->
@@ -38,7 +38,7 @@
                       
                         </div>                       
                     </div>
-                     <div class="col-md-3 pl-0">
+                     <div class="col-lg-5 col-md-5 pl-0">
                         <div class="contact-left">
                             <h4 class="planheading text-left">Contact us  </h4>
                             

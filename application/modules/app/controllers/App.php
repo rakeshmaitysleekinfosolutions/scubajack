@@ -233,8 +233,8 @@ class App extends AppController {
         // Features Product
         $this->formatProductModelInstanceToArray(FeaturesProduct_model::factory()->findAll(),4);
         // Activity Books
-        $this->formatProductModelInstanceToArray(FeaturesProduct_model::factory()->findAll(['activity_book'=> 'YES']),4, 'activityBooks');
-        //dd($this->data['activityBooks']);
+        $this->formatProductModelInstanceToArray(FeaturesProduct_model::factory()->findAll(['activity_book' => 'YES']),4, 'activityBooks');
+
         $maps = Map_model::factory()->findAll(['status' => 1]);
         $this->data['maps'] = array();
 
@@ -248,7 +248,7 @@ class App extends AppController {
             );
         }
 
-        //$this->dd($this->data);
+       // $this->dd($this->data['activityBooks']);
         $this->template->stylesheet->add('assets/css/magnific-popup.min.css');
         $this->template->javascript->add('assets/js/jquery.magnific-popup.min.js');
 		$this->template->content->view('index', $this->data);

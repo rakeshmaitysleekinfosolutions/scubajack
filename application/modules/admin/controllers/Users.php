@@ -532,6 +532,13 @@ class Users extends AdminController implements \Application\Contracts\UserContra
                 $this->load->model('User_model');
                 foreach ($this->selected as $userId) {
                     $this->User_model->deleteUsers($userId);
+
+                    Subscriber_model::factory()->delete(['user_id' => $userId], true);
+                    UserPassport_model::factory()->delete(['user_id' => $userId], true);
+                    UserPoint_model::factory()->delete(['user_id' => $userId], true);
+                    UserQuestionAnswer_model::factory()->delete(['user_id' => $userId], true);
+                    UserAddress_model::factory()->delete(['user_id' => $userId], true);
+                    UserQuizScore_model::factory()->delete(['user_id' => $userId], true);
                 }
                 return $this->output
                     ->set_content_type('application/json')

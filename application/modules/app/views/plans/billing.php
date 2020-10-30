@@ -1,8 +1,8 @@
-<section class="loginpage">
+<section class="loginpage billing_page">
     <div class="formbox">
         <div class="container">
             <div class="row">
-                <div class="col-md-5 pr-0">
+                <div class="col-md-5 pr-0 billing_left">
                     <?php if(isset($plan)) { ?>
                         <div class="plan-billing">
                             <h4 class="planheading"><?php echo $plan->name;?></h4>
@@ -13,10 +13,10 @@
                     <?php } ?>
                 </div>
           
-                <div class="col-md-7 pl-0" id="my-container">
+                <div class="col-md-7 pl-0 billing_right" id="my-container">
                     <div class="billing-form signup-form">
                         <h3 class="text-billing">Billing</h3>
-                        <form  method="post">
+                        <form id="frmSignUp" action="<?php echo base_url('register');?>" method="post">
                             <div class="form-group register">
                                 <label for="exampleInputEmail1"></label>
                                 <input value="<?php echo userName();?>" type="text" class="form-control" autocomplete="off" readonly>

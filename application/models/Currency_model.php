@@ -29,7 +29,7 @@ class Currency_model extends BaseModel {
     public static function factory($attr = array()) {
         return new Currency_model($attr);
     }
-    public function refresh($force = false, $code) {
+    public function  refresh($force = false, $code) {
 		$data = array();
 
 		if ($force) {

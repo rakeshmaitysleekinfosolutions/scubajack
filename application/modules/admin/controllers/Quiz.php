@@ -191,6 +191,7 @@ class Quiz extends AdminController implements QuizContract {
                 if($this->selected) {
                     foreach ($this->selected as $id) {
                         Quiz_model::factory()->drop($id);
+                        Question_model::factory()->delete(['quiz_id' => $id], true);
                     }
                     return $this->output
                         ->set_content_type('application/json')

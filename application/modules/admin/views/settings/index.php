@@ -153,6 +153,21 @@
                                     ?>
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label class="control-label">Youtube URL <span class="text-danger">*</span></label>
+                                <input value="<?php echo $youtubeUrl;?>" id="videoInputBox" name="youtubeUrl" type="text" class="form-control" autocomplete="off" required>
+                                <div id="iframe">
+                                    <!--                                <iframe src="--><?php //echo $youtubeThumb;?><!--">-->
+                                    <!--                                    <meta http-equiv="refresh" content="0;url=">-->
+                                    <!--                                </iframe>-->
+                                    <?php if($youtubeUrl) {?>
+                                        <div id="iframe">
+                                            <video controls controlsList="nofullscreen nodownload" src="<?php echo $youtubeUrl;?>" poster="<?php echo $youtubeThumb;?>"preload="none"> </video>
+                                        </div>
+                                    <?php } ?>
+                                    <input type="hidden" value="<?php echo $youtubeThumb;?>" id="youtubeThumb" name="youtubeThumb">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

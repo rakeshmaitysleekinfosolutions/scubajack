@@ -133,7 +133,45 @@
     });
 
     $('select[name="country_id"]').trigger('change');
+    var Youtube = (function () {
+        'use strict';
+        var video, results;
+        var getThumb = function (url, size) {
+            if (url === null) {
+                return '';
+            }
+            size    = (size === null) ? 'big' : size;
+            results = url.match('[\\?&]v=([^&#]*)');
+            video   = (results === null) ? url : results[1];
 
+            if (size === 'small') {
+                return 'https://img.youtube.com/vi/' + video + '/3.jpg';
+            }
+            return 'https://img.youtube.com/vi/' + video + '/0.jpg';
+        };
+
+        return {
+            thumb: getThumb
+        };
+    }());
+    function ytVidId(url) {
+        var p = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+        return (url.match(p)) ? RegExp.$1 : false;
+    }
+    $('#videoInputBox').bind("paste", function(e){
+        // access the clipboard using the api
+        var url = e.originalEvent.clipboardData.getData('text');
+        if(!ytVidId(url)) {
+            swal('Not a valid URL');
+        }
+        // alert(pastedData);
+        var thumb = Youtube.thumb(url);
+        //var iframe           = $('iframe:first');
+        var youtubeThumb           = $('#youtubeThumb');
+        //console.log(youtubeThumb.val());
+        youtubeThumb.val(thumb);
+        // iframe.attr('src', thumb);
+    });
 
 }(window.jQuery);
 

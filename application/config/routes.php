@@ -7,7 +7,8 @@ $route['404_override']          = 'PageNotFoundController/index';
 // Frontend Login Register
 $route['register'] 				= 'register';
 $route['login'] 				= 'login';
-
+$route['forgotten'] 		    = 'forgotten';
+$route['reset'] 		        = 'reset';
 
 $route['translate_uri_dashes'] = FALSE;
 

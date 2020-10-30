@@ -19,7 +19,7 @@
 
           <div class="continent" id="map">
               <div class="map__image">
-                  <svg xmlns="http://www.w3.org/2000/svg" xmlns:amcharts="http://amcharts.com/ammap" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 597 585" width="100%" height="505" id="worldMap">
+                  <svg xmlns="https://www.w3.org/2000/svg" xmlns:amcharts="https://amcharts.com/ammap" xmlns:xlink="https://www.w3.org/1999/xlink" version="1.1" viewBox="0 0 597 585" width="100%" height="505" id="worldMap">
                       <g>
                           <?php
                           if(isset($maps)) { ?>
@@ -102,7 +102,7 @@
     <div class="container">
       <div class="row">
               <?php foreach ($products as $product) { ?>
-                <div class="col-md-3 col-12">
+                <div class="col-lg-3 col-md-6 col-sm-6 col-12">
           <div class="books"> <img src="<?php echo $product['img'];?>" alt="<?php echo $product['name'];?>">
             <div class="books-details">
               <p><?php echo $product['name'];?></p>
@@ -135,7 +135,7 @@
         <?php } ?>
 
       </div>
-      <center><a class="btn see-more">See more</a></center>
+<!--      <center><a class="btn see-more">See more</a></center>-->
     </div>
   </section>
 <?php } ?>
@@ -203,7 +203,7 @@
         <div class="row demo-gallery">
             <ul id="activityBooks">
             <?php foreach ($activityBooks as $activityBook) { ?>
-                <li class="col-md-3 col-12" data-poster="<?php echo makeThumbnail($activityBook['video'],'HIGH');?>" data-src="<?php echo $activityBook['video'];?>">
+                <li class="col-lg-3 col-md-6 col-sm-6 col-12" data-poster="<?php echo makeThumbnail($activityBook['video'],'HIGH');?>" data-src="<?php echo $activityBook['video'];?>" data-id="<?php echo $activityBook['id'];?>">
                     <div class="activity-box">
                         <a  href="">
                             <img class="img-responsive" src="<?php echo makeThumbnail($activityBook['video'],'HIGH');?>" />

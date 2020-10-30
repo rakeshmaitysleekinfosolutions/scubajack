@@ -493,6 +493,7 @@ class Product extends AdminController implements ProductContract {
                 $this->load->model('Product_model');
                 foreach ($this->selected as $productId) {
                     $this->Product_model->deleteProduct($productId);
+                    FeaturesProduct_model::factory()->delete(['product_id' => $productId], true);
                 }
                 return $this->output
                     ->set_content_type('application/json')

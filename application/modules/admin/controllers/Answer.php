@@ -229,7 +229,7 @@ class Answer extends AdminController implements AnswerContract {
             foreach($this->results as $result) {
                 $this->rows[] = array(
                     'id'			=> $result->id,
-                    'question'		=> $result->question->question,
+                    'question'		=> ($result->question) ? $result->question->question : '',
                     'answer'		=> $result->answer,
                     'isCorrect'		=> ($result->is_correct) ? 'YES' : 'NO',
                     'created_at'    => Carbon::createFromTimeStamp(strtotime($result->created_at))->diffForHumans(),
@@ -262,7 +262,7 @@ class Answer extends AdminController implements AnswerContract {
                         ';
                 $i++;
             }
-
+//$this->dd($this->data);
 
         }
 //        <li><a class="delete" href="javascript:void(0);" data-id="'.$row['id'].'" data-toggle="modal" data-target="#delete_client"><i class="fa fa-trash-o m-r-5"></i> Delete</a></li>

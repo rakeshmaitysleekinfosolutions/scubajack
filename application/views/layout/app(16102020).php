@@ -37,31 +37,23 @@
         <div class="container">
             <nav class="navbar navbar-expand-lg ">
                 <a class="navbar-brand" href="<?php echo base_url();?>"> <img src="<?php echo (getSession('settings')) ? resize(getSession('settings')['logo'],118,66) :  resize(getSession('assets/theme/light/img/scuba-logo.png;',118,66)) ?>"> </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> 
-                    <span class="navbar-toggler-icon"></span>
-                    <span class="navbar-toggler-icon"></span>
-                    <span class="navbar-toggler-icon"></span> 
-                </button>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"></span> </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item active"> <a class="nav-link" href="<?php echo base_url();?>">Home <span class="sr-only">(current)</span></a> </li>
                         <li class="nav-item"> <a class="nav-link" href="<?php echo base_url('about');?>">About us</a> </li>
                         <li class="nav-item"> <a class="nav-link" href="<?php echo base_url('viewplans');?>">Membership</a> </li>
-                        <li class="nav-item"> <a class="nav-link" href="<?php echo base_url('shop');?>">Shop</a> </li>
                         <li class="nav-item"> <a class="nav-link" href="<?php echo base_url('worksheets');?>">Worksheets</a> </li>
                         <li class="nav-item"> <a class="nav-link " href="<?php echo base_url('contact');?>">Contact us</a> </li>
                     </ul>
-                    <a href="#" data-toggle="tooltip" data-placement="top" title="Game"><img src="<?php echo base_url('assets/images/xbox-brands.png');?>" alt="game" class="game_img"/></a>
-                   <form class="form-inline searchsec">
-                       <a href="javascript:toggle1();"><i class="fas fa-search"></i> </a>
-                        <div id="toggleText1" style="display:none;" class="search_link">
-
-                            <input class="Typeahead-hint type-hidden" type="text" tabindex="-1" readonly >
-                            <input class="form-control Typeahead-hint js-typeahead" placeholder="Search here..." name="q" autofocus autocomplete="off">
+<!--                    <form class="form-inline searchsec">-->
+<!--                        <a href="javascript:toggle1();"><i class="fas fa-search"></i> </a>-->
+<!--                        <div id="toggleText1" style="display:none;" class="search_link">-->
+<!--                            <input type="text" placeholder="Search..."/>-->
 <!--                            <input type="button" value="Search"/>-->
-                      </div>
-                   </form>
-                    <!-- <form action="" method="get">
+<!--                        </div>-->
+<!--                    </form>-->
+                    <form action="" method="get">
                         <div class="border-right-none form-group scroll-search typeahead__container">
                             <div class="input-group typeahead__field">
                                 <div class="input-group-prepend">
@@ -69,10 +61,10 @@
                                 </div>
                                 <input class="Typeahead-hint type-hidden" type="text" tabindex="-1" readonly >
                                 <input class="form-control Typeahead-hint js-typeahead" placeholder="After Scroll Search events" name="q" autofocus autocomplete="off">
-                                
+                                <!-- <img class="Typeahead-spinner" src="<?php echo base_url('assets/images/spinner.gif');?>"> -->
                             </div>
                         </div>
-                    </form> -->
+                    </form>
                     <?php if(isLogged()) {?>
                         <a href="<?php echo base_url('account');?>">
                             <button class="btn my-account" type="submit"><i class="fas fa-user"></i>My Account</button>
@@ -89,13 +81,13 @@
     </header>
     <?php echo $this->template->content; ?>
     <!-------------------------adventure part end----------------->
-    <footer class="footer_area">
+    <footer>
         <div class="container">
             <div class="row">
-                <div class="col-md-4 footer_item">
+                <div class="col-md-4">
                     <div class="logo"> <img src="<?php echo base_url();?>assets/images/scuba-logo.png"> </div>
                 </div>
-                <div class="col-md-4 footer_item">
+                <div class="col-md-4">
                     <div class="foot-two">
                         <h4>Contact Us</h4>
                         <h5>16 Gibbs Hill Drive, Gloucester, MA. 01930</h5>
@@ -103,7 +95,7 @@
                         <p>Call us at <span>+978-491-0747</span></p>
                     </div>
                 </div>
-                <div class="col-md-4 footer_item">
+                <div class="col-md-4">
                     <div class="foot-three">
                         <h4>Links</h4>
                         <h5>© 2020adventuresofscubajack.com All rights reserved</h5>
@@ -124,7 +116,7 @@
         <div class="ProfileCard-details">
             <div class="ProfileCard-realName">{{name}}</div>
             <div class="ProfileCard-screenName">{{category.name}}</div>
-<!--            <div class="ProfileCard-description">{{description}}</div>-->
+            <div class="ProfileCard-description">{{description}}</div>
         </div>
     </div>
 </script>

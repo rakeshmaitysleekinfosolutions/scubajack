@@ -219,9 +219,9 @@
             video   = (results === null) ? url : results[1];
 
             if (size === 'small') {
-                return 'http://img.youtube.com/vi/' + video + '/3.jpg';
+                return 'https://img.youtube.com/vi/' + video + '/3.jpg';
             }
-            return 'http://img.youtube.com/vi/' + video + '/0.jpg';
+            return 'https://img.youtube.com/vi/' + video + '/0.jpg';
         };
 
         return {
